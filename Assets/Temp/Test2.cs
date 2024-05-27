@@ -1,21 +1,19 @@
-using Interfaces;
 using Save;
-using UnityEngine;
 
-public class Test2 : MonoBehaviour, ISaveable
+public class Test2 : SaveBehaviour
 {
     public int B;
 
     public int C;
 
-    public void OnLoading(SaveData data)
+    protected override void OnLoad(SaveData data) 
     {
         this.B = data.monsterB.A;
     }
 
-    public void OnSaving(ref SaveData data)
+    protected override void OnSave(ref SaveData data) 
     {
-        data.monsterB = new Test1Data()
+        data.monsterB = new Test1Data() 
         {
             A = B,
         };

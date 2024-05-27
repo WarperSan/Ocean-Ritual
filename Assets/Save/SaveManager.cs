@@ -1,8 +1,4 @@
-using Extensions;
-using Interfaces;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Save
@@ -24,7 +20,7 @@ namespace Save
         private static string GetPath(int saveIndex)
         {
             // Create directory if missing
-            var directory = GetDirectory();
+            string directory = GetDirectory();
 
             if (!Directory.Exists(directory))
                 _ = Directory.CreateDirectory(directory);
@@ -48,7 +44,7 @@ namespace Save
         /// <returns>Succeed to write the file</returns>
         private static bool WriteDataToFile(SaveData data, int saveIndex, bool overwrite = false)
         {
-            var path = GetPath(saveIndex);
+            string path = GetPath(saveIndex);
 
             // Check for overwrite
             if (!overwrite && File.Exists(path))
@@ -67,32 +63,68 @@ namespace Save
         /// <summary>
         /// Loads the data from the given save file
         /// </summary>
-        /// <returns>Loaded data or null if an error occured</returns>
-        private static SaveData? ReadDataFromFile(string path)
+        /// <param name="data">Loaded data</param>
+        /// <returns>Succeed to load</returns>
+        private static bool ReadDataFromFile(string path, out SaveData? data)
         {
+            data = null;
+
             // Check if file exists
             if (!File.Exists(path))
             {
                 Debug.LogWarning($"No save file is stored at '{path}'.");
-                return null;
+                return false;
             }
 
             try
             {
-                var content = File.ReadAllText(path);
-                SaveData data = JsonUtility.FromJson<SaveData>(content);
+                string content = File.ReadAllText(path);
+                data = JsonUtility.FromJson<SaveData>(content);
 
                 Debug.Log($"File loaded from: '{path}'.");
 
-                return data;
+                return true;
             }
             catch (System.Exception e)
             {
                 Debug.LogWarning($"Error while loading '{path}': " + e.Message);
             }
 
-            return null;
+            return false;
         }
+
+        #endregion
+
+        #region Cache
+
+        private static SaveData? cachedData = null;
+        private static int currentSaveIndex = 0;
+
+        /// <summary>
+        /// Loads the save file from the cache
+        /// </summary>
+        /// <returns>Loaded data</returns>        
+        public static SaveData LoadFromCache()
+        {
+            // If cached loaded, return cache
+            if (cachedData.HasValue)
+                return cachedData.Value;
+
+            Debug.LogWarning("It is recommended to cache the save file before trying to load it.");
+
+            // If load succeed, return cache
+            if (Load(currentSaveIndex))
+                return cachedData.Value;
+
+            Debug.LogError($"Loading the save file '{currentSaveIndex}' failed.");
+            return default;
+        }
+
+        /// <summary>
+        /// Replaces the cached data with the given data
+        /// </summary>
+        /// <param name="data">New data to cache</param>
+        public static void SaveToCache(SaveData data) => cachedData = data;
 
         #endregion
 
@@ -106,93 +138,49 @@ namespace Save
         /// <returns>Succeed to save</returns>
         public static bool Save(int saveIndex, bool overwrite = false)
         {
-            // Fetch all objects to save
-            IEnumerable<ISaveable> objects = FetchObjects();
+            // Modify data from cached data
+            SaveData data = cachedData ?? default;
+            OnSave?.Invoke(ref data);
 
-            // Create the save data
-            SaveData data = new();
-            objects.ForEach(i => i.OnSaving(ref data));
-
-            return Save(data, saveIndex, overwrite);
-        }
-
-        /// <summary>
-        /// Tries to save the given state of the game at the given save index
-        /// </summary>
-        /// <param name="data">State of the game</param>
-        /// <param name="saveIndex">Index of the save file</param>
-        /// <param name="overwrite">Can overwrite an existing file</param>
-        /// <returns>Succeed to save</returns>
-        public static bool Save(SaveData data, int saveIndex, bool overwrite = false)
-        {
             // Store the version of the save file
             data.VERSION = GetVersion();
 
             // Write to file
-            var success = WriteDataToFile(data, saveIndex, overwrite);
-
-            // Notify of the success
-            if (success)
-            {
-                // Fetch all objects to notify
-                IEnumerable<ISaveable> objects = FetchObjects();
-                objects.ForEach(i => i.OnSaved());
-            }
-
-            return success;
+            return WriteDataToFile(data, saveIndex, overwrite);
         }
 
         /// <summary>
-        /// Tries to load the given save 
+        /// Tries to load the given save and updates the cached data
         /// </summary>
         /// <param name="saveIndex">Index of the save file</param>
         /// <returns>Succeed to load</returns>
         public static bool Load(int saveIndex)
         {
-            var path = GetPath(saveIndex);
+            string path = GetPath(saveIndex);
 
-            // Fetch content
-            SaveData? d = ReadDataFromFile(path);
+            // Fetch content and cache
+            bool succeed = ReadDataFromFile(path, out SaveData? data);
+            cachedData = data;
 
-            // If save file valid, load
-            return d.HasValue && Load(d.Value);
-        }
+            // If the load succeed
+            if (succeed)
+                OnLoad?.Invoke(cachedData.Value);
 
-        /// <summary>
-        /// Tries to load the given game state
-        /// </summary>
-        /// <param name="data">Game state to load</param>
-        /// <returns>Succeed to load</returns>
-        public static bool Load(SaveData data)
-        {
-            // Fetch all objects to load
-            IEnumerable<ISaveable> objects = FetchObjects();
+            // Update selected save
+            SaveManager.currentSaveIndex = saveIndex;
 
-            // Convert to version
-            var version = data.VERSION;
-            foreach (ISaveable item in objects)
-            {
-                // If save file invalid, cancel load
-                if (!item.ConvertToVersion(version, ref data))
-                {
-                    var currentVersion = GetVersion();
-                    Debug.LogWarning($"The conversion from '{version}' to '{currentVersion}' is impossible.");
-                    return false;
-                }
-            }
-
-            // Load the objects
-            objects.ForEach(i => i.OnLoading(data));
-
-            return true;
+            return succeed;
         }
 
         #endregion
 
         #region ISaveable
 
-        /// <returns>Objects to save</returns>
-        private static IEnumerable<ISaveable> FetchObjects() => Object.FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+        public delegate void SaveEvent(ref SaveData data);
+        public static event SaveEvent OnSave;
+
+        public delegate void LoadEvent(SaveData data);
+        public static event LoadEvent OnLoad;
 
         #endregion
     }

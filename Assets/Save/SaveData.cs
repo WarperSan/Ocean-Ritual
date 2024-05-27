@@ -1,5 +1,6 @@
 namespace Save
 {
+    [System.Serializable]
     public struct SaveData
     {
         public string VERSION;
@@ -7,6 +8,7 @@ namespace Save
         public Test1Data monsterB;
     }
 
+    [System.Serializable]
     public struct Test1Data
     {
         public int A;
