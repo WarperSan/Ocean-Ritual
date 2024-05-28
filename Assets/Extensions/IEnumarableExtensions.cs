@@ -15,5 +15,23 @@ namespace Extensions
             foreach (T item in items)
                 action.Invoke(item);
         }
+
+        public static IEnumerable<T> GetUniques<T, U>(this IEnumerable<U> values, Func<U, T> action)
+        {
+            // Skip if action is invalid
+            if (action == null)
+                return default;
+
+            HashSet<T> unique = new();
+
+            foreach (U item in values)
+                unique.Add(action.Invoke(item));
+
+            // Copy to array
+            var result = new T[unique.Count];
+            unique.CopyTo(result);
+
+            return result;
+        }
     }
 }
