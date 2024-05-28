@@ -7,28 +7,22 @@ public class PoursuivreJoueur : MonoBehaviour
 {
     GameObject Proie;
     NavMeshAgent agent;
-  
 
     void Start()
     {
-        
         agent = GetComponent<NavMeshAgent>();
-     
     }
-   public void DonnerProie(GameObject proie)
+
+    public void DonnerProie(GameObject proie)
     {
         Proie = proie;
-
-
-
     }
+
     void Update()
     {
-       
-            agent.destination = GestionDelimitation.AvoirProie();
+        // Vector3? target = GestionDelimitation.AvoirProie();
 
-
+        // if (target.HasValue)
+        //     agent.destination = target.Value;
     }
-
-   
 }
