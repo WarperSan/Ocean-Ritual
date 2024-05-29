@@ -111,7 +111,7 @@ public class FormeBool
         {
             for (int i = 0; i < width; i++)
             {
-                int flatIndex = (height - 1 - j) * width + (width - 1 - i); // Inverse the order
+                int flatIndex = (height - 1 - j) * width + i; // Reverse rows, but keep columns order
                 forme[i, j] = flatForme[flatIndex];
             }
         }

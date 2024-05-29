@@ -18,15 +18,15 @@ public class GestionTableauEditor : Editor
             gemmeGrid.InitializeTableau();
         }
 
-        for (int j = gemmeGrid.height - 1; j >= 0; j--)
+        for (int j = 0; j < gemmeGrid.height; j++) // Loop from 0 to height
         {
             EditorGUILayout.BeginHorizontal();
             for (int i = 0; i < gemmeGrid.width; i++)
             {
-                bool newValue = EditorGUILayout.Toggle(gemmeGrid.tableau[i, j]);
-                if (newValue != gemmeGrid.tableau[i, j])
+                bool newValue = EditorGUILayout.Toggle(gemmeGrid.tableau[i, gemmeGrid.height - 1 - j]); // Access inverted row
+                if (newValue != gemmeGrid.tableau[i, gemmeGrid.height - 1 - j])
                 {
-                    gemmeGrid.tableau[i, j] = newValue;
+                    gemmeGrid.tableau[i, gemmeGrid.height - 1 - j] = newValue;
                 }
             }
             EditorGUILayout.EndHorizontal();
