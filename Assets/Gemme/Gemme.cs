@@ -4,19 +4,15 @@ using static EnumGeneral;
 
 public class Gemme : MonoBehaviour
 {
-    [SerializeField] public int width;
-    [SerializeField] public int height;
+
     [SerializeField]
-    private FormeBool forme = new(new bool[,]
+    public FormeBool forme = new(new bool[,]
    {
         { false, false, true },
         { true, true, true },
         { false, false, true }
-   });
-    public void InitializeForme(int width, int height)
-    {
-        forme.InitializeIfNeeded(width, height);
-    }
+   }, 3, 3);
+
 
     [SerializeField] private List<TypeQuantite<TypeArme>> typeArme;
     [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat;

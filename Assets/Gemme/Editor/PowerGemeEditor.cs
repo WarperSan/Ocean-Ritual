@@ -10,6 +10,7 @@ public class PowerGemeEditor : Editor
     private SerializedProperty typeArmeProp;
     private SerializedProperty typeBateauProp;
     private SerializedProperty typeFiletProp;
+    private SerializedProperty typeGemmeProp;
 
     void OnEnable()
     {
@@ -17,16 +18,17 @@ public class PowerGemeEditor : Editor
         typeArmeProp = serializedObject.FindProperty("typeArme");
         typeBateauProp = serializedObject.FindProperty("typeBoat");
         typeFiletProp = serializedObject.FindProperty("typeFilet");
+        typeGemmeProp = serializedObject.FindProperty("GemmeList");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-
+        ShowGameObjectListProperties(typeGemmeProp);
         EditorGUILayout.PropertyField(typeDeSocleProp);
 
         EnumGeneral.TypeDeSocle socleType = (EnumGeneral.TypeDeSocle)typeDeSocleProp.enumValueIndex;
-
+     
         switch (socleType)
         {
             case EnumGeneral.TypeDeSocle.Arme:
@@ -48,7 +50,33 @@ public class PowerGemeEditor : Editor
 
         serializedObject.ApplyModifiedProperties();
     }
+    private void ShowGameObjectListProperties(SerializedProperty listProperty)
+    {
+        if (listProperty == null)
+            return;
 
+        EditorGUILayout.LabelField("Gemme List", EditorStyles.boldLabel);
+
+        if (GUILayout.Button("Add GameObject"))
+        {
+            listProperty.InsertArrayElementAtIndex(listProperty.arraySize);
+        }
+
+        for (int i = 0; i < listProperty.arraySize; i++)
+        {
+            EditorGUILayout.BeginHorizontal();
+
+            SerializedProperty element = listProperty.GetArrayElementAtIndex(i);
+            EditorGUILayout.PropertyField(element, GUIContent.none);
+
+            if (GUILayout.Button("Remove"))
+            {
+                listProperty.DeleteArrayElementAtIndex(i);
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+    }
     private void ShowListProperties(SerializedProperty listProperty, System.Type enumType)
     {
         if (listProperty == null)

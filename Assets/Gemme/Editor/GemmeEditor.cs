@@ -8,35 +8,40 @@ public class GemmeEditor : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        SerializedProperty formeProperty = property.FindPropertyRelative("forme");
+        SerializedProperty widthProp = property.FindPropertyRelative("width");
+        SerializedProperty heightProp = property.FindPropertyRelative("height");
+        SerializedProperty flatFormeProp = property.FindPropertyRelative("flatForme");
 
-        // Ensure the forme array is initialized
-        int width = 3; // Adjust this to the desired width of your forme
-        int height = 3; // Adjust this to the desired height of your forme
-        (property.serializedObject.targetObject as Gemme)?.InitializeForme(width, height);
+        int width = widthProp.intValue;
+        int height = heightProp.intValue;
 
-        int rows = formeProperty.arraySize;
-        int columns = formeProperty.GetArrayElementAtIndex(0).arraySize;
+        // Draw the dimensions
+        widthProp.intValue = EditorGUI.IntField(new Rect(position.x, position.y, position.width / 2 - 2, EditorGUIUtility.singleLineHeight), "Width", width);
+        heightProp.intValue = EditorGUI.IntField(new Rect(position.x + position.width / 2 + 2, position.y, position.width / 2 - 2, EditorGUIUtility.singleLineHeight), "Height", height);
 
-        // Draw the 2D array as a grid of toggle fields
-        for (int i = 0; i < rows; i++)
+        position.y += EditorGUIUtility.singleLineHeight + 2;
+
+        // Ensure the flatForme list has the correct size
+        if (flatFormeProp.arraySize != width * height)
         {
-            SerializedProperty row = formeProperty.GetArrayElementAtIndex(i);
-            Rect rowRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight * i, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.BeginChangeCheck();
-            for (int j = 0; j < columns; j++)
+            flatFormeProp.arraySize = width * height;
+        }
+
+        // Draw the grid
+        for (int j = height - 1; j >= 0; j--)
+        {
+            EditorGUILayout.BeginHorizontal();
+            for (int i = 0; i < width; i++)
             {
-                Rect cellRect = new Rect(rowRect.x + EditorGUIUtility.singleLineHeight * j, rowRect.y, EditorGUIUtility.singleLineHeight, EditorGUIUtility.singleLineHeight);
-                bool newValue = EditorGUI.Toggle(cellRect, row.GetArrayElementAtIndex(j).boolValue);
-                if (newValue != row.GetArrayElementAtIndex(j).boolValue)
+                int index = j * width + i;
+                SerializedProperty element = flatFormeProp.GetArrayElementAtIndex(index);
+                bool newValue = EditorGUI.Toggle(new Rect(position.x + i * 20, position.y + j * 20, 20, 20), element.boolValue);
+                if (newValue != element.boolValue)
                 {
-                    row.GetArrayElementAtIndex(j).boolValue = newValue;
+                    element.boolValue = newValue;
                 }
             }
-            if (EditorGUI.EndChangeCheck())
-            {
-                property.serializedObject.ApplyModifiedProperties();
-            }
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUI.EndProperty();
@@ -44,8 +49,7 @@ public class GemmeEditor : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        SerializedProperty formeProperty = property.FindPropertyRelative("forme");
-        int rows = formeProperty.arraySize;
-        return EditorGUIUtility.singleLineHeight * rows;
+        SerializedProperty heightProp = property.FindPropertyRelative("height");
+        return EditorGUIUtility.singleLineHeight + 2 + (heightProp.intValue * 20);
     }
 }

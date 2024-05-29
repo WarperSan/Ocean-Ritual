@@ -5,21 +5,35 @@ using UnityEngine;
 [System.Serializable]
 public class PowerGemmeObject : MonoBehaviour
 {
+    GemmeGrid GridGemme;
     [SerializeField] private TypeDeSocle typeDeSocle;
     [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new List<TypeQuantite<TypeArme>>();
     [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new List<TypeQuantite<TypeBateau>>();
     [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new List<TypeQuantite<TypeFilet>>();
-    private List<GameObject> GemmeList = new ();
+    [SerializeField] List<GameObject> GemmeList = new ();
     // Start is called before the first frame update
     void Start()
     {
+
+        GridGemme = GetComponent<GemmeGrid>();
+        GridGemme.InitializeTableau();
         ResetLists();
+
+        PlacerGemme(GemmeList);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+    public void PlacerGemme(List<GameObject> ListGemme)
+    {
+        foreach (GameObject Gemmes  in ListGemme)
+        {
+            Gemme GemmeScript =  Gemmes.GetComponent<Gemme>();
+            GridGemme.PlacerObjet(1, 1, GemmeScript.forme.GetForme());
+        }
     }
 
     private void InitializeLists()

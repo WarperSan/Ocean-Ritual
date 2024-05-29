@@ -152,8 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787d1d86174e06545aa2dc2d84336f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 3
-  height: 3
+  forme:
+    width: 3
+    height: 3
+    flatForme: 010000000100000001
   typeArme:
   - Type: 0
     Quantite: 0
@@ -204,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1ab50131d0870419e663d008f6d0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeDeSocle: 2
+  typeDeSocle: 0
   typeArme:
   - Type: 0
     Quantite: 1
@@ -236,6 +238,8 @@ MonoBehaviour:
     Quantite: 1
   - Type: 3
     Quantite: 1
+  GemmeList:
+  - {fileID: 332730895}
 --- !u!4 &949189483
 Transform:
   m_ObjectHideFlags: 0

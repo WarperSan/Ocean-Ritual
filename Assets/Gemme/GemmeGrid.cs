@@ -10,8 +10,8 @@ public class GemmeGrid : MonoBehaviour
 
     void Start()
     {
-        InitializeTableau();
-        Exemple();
+        //InitializeTableau();
+      //  Exemple();
     }
 
     public void InitializeTableau()

@@ -82,24 +82,39 @@ public class TypeQuantite<TEnum>
 }
 
 
+
 [Serializable]
-public struct FormeBool
+public class FormeBool
 {
-    public bool[,] forme;
+    public int width;
+    public int height;
+    public List<bool> flatForme;
 
-    public FormeBool(bool[,] forme)
+    public FormeBool(bool[,] forme, int width, int height)
     {
-        this.forme = forme;
-    }
-
-    // Editeur personnalisé pour afficher et éditer la forme booléenne
-#if UNITY_EDITOR
-    public void InitializeIfNeeded(int width, int height)
-    {
-        if (forme == null || forme.GetLength(0) != width || forme.GetLength(1) != height)
+        this.width = width;
+        this.height = height;
+        this.flatForme = new List<bool>(width * height);
+        for (int j = 0; j < height; j++)
         {
-            forme = new bool[width, height];
+            for (int i = 0; i < width; i++)
+            {
+                flatForme.Add(forme[i, j]);
+            }
         }
     }
-#endif
+
+    public bool[,] GetForme()
+    {
+        bool[,] forme = new bool[width, height];
+        for (int j = 0; j < height; j++)
+        {
+            for (int i = 0; i < width; i++)
+            {
+                int flatIndex = (height - 1 - j) * width + (width - 1 - i); // Inverse the order
+                forme[i, j] = flatForme[flatIndex];
+            }
+        }
+        return forme;
+    }
 }
