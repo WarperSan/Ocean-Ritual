@@ -4,7 +4,19 @@ using static EnumGeneral;
 
 public class Gemme : MonoBehaviour
 {
-
+    [SerializeField] public int width;
+    [SerializeField] public int height;
+    [SerializeField]
+    private FormeBool forme = new(new bool[,]
+   {
+        { false, false, true },
+        { true, true, true },
+        { false, false, true }
+   });
+    public void InitializeForme(int width, int height)
+    {
+        forme.InitializeIfNeeded(width, height);
+    }
 
     [SerializeField] private List<TypeQuantite<TypeArme>> typeArme;
     [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat;
@@ -31,26 +43,4 @@ public class Gemme : MonoBehaviour
         }
     }
 }
-    //public TypeDeSocle TypeDeSocle
-    //{
-    //    get { return typeDeSocle; }
-    //    set { typeDeSocle = value; }
-    //}
-
-    //public TypeArme TypeArme
-    //{
-    //    get { return typeArme; }
-    //    set { typeArme = value; }
-    //}
-
-    //public TypeBateau TypeBateau
-    //{
-    //    get { return typeBateau; }
-    //    set { typeBateau = value; }
-    //}
-
-    //public TypeFilet TypeFilet
-    //{
-    //    get { return typeFilet; }
-    //    set { typeFilet = value; }
-    //}
+    

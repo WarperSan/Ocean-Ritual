@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 static public class EnumGeneral 
@@ -78,4 +79,27 @@ public class TypeQuantite<TEnum>
         Type = type;
         Quantite = quantite;
     }
-}   
+}
+
+
+[Serializable]
+public struct FormeBool
+{
+    public bool[,] forme;
+
+    public FormeBool(bool[,] forme)
+    {
+        this.forme = forme;
+    }
+
+    // Editeur personnalisé pour afficher et éditer la forme booléenne
+#if UNITY_EDITOR
+    public void InitializeIfNeeded(int width, int height)
+    {
+        if (forme == null || forme.GetLength(0) != width || forme.GetLength(1) != height)
+        {
+            forme = new bool[width, height];
+        }
+    }
+#endif
+}

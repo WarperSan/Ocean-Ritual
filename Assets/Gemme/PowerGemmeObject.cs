@@ -9,7 +9,7 @@ public class PowerGemmeObject : MonoBehaviour
     [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new List<TypeQuantite<TypeArme>>();
     [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new List<TypeQuantite<TypeBateau>>();
     [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new List<TypeQuantite<TypeFilet>>();
-
+    private List<GameObject> GemmeList = new ();
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +41,14 @@ public class PowerGemmeObject : MonoBehaviour
         {
             typeFilet.Add(new TypeQuantite<TypeFilet>(filet, 1));
         }
+    }
+    public void ReceiveGemme(Gemme oneGemme)
+    {
+
+    }
+    public void DeletedGemme()
+    {
+
     }
 
     public void ResetLists()
