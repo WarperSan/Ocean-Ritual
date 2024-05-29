@@ -79,19 +79,35 @@ namespace Fishing
 
         #endregion
 
+        #region Buoy
+
+        private FishingBuoy buoy;
+
+        /// <summary>
+        /// Sets the target buoy of this manager
+        /// </summary>
+        public void SetBuoy(FishingBuoy buoy) => this.buoy = buoy;
+
+        #endregion
+
         #region Collect
 
-        [SerializeField]
-        private FishingBuoy FishingBuoy;
+        private int quantity;
 
-        [SerializeField, Tooltip("How many fishes to pick per call")]
-        private int Quantity = 5;
+        private float cooldown;
+        private float delay;
 
-        [SerializeField]
-        private float Delay = 0.01f;
-
-        [SerializeField, Tooltip("How many seconds to wait between each call")]
-        private float Cooldown = 0.01f;
+        /// <summary>
+        /// Sets the different stats of the current session
+        /// </summary>
+        /// <param name="quantity">How many fishes to pick per call</param>
+        /// <param name="cooldown">How many seconds to wait between each call</param>
+        public void SetCollectionStats(int quantity, float cooldown)
+        {
+            this.quantity = quantity;
+            this.cooldown = cooldown;
+            this.delay = cooldown;
+        } 
 
         /// <summary>
         /// Updates the collection of the fishes
@@ -100,23 +116,23 @@ namespace Fishing
         private void UpdateCollection(float elapsed)
         {
             // If delay not finished
-            if (this.Delay > 0)
+            if (this.delay > 0)
             {
-                this.Delay -= elapsed;
+                this.delay -= elapsed;
                 return;
             }
 
             // Reset delay
-            this.Delay = this.Cooldown;
+            this.delay = this.cooldown;
 
             // If quantity invalid
-            if (this.Quantity <= 0)
+            if (this.quantity <= 0)
             {
                 Debug.Log("The number of fishes available is less or equal to 0.");
                 return;
             }
 
-            this.CollectFishes(this.Quantity);
+            this.CollectFishes(this.quantity);
         }
 
         /// <summary>
@@ -129,7 +145,7 @@ namespace Fishing
             Fish[] fishes = this.GetRandomFishes(amount);
 
             // Add to buoy
-            this.FishingBuoy.AddFishes(fishes);
+            this.buoy.AddFishes(fishes);
         }
 
         #endregion

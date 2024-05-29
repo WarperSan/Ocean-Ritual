@@ -9,7 +9,6 @@ namespace Fishing
     {
         #region Enemies
 
-        [SerializeField]
         private Enemy[] enemies;
 
         /// <summary>
@@ -46,14 +45,10 @@ namespace Fishing
         
         #region Probabilities
 
-        [SerializeField]
         private ProbabilityForLevel[] probabilities;
 
-        [SerializeField, Tooltip("Determines how fast the probabilities transfer between levels")] 
-        private float TransferRate = 1f;
-        
-        [SerializeField] 
-        private float RetentionRate = 0.3f;
+        private float transferRate = 1f;
+        private float retentionRate = 0.3f;
         private int transferOffset = 0;
 
         /// <summary>
@@ -66,13 +61,13 @@ namespace Fishing
             if (this.probabilities == null)
                 return;
 
-            float transferRate = elapsed * TransferRate;
+            float transferRate = elapsed * this.transferRate;
             int counter = 0;
 
             for (int i = this.transferOffset; i < this.probabilities.Length - 1; i++)
             {
                 float transferAmount = Mathf.Min(
-                    transferRate * Mathf.Pow(RetentionRate, counter), 
+                    transferRate * Mathf.Pow(retentionRate, counter), 
                     this.probabilities[i].Probability
                 );
 
@@ -92,17 +87,21 @@ namespace Fishing
             }
         }
 
+        /// <summary>
+        /// Sets the rates for this manager
+        /// </summary>
+        public void SetRates(float transferRate, float retentionRate)
+        {
+            this.transferRate = transferRate;
+            this.retentionRate = retentionRate;
+        }
+
         #endregion
 
         #region Spawn
 
-        [Header("Spawn")]
-        [SerializeField, Tooltip("Determines the time between the spawning attempts")] 
         private float spawnDelay = 0.01f;
-
-        [SerializeField, Tooltip("Determines the radius of the spawn origin")]
         private float spawnRadius = 5f;
-
         private float delay;
 
         /// <summary>
@@ -151,6 +150,16 @@ namespace Fishing
 
         /// <returns>Origin of the spawn radius</returns>
         private Vector3 GetOrigin() => this.transform.position;
+
+        /// <summary>
+        /// Sets the spawn settings of this manager
+        /// </summary>
+        public void SetSpawnSettings(float delay, float radius)
+        {
+            this.spawnDelay = delay;
+            this.delay = delay;
+            this.spawnRadius = radius;
+        }
 
         #endregion
 

@@ -12,7 +12,7 @@ namespace Fishing
 
         #endregion
 
-        public bool PoursuivreJoueur = false;
+        public bool FollowPlayer = false;
 
         public void StartTracking(Transform player, Transform buoy)
         {
@@ -22,6 +22,7 @@ namespace Fishing
 
         #region Zones
 
+        [Header("Zones")]
         [SerializeField, Tooltip("Determines the radius of the fishing zone")]
         private float fishingRadius = 5f;
 
@@ -79,12 +80,12 @@ namespace Fishing
             }
         }
 
-        private void FishingZoneEnter() => this.PoursuivreJoueur = true;
-        private void HuntLimitEnter() => this.PoursuivreJoueur = true;
-        private void HuntEndEnter() => this.PoursuivreJoueur = false;
+        private void FishingZoneEnter() => this.FollowPlayer = true;
+        private void HuntLimitEnter() => this.FollowPlayer = true;
+        private void HuntEndEnter() => this.FollowPlayer = false;
         private void OutsideEnter()
         {
-            this.PoursuivreJoueur = false;
+            this.FollowPlayer = false;
             FishingManager.Instance.End();
         }
 
@@ -139,6 +140,5 @@ namespace Fishing
         }
 #endif
         #endregion
-
     }
 }
