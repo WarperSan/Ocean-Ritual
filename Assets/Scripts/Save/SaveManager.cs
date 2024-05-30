@@ -54,7 +54,12 @@ namespace Save
             }
 
             // Write data to file
-            File.WriteAllText(path, JsonUtility.ToJson(data));
+#if UNITY_EDITOR
+            string json = JsonUtility.ToJson(data, true);
+#else
+            string json = JsonUtility.ToJson(data);
+#endif
+            File.WriteAllText(path, json);
             Debug.Log($"File saved at: '{path}'.");
 
             return true;
