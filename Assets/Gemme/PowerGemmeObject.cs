@@ -31,8 +31,8 @@ public class PowerGemmeObject : MonoBehaviour
     {
         foreach (GameObject Gemmes  in ListGemme)
         {
-            Gemme GemmeScript =  Gemmes.GetComponent<Gemme>();
-            GridGemme.PlacerObjet(1, 1, GemmeScript.forme.GetForme());
+            GemmeComponant GemmeComponantScript =  Gemmes.GetComponent<GemmeComponant>();
+            GridGemme.PlacerObjet(1, 1, GemmeComponantScript.GemmeScript.forme.GetForme());
         }
     }
 

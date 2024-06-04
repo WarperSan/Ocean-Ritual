@@ -118,3 +118,36 @@ public class FormeBool
         return forme;
     }
 }
+
+
+public static class DictionaryGenerator
+{
+
+    static public Dictionary<string, GameObject> DictionaryGameObjectGenerator(string Path)
+    {
+        Dictionary<string, GameObject> Dictionary = new Dictionary<string, GameObject>();
+
+       GameObject[]TabRessourceObject =  Resources.LoadAll<GameObject>(Path);
+
+
+        foreach (GameObject obj in TabRessourceObject)
+        {
+
+
+            // Vérifier si le dictionnaire ne contient pas déjà ce nom
+            if (!Dictionary.ContainsKey(obj.name))
+            {
+                // Ajouter l'objet au dictionnaire
+                Dictionary.Add(obj.name, obj);
+            }
+        }
+
+        return Dictionary;
+
+    }
+
+
+
+
+
+}

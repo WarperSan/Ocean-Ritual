@@ -20,30 +20,31 @@ public class GeneratorGemme : MonoBehaviour
     }
     public void LoadGemmeData()
     {
+        DictionaryGemme = DictionaryGenerator.DictionaryGameObjectGenerator(GemmePath);
         // Charger tous les GameObjects à partir du dossier spécifié
-        GameObject[] loadedObjects = Resources.LoadAll<GameObject>(GemmePath);
+       // GameObject[] loadedObjects = Resources.LoadAll<GameObject>(GemmePath);
         GameObject[] SampleObjects = Resources.LoadAll<GameObject>(SampleGemmePath);
         if (SampleObjects.Length != 0)
             SampleGemme = SampleObjects[0];
 
 
 
-        foreach (GameObject obj in loadedObjects)
-        {
+        //foreach (GameObject obj in loadedObjects)
+        //{
 
 
-            // Vérifier si le dictionnaire ne contient pas déjà ce nom
-            if (!DictionaryGemme.ContainsKey(obj.name))
-            {
-                // Ajouter l'objet au dictionnaire
-                DictionaryGemme.Add(obj.name, obj);
-            }
-        }
-        // Afficher les noms des objets dans le dictionnaire
-        foreach (KeyValuePair<string, GameObject> kvp in DictionaryGemme)
-        {
-           // Debug.Log(kvp.Key);
-        }
+        //    // Vérifier si le dictionnaire ne contient pas déjà ce nom
+        //    if (!DictionaryGemme.ContainsKey(obj.name))
+        //    {
+        //        // Ajouter l'objet au dictionnaire
+        //        DictionaryGemme.Add(obj.name, obj);
+        //    }
+        //}
+        //// Afficher les noms des objets dans le dictionnaire
+        //foreach (KeyValuePair<string, GameObject> kvp in DictionaryGemme)
+        //{
+        //   // Debug.Log(kvp.Key);
+        //}
     }
 
     // Update is called once per frame
