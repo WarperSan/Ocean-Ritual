@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public class Gemme : MonoBehaviour
+[Serializable]
+public class Gemme 
 {
 
     [SerializeField]
@@ -12,11 +14,11 @@ public class Gemme : MonoBehaviour
         { true, true, true },
         { false, false, true }
    }, 3, 3);
-
-
-    [SerializeField] private List<TypeQuantite<TypeArme>> typeArme;
-    [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat;
-    [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet;
+    public string GemmeColorsName;
+    [SerializeField] public int LVL = 0;
+    [SerializeField] public List<TypeQuantite<TypeArme>> typeArme;
+    [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat;
+    [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet;
     public List<TypeQuantite<TEnum>> GetListType<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeArme))
