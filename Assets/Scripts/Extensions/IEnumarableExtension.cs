@@ -69,5 +69,20 @@ namespace Extensions
 
             return array.ElementAt(index);
         }
+ 
+        public static string Join<T>(this IEnumerable<T> array, string separator)
+        {
+            string result = "";
+            int size = array.Count();
+            for (int i = 0; i < size; i++)
+            {
+                result += array.ElementAt(i).ToString();
+
+                if (i != size - 1)
+                    result += separator;
+            }
+
+            return result;
+        }
     }
 }

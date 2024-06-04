@@ -54,7 +54,7 @@ namespace Save
             }
 
             // Write data to file
-            File.WriteAllText(path, JsonUtility.ToJson(data));
+            File.WriteAllText(path, JsonUtility.ToJson(data, true));
             Debug.Log($"File saved at: '{path}'.");
 
             return true;

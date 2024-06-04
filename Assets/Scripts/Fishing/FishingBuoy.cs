@@ -10,7 +10,7 @@ namespace Fishing
         private uint RemainingWeight = 0;
 
         [SerializeField]
-        private List<Fish> BuoyInventory = new();
+        private Inventory.Inventory BuoyInventory = new();
 
         [SerializeField]
         private int Efficiency;
@@ -65,6 +65,9 @@ namespace Fishing
             {
                 Fish fish = fishes.Random(out int index);
 
+                if (fish == null)
+                    continue;
+
                 // If fish can fit, add
                 if (maxWeight >= (validTotalWeight + fish.Weight))
                 {
@@ -85,7 +88,7 @@ namespace Fishing
         }
 
         /// <returns>Current inventory of the buoy</returns>
-        public List<Fish> ObtainInventory() => this.BuoyInventory;
+        public Inventory.Inventory GetInventory() => this.BuoyInventory;
 
         #endregion
     }
