@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SocleGenerator : MonoBehaviour
 {
+    public static SocleGenerator Instance { get; private set; }
     [SerializeField] GameObject ObjectToSocle;
     [SerializeField] GameObject ConteneurSocle;
     [SerializeField] string SideName = "";
@@ -16,8 +17,17 @@ public class SocleGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("Multiple instances of SocleGenerator detected. Destroying the new instance.");
+            Destroy(gameObject);
+        }
         LoadSocleData();
-        GenerateSocle(ObjectToSocle, ConteneurSocle);
+       // GenerateSocle(ObjectToSocle, ConteneurSocle);
     }
 
     // Update is called once per frame
@@ -28,6 +38,7 @@ public class SocleGenerator : MonoBehaviour
     public void GenerateSocle(GameObject ObjectSocle,GameObject Conteneur)
     {
         GemmeGrid scriptGemmeGrid = ObjectSocle.GetComponent<GemmeGrid>();
+       
         if (scriptGemmeGrid == null)
         {
             Debug.LogError("GemmeGrid script not found on the object.");

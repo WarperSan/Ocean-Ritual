@@ -11,7 +11,8 @@ public class PowerGemeEditor : Editor
     private SerializedProperty typeBateauProp;
     private SerializedProperty typeFiletProp;
     private SerializedProperty typeGemmeProp;
-
+    private SerializedProperty SocleConteneur;
+    private SerializedProperty GemmeConteneur;
     void OnEnable()
     {
         typeDeSocleProp = serializedObject.FindProperty("typeDeSocle");
@@ -19,11 +20,15 @@ public class PowerGemeEditor : Editor
         typeBateauProp = serializedObject.FindProperty("typeBoat");
         typeFiletProp = serializedObject.FindProperty("typeFilet");
         typeGemmeProp = serializedObject.FindProperty("GemmeList");
+        SocleConteneur = serializedObject.FindProperty("SocleConteneur");
+        GemmeConteneur = serializedObject.FindProperty("GemmeConteneur");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+        ShowSingleProperty(SocleConteneur,"conteneurSocle");
+        ShowSingleProperty(GemmeConteneur, "GemmeConteneur");
         ShowGameObjectListProperties(typeGemmeProp);
         EditorGUILayout.PropertyField(typeDeSocleProp);
 
@@ -97,7 +102,13 @@ public class PowerGemeEditor : Editor
 
         EditorGUILayout.PropertyField(listProperty, true);
     }
+    private void ShowSingleProperty(SerializedProperty property, string label)
+    {
+        if (property == null)
+            return;
 
+        EditorGUILayout.PropertyField(property, new GUIContent(label));
+    }
     private void ResetLists()
     {
         

@@ -6,11 +6,13 @@ using UnityEngine;
 public class PowerGemmeObject : MonoBehaviour
 {
     GemmeGrid GridGemme;
+    [SerializeField] private GameObject SocleConteneur;
+    [SerializeField] private GameObject GemmeConteneur;
     [SerializeField] private TypeDeSocle typeDeSocle;
     [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new List<TypeQuantite<TypeArme>>();
     [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new List<TypeQuantite<TypeBateau>>();
     [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new List<TypeQuantite<TypeFilet>>();
-    [SerializeField] List<GameObject> GemmeList = new ();
+    [SerializeField] List<GemmeComponant> GemmeList = new ();
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +20,10 @@ public class PowerGemmeObject : MonoBehaviour
         GridGemme = GetComponent<GemmeGrid>();
         GridGemme.InitializeTableau();
         ResetLists();
-
+       // SocleGenerator.Instance.GenerateSocle(gameObject, SocleConteneur);
         PlacerGemme(GemmeList);
+       
+     
     }
 
     // Update is called once per frame
@@ -27,12 +31,14 @@ public class PowerGemmeObject : MonoBehaviour
     {
 
     }
-    public void PlacerGemme(List<GameObject> ListGemme)
+    public void PlacerGemme(List<GemmeComponant> ListGemme)
     {
-        foreach (GameObject Gemmes  in ListGemme)
+        foreach (GemmeComponant Gemmes  in ListGemme)
         {
-            GemmeComponant GemmeComponantScript =  Gemmes.GetComponent<GemmeComponant>();
-            GridGemme.PlacerObjet(1, 1, GemmeComponantScript.GemmeScript.forme.GetForme());
+          
+            GridGemme.PlacerObjet(Gemmes.GemmeScript.PositionX, Gemmes.GemmeScript.PositionZ, Gemmes.GemmeScript.forme.GetForme());
+          GameObject theGemme =   GeneratorGemme.Instance.CreatGemmeObject(Gemmes.GemmeScript, GemmeConteneur.transform);
+            //theGemme.transform.position = new Vector3(Gemmes.GemmeScript.PositionX, 0, Gemmes.GemmeScript.PositionZ);
         }
     }
 

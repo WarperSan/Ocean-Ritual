@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GeneratorGemme : MonoBehaviour
 {
+    public static GeneratorGemme Instance { get; private set; }
     [SerializeField] string GemmePath = "Gemme/AllGemme";
     [SerializeField] string SampleGemmePath = "Gemme/SampleGemme";
     [SerializeField] string GemmeName = "Red";
@@ -14,37 +15,34 @@ public class GeneratorGemme : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogError("Multiple instances of SocleGenerator detected. Destroying the new instance.");
+            Destroy(gameObject);
+        }
         LoadGemmeData();
-        CreatGemmeObject(GenerateRandomGemme(lvlTest, GemmeName));
-      
+        // CreatGemmeRandomFunction(lvlTest, GemmeName);
+
+
+    }
+    public void CreatGemmeRandomFunction(int lvlTests,string GemmeNames)
+    {
+         CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames),this.transform);
     }
     public void LoadGemmeData()
     {
         DictionaryGemme = DictionaryGenerator.DictionaryGameObjectGenerator(GemmePath);
-        // Charger tous les GameObjects à partir du dossier spécifié
-       // GameObject[] loadedObjects = Resources.LoadAll<GameObject>(GemmePath);
+       
         GameObject[] SampleObjects = Resources.LoadAll<GameObject>(SampleGemmePath);
         if (SampleObjects.Length != 0)
             SampleGemme = SampleObjects[0];
 
 
 
-        //foreach (GameObject obj in loadedObjects)
-        //{
-
-
-        //    // Vérifier si le dictionnaire ne contient pas déjà ce nom
-        //    if (!DictionaryGemme.ContainsKey(obj.name))
-        //    {
-        //        // Ajouter l'objet au dictionnaire
-        //        DictionaryGemme.Add(obj.name, obj);
-        //    }
-        //}
-        //// Afficher les noms des objets dans le dictionnaire
-        //foreach (KeyValuePair<string, GameObject> kvp in DictionaryGemme)
-        //{
-        //   // Debug.Log(kvp.Key);
-        //}
     }
 
     // Update is called once per frame
@@ -75,6 +73,8 @@ public class GeneratorGemme : MonoBehaviour
             gemmeScript.forme = GenerateForme(LVL);
             gemmeScript.GemmeColorsName = ColorName;
             gemmeScript.LVL = LVL;
+            gemmeScript.PositionX = 3;
+            gemmeScript.PositionZ = 3;
             return gemmeScript;
 
         }
@@ -138,18 +138,20 @@ public class GeneratorGemme : MonoBehaviour
     }
 
 
-    public void CreatGemmeObject(Gemme GemmeScript)
+    public GameObject? CreatGemmeObject(Gemme GemmeScript,Transform Conteneur)
     {
 
         
-        GameObject instantiatedGemme = Instantiate(SampleGemme, transform.position, transform.rotation);
+        GameObject instantiatedGemme = Instantiate(SampleGemme,  Conteneur);
         if(instantiatedGemme != null) 
         instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
-        CreateMaterialGemme(instantiatedGemme);
-        //return instantiatedGemme;
+      if( CreateMaterialGemme(instantiatedGemme))
+        return instantiatedGemme;
+      else 
+            return null;
 
     }
-    public void CreateMaterialGemme(GameObject instantiatedGemme)
+    public bool CreateMaterialGemme(GameObject instantiatedGemme)
     {
         GemmeComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemmeComponant>();
         Gemme gemmeScript = scriptGemmeComponant.GemmeScript;
@@ -157,7 +159,7 @@ public class GeneratorGemme : MonoBehaviour
         if (gemmeScript == null || !DictionaryGemme.ContainsKey(gemmeScript.GemmeColorsName))
         {
             Debug.LogError("Gemme script is null or Gemme color not found in dictionary.");
-            return;
+            return false;
         }
 
         GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemmeColorsName];
@@ -171,9 +173,11 @@ public class GeneratorGemme : MonoBehaviour
                 {
                     Vector3 position = new Vector3(i * Spacebetween, 0, j * Spacebetween);
                     Instantiate(prefabToInstantiate, position, Quaternion.identity, instantiatedGemme.transform);
+                   
                 }
             }
         }
+        return   true; 
     }
 
 

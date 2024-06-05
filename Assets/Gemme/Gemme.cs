@@ -6,7 +6,8 @@ using static EnumGeneral;
 [Serializable]
 public class Gemme 
 {
-
+    [SerializeField] public int PositionX = 0;
+    [SerializeField] public int PositionZ = 0;
     [SerializeField]
     public FormeBool forme = new(new bool[,]
    {
