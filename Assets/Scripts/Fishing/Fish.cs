@@ -23,6 +23,11 @@ namespace Fishing
             this.Amount = data.Amount;
             return true;
         }
+
+        protected override FishSOData GetData() => new()
+        {
+            Amount = this.Amount
+        };
     }
 
     /// <summary>

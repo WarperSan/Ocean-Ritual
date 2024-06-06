@@ -1,5 +1,3 @@
-using Extensions;
-using UnityEditor;
 using UnityEngine;
 
 namespace Inventory
@@ -9,76 +7,10 @@ namespace Inventory
     ///</summary>
     public class Item : MonoBehaviour
     {
-        [Header("Item")]
-        #region Namespace
+        [HideInInspector]
         public string Namespace;
 
-#if UNITY_EDITOR
-        /// <inheritdoc/>
-        private void Reset() => this.UpdateNamespace();
-
-        /// <inheritdoc/>
-        private void OnValidate() => this.UpdateNamespace();
-
-        /// <summary>
-        /// Updates the namespace of this item
-        /// </summary>
-        private void UpdateNamespace()
-        {
-            string newNamespace = GenerateNamespace(this);
-
-            if (newNamespace.IndexOf(".") == -1)
-                return;
-
-            bool wasDefined = true;
-
-            if (string.IsNullOrEmpty(this.Namespace))
-            {
-                this.Namespace = "undefined";
-                wasDefined = false;
-            }
-
-            // Skip if namespaces are the same
-            if (this.Namespace.Equals(newNamespace))
-                return;
-
-            if (Application.isBatchMode)
-                return;
-
-            bool updateName = !wasDefined || EditorUtility.DisplayDialog(
-                "Replace namespace?",
-                $"{this.name} has been modified and it's namespace changed.\nDo you want to update it?\n\n" +
-                this.Namespace + "\nV\n" + newNamespace,
-                "Update",
-                "Cancel"
-            );
-
-            // If don't update
-            if (!updateName)
-                return;
-
-            this.Namespace = newNamespace;
-        }
-
-        /// <summary>
-        /// Generates the namespace for the given item
-        /// </summary>
-        private static string GenerateNamespace(Item item)
-        {
-            string path = AssetDatabase.GetAssetPath(item);
-            path = path.Replace("Resources/", ""); // Remove Resources
-            path = path.Replace("Items/", ""); // Remove Items
-            path = path.Split(".")[0]; // Remove extension
-
-            string[] folders = path.Split("/");
-            folders[0] = Application.productName; // Application name as first
-
-            return folders.Join(".").ToLower().Replace(" ", "_");
-        }
-#endif
-        #endregion
-
-        #region Save/Load
+        #region Save
 
         /// <returns>Data to save for this item</returns>
         public ItemData Save()
@@ -92,6 +24,16 @@ namespace Inventory
             };
         }
 
+         /// <summary>Called when this item is being saved</summary>
+        protected virtual void OnSave() { }
+
+        /// <summary>Get the extra data of this item</summary>
+        protected virtual object GetExtra() => default;
+
+        #endregion
+
+        #region Load
+
         /// <summary>Loads this item with the given data</summary>
         /// <returns>Success of the load</returns>
         public bool Load(ItemData data)
@@ -103,12 +45,6 @@ namespace Inventory
             // Parse extra data
             return this.ParseJson(data.ExtraData);
         }
-
-        /// <summary>Called when this item is being saved</summary>
-        protected virtual void OnSave() { }
-
-        /// <summary>Get the extra data of this item</summary>
-        protected virtual object GetExtra() => default;
 
         /// <summary>Parse the given extra data</summary>
         /// <returns>Given extra data is valid</returns>
@@ -130,23 +66,41 @@ namespace Inventory
         /// <inheritdoc/>
         protected sealed override bool ParseJson(string json)
         {
-            T data = JsonUtility.FromJson<T>(json);
+            try
+            {
+                T data = FromJson(json);
 
-            // If data not valid, skip
-            if (!this.IsValid(data))
-                return false;
+                // If data is corrupted, skip
+                if (this.IsCorrupted(data))
+                    throw new System.ArgumentException("Given data is corrupted");
 
-            // Set data
-            return this.SetData(data);
+                // Set data
+                return this.SetData(data);
+            }
+            catch (System.Exception e)
+            {   
+                Debug.LogError($"Error while parsing extra data to '{typeof(T).Name}': {e.Message}");
+            }
+
+            return false;
         }
+
+        public static T FromJson(string json) => JsonUtility.FromJson<T>(json);
 
         #endregion
 
         #region Virtual
 
-        protected virtual bool IsValid(T data) => true;
+        /// <returns>The given data is corrupted</returns>
+        protected virtual bool IsCorrupted(T data) => false;
 
+        /// <remarks>
+        /// Try to limit the amount of data saved. If a value can be calculated, avoid saving it.
+        /// </remarks>
+        /// <returns>Data to save</returns>
         protected virtual T GetData() => default;
+        
+        /// <returns>Succeed to set the data</returns>
         protected virtual bool SetData(T data) => true;
 
         #endregion

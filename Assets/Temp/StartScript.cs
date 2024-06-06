@@ -4,6 +4,7 @@ public class StartScript : MonoBehaviour
 {
     public Inventory.Item item;
     public bool save = true;
+    public bool extraData = true;
 
     private void Start()
     {
@@ -17,16 +18,24 @@ public class StartScript : MonoBehaviour
             data.item = item.Save();
             Save.SaveManager.SaveToCache(data);
             Save.SaveManager.Save(1, true);
+            return;
         }
-        else
-        {
-            Inventory.ItemData itemData = data.item;
 
-            if (Inventory.Registry.GetLoadedItem(itemData, out Fishing.Fish fish))
+        Inventory.ItemData itemData = data.item;
+
+        if (this.extraData)
+        {
+            if (Inventory.Registry.GetExtraData(itemData, out Fishing.FishSOData fishData))
             {
-                fish.Load(itemData);
-                Debug.Log(fish.DisplayName);
+                Debug.Log(fishData.Amount);
             }
+            
+            return;
+        }
+
+        if (Inventory.Registry.GetLoadedItem(itemData, out Fishing.Fish fish))
+        {
+            Debug.Log(fish.DisplayName);
         }
     }
 }
