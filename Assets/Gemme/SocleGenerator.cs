@@ -10,7 +10,7 @@ public class SocleGenerator : MonoBehaviour
     [SerializeField] string SideName = "";
     [SerializeField] string voidSpaceName ="";
     [SerializeField] string SoclePatch = "";
-    [SerializeField] float spaceBetweenCube = 1f;
+    [SerializeField] public float spaceBetweenCube = 1f;
     [SerializeField] float SpacebetweenRectangleAndCube = 1f;
      Dictionary<string, GameObject> DictionarySocle = new();
 
@@ -59,7 +59,8 @@ public class SocleGenerator : MonoBehaviour
             for (int j = 0; j < scriptGemmeGrid.height; j++)
             {
                 Vector3 position = new Vector3(i * spaceBetweenCube, 0, j * spaceBetweenCube);
-                GameObject instance = Instantiate(voidPrefab, position, Quaternion.identity, Conteneur.transform);
+                GameObject instance = Instantiate(voidPrefab, Conteneur.transform);
+                instance.transform.position += position;
                 // Ajuster l'échelle de l'objet
                 instance.transform.localScale += new Vector3(spaceBetweenCube - 2, 0, spaceBetweenCube - 2);
             }
@@ -72,14 +73,18 @@ public class SocleGenerator : MonoBehaviour
         for (int i = 0; i <= scriptGemmeGrid.width; i++)
         {
             Vector3 position = new Vector3(i * spaceBetweenCube - spaceBetweenCube / 2, SpacebetweenRectangleAndCube, halfHeight - spaceBetweenCube / 2);
-            GameObject sideInstance = Instantiate(sidePrefab, position, Quaternion.identity, Conteneur.transform);
+            GameObject sideInstance = Instantiate(sidePrefab, Conteneur.transform);
+            sideInstance.transform.position += position;
             sideInstance.transform.localScale = new Vector3(1, 1, scriptGemmeGrid.height * spaceBetweenCube + spaceBetweenCube);
         }
 
         for (int j = 0; j <= scriptGemmeGrid.height; j++)
         {
             Vector3 position = new Vector3(halfWidth - spaceBetweenCube / 2, SpacebetweenRectangleAndCube, j * spaceBetweenCube - spaceBetweenCube / 2);
-            GameObject sideInstance = Instantiate(sidePrefab, position, Quaternion.Euler(0, 90, 0), Conteneur.transform);
+            GameObject sideInstance = Instantiate(sidePrefab,   Conteneur.transform);
+            sideInstance.transform.position += position;
+            sideInstance.transform.rotation = sideInstance.transform.rotation * Quaternion.Euler(0, 90, 0);
+
             sideInstance.transform.localScale = new Vector3(1, 1, scriptGemmeGrid.width * spaceBetweenCube + spaceBetweenCube);
         }
     }

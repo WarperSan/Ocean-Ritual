@@ -241,12 +241,11 @@ Transform:
   m_GameObject: {fileID: 133185987}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -10, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 868874165}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 949189483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &681001166
 GameObject:
@@ -297,39 +296,188 @@ MonoBehaviour:
   SideName: Coter
   voidSpaceName: CasVide
   SoclePatch: Socle
-  spaceBetweenCube: 2
+  spaceBetweenCube: 4
   SpacebetweenRectangleAndCube: 1
---- !u!1 &868874164
-GameObject:
+--- !u!1001 &864257449
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 868874165}
-  m_Layer: 0
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &868874165
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868874164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.62, y: 0, z: 9.53}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 133185988}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070270610978681787, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_Name
+      value: SampleGemme (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.LVL
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionX
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionY
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionZ
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.width
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.GemmeColorsName
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.size
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[6]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[7]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[8]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[9]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[14]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[19]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[24]
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d435cd2225bb2e74795a152fcf10ba8d, type: 3}
+--- !u!114 &890770280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1853861544}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &949189481
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +544,8 @@ MonoBehaviour:
     Quantite: 1
   GemmeList:
   - {fileID: 1571220381}
+  - {fileID: 890770280}
+  - {fileID: 1962321251}
 --- !u!4 &949189483
 Transform:
   m_ObjectHideFlags: 0
@@ -410,6 +560,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1419760889}
+  - {fileID: 133185988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &949189484
@@ -597,6 +748,7 @@ MonoBehaviour:
   GemmeName: Red
   Spacebetween: 2
   lvlTest: 7
+  Hauteurgemme: 1
 --- !u!4 &1108038895
 Transform:
   m_ObjectHideFlags: 0
@@ -755,7 +907,7 @@ Transform:
   m_GameObject: {fileID: 1419760888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.97, y: 0, z: 2.64}
+  m_LocalPosition: {x: -10, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -773,6 +925,151 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1853861544
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346770383896526803, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070270610978681787, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: m_Name
+      value: SampleGemme (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.LVL
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionY
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.PositionZ
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.GemmeColorsName
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[6]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[7]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.forme.flatForme.Array.data[8]
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d435cd2225bb2e74795a152fcf10ba8d, type: 3}
+--- !u!114 &1962321251 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 864257449}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -782,5 +1079,6 @@ SceneRoots:
   - {fileID: 949189483}
   - {fileID: 1108038895}
   - {fileID: 681001167}
-  - {fileID: 133185988}
   - {fileID: 107422225}
+  - {fileID: 1853861544}
+  - {fileID: 864257449}

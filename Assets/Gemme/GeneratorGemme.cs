@@ -12,6 +12,7 @@ public class GeneratorGemme : MonoBehaviour
     Dictionary<string,GameObject> DictionaryGemme = new();
     private GameObject SampleGemme;
     [SerializeField] int lvlTest = 3;
+    [SerializeField] int Hauteurgemme = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -151,6 +152,20 @@ public class GeneratorGemme : MonoBehaviour
             return null;
 
     }
+    public GameObject? CreatGemmeObject(Gemme GemmeScript, Transform Conteneur,int A)
+    {
+
+
+        GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
+        if (instantiatedGemme != null)
+            instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
+        if (CreateMaterialGemme(instantiatedGemme))
+
+            return instantiatedGemme;
+        else
+            return null;
+
+    }
     public bool CreateMaterialGemme(GameObject instantiatedGemme)
     {
         GemmeComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemmeComponant>();
@@ -164,20 +179,32 @@ public class GeneratorGemme : MonoBehaviour
 
         GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemmeColorsName];
         FormeBool forme = gemmeScript.forme;
+        bool[,] boolArray = forme.GetForme();
+
+        int centreX = forme.width / 2;
+        int centreY = forme.height / 2;
 
         for (int i = 0; i < forme.height; i++)
         {
             for (int j = 0; j < forme.width; j++)
             {
-                if (forme.GetForme()[i, j])
+                if (boolArray[i, j])
                 {
-                    Vector3 position = new Vector3(i * Spacebetween, 0, j * Spacebetween);
-                    Instantiate(prefabToInstantiate, position, Quaternion.identity, instantiatedGemme.transform);
-                   
+                    float Space = SocleGenerator.Instance.spaceBetweenCube;
+
+                    // Position calculée relative au parent (instantiatedGemme)
+                    Vector3 localPosition = new Vector3((i - centreY) * Space, Hauteurgemme, (j - centreX) * Space);
+                  //  Debug.Log("Local Position: " + localPosition);
+
+                    // Instanciation avec la position relative et le parent
+                    GameObject GemmeCube = Instantiate(prefabToInstantiate, instantiatedGemme.transform);
+                    GemmeCube.transform.localPosition = localPosition; // Utilisez localPosition pour placer l'objet correctement par rapport au parent
+                    GemmeCube.transform.localScale += new Vector3(Space - 2, 0, Space - 2);
+                 //   Debug.Log("World Position: " + GemmeCube.transform.position);
                 }
             }
         }
-        return   true; 
+        return true;
     }
 
 

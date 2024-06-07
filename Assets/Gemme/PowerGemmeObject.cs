@@ -20,7 +20,7 @@ public class PowerGemmeObject : MonoBehaviour
         GridGemme = GetComponent<GemmeGrid>();
         GridGemme.InitializeTableau();
         ResetLists();
-       // SocleGenerator.Instance.GenerateSocle(gameObject, SocleConteneur);
+        SocleGenerator.Instance.GenerateSocle(gameObject, SocleConteneur);
         PlacerGemme(GemmeList);
        
      
@@ -38,7 +38,7 @@ public class PowerGemmeObject : MonoBehaviour
           
             GridGemme.PlacerObjet(Gemmes.GemmeScript.PositionX, Gemmes.GemmeScript.PositionZ, Gemmes.GemmeScript.forme.GetForme());
           GameObject theGemme =   GeneratorGemme.Instance.CreatGemmeObject(Gemmes.GemmeScript, GemmeConteneur.transform);
-            //theGemme.transform.position = new Vector3(Gemmes.GemmeScript.PositionX, 0, Gemmes.GemmeScript.PositionZ);
+            theGemme.transform.position += new Vector3(Gemmes.GemmeScript.PositionX * SocleGenerator.Instance.spaceBetweenCube, 0, Gemmes.GemmeScript.PositionZ * SocleGenerator.Instance.spaceBetweenCube);
         }
     }
 
