@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SocleGenerator : MonoBehaviour
 {
+    #region Fields and Properties
     // Singleton instance
     public static SocleGenerator Instance { get; private set; }
 
@@ -17,7 +18,7 @@ public class SocleGenerator : MonoBehaviour
 
     // Dictionary to store loaded prefabs
     Dictionary<string, GameObject> DictionarySocle = new();
-
+#endregion
     // Unity start method
     void Start()
     {

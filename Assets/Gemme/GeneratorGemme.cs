@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GeneratorGemme : MonoBehaviour
 {
+    #region Fields and Properties
     // Singleton instance
     public static GeneratorGemme Instance { get; private set; }
 
@@ -15,7 +16,7 @@ public class GeneratorGemme : MonoBehaviour
     private GameObject SampleGemme; // Sample gemme prefab
     [SerializeField] int lvlTest = 3; // Test level
     [SerializeField] int Hauteurgemme = 1; // Height of the gemme
-
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
