@@ -122,32 +122,31 @@ public class FormeBool
 
 public static class DictionaryGenerator
 {
+    #region GameObject Dictionary Generation
 
+    // Function to generate a dictionary of GameObjects from a given path
     static public Dictionary<string, GameObject> DictionaryGameObjectGenerator(string Path)
     {
+        // Create a new dictionary to store GameObjects
         Dictionary<string, GameObject> Dictionary = new Dictionary<string, GameObject>();
 
-       GameObject[]TabRessourceObject =  Resources.LoadAll<GameObject>(Path);
+        // Load all GameObjects from the specified path
+        GameObject[] TabRessourceObject = Resources.LoadAll<GameObject>(Path);
 
-
+        // Iterate through each loaded GameObject
         foreach (GameObject obj in TabRessourceObject)
         {
-
-
-            // Vérifier si le dictionnaire ne contient pas déjà ce nom
+            // Check if the dictionary does not already contain this name
             if (!Dictionary.ContainsKey(obj.name))
             {
-                // Ajouter l'objet au dictionnaire
+                // Add the GameObject to the dictionary
                 Dictionary.Add(obj.name, obj);
             }
         }
 
+        // Return the populated dictionary
         return Dictionary;
-
     }
 
-
-
-
-
+    #endregion
 }

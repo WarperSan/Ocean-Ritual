@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class GeneratorGemme : MonoBehaviour
 {
+    // Singleton instance
     public static GeneratorGemme Instance { get; private set; }
-    [SerializeField] string GemmePath = "Gemme/AllGemme";
-    [SerializeField] string SampleGemmePath = "Gemme/SampleGemme";
-    [SerializeField] string GemmeName = "Red";
-    [SerializeField] float Spacebetween = 1f;
-    Dictionary<string,GameObject> DictionaryGemme = new();
-    private GameObject SampleGemme;
-    [SerializeField] int lvlTest = 3;
-    [SerializeField] int Hauteurgemme = 1;
+
+    [SerializeField] string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
+    [SerializeField] string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
+    [SerializeField] string GemmeName = "Red"; // Default gemme name
+    [SerializeField] float Spacebetween = 1f; // Space between gemmes
+    Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gemme prefabs
+    private GameObject SampleGemme; // Sample gemme prefab
+    [SerializeField] int lvlTest = 3; // Test level
+    [SerializeField] int Hauteurgemme = 1; // Height of the gemme
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,47 +30,40 @@ public class GeneratorGemme : MonoBehaviour
         }
         LoadGemmeData();
         // CreatGemmeRandomFunction(lvlTest, GemmeName);
-
-
     }
-    public void CreatGemmeRandomFunction(int lvlTests,string GemmeNames)
-    {
-         CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames),this.transform);
-    }
+    #region Load Data
+    // Function to load gemme data from resources
     public void LoadGemmeData()
     {
         DictionaryGemme = DictionaryGenerator.DictionaryGameObjectGenerator(GemmePath);
-       
+
         GameObject[] SampleObjects = Resources.LoadAll<GameObject>(SampleGemmePath);
         if (SampleObjects.Length != 0)
             SampleGemme = SampleObjects[0];
+    }
+    #endregion
 
 
+    #region Gemme Creation
 
+    // Function to create a random gemme
+    public void CreatGemmeRandomFunction(int lvlTests, string GemmeNames)
+    {
+        CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames), this.transform);
     }
 
-    // Update is called once per frame
-    void Update()
+   
+
+    // Function to generate a random gemme
+    public Gemme? GenerateRandomGemme(int LVL, string ColorName)
     {
-
-    }
-
-
-    public Gemme? GenerateRandomGemme(int LVL,string ColorName)
-    {
-        // Charger l'objet à partir de SampleGemmePath
-       
         if (SampleGemme == null)
         {
             Debug.LogError($"Sample gemme prefab not found at path: {SampleGemmePath}");
             return null;
         }
 
-        // Instancier l'objet dans SampleGemmePath
-        
-
-        // Obtenir le composant Gemme du prefab instancié
-        Gemme gemmeScript =new Gemme();
+        Gemme gemmeScript = new Gemme();
 
         if (gemmeScript != null)
         {
@@ -77,7 +73,6 @@ public class GeneratorGemme : MonoBehaviour
             gemmeScript.PositionX = 3;
             gemmeScript.PositionZ = 3;
             return gemmeScript;
-
         }
         else
         {
@@ -87,28 +82,24 @@ public class GeneratorGemme : MonoBehaviour
         return null;
     }
 
-
+    // Function to generate the shape of the gemme based on the level
     private FormeBool GenerateForme(int LVL)
     {
-        // Calculer la taille minimale du tableau (doit être un carré impair)
         int size = Mathf.CeilToInt(Mathf.Sqrt(LVL));
         if (size % 2 == 0)
         {
             size += 1;
         }
 
-        // Augmenter la taille si nécessaire pour avoir suffisamment de cases non vraies
         while ((size * size - LVL) < 4)
         {
             size += 2;
         }
 
-        // Créer et remplir le tableau
         bool[,] forme = new bool[size, size];
         int trueCount = 0;
         List<(int, int)> positions = new List<(int, int)>();
 
-        // Remplir une liste de toutes les positions possibles
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
@@ -117,7 +108,6 @@ public class GeneratorGemme : MonoBehaviour
             }
         }
 
-        // Mélanger les positions pour une sélection aléatoire
         System.Random rand = new System.Random();
         for (int i = 0; i < positions.Count; i++)
         {
@@ -127,7 +117,6 @@ public class GeneratorGemme : MonoBehaviour
             positions[randomIndex] = temp;
         }
 
-        // Assigner des true aléatoirement jusqu'à atteindre le LVL
         for (int i = 0; i < LVL; i++)
         {
             var pos = positions[i];
@@ -138,34 +127,31 @@ public class GeneratorGemme : MonoBehaviour
         return new FormeBool(forme, size, size);
     }
 
-
-    public GameObject? CreatGemmeObject(Gemme GemmeScript,Transform Conteneur)
+    // Function to create a gemme object in the scene
+    public GameObject? CreatGemmeObject(Gemme GemmeScript, Transform Conteneur)
     {
-
-        
-        GameObject instantiatedGemme = Instantiate(SampleGemme,  Conteneur);
-        if(instantiatedGemme != null) 
-        instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
-      if( CreateMaterialGemme(instantiatedGemme))
-        return instantiatedGemme;
-      else 
-            return null;
-
-    }
-    public GameObject? CreatGemmeObject(Gemme GemmeScript, Transform Conteneur,int A)
-    {
-
-
         GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
         if (instantiatedGemme != null)
             instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
         if (CreateMaterialGemme(instantiatedGemme))
-
             return instantiatedGemme;
         else
             return null;
-
     }
+
+    // Overloaded function to create a gemme object in the scene with additional parameter
+    public GameObject? CreatGemmeObject(Gemme GemmeScript, Transform Conteneur, int A)
+    {
+        GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
+        if (instantiatedGemme != null)
+            instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
+        if (CreateMaterialGemme(instantiatedGemme))
+            return instantiatedGemme;
+        else
+            return null;
+    }
+
+    // Function to create the material for the gemme object
     public bool CreateMaterialGemme(GameObject instantiatedGemme)
     {
         GemmeComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemmeComponant>();
@@ -192,20 +178,21 @@ public class GeneratorGemme : MonoBehaviour
                 {
                     float Space = SocleGenerator.Instance.spaceBetweenCube;
 
-                    // Position calculée relative au parent (instantiatedGemme)
                     Vector3 localPosition = new Vector3((i - centreY) * Space, Hauteurgemme, (j - centreX) * Space);
-                  //  Debug.Log("Local Position: " + localPosition);
-
-                    // Instanciation avec la position relative et le parent
                     GameObject GemmeCube = Instantiate(prefabToInstantiate, instantiatedGemme.transform);
-                    GemmeCube.transform.localPosition = localPosition; // Utilisez localPosition pour placer l'objet correctement par rapport au parent
+                    GemmeCube.transform.localPosition = localPosition;
                     GemmeCube.transform.localScale += new Vector3(Space - 2, 0, Space - 2);
-                 //   Debug.Log("World Position: " + GemmeCube.transform.position);
                 }
             }
         }
         return true;
     }
 
+    #endregion
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

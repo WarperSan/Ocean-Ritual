@@ -4,27 +4,43 @@ using UnityEngine;
 
 public class GemmeGrid : MonoBehaviour
 {
+    #region Fields and Properties
+
     [SerializeField] public int width;
     [SerializeField] public int height;
     [SerializeField] public bool[,] tableau;
 
+    #endregion
+
+    #region Unity Methods
+
     void Start()
     {
         //InitializeTableau();
-      //  Exemple();
+        // Exemple();
     }
 
+    #endregion
+
+    #region Initialization
+
+    // Initializes the tableau with the specified width and height
     public void InitializeTableau()
     {
         tableau = new bool[width, height];
     }
 
-    public bool PeutPlacerObjet(int x, int y, bool[,] forme)
+    #endregion
+
+    #region Object Placement
+
+    // Checks if an object can be placed at the given coordinates
+    public bool CanPlaceObject(int x, int y, bool[,] forme)
     {
         int largeurForme = forme.GetLength(0);
         int hauteurForme = forme.GetLength(1);
 
-        // Assumant que largeurForme et hauteurForme sont toujours impairs
+        // Assuming largeurForme and hauteurForme are always odd
         int centreX = largeurForme / 2;
         int centreY = hauteurForme / 2;
 
@@ -44,9 +60,10 @@ public class GemmeGrid : MonoBehaviour
         return true;
     }
 
-    public bool PlacerObjet(int x, int y, bool[,] forme)
+    // Places an object at the given coordinates if possible
+    public bool PlaceObject(int x, int y, bool[,] forme)
     {
-        if (PeutPlacerObjet(x, y, forme))
+        if (CanPlaceObject(x, y, forme))
         {
             int largeurForme = forme.GetLength(0);
             int hauteurForme = forme.GetLength(1);
@@ -71,6 +88,11 @@ public class GemmeGrid : MonoBehaviour
         return false;
     }
 
+    #endregion
+
+    #region Example Usage
+
+    // Example method to demonstrate placing an object
     void Exemple()
     {
         bool[,] formeT = new bool[,]
@@ -80,14 +102,16 @@ public class GemmeGrid : MonoBehaviour
             { false, false, true }
         };
 
-        bool placeReussi = PlacerObjet(2,1, formeT);
+        bool placeReussi = PlaceObject(2, 1, formeT);
         if (placeReussi)
         {
-            Debug.Log("Objet placé avec succès !");
+            Debug.Log("Object placed successfully!");
         }
         else
         {
-            Debug.Log("Impossible de placer l'objet.");
+            Debug.Log("Failed to place the object.");
         }
     }
+
+    #endregion
 }

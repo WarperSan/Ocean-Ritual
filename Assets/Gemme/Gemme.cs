@@ -4,10 +4,17 @@ using UnityEngine;
 using static EnumGeneral;
 
 [Serializable]
-public class Gemme 
+public class Gemme
 {
+
+    #region Data
+    // X coordinate of the gem's position
     [SerializeField] public int PositionX = 0;
+
+    // Z coordinate of the gem's position
     [SerializeField] public int PositionZ = 0;
+
+    // Shape of the gem (2D boolean array)
     [SerializeField]
     public FormeBool forme = new(new bool[,]
    {
@@ -15,11 +22,30 @@ public class Gemme
         { true, true, true },
         { false, false, true }
    }, 3, 3);
+
+    // Name of the gem's color
     public string GemmeColorsName;
+
+    // Level of the gem
     [SerializeField] public int LVL = 0;
+
+    // List of weapon types with quantities
     [SerializeField] public List<TypeQuantite<TypeArme>> typeArme;
+
+    // List of boat types with quantities
     [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat;
+
+    // List of net types with quantities
     [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet;
+    #endregion
+
+
+
+
+
+    #region Type Lists Management
+
+    // Method to get a list of types with quantities based on the generic type TEnum
     public List<TypeQuantite<TEnum>> GetListType<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeArme))
@@ -36,10 +62,10 @@ public class Gemme
         }
         else
         {
-            
-            Debug.LogError("Type non géré.");
+            Debug.LogError("Unsupported type.");
             return null;
         }
     }
+
+    #endregion
 }
-    
