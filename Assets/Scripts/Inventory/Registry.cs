@@ -5,7 +5,7 @@ namespace Inventory
 {
     public class Registry
     {
-        public static void FetchAll()
+        public static void Load()
         {
             Item[] items = Resources.LoadAll<Item>("Items");
 
@@ -13,7 +13,10 @@ namespace Inventory
                 Register(item);
 
             Debug.Log(items.Length + " items loaded.");
+            wasLoaded = true;
         }
+
+        private static bool wasLoaded = false;
 
         #region Item
 
@@ -25,6 +28,13 @@ namespace Inventory
         /// <returns>Succeed to find an item</returns>
         public static bool GetItem<T>(ItemData data, out T item) where T : Item
         {
+            // If wasn't fetch
+            if (!wasLoaded)
+            {
+                Debug.LogWarning("Consider loading the registry before trying to access it.");
+                Load();
+            }
+
             // Prevent invalid namespaces
             data.Namespace ??= "";
 
@@ -47,55 +57,29 @@ namespace Inventory
         }
 
         /// <summary>
-        /// Fetches an item and loads an instance with the given data
+        /// Creates a copy of the item defined by the given data and loads the given data
         /// </summary>
-        /// <param name="data">Data to load from</param>
-        /// <param name="item">Loaded instance</param>
-        /// <returns>Succeed to load</returns>
-        public static bool GetLoadedItem<T>(ItemData data, out T item) where T : Item
+        /// <returns>Succeed to create and load</returns>
+        public static bool CreateInstance<T>(ItemData data, out T instance) where T : Item
         {
             // If item not found, skip
-            if (!GetItem(data, out item))
+            if (!GetItem(data, out T item))
             {
-                item = default;
+                instance = default;
                 return false;
             }
 
-            item = Object.Instantiate(item);
-
-            return item.Load(data);
+            return CreateInstance(item, data, out instance);
         }
 
         /// <summary>
-        /// Fetches the item and only loads the extra data 
+        /// Creates a copy of the given instance with the given data loaded
         /// </summary>
-        /// <remarks>
-        /// This does not check if the data is corrupted 
-        /// </remarks>
-        /// <param name="data">Data to load from</param>
-        /// <param name="extraData">Loaded extra data</param>
-        /// <returns>Succeed to load</returns>
-        public static bool GetExtraData<T>(ItemData data, out T extraData)
+        /// <returns>Succeed to create and load</returns>
+        public static bool CreateInstance<T>(T original, ItemData data, out T instance) where T : Item
         {
-            // If item not found, skip
-            if (!GetItem<Item>(data, out _))
-            {
-                extraData = default;
-                return false;
-            }
-
-            try
-            {
-                extraData = Item<T>.FromJson(data.ExtraData);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"Error while parsing extra data to '{typeof(T).Name}': {e.Message}");
-                extraData = default;
-                return false;            
-            }
-
-            return true;
+            instance = Object.Instantiate(original);
+            return instance.Load(data);
         }
 
         #endregion

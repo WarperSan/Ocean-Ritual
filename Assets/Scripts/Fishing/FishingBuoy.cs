@@ -10,7 +10,7 @@ namespace Fishing
         private uint RemainingWeight = 0;
 
         [SerializeField]
-        private Inventory.Inventory BuoyInventory = new();
+        private Inventory.InventoryA BuoyInventory = new();
 
         [SerializeField]
         private int Efficiency;
@@ -88,7 +88,7 @@ namespace Fishing
         }
 
         /// <returns>Current inventory of the buoy</returns>
-        public Inventory.Inventory GetInventory() => this.BuoyInventory;
+        public Inventory.InventoryA GetInventory() => this.BuoyInventory;
 
         #endregion
     }

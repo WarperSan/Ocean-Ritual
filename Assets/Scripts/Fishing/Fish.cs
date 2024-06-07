@@ -20,14 +20,22 @@ namespace Fishing
 
         protected override bool SetData(FishSOData data) 
         {
+            data ??= new FishSOData();
+
             this.Amount = data.Amount;
             return true;
         }
 
-        protected override FishSOData GetData() => new()
+        public override FishSOData GetData() 
         {
-            Amount = this.Amount
-        };
+            if (this.Amount == 0)
+                return null;
+
+            return new()
+            {
+                Amount = this.Amount
+            };
+        }
     }
 
     /// <summary>
@@ -44,7 +52,7 @@ namespace Fishing
     }
 
     [System.Serializable]
-    public struct FishSOData
+    public class FishSOData : Inventory.ItemData
     {
         public uint Amount;
     }

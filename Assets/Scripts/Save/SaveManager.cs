@@ -49,7 +49,7 @@ namespace Save
             // Check for overwrite
             if (!overwrite && File.Exists(path))
             {
-                Debug.LogWarning($"A file already exists at '{path}'.");
+                Debug.LogError($"A file already exists at '{path}'.");
                 return false;
             }
 
@@ -72,7 +72,7 @@ namespace Save
             // Check if file exists
             if (!File.Exists(path))
             {
-                Debug.LogWarning($"No save file is stored at '{path}'.");
+                Debug.LogError($"No save file is stored at '{path}'.");
                 return false;
             }
 
@@ -87,7 +87,7 @@ namespace Save
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning($"Error while loading '{path}': " + e.Message);
+                Debug.LogError($"Error while loading '{path}': " + e.Message);
             }
 
             return false;

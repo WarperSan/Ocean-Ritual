@@ -2,35 +2,14 @@ using UnityEngine;
 
 namespace Inventory
 {
+#nullable enable
     /// <summary>
     /// Class that defines an item in the database
     ///</summary>
     public class Item : MonoBehaviour
     {
         [HideInInspector]
-        public string Namespace;
-
-        #region Save
-
-        /// <returns>Data to save for this item</returns>
-        public ItemData Save()
-        {
-            this.OnSave();
-
-            return new()
-            {
-                Namespace = this.Namespace,
-                ExtraData = JsonUtility.ToJson(this.GetExtra())
-            };
-        }
-
-         /// <summary>Called when this item is being saved</summary>
-        protected virtual void OnSave() { }
-
-        /// <summary>Get the extra data of this item</summary>
-        protected virtual object GetExtra() => default;
-
-        #endregion
+        public string Namespace = "";
 
         #region Load
 
@@ -42,13 +21,35 @@ namespace Inventory
             if (this.Namespace != data.Namespace)
                 return false;
 
-            // Parse extra data
-            return this.ParseJson(data.ExtraData);
+            // If data is corrupted, skip
+            if (this.IsCorrupted(data))
+            {
+                Debug.LogError("Given data is corrupted");
+                return false;
+            }
+
+            try
+            {
+                // Set data
+                return this.SetData(data);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error while setting data: {e.Message}");
+            }
+
+            return false;
         }
 
-        /// <summary>Parse the given extra data</summary>
-        /// <returns>Given extra data is valid</returns>
-        protected virtual bool ParseJson(string json) => true;
+        #endregion
+
+        #region Virtual
+
+        /// <returns>The given data is corrupted</returns>
+        public virtual bool IsCorrupted(object? data) => data == null;
+
+        /// <returns>Succeed to set the data</returns>
+        protected virtual bool SetData(object? data) => true;
 
         #endregion
     }
@@ -56,52 +57,54 @@ namespace Inventory
     /// <summary>
     /// Class that converts extra data from an item into a given type
     ///</summary>
-    public class Item<T> : Item
+    public class Item<T> : Item where T : ItemData
     {
         #region Item
 
         /// <inheritdoc/>
-        protected sealed override object GetExtra() => this.GetData();
+        public sealed override bool IsCorrupted(object? data) 
+            => data is T d ? this.IsCorrupted(d) : base.IsCorrupted(data);
 
         /// <inheritdoc/>
-        protected sealed override bool ParseJson(string json)
+        protected override bool SetData(object? data) 
+            => data is T d && this.SetData(d);
+
+        #endregion
+
+        #region Save
+
+        /// <returns>Data to save for this item</returns>
+        public T? Save()
         {
-            try
-            {
-                T data = FromJson(json);
+            this.OnSave();
+            T? data = this.GetData();
 
-                // If data is corrupted, skip
-                if (this.IsCorrupted(data))
-                    throw new System.ArgumentException("Given data is corrupted");
+            if (data == null)
+                return null;
 
-                // Set data
-                return this.SetData(data);
-            }
-            catch (System.Exception e)
-            {   
-                Debug.LogError($"Error while parsing extra data to '{typeof(T).Name}': {e.Message}");
-            }
+            data.Namespace = this.Namespace;
 
-            return false;
+            return data;
         }
 
-        public static T FromJson(string json) => JsonUtility.FromJson<T>(json);
+        /// <summary>Called when this item is being saved</summary>
+        protected virtual void OnSave() { }
 
         #endregion
 
         #region Virtual
 
         /// <returns>The given data is corrupted</returns>
-        protected virtual bool IsCorrupted(T data) => false;
+        protected virtual bool IsCorrupted(T? data) => false;
 
         /// <remarks>
         /// Try to limit the amount of data saved. If a value can be calculated, avoid saving it.
         /// </remarks>
         /// <returns>Data to save</returns>
-        protected virtual T GetData() => default;
-        
+        public virtual T? GetData() => null;
+
         /// <returns>Succeed to set the data</returns>
-        protected virtual bool SetData(T data) => true;
+        protected virtual bool SetData(T? data) => true;
 
         #endregion
     }

@@ -2,40 +2,33 @@ using UnityEngine;
 
 public class StartScript : MonoBehaviour
 {
-    public Inventory.Item item;
+    public Fishing.Fish fish;
     public bool save = true;
     public bool extraData = true;
 
     private void Start()
     {
-        Save.SaveManager.Load(1);
-        Inventory.Registry.FetchAll();
+        // Load all items (Should do when the game first starts)
+        Inventory.Registry.Load();
+        
+        // Tries to load the save #1, skip if failed
+        if (!Save.SaveManager.Load(1))
+            return;
 
+        // Fetch the cached data
         Save.SaveData data = Save.SaveManager.LoadFromCache();
 
-        if (this.save)
+        // Scroll through every fish in save
+        foreach ((Fishing.Fish asset, Fishing.FishSOData data) item in data.Fishes.Data)
         {
-            data.item = item.Save();
-            Save.SaveManager.SaveToCache(data);
-            Save.SaveManager.Save(1, true);
-            return;
+            Debug.Log(item.asset.DisplayName + ": " + item.data.Amount);
         }
 
-        Inventory.ItemData itemData = data.item;
+        // Add fish to the inventory
+        data.Fishes.Add(fish);
 
-        if (this.extraData)
-        {
-            if (Inventory.Registry.GetExtraData(itemData, out Fishing.FishSOData fishData))
-            {
-                Debug.Log(fishData.Amount);
-            }
-            
-            return;
-        }
-
-        if (Inventory.Registry.GetLoadedItem(itemData, out Fishing.Fish fish))
-        {
-            Debug.Log(fish.DisplayName);
-        }
+        // Save
+        Save.SaveManager.SaveToCache(data);
+        Save.SaveManager.Save(1, true);
     }
 }
