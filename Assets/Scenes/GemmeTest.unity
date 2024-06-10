@@ -487,8 +487,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949189483}
-  - component: {fileID: 949189482}
   - component: {fileID: 949189484}
+  - component: {fileID: 949189485}
   m_Layer: 0
   m_Name: powerGemObject
   m_TagString: Untagged
@@ -496,56 +496,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &949189482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 949189481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e1ab50131d0870419e663d008f6d0ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SocleConteneur: {fileID: 1419760888}
-  GemmeConteneur: {fileID: 133185987}
-  typeDeSocle: 0
-  typeArme:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  - Type: 4
-    Quantite: 1
-  typeBoat:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  - Type: 4
-    Quantite: 1
-  typeFilet:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  GemmeList:
-  - {fileID: 1571220381}
-  - {fileID: 890770280}
-  - {fileID: 1962321251}
 --- !u!4 &949189483
 Transform:
   m_ObjectHideFlags: 0
@@ -577,6 +527,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 5
   height: 5
+--- !u!114 &949189485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949189481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ad1c18d9f69a24e9892a6d62b9aec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PowerGemmeObjectScript:
+    GridGemme: {fileID: 949189484}
+    SocleConteneur: {fileID: 1419760888}
+    GemmeConteneur: {fileID: 133185987}
+    GemmeList:
+    - {fileID: 1571220381}
+    - {fileID: 890770280}
+    - {fileID: 1962321251}
 --- !u!1 &1031971058
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,6 +895,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1849981075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849981077}
+  - component: {fileID: 1849981076}
+  m_Layer: 0
+  m_Name: GunTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1849981076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849981075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f1c5e9802cd6b40ba5b9127a6d4cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeDeSocle: 0
+  typeArme:
+  - Type: 0
+    Quantite: 1
+  - Type: 1
+    Quantite: 1
+  - Type: 2
+    Quantite: 1
+  - Type: 3
+    Quantite: 1
+  - Type: 4
+    Quantite: 1
+  typeBoat:
+  - Type: 0
+    Quantite: 1
+  - Type: 1
+    Quantite: 1
+  - Type: 2
+    Quantite: 1
+  - Type: 3
+    Quantite: 1
+  - Type: 4
+    Quantite: 1
+  typeFilet:
+  - Type: 0
+    Quantite: 1
+  - Type: 1
+    Quantite: 1
+  - Type: 2
+    Quantite: 1
+  - Type: 3
+    Quantite: 1
+  SocleListe: []
+--- !u!4 &1849981077
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849981075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.06855278, y: 3.4526958, z: -7.2597446}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1853861544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1082,3 +1129,4 @@ SceneRoots:
   - {fileID: 107422225}
   - {fileID: 1853861544}
   - {fileID: 864257449}
+  - {fileID: 1849981077}

@@ -3,40 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PowerGemmeObject : MonoBehaviour
+public class PowerGemmeObject 
 {
     #region Fields and Properties
 
-    private GemmeGrid GridGemme;
-    [SerializeField] private GameObject SocleConteneur;
+    public GemmeGrid GridGemme;
+    [SerializeField] public GameObject SocleConteneur;
     [SerializeField] private GameObject GemmeConteneur;
-    [SerializeField] private TypeDeSocle typeDeSocle;
-    [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new List<TypeQuantite<TypeArme>>();
-    [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new List<TypeQuantite<TypeBateau>>();
-    [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new List<TypeQuantite<TypeFilet>>();
-    [SerializeField] private List<GemmeComponant> GemmeList = new();
+
+
+    [SerializeField] public List<GemmeComponant> GemmeList = new();
 
     #endregion
 
-    #region Unity Methods
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        GridGemme = GetComponent<GemmeGrid>();
-        GridGemme.InitializeTableau();
-        ResetLists();
-        SocleGenerator.Instance.GenerateSocle(gameObject, SocleConteneur);
-        PlacerGemme(GemmeList);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    #endregion
 
     #region Gemme Placement
 
@@ -53,37 +33,7 @@ public class PowerGemmeObject : MonoBehaviour
 
     #endregion
 
-    #region List Initialization and Reset
-
-    // Initializes the lists with default values
-    private void InitializeLists()
-    {
-        foreach (TypeArme arme in System.Enum.GetValues(typeof(TypeArme)))
-        {
-            typeArme.Add(new TypeQuantite<TypeArme>(arme, 1));
-        }
-
-        foreach (TypeBateau boat in System.Enum.GetValues(typeof(TypeBateau)))
-        {
-            typeBoat.Add(new TypeQuantite<TypeBateau>(boat, 1));
-        }
-
-        foreach (TypeFilet filet in System.Enum.GetValues(typeof(TypeFilet)))
-        {
-            typeFilet.Add(new TypeQuantite<TypeFilet>(filet, 1));
-        }
-    }
-
-    // Clears and reinitializes the lists
-    public void ResetLists()
-    {
-        typeArme.Clear();
-        typeBoat.Clear();
-        typeFilet.Clear();
-        InitializeLists();
-    }
-
-    #endregion
+   
 
     #region Gemme Management
 

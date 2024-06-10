@@ -45,7 +45,9 @@ public class Gemme
 
     #region Type Lists Management
 
+    
     // Method to get a list of types with quantities based on the generic type TEnum
+
     public List<TypeQuantite<TEnum>> GetListType<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeArme))

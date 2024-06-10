@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class GemmeComponant : MonoBehaviour
 {
- [SerializeField] public  Gemme GemmeScript = new Gemme();
+ [SerializeField] public  Gemme GemmeScript = new ();
 }
