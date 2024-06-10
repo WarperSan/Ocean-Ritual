@@ -211,6 +211,56 @@ PrefabInstance:
       propertyPath: GemmeScript.GemmeColorsName
       value: Red
       objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeBoat.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[2].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[3].Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeBoat.Array.data[0].Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[0].Quantite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[1].Quantite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[2].Quantite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[3].Quantite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeBoat.Array.data[0].Quantite
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -398,6 +448,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
         type: 3}
+      propertyPath: GemmeScript.typeBoat.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeFilet.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
       propertyPath: GemmeScript.forme.flatForme.Array.size
       value: 25
       objectReference: {fileID: 0}
@@ -461,23 +521,16 @@ PrefabInstance:
       propertyPath: GemmeScript.forme.flatForme.Array.data[24]
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeFilet.Array.data[0].Quantite
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d435cd2225bb2e74795a152fcf10ba8d, type: 3}
---- !u!114 &890770280 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1853861544}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &949189481
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,10 +596,42 @@ MonoBehaviour:
     GridGemme: {fileID: 949189484}
     SocleConteneur: {fileID: 1419760888}
     GemmeConteneur: {fileID: 133185987}
-    GemmeList:
+    GemmeComponantList:
     - {fileID: 1571220381}
-    - {fileID: 890770280}
-    - {fileID: 1962321251}
+    GemmeList:
+    - PositionX: 0
+      PositionZ: 0
+      forme:
+        width: 3
+        height: 3
+        flatForme: 000100000100010101
+      GemmeColorsName: 
+      LVL: 0
+      typeArme: []
+      typeBoat: []
+      typeFilet: []
+    - PositionX: 0
+      PositionZ: 0
+      forme:
+        width: 3
+        height: 3
+        flatForme: 000100000100010101
+      GemmeColorsName: 
+      LVL: 0
+      typeArme: []
+      typeBoat: []
+      typeFilet: []
+    - PositionX: 0
+      PositionZ: 0
+      forme:
+        width: 3
+        height: 3
+        flatForme: 000100000100010101
+      GemmeColorsName: 
+      LVL: 0
+      typeArme: []
+      typeBoat: []
+      typeFilet: []
 --- !u!1 &1031971058
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1849981077}
-  - component: {fileID: 1849981076}
+  - component: {fileID: 1849981078}
   m_Layer: 0
   m_Name: GunTest
   m_TagString: Untagged
@@ -912,51 +997,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1849981076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1849981075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f1c5e9802cd6b40ba5b9127a6d4cdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  typeDeSocle: 0
-  typeArme:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  - Type: 4
-    Quantite: 1
-  typeBoat:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  - Type: 4
-    Quantite: 1
-  typeFilet:
-  - Type: 0
-    Quantite: 1
-  - Type: 1
-    Quantite: 1
-  - Type: 2
-    Quantite: 1
-  - Type: 3
-    Quantite: 1
-  SocleListe: []
 --- !u!4 &1849981077
 Transform:
   m_ObjectHideFlags: 0
@@ -972,6 +1012,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1849981078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849981075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451b4042e227afd4bb29581e1c991f66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GBNScript:
+    Name: 
+    typeDeSocle: 0
+    typeArme:
+    - Type: 0
+      Quantite: 1
+    - Type: 1
+      Quantite: 1
+    - Type: 2
+      Quantite: 1
+    - Type: 3
+      Quantite: 1
+    - Type: 4
+      Quantite: 1
+    typeBoat:
+    - Type: 0
+      Quantite: 1
+    - Type: 1
+      Quantite: 1
+    - Type: 2
+      Quantite: 1
+    - Type: 3
+      Quantite: 1
+    - Type: 4
+      Quantite: 1
+    typeFilet:
+    - Type: 0
+      Quantite: 1
+    - Type: 1
+      Quantite: 1
+    - Type: 2
+      Quantite: 1
+    - Type: 3
+      Quantite: 1
+    SocleListe:
+    - {fileID: 949189485}
 --- !u!1001 &1853861544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1062,6 +1150,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
         type: 3}
+      propertyPath: GemmeScript.typeArme.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[0].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
       propertyPath: GemmeScript.forme.flatForme.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
@@ -1100,23 +1198,16 @@ PrefabInstance:
       propertyPath: GemmeScript.forme.flatForme.Array.data[8]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
+        type: 3}
+      propertyPath: GemmeScript.typeArme.Array.data[0].Quantite
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d435cd2225bb2e74795a152fcf10ba8d, type: 3}
---- !u!114 &1962321251 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3739362385677466863, guid: d435cd2225bb2e74795a152fcf10ba8d,
-    type: 3}
-  m_PrefabInstance: {fileID: 864257449}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 056768e072f14d2488b3ab46e8cbbbc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
