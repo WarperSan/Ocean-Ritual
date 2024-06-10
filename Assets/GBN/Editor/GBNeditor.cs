@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using static EnumGeneral;
 
-[CustomEditor(typeof(GBN))]
+[CustomEditor(typeof(ComponantGBN))]
 [CanEditMultipleObjects]
 public class GBNeditor : Editor
 {
@@ -11,19 +11,24 @@ public class GBNeditor : Editor
     private SerializedProperty typeArmeProp;
     private SerializedProperty typeBateauProp;
     private SerializedProperty typeFiletProp;
+    private SerializedProperty SocleListProp;
+    private SerializedProperty GBNProp;
+    //
     void OnEnable()
     {
-        typeDeSocleProp = serializedObject.FindProperty("typeDeSocle");
-        typeArmeProp = serializedObject.FindProperty("typeArme");
-        typeBateauProp = serializedObject.FindProperty("typeBoat");
-        typeFiletProp = serializedObject.FindProperty("typeFilet");
-       
+        GBNProp = serializedObject.FindProperty("GBNScript");
+        typeDeSocleProp = GBNProp.FindPropertyRelative("typeDeSocle");
+        typeArmeProp = GBNProp.FindPropertyRelative("typeArme");
+        typeBateauProp = GBNProp.FindPropertyRelative("typeBoat");
+        typeFiletProp = GBNProp.FindPropertyRelative("typeFilet");
+        SocleListProp = GBNProp.FindPropertyRelative("SocleListe");
     }
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-       
-     
+
+        ShowGameObjectListProperties(SocleListProp);
         EditorGUILayout.PropertyField(typeDeSocleProp);
 
         EnumGeneral.TypeDeSocle socleType = (EnumGeneral.TypeDeSocle)typeDeSocleProp.enumValueIndex;
@@ -49,12 +54,13 @@ public class GBNeditor : Editor
 
         serializedObject.ApplyModifiedProperties();
     }
+
     private void ShowGameObjectListProperties(SerializedProperty listProperty)
     {
         if (listProperty == null)
             return;
 
-        EditorGUILayout.LabelField("Gemme List", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Socle List", EditorStyles.boldLabel);
 
         if (GUILayout.Button("Add GameObject"))
         {
@@ -76,6 +82,7 @@ public class GBNeditor : Editor
             EditorGUILayout.EndHorizontal();
         }
     }
+
     private void ShowListProperties(SerializedProperty listProperty, System.Type enumType)
     {
         if (listProperty == null)
@@ -96,17 +103,10 @@ public class GBNeditor : Editor
 
         EditorGUILayout.PropertyField(listProperty, true);
     }
-    private void ShowSingleProperty(SerializedProperty property, string label)
-    {
-        if (property == null)
-            return;
 
-        EditorGUILayout.PropertyField(property, new GUIContent(label));
-    }
     private void ResetLists()
     {
-
-        var powerGemmeObject = (GBN)target;
-        powerGemmeObject.ResetLists();
+        var componentGBN = (ComponantGBN)target;
+        componentGBN.GBNScript.ResetLists();
     }
 }

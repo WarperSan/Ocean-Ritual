@@ -12,11 +12,18 @@ public class PowerGemmeObject
     [SerializeField] private GameObject GemmeConteneur;
 
 
-    [SerializeField] public List<GemmeComponant> GemmeList = new();
-
+    [SerializeField] public List<GemmeComponant> GemmeComponantList = new();
+    [SerializeField] public List<Gemme> GemmeList = new();
     #endregion
 
-
+    public void GetGemmeToScriptList()
+    {
+        GemmeList.Clear();
+        foreach (GemmeComponant item in GemmeComponantList)
+        {
+            GemmeList.Add(item.GemmeScript);
+        }
+    }
 
     #region Gemme Placement
 

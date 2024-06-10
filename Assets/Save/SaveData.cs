@@ -6,6 +6,7 @@ namespace Save
         public string VERSION;
         public Test1Data monsterA;
         public Test1Data monsterB;
+        //public GBNData gbnData;
     }
 
     [System.Serializable]

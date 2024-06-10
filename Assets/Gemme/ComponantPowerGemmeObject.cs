@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class ComponantPowerGemmeObject : MonoBehaviour
 {
-    [SerializeField] private PowerGemmeObject PowerGemmeObjectScript = new();
+    [SerializeField] public PowerGemmeObject PowerGemmeObjectScript = new();
     void Start()
     {
-        
+        Generateinitiate();
+    }
+    public void Generateinitiate()
+    {
+
         PowerGemmeObjectScript.GridGemme.InitializeTableau();
 
         SocleGenerator.Instance.GenerateSocle(gameObject, PowerGemmeObjectScript.SocleConteneur);
-        PowerGemmeObjectScript.PlacerGemme(PowerGemmeObjectScript.GemmeList);
+        PowerGemmeObjectScript.PlacerGemme(PowerGemmeObjectScript.GemmeComponantList);
     }
+  
 
 }

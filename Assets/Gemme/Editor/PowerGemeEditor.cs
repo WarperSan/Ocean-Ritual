@@ -14,7 +14,7 @@ public class PowerGemmeEditor : Editor
     {
         powerGemmeObjectProp = serializedObject.FindProperty("PowerGemmeObjectScript");
         gridScript = powerGemmeObjectProp.FindPropertyRelative("GridGemme");
-        typeGemmeProp = powerGemmeObjectProp.FindPropertyRelative("GemmeList");
+        typeGemmeProp = powerGemmeObjectProp.FindPropertyRelative("GemmeComponantList");
         SocleConteneur = powerGemmeObjectProp.FindPropertyRelative("SocleConteneur");
         GemmeConteneur = powerGemmeObjectProp.FindPropertyRelative("GemmeConteneur");
     }
