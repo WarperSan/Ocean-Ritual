@@ -5,12 +5,12 @@ using Map;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Singletons
+namespace Fishing
 {
     /// <summary>
     /// Class that manages the process of fishing
     /// </summary>
-    public class FishingManager : Singleton<FishingManager>
+    public class FishingManager : Singletons.Singleton<FishingManager>
     {
         [SerializeField]
         private FishingZoneManager ZoneManager;
@@ -40,18 +40,14 @@ namespace Singletons
         {
             // Clear all enemies
             // Collect buoy
-            // Save.SaveManager.Load(1);
+            Save.SaveManager.Load(1);
 
-            // Save.SaveData save = Save.SaveManager.LoadFromCache();
-            // save.Inventory.Add(this.Buoy.GetInventory());
-            // foreach (Inventory.Slot item in save.Inventory.Slots)
-            // {
-                
-            // }
+            Save.SaveData save = Save.SaveManager.LoadFromCache();
 
+            save.Fishes.Combine(this.Buoy.GetInventory());
 
-            // Save.SaveManager.SaveToCache(save);
-            // Save.SaveManager.Save(1, true);
+            Save.SaveManager.SaveToCache(save);
+            Save.SaveManager.Save(1, true);
 
             // Disable self
             this.gameObject.SetActive(false);

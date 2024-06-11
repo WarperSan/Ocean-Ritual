@@ -2,11 +2,10 @@ using UnityEngine;
 
 namespace Inventory
 {
-#nullable enable
     /// <summary>
     /// Class that defines an item in the database
     ///</summary>
-    public class Item : MonoBehaviour
+    public abstract class Item : MonoBehaviour
     {
         [HideInInspector]
         public string Namespace = "";
@@ -14,11 +13,11 @@ namespace Inventory
         #region Load
 
         /// <summary>Loads this item with the given data</summary>
-        /// <returns>Success of the load</returns>
+        /// <returns>Succeed to load</returns>
         public bool Load(ItemData data)
         {
             // If namespaces not matching
-            if (this.Namespace != data.Namespace)
+            if (this.Namespace.Equals(data.Namespace))
                 return false;
 
             // If data is corrupted, skip
@@ -31,80 +30,98 @@ namespace Inventory
             try
             {
                 // Set data
-                return this.SetData(data);
+                this.SetData(data);
             }
             catch (System.Exception e)
             {
                 Debug.LogError($"Error while setting data: {e.Message}");
+                return false;
             }
 
-            return false;
+            return true;
         }
 
-        #endregion
-
-        #region Virtual
-
+        /// <summary>
+        /// Checks if the given data is corrupted
+        /// </summary>
         /// <returns>The given data is corrupted</returns>
-        public virtual bool IsCorrupted(object? data) => data == null;
+        public virtual bool IsCorrupted(object data) => data == null;
 
-        /// <returns>Succeed to set the data</returns>
-        protected virtual bool SetData(object? data) => true;
+        /// <summary>
+        /// Sets the given data to this item
+        /// </summary>
+        protected virtual void SetData(object data) { }
 
         #endregion
     }
 
     /// <summary>
-    /// Class that converts extra data from an item into a given type
+    /// Class that defines items with extra data attached to it
     ///</summary>
     public class Item<T> : Item where T : ItemData
     {
-        #region Item
-
-        /// <inheritdoc/>
-        public sealed override bool IsCorrupted(object? data) 
-            => data is T d ? this.IsCorrupted(d) : base.IsCorrupted(data);
-
-        /// <inheritdoc/>
-        protected override bool SetData(object? data) 
-            => data is T d && this.SetData(d);
-
-        #endregion
-
         #region Save
 
-        /// <returns>Data to save for this item</returns>
-        public T? Save()
+        /// <summary>
+        /// Gathers the data to save for this item
+        /// </summary>
+        /// <returns>Data to save</returns>
+        public T Save()
         {
             this.OnSave();
-            T? data = this.GetData();
+            T data = this.GetData();
 
             if (data == null)
                 return null;
 
+            // Overwrite namespace
             data.Namespace = this.Namespace;
 
             return data;
         }
 
-        /// <summary>Called when this item is being saved</summary>
+        /// <summary>
+        /// Fetches the data to save for this item
+        /// </summary>
+        /// <remarks>
+        /// Try to limit the amount of data saved. If a value can be calculated, avoid saving it
+        /// </remarks>
+        /// <returns>Data to save</returns>
+        protected virtual T GetData() => null;
+
+        /// <summary>Called before this item is saved</summary>
         protected virtual void OnSave() { }
 
         #endregion
 
-        #region Virtual
+        #region Load
 
-        /// <returns>The given data is corrupted</returns>
-        protected virtual bool IsCorrupted(T? data) => false;
+        /// <inheritdoc/>
+        public sealed override bool IsCorrupted(object data)
+        {
+            // If wrong type, default
+            if (data is not T d)
+                return base.IsCorrupted(data);
 
-        /// <remarks>
-        /// Try to limit the amount of data saved. If a value can be calculated, avoid saving it.
-        /// </remarks>
-        /// <returns>Data to save</returns>
-        public virtual T? GetData() => null;
+            // Use own check
+            return this.IsCorrupted(d);
+        }
 
-        /// <returns>Succeed to set the data</returns>
-        protected virtual bool SetData(T? data) => true;
+        /// <inheritdoc/>
+        protected sealed override void SetData(object data)
+        {
+            // If wrong type, skip
+            if (data is not T d)
+                return;
+
+            this.SetData(d);
+        }
+
+        /// <inheritdoc cref="Item.IsCorrupted(object)"/>
+        protected virtual bool IsCorrupted(T data) => false;
+
+        /// <inheritdoc cref="Item.SetData(object)"/>
+        protected virtual void SetData(T data) {}
 
         #endregion
     }

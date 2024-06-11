@@ -10,7 +10,7 @@ namespace Fishing
         private uint RemainingWeight = 0;
 
         [SerializeField]
-        private Inventory.InventoryA BuoyInventory = new();
+        private Inventory.Inventory<FishData> BuoyInventory = new();
 
         [SerializeField]
         private int Efficiency;
@@ -22,7 +22,7 @@ namespace Fishing
         /// <param name="efficiency">Total weight available</param>
         public void StartNew(uint weight, int efficiency)
         {
-            this.BuoyInventory.Clear();
+            //this.BuoyInventory.Clear();
             this.RemainingWeight = weight;
             this.Efficiency = efficiency;
         }
@@ -40,7 +40,8 @@ namespace Fishing
             // Add fishes to self
             foreach (Fish fish in validFishes)
             {
-                this.BuoyInventory.Add(fish);
+                fish.Amount = 1;
+                Debug.Log(this.BuoyInventory.Add(fish));
                 this.RemainingWeight -= fish.Weight;
             }
         }
@@ -88,7 +89,7 @@ namespace Fishing
         }
 
         /// <returns>Current inventory of the buoy</returns>
-        public Inventory.InventoryA GetInventory() => this.BuoyInventory;
+        public Inventory.Inventory<FishData> GetInventory() => this.BuoyInventory;
 
         #endregion
     }

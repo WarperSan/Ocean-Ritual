@@ -5,7 +5,7 @@ namespace Fishing
     /// <summary>
     /// Object that represents the informations for a fish
     /// </summary>
-    public class Fish : Inventory.Item<FishSOData>
+    public class Fish : Inventory.Item<FishData>
     {
         [Tooltip("Name to display when this fish is caught")]
         public string DisplayName;
@@ -18,22 +18,21 @@ namespace Fishing
 
         public uint Amount;
 
-        protected override bool SetData(FishSOData data) 
+        protected override void SetData(FishData data) 
         {
-            data ??= new FishSOData();
+            data ??= new FishData();
 
             this.Amount = data.Amount;
-            return true;
         }
 
-        public override FishSOData GetData() 
+        protected override FishData GetData() 
         {
             if (this.Amount == 0)
                 return null;
 
             return new()
             {
-                Amount = this.Amount
+                Amount = this.Amount,
             };
         }
     }
@@ -52,8 +51,8 @@ namespace Fishing
     }
 
     [System.Serializable]
-    public class FishSOData : Inventory.ItemData
+    public class FishData : Inventory.ItemStackData<FishData>
     {
-        public uint Amount;
+        
     }
 }

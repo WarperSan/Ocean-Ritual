@@ -3,21 +3,11 @@ using UnityEngine;
 
 namespace Inventory
 {
+    /// <summary>
+    /// Class that links items to assets
+    /// </summary>
     public class Registry
     {
-        public static void Load()
-        {
-            Item[] items = Resources.LoadAll<Item>("Items");
-
-            foreach (Item item in items)
-                Register(item);
-
-            Debug.Log(items.Length + " items loaded.");
-            wasLoaded = true;
-        }
-
-        private static bool wasLoaded = false;
-
         #region Item
 
         /// <summary>
@@ -73,7 +63,7 @@ namespace Inventory
         }
 
         /// <summary>
-        /// Creates a copy of the given instance with the given data loaded
+        /// Creates a copy of the given instance and loads it with the given data
         /// </summary>
         /// <returns>Succeed to create and load</returns>
         public static bool CreateInstance<T>(T original, ItemData data, out T instance) where T : Item
@@ -96,6 +86,13 @@ namespace Inventory
         {
             string key = (item.Namespace ?? "").Trim();
 
+#if UNITY_EDITOR
+            if (!key.Equals(item.Namespace))
+            {
+                Debug.LogWarning($"A namespace was changed: '{item.Namespace}' => '{key}'.");          
+            }
+#endif
+
             // If invalid namespace
             if (key.Length == 0)
             {
@@ -113,6 +110,26 @@ namespace Inventory
             registeredItems.Add(key, item);
             Debug.Log($"Registered '{item.name}' with '{key}'.");
             return true;
+        }
+
+        #endregion
+    
+        #region Load
+
+        private static bool wasLoaded = false;
+
+        /// <summary>
+        /// Loads all the items in the folder 'Items'
+        /// </summary>
+        public static void Load()
+        {
+            Item[] items = Resources.LoadAll<Item>("Items");
+
+            foreach (Item item in items)
+                Register(item);
+
+            Debug.Log(items.Length + " items loaded.");
+            wasLoaded = true;
         }
 
         #endregion

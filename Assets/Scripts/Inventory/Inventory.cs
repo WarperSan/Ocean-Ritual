@@ -1,105 +1,196 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Inventory
 {
     [System.Serializable]
-    public class InventoryA
+    public class Inventory<U> : ISerializationCallbackReceiver, IEnumerable<U> where U : ItemData
     {
-        public List<Slot> Slots = new();
+        #region Items
 
-        public void Clear() => this.Slots.Clear();
+        [SerializeField, HideInInspector]
+        private List<U> Items = new();
 
-        public void Add(InventoryA inventory)
-        {
-            foreach (Slot item in inventory.Slots)
-                this.Add(item.ItemID, item.Quantity);
-        }
-        public void Add(object item, uint quantity = 1) => this.Add(item.GetHashCode(), quantity);
-        private void Add(int itemId, uint quantity)
-        {
-            bool wasAdded = false;
-
-            // Check every slots
-            for (int i = 0; i < this.Slots.Count; i++)
-            {
-                Slot slot = this.Slots[i];
-
-                // If slot not item, skip
-                if (slot.ItemID != itemId)
-                    continue;
-
-                // Increase quantity
-                slot.Quantity += quantity;
-                this.Slots[i] = slot;
-
-                wasAdded = true;
-            }
-
-            // If already added, skip
-            if (wasAdded)
-                return;
-
-            this.Slots.Add(new Slot()
-            {
-                ItemID = itemId,
-                Quantity = quantity
-            });
-        }
-    }
-
-    [System.Serializable]
-    public struct Slot
-    {
-        public int ItemID;
-        public uint Quantity;
-    }
-
-    [System.Serializable]
-    public class Inventory<T, U> : ISerializationCallbackReceiver where T : Item<U> where U : ItemData
-    {
-        [System.NonSerialized]
-        public List<(T asset, U data)> Data = new();
-
-        #region Add
-
-        public void Add(T item) 
-        {
-            this.Data.Add((item, item.Save()));
-        }
+        public int Count => this.Items.Count;
 
         #endregion
 
         #region ISerializationCallbackReceiver
 
-        [SerializeField, HideInInspector]
-        private U[] Items;
+        /// <inheritdoc/>
+        public void OnBeforeSerialize() { /* NO CHECK TO DO HERE */ }
 
         /// <inheritdoc/>
-        public void OnBeforeSerialize() 
+        public void OnAfterDeserialize()
         {
-            this.Items = new U[this.Data.Count];
+            for (int i = this.Items.Count - 1; i >= 0; i--)
+            {
+                U data = this.Items[i];
 
-            for (int i = 0; i < this.Items.Length; i++)
-                this.Items[i] = this.Data[i].data;
+                // Item should be registered
+                // Data should not be corrupted
+                if (Registry.GetItem(data, out Item<U> item) && !item.IsCorrupted(data))
+                    continue;
+
+                // Swap item to end and delete
+                (this.Items[i], this.Items[^1]) = (this.Items[^1], this.Items[i]);
+                this.Items.RemoveAt(this.Items.Count - 1);
+            }
         }
 
+        #endregion
+
+        #region IEnumarable
+
         /// <inheritdoc/>
-        public void OnAfterDeserialize() 
+        public IEnumerator<U> GetEnumerator() => this.Items.GetEnumerator();
+
+        /// <inheritdoc/>
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+        #endregion
+
+        #region Add
+
+        /// <summary>
+        /// Adds the given item to this inventory
+        /// </summary>
+        /// <returns>Succeed to add</returns>
+        public bool Add<T>(T item) where T : Item<U> => this.AddToStack(item, item.Save());
+
+        /// <summary>
+        /// Adds the given data to this inventory while checking for stacks
+        /// </summary>
+        /// <returns>Succeed to add</returns>
+        private bool AddToStack<T>(T item, U data) where T : Item<U>
         {
-            this.Data.Clear();
-            foreach (U data in this.Items)
+            // If not stackable, default
+            if (data is not ItemStackData<U> stackData)
+                return this.AddToSelf(item, data);
+
+            // If amount invalid, skip
+            if (stackData.Amount == 0)
             {
-                // If item invalid, skip
-                if (!Registry.GetItem(data, out T item))
-                    continue;
-
-                // If data corrupted, skip
-                if (item.IsCorrupted(data) || data is not U correctData)
-                    continue;
-
-                this.Data.Add((item, correctData));
+                Debug.Log($"Tried to add '{stackData.Namespace}' with no quantity.");
+                return true;
             }
+
+            foreach (U currentData in this.Items)
+            {
+                // If data is not ItemStackData, skip
+                if (currentData is not ItemStackData<U> itemStack)
+                    continue;
+
+                // If items not equals, skip
+                if (!stackData.Equals(itemStack))
+                    continue;
+
+                // Add quantity
+                itemStack.Amount += stackData.Amount;
+                return true;
+            }
+
+            // If no valid stack found, default
+            return this.AddToSelf(item, data);
+        }
+
+        /// <summary>
+        /// Adds the given data to this inventory
+        /// </summary>
+        /// <returns>Succeed to add</returns>
+        private bool AddToSelf<T>(T item, U data) where T : Item<U>
+        {
+            // If item or data invalid
+            if (item == null || data == null)
+                return false;
+
+            // If namespace not the same, skip
+            if (!item.Namespace.Equals(data.Namespace))
+            {
+                Debug.LogWarning("Tried to add an item with mismatch data.");
+                return false;
+            }
+
+            // If item not registered, skip
+            if (!Registry.GetItem<T>(data, out _))
+            {
+                Debug.LogWarning($"Tried to add '{data.Namespace}' while it is not registered.");
+                return false;
+            }
+
+            this.Items.Add(data);
+            return true;
+        }
+
+        #endregion
+
+        #region Inventory Operations
+
+        /// <summary>
+        /// Adds the content of the given inventory into this one
+        /// </summary>
+        /// <param name="quitOnFail">Exit after the first failure</param>
+        /// <returns>At least one item failed to get added</returns>
+        public bool Combine(Inventory<U> inventory, bool quitOnFail = false)
+        {
+            bool oneItemFailed = false;
+
+            foreach (U data in inventory)
+            {
+                Item<U> asset = data.GetAsset<Item<U>>();
+
+                // Add to stack
+                oneItemFailed &= !this.AddToStack(asset, data);
+
+                // Exit if fail and requested
+                if (quitOnFail && oneItemFailed)
+                    break;
+            }
+
+            return oneItemFailed;
+        }
+
+        /// <summary>
+        /// Clears all the items in this inventory
+        /// </summary>
+        public void Clear() => this.Items.Clear();
+
+        /// <summary>
+        /// Creates a new inventory with the same items
+        /// </summary>
+        /// <remarks>
+        /// The clone can be different if the original inventory has problems
+        /// </remarks>
+        /// <returns>New inventory</returns>
+        public Inventory<U> Clone()
+        {
+            Inventory<U> clone = new();
+
+            clone.Combine(this);
+
+            return clone;
+        }
+
+        /// <summary>
+        /// Checks and fixes inventory problems
+        /// </summary>
+        /// <returns>Fixed problems</returns>
+        public bool Squish()
+        {
+            Debug.LogWarning("This action can be expensive. Consider using it only when there is a problem.");
+
+            Inventory<U> clone = this.Clone();
+
+            // If nothing changed, skip
+            if (clone.Count == this.Count)
+                return false;
+
+            // Copy clone
+            this.Clear();
+            this.Combine(clone);
+
+            return true;
         }
 
         #endregion

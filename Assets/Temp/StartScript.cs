@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StartScript : MonoBehaviour
 {
-    public Fishing.Fish fish;
+    public Fishing.Fish[] fishes;
     public bool save = true;
     public bool extraData = true;
 
@@ -18,14 +18,18 @@ public class StartScript : MonoBehaviour
         // Fetch the cached data
         Save.SaveData data = Save.SaveManager.LoadFromCache();
 
+        data.Fishes.Squish();
+
         // Scroll through every fish in save
-        foreach ((Fishing.Fish asset, Fishing.FishSOData data) item in data.Fishes.Data)
+        foreach (Fishing.FishData fishData in data.Fishes)
         {
-            Debug.Log(item.asset.DisplayName + ": " + item.data.Amount);
+            Fishing.Fish fishAsset = fishData.GetAsset<Fishing.Fish>();
+            Debug.Log(fishAsset.DisplayName + ": " + fishData.Amount);
         }
 
         // Add fish to the inventory
-        data.Fishes.Add(fish);
+        foreach (Fishing.Fish fish in this.fishes)
+            data.Fishes.Add(fish);
 
         // Save
         Save.SaveManager.SaveToCache(data);
