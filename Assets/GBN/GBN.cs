@@ -8,16 +8,16 @@ using static EnumGeneral;
     [System.Serializable]
     public class GBN 
     {
-        [SerializeField] private string Name;
-        [SerializeField] private TypeDeSocle typeDeSocle;
-        [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new();
-        [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new();
-        [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new();
+        [SerializeField] public string Name;
+        [SerializeField] public TypeDeSocle typeDeSocle;
+        [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
+        [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
+        [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();
 
     [SerializeField]  public List<ComponantPowerGemmeObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
-    [SerializeField] private List<PowerGemmeObject> PowerGemmeObjectListe = new();
+    [SerializeField] public List<PowerGemmeObject> PowerGemmeObjectListe = new();
     #region List Initialization and Reset
 
     // Initializes the lists with default values
@@ -55,8 +55,10 @@ using static EnumGeneral;
             PowerGemmeObjectListe.Clear();
             foreach (ComponantPowerGemmeObject item in SocleListe)
             {
+            
                 PowerGemmeObjectListe.Add(item.PowerGemmeObjectScript);
             }
+        Debug.Log(" il y a " + PowerGemmeObjectListe.Count + " object dans la lsite");  
         }
 
         public void StatCalculator()

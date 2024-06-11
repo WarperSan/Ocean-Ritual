@@ -13,21 +13,24 @@ public class GBNeditor : Editor
     private SerializedProperty typeFiletProp;
     private SerializedProperty SocleListProp;
     private SerializedProperty GBNProp;
+    private SerializedProperty NameProp;
     //
     void OnEnable()
     {
+       
         GBNProp = serializedObject.FindProperty("GBNScript");
+        NameProp = GBNProp.FindPropertyRelative("Name");
         typeDeSocleProp = GBNProp.FindPropertyRelative("typeDeSocle");
         typeArmeProp = GBNProp.FindPropertyRelative("typeArme");
         typeBateauProp = GBNProp.FindPropertyRelative("typeBoat");
         typeFiletProp = GBNProp.FindPropertyRelative("typeFilet");
         SocleListProp = GBNProp.FindPropertyRelative("SocleListe");
     }
-
+    //
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-
+        ShowSingleProperty(NameProp, "Name");
         ShowGameObjectListProperties(SocleListProp);
         EditorGUILayout.PropertyField(typeDeSocleProp);
 
@@ -82,7 +85,13 @@ public class GBNeditor : Editor
             EditorGUILayout.EndHorizontal();
         }
     }
+    private void ShowSingleProperty(SerializedProperty property, string label)
+    {
+        if (property == null)
+            return;
 
+        EditorGUILayout.PropertyField(property, new GUIContent(label));
+    }
     private void ShowListProperties(SerializedProperty listProperty, System.Type enumType)
     {
         if (listProperty == null)

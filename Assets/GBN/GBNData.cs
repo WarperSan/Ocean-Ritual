@@ -13,11 +13,11 @@ public class ListeGBNData
 [System.Serializable]
 public class GBNData
 {
-    [SerializeField] private string Name;
-    [SerializeField] private TypeDeSocle typeDeSocle;
-    [SerializeField] private List<TypeQuantite<TypeArme>> typeArme = new();
-    [SerializeField] private List<TypeQuantite<TypeBateau>> typeBoat = new();
-    [SerializeField] private List<TypeQuantite<TypeFilet>> typeFilet = new();
+    [SerializeField] public string Name;
+    [SerializeField] public TypeDeSocle typeDeSocle;
+    [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
+    [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
+    [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();
     [SerializeField] public List<PowerGemmeObjectData> ListdataGBN;
 
 }
