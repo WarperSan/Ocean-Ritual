@@ -24,7 +24,7 @@ public class Gemme
    }, 3, 3);
 
     // Name of the gem's color
-    public string GemmeColorsName;
+    [SerializeField] public string GemmeColorsName;
 
     // Level of the gem
     [SerializeField] public int LVL = 0;

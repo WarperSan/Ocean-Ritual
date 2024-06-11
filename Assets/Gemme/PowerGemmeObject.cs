@@ -8,11 +8,11 @@ public class PowerGemmeObject
     #region Fields and Properties
 
     public GemmeGrid GridGemme;
-    [SerializeField] public GameObject SocleConteneur;
-    [SerializeField] private GameObject GemmeConteneur;
+    public GameObject SocleConteneur;
+     public GameObject GemmeConteneur;
 
 
-    [SerializeField] public List<GemmeComponant> GemmeComponantList = new();
+    public List<GemmeComponant> GemmeComponantList = new();
     [SerializeField] public List<Gemme> GemmeList = new();
     #endregion
 
