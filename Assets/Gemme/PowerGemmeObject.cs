@@ -23,6 +23,7 @@ public class PowerGemmeObject
         {
             GemmeList.Add(item.GemmeScript);
         }
+        Debug.Log(GemmeList.Count);
     }
 
     #region Gemme Placement

@@ -16,9 +16,10 @@ public class GBNSaveLoad : SaveBehaviour
 
         // Convert dataGBN to ListGBN
         ListGBN = new List<ComponantGBN>();
-        foreach (var gbnData in dataGBN.ListdataGBN)
+        foreach (GBNData gbnData in dataGBN.ListdataGBN)
         {
-            ComponantGBN componantGBN = new ComponantGBN();
+            GameObject obj = new GameObject("ComponantGBN");
+            ComponantGBN componantGBN = obj.AddComponent<ComponantGBN>();
             componantGBN.GBNScript = ConvertFromGBNData(gbnData);
             ListGBN.Add(componantGBN);
         }
@@ -26,20 +27,20 @@ public class GBNSaveLoad : SaveBehaviour
 
     protected override void OnSave(ref SaveData data)
     {
-        // Convert ListGBN to dataGBN
-        dataGBN.ListdataGBN = new List<GBNData>();
-        Debug.Log(" il y a " + ListGBN.Count + " object dans la Lastion ListGbN");
-        foreach (ComponantGBN componantGBN in ListGBN)
-        {
-            dataGBN.ListdataGBN.Add(ConvertToGBNData(componantGBN.GBNScript));
-        }
-        data.test = 3;
-        data.gbnData = dataGBN;
+        //// Convert ListGBN to dataGBN
+        //dataGBN.ListdataGBN = new List<GBNData>();
+        //Debug.Log(" il y a " + ListGBN.Count + " object dans la Lastion ListGbN");
+        //foreach (ComponantGBN componantGBN in ListGBN)
+        //{
+        //    dataGBN.ListdataGBN.Add(ConvertToGBNData(componantGBN.GBNScript));
+        //}
+        //data.test = 3;
+        //data.gbnData = dataGBN;
     }
 
     private GBNData ConvertToGBNData(GBN gbn)
     {
-        Debug.Log(gbn.Name);
+        
         var gbnData = new GBNData
         {
             Name = gbn.Name,
@@ -47,13 +48,13 @@ public class GBNSaveLoad : SaveBehaviour
             typeArme = gbn.typeArme,
             typeBoat = gbn.typeBoat,
             typeFilet = gbn.typeFilet,
-            ListdataGBN = new List<PowerGemmeObjectData>()
+            ListPowerGemmeObjectData = new List<PowerGemmeObjectData>()
         };
-        Debug.Log(gbn.PowerGemmeObjectListe.Count);
+      
         foreach (PowerGemmeObject powerGemmeObject in gbn.PowerGemmeObjectListe)
         {
-            Debug.Log("passe ici");
-            gbnData.ListdataGBN.Add(ConvertToPowerGemmeObjectData(powerGemmeObject));
+            
+            gbnData.ListPowerGemmeObjectData.Add(ConvertToPowerGemmeObjectData(powerGemmeObject));
         }
 
         return gbnData;
@@ -63,13 +64,14 @@ public class GBNSaveLoad : SaveBehaviour
     {
         var powerGemmeObjectData = new PowerGemmeObjectData
         {
-            GridGemme = powerGemmeObject.GridGemme,
-            ListdataGBN = new List<GemmeData>()
+            GridGemme = ConvertToGridData(powerGemmeObject.GridGemme),
+            ListGemmeData = new List<GemmeData>()
         };
+        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gemme");
 
         foreach (var gemme in powerGemmeObject.GemmeList)
         {
-            powerGemmeObjectData.ListdataGBN.Add(ConvertToGemmeData(gemme));
+            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gemme));
         }
 
         return powerGemmeObjectData;
@@ -89,7 +91,24 @@ public class GBNSaveLoad : SaveBehaviour
             typeFilet = gemme.typeFilet
         };
     }
-
+    private GridtData ConvertToGridData(GemmeGrid gridGemme)
+    {
+        return new GridtData
+        {
+            width = gridGemme.width,
+            height = gridGemme.height,
+            tableau = gridGemme.tableau
+        };
+    }
+    private GemmeGrid ConvertFromGridData(GridtData gridData)
+    {
+        return new GemmeGrid
+        {
+            width = gridData.width,
+            height = gridData.height,
+            tableau =gridData.tableau
+        };
+    }
     private GBN ConvertFromGBNData(GBNData gbnData)
     {
         var gbn = new GBN
@@ -101,7 +120,7 @@ public class GBNSaveLoad : SaveBehaviour
             typeFilet = gbnData.typeFilet
         };
 
-        foreach (var powerGemmeObjectData in gbnData.ListdataGBN)
+        foreach (var powerGemmeObjectData in gbnData.ListPowerGemmeObjectData)
         {
             gbn.PowerGemmeObjectListe.Add(ConvertFromPowerGemmeObjectData(powerGemmeObjectData));
         }
@@ -113,11 +132,11 @@ public class GBNSaveLoad : SaveBehaviour
     {
         var powerGemmeObject = new PowerGemmeObject
         {
-            GridGemme = powerGemmeObjectData.GridGemme,
+            GridGemme = ConvertFromGridData(powerGemmeObjectData.GridGemme),
             GemmeList = new List<Gemme>()
         };
 
-        foreach (var gemmeData in powerGemmeObjectData.ListdataGBN)
+        foreach (var gemmeData in powerGemmeObjectData.ListGemmeData)
         {
             powerGemmeObject.GemmeList.Add(ConvertFromGemmeData(gemmeData));
         }

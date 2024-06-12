@@ -18,15 +18,23 @@ public class GBNData
     [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
     [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
     [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();
-    [SerializeField] public List<PowerGemmeObjectData> ListdataGBN;
+    [SerializeField] public List<PowerGemmeObjectData> ListPowerGemmeObjectData;
 
 }
 
 [System.Serializable]
 public class PowerGemmeObjectData
 {
-    [SerializeField] public GemmeGrid GridGemme;
-    [SerializeField] public List<GemmeData> ListdataGBN;
+    [SerializeField] public GridtData GridGemme;
+    [SerializeField] public List<GemmeData> ListGemmeData;
+
+}
+[System.Serializable]
+public class GridtData
+{
+    [SerializeField] public int width;
+    [SerializeField] public int height;
+    [SerializeField] public bool[,] tableau;
 
 }
 [System.Serializable]

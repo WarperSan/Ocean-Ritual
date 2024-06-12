@@ -58,7 +58,7 @@ using static EnumGeneral;
             
                 PowerGemmeObjectListe.Add(item.PowerGemmeObjectScript);
             }
-        Debug.Log(" il y a " + PowerGemmeObjectListe.Count + " object dans la lsite");  
+        
         }
 
         public void StatCalculator()

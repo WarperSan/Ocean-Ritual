@@ -7,6 +7,7 @@ public class ComponantPowerGemmeObject : MonoBehaviour
     [SerializeField] public PowerGemmeObject PowerGemmeObjectScript = new();
     void Start()
     {
+        PowerGemmeObjectScript.GetGemmeToScriptList();
         Generateinitiate();
     }
     public void Generateinitiate()
