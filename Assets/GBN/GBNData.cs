@@ -14,7 +14,7 @@ public class ListeGBNData
 public class GBNData
 {
     [SerializeField] public string Name;
-    [SerializeField] public TypeDeSocle typeDeSocle;
+    [SerializeField] public TypeDeSocle typeOfSocle;
     [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
     [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
     [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();

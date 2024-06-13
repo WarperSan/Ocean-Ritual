@@ -20,7 +20,7 @@ public class GBNeditor : Editor
        
         GBNProp = serializedObject.FindProperty("GBNScript");
         NameProp = GBNProp.FindPropertyRelative("Name");
-        typeDeSocleProp = GBNProp.FindPropertyRelative("typeDeSocle");
+        typeDeSocleProp = GBNProp.FindPropertyRelative("typeSocle");
         typeArmeProp = GBNProp.FindPropertyRelative("typeArme");
         typeBateauProp = GBNProp.FindPropertyRelative("typeBoat");
         typeFiletProp = GBNProp.FindPropertyRelative("typeFilet");

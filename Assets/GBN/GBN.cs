@@ -9,7 +9,7 @@ using static EnumGeneral;
     public class GBN 
     {
         [SerializeField] public string Name;
-        [SerializeField] public TypeDeSocle typeDeSocle;
+        [SerializeField] public TypeDeSocle typeSocle;
         [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
         [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
         [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();
@@ -21,6 +21,9 @@ using static EnumGeneral;
     #region List Initialization and Reset
 
     // Initializes the lists with default values
+    /// <summary>
+    /// Initiate the list
+    /// </summary>
     private void InitializeLists()
         {
             foreach (TypeArme arme in System.Enum.GetValues(typeof(TypeArme)))
@@ -38,7 +41,9 @@ using static EnumGeneral;
                 typeFilet.Add(new TypeQuantite<TypeFilet>(filet, 1));
             }
         }
-
+    /// <summary>
+    /// Reset the list
+    /// </summary>
         // Clears and reinitializes the lists
         public void ResetLists()
         {
@@ -50,6 +55,9 @@ using static EnumGeneral;
 
         #endregion
 
+    /// <summary>
+    /// only convert the SocleListe To PowerGemmeObjectListe for the test
+    /// </summary>
         public void GetSocleToScriptList()
         {
             PowerGemmeObjectListe.Clear();
@@ -61,7 +69,14 @@ using static EnumGeneral;
         
         }
 
-        public void StatCalculator()
+
+
+    #region Stat calculator
+
+    /// <summary>
+    ///  calculate the adding stat to the GBN
+    /// </summary>
+    public void StatCalculator()
         {
             foreach (ComponantPowerGemmeObject socle in SocleListe)
             {
@@ -69,7 +84,7 @@ using static EnumGeneral;
                 {
                     Gemme theGemmeScript = gemme.GemmeScript;
 
-                    switch (typeDeSocle)
+                    switch (typeSocle)
                     {
                         case TypeDeSocle.Arme:
                             UpdateStatsFromGemmeList<TypeArme>(theGemmeScript, typeArme);
@@ -84,6 +99,12 @@ using static EnumGeneral;
                 }
             }
         }
+    /// <summary>
+    /// add the stat form the gemme to the good list of stat
+    /// </summary>
+    /// <typeparam name="TEnum"></typeparam>
+    /// <param name="theGemmeScript"></param>
+    /// <param name="list"></param>
         private void UpdateStatsFromGemmeList<TEnum>(Gemme theGemmeScript, List<TypeQuantite<TEnum>> list)
         {
             List<TypeQuantite<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
@@ -99,4 +120,5 @@ using static EnumGeneral;
                 }
             }
         }
-    }
+    #endregion
+}

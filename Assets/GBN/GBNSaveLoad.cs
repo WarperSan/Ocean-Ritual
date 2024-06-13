@@ -9,7 +9,11 @@ public class GBNSaveLoad : SaveBehaviour
     [SerializeField] private ListeGBNData dataGBN = new();
     [SerializeField] private List<ComponantGBN> ListGBN = new();
 
-
+    #region Save and Load
+    /// <summary>
+    /// Load the data  of dataGBN
+    /// </summary>
+    /// <param name="data"></param>
     protected override void OnLoad(SaveData data)
     {
         dataGBN = data.gbnData;
@@ -25,6 +29,11 @@ public class GBNSaveLoad : SaveBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Save the data  of dataGBN
+    /// </summary>
+    /// <param name="data"></param>
     protected override void OnSave(ref SaveData data)
     {
         //// Convert ListGBN to dataGBN
@@ -38,13 +47,25 @@ public class GBNSaveLoad : SaveBehaviour
         //data.gbnData = dataGBN;
     }
 
+    #endregion
+
+
+
+
+    #region Convert To section
+    /// <summary>
+    ///  convert GBN to GBN data
+    /// </summary>
+    /// <param name="gbn"></param>
+    /// <returns></returns>
+
     private GBNData ConvertToGBNData(GBN gbn)
     {
         
         var gbnData = new GBNData
         {
             Name = gbn.Name,
-            typeDeSocle = gbn.typeDeSocle,
+            typeOfSocle = gbn.typeSocle,
             typeArme = gbn.typeArme,
             typeBoat = gbn.typeBoat,
             typeFilet = gbn.typeFilet,
@@ -59,7 +80,11 @@ public class GBNSaveLoad : SaveBehaviour
 
         return gbnData;
     }
-
+    /// <summary>
+    ///  convert PowerGemmeObject to PowerGemmeObjectData
+    /// </summary>
+    /// <param name="powerGemmeObject"></param>
+    /// <returns></returns>
     private PowerGemmeObjectData ConvertToPowerGemmeObjectData(PowerGemmeObject powerGemmeObject)
     {
         var powerGemmeObjectData = new PowerGemmeObjectData
@@ -76,7 +101,11 @@ public class GBNSaveLoad : SaveBehaviour
 
         return powerGemmeObjectData;
     }
-
+    /// <summary>
+    ///  convert gemme to gemme data
+    /// </summary>
+    /// <param name="gemme"></param>
+    /// <returns></returns>
     private GemmeData ConvertToGemmeData(Gemme gemme)
     {
         return new GemmeData
@@ -91,6 +120,11 @@ public class GBNSaveLoad : SaveBehaviour
             typeFilet = gemme.typeFilet
         };
     }
+    /// <summary>
+    ///  convert GemmeGrid to Grid data
+    /// </summary>
+    /// <param name="gemme"></param>
+    /// <returns></returns>
     private GridtData ConvertToGridData(GemmeGrid gridGemme)
     {
         return new GridtData
@@ -100,6 +134,17 @@ public class GBNSaveLoad : SaveBehaviour
             tableau = gridGemme.tableau
         };
     }
+    #endregion
+
+
+
+    #region Convert From section
+    /// <summary>
+    /// Convert GridtData to GemmeGrid
+    /// </summary>
+    /// <param name="gridData"></param>
+    /// <returns></returns>
+
     private GemmeGrid ConvertFromGridData(GridtData gridData)
     {
         return new GemmeGrid
@@ -109,12 +154,18 @@ public class GBNSaveLoad : SaveBehaviour
             tableau =gridData.tableau
         };
     }
+
+    /// <summary>
+    /// Convert GBNData to GBN
+    /// </summary>
+    /// <param name="gbnData"></param>
+    /// <returns></returns>
     private GBN ConvertFromGBNData(GBNData gbnData)
     {
         var gbn = new GBN
         {
             Name = gbnData.Name,
-            typeDeSocle = gbnData.typeDeSocle,
+            typeSocle = gbnData.typeOfSocle,
             typeArme = gbnData.typeArme,
             typeBoat = gbnData.typeBoat,
             typeFilet = gbnData.typeFilet
@@ -127,7 +178,11 @@ public class GBNSaveLoad : SaveBehaviour
 
         return gbn;
     }
-
+    /// <summary>
+    /// Convert PowerGemmeObjectData to PowerGemmeObject
+    /// </summary>
+    /// <param name="powerGemmeObjectData"></param>
+    /// <returns></returns>
     private PowerGemmeObject ConvertFromPowerGemmeObjectData(PowerGemmeObjectData powerGemmeObjectData)
     {
         var powerGemmeObject = new PowerGemmeObject
@@ -143,7 +198,11 @@ public class GBNSaveLoad : SaveBehaviour
 
         return powerGemmeObject;
     }
-
+    /// <summary>
+    /// Convert GemmeData to Gemme
+    /// </summary>
+    /// <param name="gemmeData"></param>
+    /// <returns></returns>
     private Gemme ConvertFromGemmeData(GemmeData gemmeData)
     {
         return new Gemme
@@ -158,4 +217,5 @@ public class GBNSaveLoad : SaveBehaviour
             typeFilet = gemmeData.typeFilet
         };
     }
+    #endregion
 }
