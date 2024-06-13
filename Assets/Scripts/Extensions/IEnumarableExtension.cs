@@ -1,22 +1,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using static Utils.Random;
 
 namespace Extensions
 {
     public static class IEnumarableExtension
     {
-        public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
-        {
-            // Skip if action is invalid
-            if (action == null)
-                return;
-
-            foreach (T item in items)
-                action.Invoke(item);
-        }
+        /// <summary>
+        /// Finds all the items that match the given condition
+        /// </summary>
         public static T[] Where<T>(this IEnumerable<T> items, Func<T, bool> condition)
         {
             // If condition invalid, skip
@@ -37,50 +29,27 @@ namespace Extensions
             return values.ToArray();
         }
 
-        public static IEnumerable<T> GetUniques<T, U>(this IEnumerable<U> values, Func<U, T> action)
+        /// <summary>
+        /// Finds all the unique items
+        /// </summary>
+        /// <param name="action"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <returns>All the unique items found</returns>
+        public static IEnumerable<U> GetUniques<T, U>(this IEnumerable<T> array, Func<T, U> action)
         {
             // Skip if action is invalid
             if (action == null)
                 return default;
 
-            HashSet<T> unique = new();
+            HashSet<U> unique = new();
 
-            foreach (U item in values)
+            foreach (T item in array)
                 unique.Add(action.Invoke(item));
 
             // Copy to array
-            var result = new T[unique.Count];
+            var result = new U[unique.Count];
             unique.CopyTo(result);
-
-            return result;
-        }
-
-        public static T Random<T>(this IEnumerable<T> array, out int index) 
-        {
-            int amount = array.Count();
-
-            if (amount == 0)
-            {
-                index = -1;
-                return default;
-            }
-
-            index = amount == 1 ? 0 : RandomToMax(array.Count());
-
-            return array.ElementAt(index);
-        }
- 
-        public static string Join<T>(this IEnumerable<T> array, string separator)
-        {
-            string result = "";
-            int size = array.Count();
-            for (int i = 0; i < size; i++)
-            {
-                result += array.ElementAt(i).ToString();
-
-                if (i != size - 1)
-                    result += separator;
-            }
 
             return result;
         }

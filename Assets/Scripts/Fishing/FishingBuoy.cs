@@ -22,7 +22,7 @@ namespace Fishing
         /// <param name="efficiency">Total weight available</param>
         public void StartNew(uint weight, int efficiency)
         {
-            //this.BuoyInventory.Clear();
+            this.BuoyInventory.Clear();
             this.RemainingWeight = weight;
             this.Efficiency = efficiency;
         }
@@ -41,7 +41,7 @@ namespace Fishing
             foreach (Fish fish in validFishes)
             {
                 fish.Amount = 1;
-                Debug.Log(this.BuoyInventory.Add(fish));
+                this.BuoyInventory.Add(fish);
                 this.RemainingWeight -= fish.Weight;
             }
         }
@@ -88,8 +88,8 @@ namespace Fishing
             return validFishes;
         }
 
-        /// <returns>Current inventory of the buoy</returns>
-        public Inventory.Inventory<FishData> GetInventory() => this.BuoyInventory;
+        /// <returns>Clone of the current inventory of the buoy</returns>
+        public Inventory.Inventory<FishData> GetInventory() => this.BuoyInventory.Clone();
 
         #endregion
     }

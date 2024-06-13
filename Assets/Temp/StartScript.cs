@@ -18,8 +18,6 @@ public class StartScript : MonoBehaviour
         // Fetch the cached data
         Save.SaveData data = Save.SaveManager.LoadFromCache();
 
-        data.Fishes.Squish();
-
         // Scroll through every fish in save
         foreach (Fishing.FishData fishData in data.Fishes)
         {
@@ -27,9 +25,10 @@ public class StartScript : MonoBehaviour
             Debug.Log(fishAsset.DisplayName + ": " + fishData.Amount);
         }
 
+        data.Fishes.RemoveAll(fishes[0].Namespace);
+
         // Add fish to the inventory
-        foreach (Fishing.Fish fish in this.fishes)
-            data.Fishes.Add(fish);
+        data.Fishes.Add(this.fishes);
 
         // Save
         Save.SaveManager.SaveToCache(data);

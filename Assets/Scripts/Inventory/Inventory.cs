@@ -1,9 +1,14 @@
+using Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Inventory
 {
+    /// <summary>
+    /// Class that stores a list of items and manages them
+    /// </summary>
+    /// <typeparam name="U">Type of data to store</typeparam>
     [System.Serializable]
     public class Inventory<U> : ISerializationCallbackReceiver, IEnumerable<U> where U : ItemData
     {
@@ -14,50 +19,25 @@ namespace Inventory
 
         public int Count => this.Items.Count;
 
-        #endregion
-
-        #region ISerializationCallbackReceiver
-
-        /// <inheritdoc/>
-        public void OnBeforeSerialize() { /* NO CHECK TO DO HERE */ }
-
-        /// <inheritdoc/>
-        public void OnAfterDeserialize()
-        {
-            for (int i = this.Items.Count - 1; i >= 0; i--)
-            {
-                U data = this.Items[i];
-
-                // Item should be registered
-                // Data should not be corrupted
-                if (Registry.GetItem(data, out Item<U> item) && !item.IsCorrupted(data))
-                    continue;
-
-                // Swap item to end and delete
-                (this.Items[i], this.Items[^1]) = (this.Items[^1], this.Items[i]);
-                this.Items.RemoveAt(this.Items.Count - 1);
-            }
-        }
-
-        #endregion
-
-        #region IEnumarable
-
-        /// <inheritdoc/>
-        public IEnumerator<U> GetEnumerator() => this.Items.GetEnumerator();
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        public U this[int i] => this.Items[i];
 
         #endregion
 
         #region Add
 
         /// <summary>
-        /// Adds the given item to this inventory
+        /// Adds the given items to this inventory
         /// </summary>
-        /// <returns>Succeed to add</returns>
-        public bool Add<T>(T item) where T : Item<U> => this.AddToStack(item, item.Save());
+        /// <returns>Succeed to add all the items</returns>
+        public bool Add<T>(params T[] items) where T : Item<U>
+        {
+            bool succeed = true;
+
+            foreach (T item in items)
+                succeed &= this.AddToStack(item, item.Save());
+
+            return succeed;
+        }
 
         /// <summary>
         /// Adds the given data to this inventory while checking for stacks
@@ -121,6 +101,55 @@ namespace Inventory
 
             this.Items.Add(data);
             return true;
+        }
+
+        #endregion
+
+        #region Remove
+
+        /// <summary>
+        /// Removes all the items with the given namespace
+        /// </summary>
+        public bool RemoveAll(string @namespace) => this.RemoveAll(i => i.Namespace.Equals(@namespace));
+
+        /// <summary>
+        /// Removes the first item that meets the given condition
+        /// </summary>
+        /// <returns>Removed an item</returns>
+        private bool RemoveFirst(System.Predicate<U> predicate)
+        {
+            for (int i = 0; i < this.Items.Count; i++)
+            {
+                if (!predicate.Invoke(this[i]))
+                    continue;
+
+                this.Items.Swap(i, this.Items.Count - 1);
+                this.Items.RemoveAt(this.Items.Count - 1);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes every item that meets the given condition
+        /// </summary>
+        /// <returns>Removed at least one item</returns>
+        private bool RemoveAll(System.Predicate<U> predicate)
+        {
+            int count = 0;
+
+            for (int i = 0; i < this.Items.Count; i++)
+            {
+                if (!predicate.Invoke(this[i]))
+                    continue;
+
+                count++;
+                this.Items.Swap(i, this.Items.Count - 1);
+                this.Items.RemoveAt(this.Items.Count - 1);
+            }
+
+            return count > 0;
         }
 
         #endregion
@@ -192,6 +221,42 @@ namespace Inventory
 
             return true;
         }
+
+        #endregion
+
+        #region ISerializationCallbackReceiver
+
+        /// <inheritdoc/>
+        public void OnBeforeSerialize() { /* NO CHECK TO DO HERE */ }
+
+        /// <inheritdoc/>
+        public void OnAfterDeserialize()
+        {
+            // Check for the existence of every item
+            for (int i = this.Items.Count - 1; i >= 0; i--)
+            {
+                U data = this.Items[i];
+
+                // Item should be registered
+                // Data should not be corrupted
+                if (Registry.GetItem(data, out Item<U> item) && !item.IsCorrupted(data))
+                    continue;
+
+                // Swap item to end and delete
+                this.Items.Swap(i, this.Items.Count - 1);
+                this.Items.RemoveAt(this.Items.Count - 1);
+            }
+        }
+
+        #endregion
+
+        #region IEnumarable
+
+        /// <inheritdoc/>
+        public IEnumerator<U> GetEnumerator() => this.Items.GetEnumerator();
+
+        /// <inheritdoc/>
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         #endregion
     }

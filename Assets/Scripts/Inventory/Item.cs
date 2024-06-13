@@ -7,6 +7,9 @@ namespace Inventory
     ///</summary>
     public abstract class Item : MonoBehaviour
     {
+        /// <summary>
+        /// Name used by the item to register
+        /// </summary>
         [HideInInspector]
         public string Namespace = "";
 

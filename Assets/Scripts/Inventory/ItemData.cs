@@ -8,9 +8,7 @@ namespace Inventory
     [Serializable]
     public class ItemData
     {
-        /// <summary>
-        /// Name used by the item to register
-        /// </summary>
+        /// <inheritdoc cref="Item.Namespace"/>
         public string Namespace;
 
         /// <summary>
