@@ -5,7 +5,7 @@ using static EnumGeneral;
 
 [CustomEditor(typeof(ComponantGBN))]
 [CanEditMultipleObjects]
-public class GBNeditor : Editor
+public class GBNeditor : UnityEditor.Editor
 {
     private SerializedProperty typeDeSocleProp;
     private SerializedProperty typeArmeProp;

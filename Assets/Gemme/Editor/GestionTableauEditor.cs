@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(GemmeGrid))]
-public class GestionTableauEditor : Editor
+public class GestionTableauEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {
