@@ -34,18 +34,18 @@ public class GBNeditor : Editor
         ShowGameObjectListProperties(SocleListProp);
         EditorGUILayout.PropertyField(typeDeSocleProp);
 
-        EnumGeneral.TypeDeSocle socleType = (EnumGeneral.TypeDeSocle)typeDeSocleProp.enumValueIndex;
+        EnumGeneral.TypeOfSocle socleType = (EnumGeneral.TypeOfSocle)typeDeSocleProp.enumValueIndex;
 
         switch (socleType)
         {
-            case EnumGeneral.TypeDeSocle.Arme:
-                ShowListProperties(typeArmeProp, typeof(TypeArme));
+            case EnumGeneral.TypeOfSocle.Arme:
+                ShowListProperties(typeArmeProp, typeof(TypeWeapon));
                 break;
-            case EnumGeneral.TypeDeSocle.Bateau:
-                ShowListProperties(typeBateauProp, typeof(TypeBateau));
+            case EnumGeneral.TypeOfSocle.Bateau:
+                ShowListProperties(typeBateauProp, typeof(TypeBoat));
                 break;
-            case EnumGeneral.TypeDeSocle.Filet:
-                ShowListProperties(typeFiletProp, typeof(TypeFilet));
+            case EnumGeneral.TypeOfSocle.Filet:
+                ShowListProperties(typeFiletProp, typeof(TypeNet));
                 break;
         }
 

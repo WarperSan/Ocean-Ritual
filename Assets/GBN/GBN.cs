@@ -9,10 +9,10 @@ using static EnumGeneral;
     public class GBN 
     {
         [SerializeField] public string Name;
-        [SerializeField] public TypeDeSocle typeSocle;
-        [SerializeField] public List<TypeQuantite<TypeArme>> typeArme = new();
-        [SerializeField] public List<TypeQuantite<TypeBateau>> typeBoat = new();
-        [SerializeField] public List<TypeQuantite<TypeFilet>> typeFilet = new();
+        [SerializeField] public TypeOfSocle typeSocle;
+        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme = new();
+        [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
+        [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet = new();
 
     [SerializeField]  public List<ComponantPowerGemmeObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
@@ -26,19 +26,19 @@ using static EnumGeneral;
     /// </summary>
     private void InitializeLists()
         {
-            foreach (TypeArme arme in System.Enum.GetValues(typeof(TypeArme)))
+            foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
             {
-                typeArme.Add(new TypeQuantite<TypeArme>(arme, 1));
+                typeArme.Add(new TypeQuantite<TypeWeapon>(arme, 1));
             }
 
-            foreach (TypeBateau boat in System.Enum.GetValues(typeof(TypeBateau)))
+            foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
             {
-                typeBoat.Add(new TypeQuantite<TypeBateau>(boat, 1));
+                typeBoat.Add(new TypeQuantite<TypeBoat>(boat, 1));
             }
 
-            foreach (TypeFilet filet in System.Enum.GetValues(typeof(TypeFilet)))
+            foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
             {
-                typeFilet.Add(new TypeQuantite<TypeFilet>(filet, 1));
+                typeFilet.Add(new TypeQuantite<TypeNet>(filet, 1));
             }
         }
     /// <summary>
@@ -86,14 +86,14 @@ using static EnumGeneral;
 
                     switch (typeSocle)
                     {
-                        case TypeDeSocle.Arme:
-                            UpdateStatsFromGemmeList<TypeArme>(theGemmeScript, typeArme);
+                        case TypeOfSocle.Arme:
+                            UpdateStatsFromGemmeList<TypeWeapon>(theGemmeScript, typeArme);
                             break;
-                        case TypeDeSocle.Bateau:
-                            UpdateStatsFromGemmeList<TypeBateau>(theGemmeScript, typeBoat);
+                        case TypeOfSocle.Bateau:
+                            UpdateStatsFromGemmeList<TypeBoat>(theGemmeScript, typeBoat);
                             break;
-                        case TypeDeSocle.Filet:
-                            UpdateStatsFromGemmeList<TypeFilet>(theGemmeScript, typeFilet);
+                        case TypeOfSocle.Filet:
+                            UpdateStatsFromGemmeList<TypeNet>(theGemmeScript, typeFilet);
                             break;
                     }
                 }

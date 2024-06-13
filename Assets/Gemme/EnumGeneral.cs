@@ -6,16 +6,16 @@ using UnityEngine;
 
 static public class EnumGeneral 
 {
-     // Définir un dictionnaire pour associer TypeDeSocle à une énumération spécifique
-    public static Dictionary<TypeDeSocle, Type> TypeDeSocleToEnum = new()
+     // Définir un dictionnaire pour associer TypeOfSocle à une énumération spécifique
+    public static Dictionary<TypeOfSocle, Type> TypeDeSocleToEnum = new()
     {
-        { TypeDeSocle.Arme, typeof(TypeArme) },
-        { TypeDeSocle.Bateau, typeof(TypeBateau) },
-        { TypeDeSocle.Filet, typeof(TypeFilet) }
+        { TypeOfSocle.Arme, typeof(TypeWeapon) },
+        { TypeOfSocle.Bateau, typeof(TypeBoat) },
+        { TypeOfSocle.Filet, typeof(TypeNet) }
     };
 
-    // Méthode pour obtenir l'énumération associée à un TypeDeSocle
-    public static Type GetEnumType(TypeDeSocle typeDeSocle)
+    // Méthode pour obtenir l'énumération associée à un TypeOfSocle
+    public static Type GetEnumType(TypeOfSocle typeDeSocle)
     {
         if (TypeDeSocleToEnum.ContainsKey(typeDeSocle))
         {
@@ -23,11 +23,11 @@ static public class EnumGeneral
         }
         else
         {
-            Debug.LogError($"TypeDeSocle {typeDeSocle} non géré.");
+            Debug.LogError($"TypeOfSocle {typeDeSocle} non géré.");
             return null;
         }
     }
-    public enum TypeDeSocle
+    public enum TypeOfSocle
     {
         Arme,
         Bateau,
@@ -35,7 +35,7 @@ static public class EnumGeneral
     }
 
     // Énumération pour les types d'armes
-    public enum TypeArme
+    public enum TypeWeapon
     {
         ReloadSpeed,
         attack,
@@ -45,7 +45,7 @@ static public class EnumGeneral
     }
 
     // Énumération pour les types de bateaux
-    public enum TypeBateau
+    public enum TypeBoat
     {
         Life,
         Shield,
@@ -55,7 +55,7 @@ static public class EnumGeneral
     }
 
     // Énumération pour les types de filets
-    public enum TypeFilet
+    public enum TypeNet
     {
         MoreWeight,
         NumberofFishCatch,
