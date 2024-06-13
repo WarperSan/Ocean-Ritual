@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CustomEditor(typeof(ComponantPowerGemmeObject))]
 [CanEditMultipleObjects]
-public class PowerGemmeEditor : Editor
+public class PowerGemmeEditor : UnityEditor.Editor
 {
     private SerializedProperty powerGemmeObjectProp;
     private SerializedProperty typeGemmeProp;
