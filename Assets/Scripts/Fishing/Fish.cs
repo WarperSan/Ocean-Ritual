@@ -5,7 +5,7 @@ namespace Fishing
     /// <summary>
     /// Object that represents the informations for a fish
     /// </summary>
-    public class Fish : MonoBehaviour
+    public class Fish : Inventory.Item<FishData>
     {
         [Tooltip("Name to display when this fish is caught")]
         public string DisplayName;
@@ -15,6 +15,26 @@ namespace Fishing
 
         [Tooltip("Weight of this fish")]
         public uint Weight;
+
+        public uint Amount;
+
+        protected override void SetData(FishData data) 
+        {
+            data ??= new FishData();
+
+            this.Amount = data.Amount;
+        }
+
+        protected override FishData GetData() 
+        {
+            if (this.Amount == 0)
+                return null;
+
+            return new()
+            {
+                Amount = this.Amount,
+            };
+        }
     }
 
     /// <summary>
@@ -28,5 +48,11 @@ namespace Fishing
         Epic,
         Legendary,
         Mythic
+    }
+
+    [System.Serializable]
+    public class FishData : Inventory.ItemStackData<FishData>
+    {
+        
     }
 }

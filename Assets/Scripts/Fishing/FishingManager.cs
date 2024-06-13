@@ -1,15 +1,16 @@
+using Attributes;
 using Extensions;
 using Fishing;
 using Map;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Singletons
+namespace Fishing
 {
     /// <summary>
     /// Class that manages the process of fishing
     /// </summary>
-    public class FishingManager : Singleton<FishingManager>
+    public class FishingManager : Singletons.Singleton<FishingManager>
     {
         [SerializeField]
         private FishingZoneManager ZoneManager;
@@ -39,10 +40,14 @@ namespace Singletons
         {
             // Clear all enemies
             // Collect buoy
-            List<Fish> fishes = this.Buoy.ObtainInventory();
+            Save.SaveManager.Load(1);
 
-            foreach (Fish item in fishes)
-                Debug.Log(item.DisplayName);
+            Save.SaveData save = Save.SaveManager.LoadFromCache();
+
+            save.Fishes.Combine(this.Buoy.GetInventory());
+
+            Save.SaveManager.SaveToCache(save);
+            Save.SaveManager.Save(1, true);
 
             // Disable self
             this.gameObject.SetActive(false);
@@ -60,7 +65,7 @@ namespace Singletons
         #region Territories
 
         [Header("Territories")]
-        [SerializeField, Tooltip("Determines the layers on which the territories' colliders are")]
+        [SerializeField, Layer, Tooltip("Determines the layers on which the territories' colliders are")]
         private LayerMask territoryLayer;
 
         [SerializeField, Tooltip("Determines how far from the check goes")]
@@ -77,7 +82,7 @@ namespace Singletons
             var territories = new List<Territory>();
 
             // Fetch near colliders
-            Collider[] colliders = Physics.OverlapSphere(origin, radius, layerMask);
+            Collider[] colliders = Physics.OverlapSphere(origin, radius, 1 << layerMask);
 
             if (colliders == null)
                 return territories;
@@ -85,8 +90,10 @@ namespace Singletons
             // Fetch near territories
             foreach (Collider collider in colliders)
             {
+                Territory territory = collider.GetComponentInParent<Territory>();
+
                 // If no territoryscript found, skip
-                if (!collider.TryGetComponent(out Territory territory))
+                if (territory == null)
                     continue;
 
                 territories.Add(territory);
