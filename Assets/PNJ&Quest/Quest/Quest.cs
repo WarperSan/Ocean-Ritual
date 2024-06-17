@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest : MonoBehaviour
+[System.Serializable]
+public class Quest
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int ID;
+    public Reward reward;
+    public string Name;
+    public string questGiver;
+    public string QuestConfirmer;
+    public string Description;
+    public List<Hint>? HintList;
 
-    // Update is called once per frame
-    void Update()
+    // Constructeur pour initialiser les membres de la classe Quest
+    public Quest(int id, string name, string questGiver, string description, Reward reward, List<Hint>? HintList = null, string questConfirmer = null)
     {
-        
+        ID = id;
+        Name = name;
+        this.questGiver = questGiver;
+        QuestConfirmer = questConfirmer ?? questGiver;
+        Description = description;
+        this.reward = reward;
+        this.HintList = HintList;
     }
 }
