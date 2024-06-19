@@ -31,6 +31,17 @@ public static class QuestManager
 
         Debug.Log($"Loaded {quests.Count} quests.");
     }
+    public static QuestData GetDataQuestLoadModif()
+    {
+        // Chemin du dossier Resources/Quest
+        string directoryPath = Path.Combine(Application.dataPath, "Resources", DataQuestPath);
+
+        // Charge tous les fichiers JSON dans le dossier Resources/Quest
+        TextAsset[] questFiles = Resources.LoadAll<TextAsset>(DataQuestPath);
+        Debug.Log(JsonUtility.FromJson<QuestData>(questFiles[0].text).quests[0]);
+        Debug.Log($"Quest temporaire chargé.");
+        return JsonUtility.FromJson<QuestData>(questFiles[0].text);
+    }
 
     public static void QuestToDataSave()
     {
@@ -91,9 +102,9 @@ public static class QuestManager
         }
         else
         {
-
-            Debug.LogError("Quest ID already exists: " + quest.ID  + " we generate a new ID for you");
             quest.ID = GetNextID();
+            Debug.LogError("Quest ID already exists:   we generate a new ID for you new ID:" + quest.ID);
+        
             if (!quests.ContainsKey(quest.ID))
             {
                 quests.Add(quest.ID, quest);
@@ -115,18 +126,40 @@ public static class QuestManager
             return null;
         }
     }
+    public static void ModifiQuest(Quest TheQuest)
+    {
+        if (quests.ContainsKey(TheQuest.ID))
+        {
+            if (ValidQuest(TheQuest))
+            {
+                quests[TheQuest.ID] = TheQuest;
+            }
+            else
+            {
+                Debug.Log($"The Quest is not good  ID Quest :"+TheQuest.ID);
+            }
+
+            Debug.Log($"Quest Change: {TheQuest.Name}");
+        }
+    }
     public static int GetNextID()
     {
         // Retrieve all existing IDs from the dictionary
         HashSet<int> existingIds = new HashSet<int>(quests.Keys);
 
         // Find the minimum available ID
-        int nextId = 1;  // IDs typically start from 1, adjust as needed
+        int nextId = 1; 
         while (existingIds.Contains(nextId))
         {
             nextId++;
         }
 
         return nextId;
+    }
+    public static bool ValidQuest(Quest TheQuest)
+    {
+
+
+        return true;
     }
 }

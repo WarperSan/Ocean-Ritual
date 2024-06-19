@@ -5,7 +5,7 @@ using UnityEngine;
 public class QuestGenerator : MonoBehaviour
 {
     [SerializeField] List< Quest> AddingQuests;
-    [SerializeField] List<Quest> ModifingExistantQuest;
+    [SerializeField] public List<Quest> ModifingExistantQuest;
     [SerializeField] List<ChangeID> ChangeIDQuests;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class QuestGenerator : MonoBehaviour
     public void applyModif()
     {
        QuestManager.GetDataQuestLoad();
-       // AddingQuest();
+        AddingQuest();
         ModifiQuest();
             ChangeIDQuest();
         QuestManager.QuestToDataSave();
@@ -38,6 +38,10 @@ public class QuestGenerator : MonoBehaviour
     public void ModifiQuest()
     {
 
+        foreach(Quest Quests in ModifingExistantQuest)
+        {
+            QuestManager.ModifiQuest(Quests);
+        }
     }
 
     public void ChangeIDQuest()
