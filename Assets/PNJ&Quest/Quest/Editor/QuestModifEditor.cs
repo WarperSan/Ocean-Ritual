@@ -29,11 +29,24 @@ public class QuestModifEditor : UnityEditor.Editor
         if (GUILayout.Button("Load Quest Data"))
         {
             LoadQuestData(questIDsInput);
+          
         }
-
+        GUILayout.Space(10);
         if (GUILayout.Button("Save Modified Quests"))
         {
             SaveModifiedQuests();
+          
+        }
+        GUILayout.Space(10);
+        if (GUILayout.Button("Adding New Quests"))
+        {
+            AddNewQuest();
+            
+        }
+        GUILayout.Space(10);
+        if (GUILayout.Button("NUKE QUEST DATA!"))
+        {
+            ResetDataQ();
         }
     }
 
@@ -69,7 +82,7 @@ public class QuestModifEditor : UnityEditor.Editor
                     questList.Remove(existingQuest);
                 }
                 questList.Add(questToLoad);
-                Debug.Log($"Quest with ID {questID} loaded and added to the list.");
+               // Debug.Log($"Quest with ID {questID} loaded and added to the list.");
             }
             else
             {
@@ -80,11 +93,30 @@ public class QuestModifEditor : UnityEditor.Editor
         questGenerator.ModifingExistantQuest = questList;
         EditorUtility.SetDirty(questGenerator);
     }
-
+    private void ResetDataQ()
+    {
+        QuestManager.ResetData();
+    }
     private void SaveModifiedQuests()
     {
-        questGenerator.ModifingExistantQuest = questList;
+        AssetDatabase.Refresh();
+        questGenerator.ModifiQuest();
         EditorUtility.SetDirty(questGenerator);
+        // Force Unity à rafraîchir les assets
+
+       AssetDatabase.Refresh();
+
         Debug.Log($"Modified quests saved.");
+    }
+    private void AddNewQuest()
+    {
+        AssetDatabase.Refresh();
+        questGenerator.AddingQuest();
+        EditorUtility.SetDirty(questGenerator);
+        // Force Unity à rafraîchir les assets
+
+        AssetDatabase.Refresh();
+
+        Debug.Log($"adding quests saved.");
     }
 }

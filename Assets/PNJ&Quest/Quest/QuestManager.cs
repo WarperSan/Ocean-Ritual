@@ -29,7 +29,7 @@ public static class QuestManager
             }
         }
 
-        Debug.Log($"Loaded {quests.Count} quests.");
+     //   Debug.Log($"Loaded {quests.Count} quests.");
     }
     public static QuestData GetDataQuestLoadModif()
     {
@@ -38,11 +38,40 @@ public static class QuestManager
 
         // Charge tous les fichiers JSON dans le dossier Resources/Quest
         TextAsset[] questFiles = Resources.LoadAll<TextAsset>(DataQuestPath);
-        Debug.Log(JsonUtility.FromJson<QuestData>(questFiles[0].text).quests[0]);
-        Debug.Log($"Quest temporaire chargé.");
-        return JsonUtility.FromJson<QuestData>(questFiles[0].text);
-    }
 
+        // Vérifie si des fichiers ont été trouvés
+        if (questFiles == null || questFiles.Length == 0)
+        {
+            Debug.LogWarning("No quest files found in the specified path.");
+            return null;
+        }
+
+        // Essaie de charger et de convertir le premier fichier JSON en QuestData
+        try
+        {
+            QuestData questData = JsonUtility.FromJson<QuestData>(questFiles[0].text);
+
+            // Vérifie si des quêtes ont été chargées
+            if (questData == null || questData.quests == null || questData.quests.Count == 0)
+            {
+                Debug.LogWarning("No quests found in the loaded quest data.");
+                return null;
+            }
+
+            Debug.Log($"Quest data loaded successfully. Number of quests: {questData.quests.Count}");
+            return questData;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error loading quest data: {e.Message}");
+            return null;
+        }
+    }
+    public static void ResetData()
+    {
+        quests.Clear();
+        QuestToDataSave();
+    }
     public static void QuestToDataSave()
     {
         string directoryPath = Path.Combine(Application.dataPath, "Resources", DataQuestPath);
@@ -62,7 +91,7 @@ public static class QuestManager
 
         File.WriteAllText(filePath, json);
 
-        Debug.Log($"Saved {data.quests.Count} quests to {filePath}");
+       // Debug.Log($"Saved {data.quests.Count} quests to {filePath}");
     }
 
     public static void StartQuest(int questId)

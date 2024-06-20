@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class QuestGenerator : MonoBehaviour
@@ -10,7 +11,7 @@ public class QuestGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        applyModif();
+        //applyModif();
     }
 
     // Update is called once per frame
@@ -21,11 +22,11 @@ public class QuestGenerator : MonoBehaviour
 
     public void applyModif()
     {
-       QuestManager.GetDataQuestLoad();
-        AddingQuest();
-        ModifiQuest();
-            ChangeIDQuest();
         QuestManager.QuestToDataSave();
+        AssetDatabase.Refresh();
+        QuestManager.GetDataQuestLoad();
+       
+       
     }
     public void AddingQuest()
     {
@@ -33,6 +34,8 @@ public class QuestGenerator : MonoBehaviour
         {
             QuestManager.AddQuest(quest);
         }
+        Debug.Log("pass AddingQuest");
+        applyModif();
     }
 
     public void ModifiQuest()
@@ -42,6 +45,8 @@ public class QuestGenerator : MonoBehaviour
         {
             QuestManager.ModifiQuest(Quests);
         }
+        Debug.Log("pass ModifQuest");
+        applyModif();
     }
 
     public void ChangeIDQuest()
