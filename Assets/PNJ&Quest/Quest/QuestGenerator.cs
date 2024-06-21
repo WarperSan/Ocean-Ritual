@@ -43,7 +43,7 @@ public class QuestGenerator : MonoBehaviour
 
         foreach(Quest Quests in ModifingExistantQuest)
         {
-            QuestManager.ModifiQuest(Quests);
+            QuestManager.ModifyQuest(Quests);
         }
         Debug.Log("pass ModifQuest");
         applyModif();

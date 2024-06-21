@@ -363,40 +363,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AddingQuests:
-  - ID: 2
-    reward:
-      Money: 1
-      LvlOfGemme: 1
-    Name: a
-    questGiver: anthony
-    QuestConfirmer: etienne
-    Description: test
-    HintList:
-    - HintUsed: 0
-      HintText: cherche le T
-  ModifingExistantQuest:
   - ID: 1
     reward:
-      Money: 1
-      LvlOfGemme: 1
-    Name: G
-    questGiver: anthony
-    QuestConfirmer: etienne
-    Description: test
+      Money: 2
+      LvlOfGemme: 3
+    Name: adasd
+    questGiver: moi
+    QuestConfirmer: toi
+    Description: asdasdasd
     HintList:
-    - HintUsed: 0
-      HintText: cherche le T
+    - HintUsed: 1
+      HintText: asdasd
+  ModifingExistantQuest:
   - ID: 2
     reward:
-      Money: 1
+      Money: 2
       LvlOfGemme: 1
-    Name: GH
-    questGiver: anthony
-    QuestConfirmer: etienne
-    Description: test
+    Name: adasd
+    questGiver: moi
+    QuestConfirmer: toi
+    Description: asdasdasd
     HintList:
-    - HintUsed: 0
-      HintText: cherche le T
+    - HintUsed: 1
+      HintText: asdasd
+  - ID: 1
+    reward:
+      Money: 2
+      LvlOfGemme: 3
+    Name: adasd
+    questGiver: moi
+    QuestConfirmer: toi
+    Description: asdasdasd
+    HintList:
+    - HintUsed: 1
+      HintText: asdasd
   ChangeIDQuests: []
 --- !u!4 &1530623546
 Transform:
@@ -422,6 +422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2001791687}
+  - component: {fileID: 2001791688}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -444,6 +445,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &2001791688
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001791686}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

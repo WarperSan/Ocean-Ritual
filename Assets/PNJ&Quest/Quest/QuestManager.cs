@@ -155,7 +155,7 @@ public static class QuestManager
             return null;
         }
     }
-    public static void ModifiQuest(Quest TheQuest)
+    public static void ModifyQuest(Quest TheQuest)
     {
         if (quests.ContainsKey(TheQuest.ID))
         {
