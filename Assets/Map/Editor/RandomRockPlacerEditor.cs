@@ -14,7 +14,7 @@ public class RandomRockPlacerEditor
     {
         Debug.Log("Constructeur statique appelé");
 
-        // Charger le prefab de référence
+      
         referencePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ReferencePath);
         if (referencePrefab != null)
         {
@@ -25,7 +25,7 @@ public class RandomRockPlacerEditor
             Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
         }
 
-        // Charger tous les prefabs dans le dossier "Resources/Rock"
+       
         rockPrefabs = Resources.LoadAll<GameObject>(RocksResourcesPath);
         if (rockPrefabs.Length > 0)
         {
@@ -57,18 +57,18 @@ public class RandomRockPlacerEditor
             {
             
 
-                // Sélectionner un prefab aléatoire dans le dossier "Resources/Rock"
+                
                 GameObject randomRockPrefab = rockPrefabs[Random.Range(0, rockPrefabs.Length)];
                 
 
-                // Convertir la position de la souris en position dans le monde
+                
                 Ray worldRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
                 if (Physics.Raycast(worldRay, out RaycastHit hit))
                 {
-                    // Créer une instance du prefab aléatoire et appliquer les transformations aléatoires
+                    
                     GameObject instantiatedRock = PrefabUtility.InstantiatePrefab(randomRockPrefab) as GameObject;
                     Vector3 position = hit.point;
-                    position.y += 1; // Augmentation de 1 unité sur l'axe Y
+                    position.y += 1; 
                     instantiatedRock.transform.position = position;
                     ApplyRandomTransform(instantiatedRock);
                     Undo.RegisterCreatedObjectUndo(instantiatedRock, "Create Random Rock");
