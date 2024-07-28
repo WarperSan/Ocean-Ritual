@@ -1,15 +1,40 @@
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 [InitializeOnLoad]
-public class RandomRockPlacerEditor : Editor
+public class RandomRockPlacerEditor
 {
-    private static GameObject rockPrefab;
+    private static GameObject referencePrefab;
+    private static GameObject[] rockPrefabs;
+    private const string ReferencePath = "Assets/Map/Prefab/Rocher.prefab";
+    private const string RocksResourcesPath = "Rock";
 
     static RandomRockPlacerEditor()
     {
-        // Replace "YourPrefabName" with the name of your prefab
-        rockPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Path/To/YourPrefab.prefab");
+        Debug.Log("Constructeur statique appelé");
+
+        // Charger le prefab de référence
+        referencePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ReferencePath);
+        if (referencePrefab != null)
+        {
+            Debug.Log("Prefab de référence chargé avec succès : " + referencePrefab.name);
+        }
+        else
+        {
+            Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
+        }
+
+        // Charger tous les prefabs dans le dossier "Resources/Rock"
+        rockPrefabs = Resources.LoadAll<GameObject>(RocksResourcesPath);
+        if (rockPrefabs.Length > 0)
+        {
+            Debug.Log("Prefabs de rochers chargés avec succès. Nombre de prefabs : " + rockPrefabs.Length);
+        }
+        else
+        {
+            Debug.LogError("Aucun prefab trouvé dans le dossier Resources/Rock");
+        }
 
         // Hook into the scene's drag-and-drop event
         SceneView.duringSceneGui += OnSceneGUI;
@@ -18,16 +43,40 @@ public class RandomRockPlacerEditor : Editor
     private static void OnSceneGUI(SceneView sceneView)
     {
         Event e = Event.current;
-        if ((e.type == EventType.DragPerform || e.type == EventType.DragUpdated) && DragAndDrop.objectReferences.Length > 0)
+        if (e.type == EventType.DragPerform && DragAndDrop.objectReferences.Length > 0)
         {
             // Get the current drag and drop object
             Object obj = DragAndDrop.objectReferences[0];
             GameObject go = obj as GameObject;
 
+
+         
+
             // Check if the object being dragged is the specific prefab
-            if (go != null && PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab && go == rockPrefab)
+            if (go != null && PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab && go == referencePrefab)
             {
-                ApplyRandomTransform(go);
+            
+
+                // Sélectionner un prefab aléatoire dans le dossier "Resources/Rock"
+                GameObject randomRockPrefab = rockPrefabs[Random.Range(0, rockPrefabs.Length)];
+                
+
+                // Convertir la position de la souris en position dans le monde
+                Ray worldRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+                if (Physics.Raycast(worldRay, out RaycastHit hit))
+                {
+                    // Créer une instance du prefab aléatoire et appliquer les transformations aléatoires
+                    GameObject instantiatedRock = PrefabUtility.InstantiatePrefab(randomRockPrefab) as GameObject;
+                    Vector3 position = hit.point;
+                    position.y += 1; // Augmentation de 1 unité sur l'axe Y
+                    instantiatedRock.transform.position = position;
+                    ApplyRandomTransform(instantiatedRock);
+                    Undo.RegisterCreatedObjectUndo(instantiatedRock, "Create Random Rock");
+                }
+
+                // Marquer l'événement comme utilisé
+                DragAndDrop.AcceptDrag();
+                Event.current.Use();
             }
         }
     }
