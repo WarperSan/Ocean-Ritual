@@ -1,6 +1,7 @@
 using UnityEngine;
+using ControllerModule.Controllers.Interfaces;
 
-public class InteractBlock : MonoBehaviour, Interfaces.IInteractable
+public class InteractBlock : MonoBehaviour, IInteractable
 {
     public void OnClick() 
     {

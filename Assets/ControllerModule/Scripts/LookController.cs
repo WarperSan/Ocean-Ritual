@@ -1,7 +1,7 @@
 using ExtensionsModule;
 using UnityEngine;
 
-namespace ControllerModule
+namespace ControllerModule.Controllers
 {
     public class LookController : MonoBehaviour
     {
@@ -28,7 +28,7 @@ namespace ControllerModule
 
         [Header("Object Rotations")]
         [SerializeField, Tooltip("Determines with which offset the anchor rotates")]
-        private Transform parentController = null;
+        private Transform parentController;
 
         [SerializeField, Tooltip("Root of the object to turn horizontally")]
         private Transform self;
@@ -112,7 +112,7 @@ namespace ControllerModule
                 return;
 
             Vector3 center = this.cameraAnchor?.position ?? Vector3.zero;
-            Vector3 maxAngles = this.maxAngles * Mathf.Deg2Rad;
+            Vector3 angles = this.maxAngles * Mathf.Deg2Rad;
 
             // X
             if (this.clampAxis.x == 1)
@@ -120,11 +120,11 @@ namespace ControllerModule
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(0, Mathf.Sin(maxAngles.x), Mathf.Cos(maxAngles.x))
+                    center + new Vector3(0, Mathf.Sin(angles.x), Mathf.Cos(angles.x))
                 );
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(0, Mathf.Sin(-maxAngles.x), Mathf.Cos(-maxAngles.x))
+                    center + new Vector3(0, Mathf.Sin(-angles.x), Mathf.Cos(-angles.x))
                 );
             }
 
@@ -134,11 +134,11 @@ namespace ControllerModule
                 Gizmos.color = Color.green;
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(Mathf.Sin(maxAngles.y), 0, Mathf.Cos(maxAngles.y))
+                    center + new Vector3(Mathf.Sin(angles.y), 0, Mathf.Cos(angles.y))
                 );
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(Mathf.Sin(-maxAngles.y), 0, Mathf.Cos(-maxAngles.y))
+                    center + new Vector3(Mathf.Sin(-angles.y), 0, Mathf.Cos(-angles.y))
                 );
             }
 
@@ -148,11 +148,11 @@ namespace ControllerModule
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(Mathf.Cos(maxAngles.z), Mathf.Sin(maxAngles.z), 0)
+                    center + new Vector3(Mathf.Cos(angles.z), Mathf.Sin(angles.z), 0)
                 );
                 Gizmos.DrawLine(
                     center,
-                    center + new Vector3(Mathf.Cos(-maxAngles.z), Mathf.Sin(-maxAngles.z), 0)
+                    center + new Vector3(Mathf.Cos(-angles.z), Mathf.Sin(-angles.z), 0)
                 );
             }
         }

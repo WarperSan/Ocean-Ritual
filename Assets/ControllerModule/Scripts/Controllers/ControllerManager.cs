@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ControllerModule
+namespace ControllerModule.Controllers
 {
     /// <summary>
     /// Class that manages the movement between multiple controllers

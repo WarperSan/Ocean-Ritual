@@ -1,9 +1,11 @@
 using UnityEngine;
 
-namespace Interfaces
+namespace ControllerModule.Controllers.Interfaces
 {
     public interface IInteractable
     {
+        private static readonly int layer = 1 << LayerMask.NameToLayer("Interactable");
+        
         /// <summary>
         /// Called when something interacted with this object
         /// </summary>
@@ -12,7 +14,7 @@ namespace Interfaces
         /// <summary>
         /// Tries to find a target and interacts with it
         /// </summary>
-        public static void TryInteract(Vector3 position, Vector3 direction, float? maxDistance = null)
+        public static void TryInteract(Vector3 position, Vector3 direction, float maxDistance = float.MaxValue)
         {
             if (!CanInteract(position, direction, out IInteractable interactable, maxDistance))
                 return;
@@ -24,24 +26,21 @@ namespace Interfaces
         /// Checks if the ray touches something to interact with
         /// </summary>
         /// <returns>Is there something to interact with?</returns>
-        public static bool CanInteract(Vector3 position, Vector3 direction, out IInteractable interactable, float? maxDistance = null)
+        public static bool CanInteract(Vector3 position, Vector3 direction, out IInteractable interactable, float maxDistance = float.MaxValue)
         {
-            int layer = 1 << LayerMask.NameToLayer("Interact");
+            if (Physics.Raycast(position, direction, out RaycastHit hit, maxDistance, layer))
+                return hit.collider.gameObject.TryGetComponent(out interactable);
+            
+            interactable = null;
+            return false;
 
-            if (!Physics.Raycast(position, direction, out RaycastHit hit, maxDistance ?? float.MaxValue, layer))
-            {
-                interactable = null;
-                return false;
-            }
-
-            return hit.collider.gameObject.TryGetComponent(out interactable);
         }
 
         /// <summary>
         /// Checks if the ray touches something to interact with
         /// </summary>
         /// <returns>Is there something to interact with?</returns>
-        public static bool CanInteract(Vector3 position, Vector3 direction, float? maxDistance = null)
+        public static bool CanInteract(Vector3 position, Vector3 direction, float maxDistance = float.MaxValue)
             => CanInteract(position, direction, out _, maxDistance);
 
         /// <summary>

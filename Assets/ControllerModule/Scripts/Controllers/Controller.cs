@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ControllerModule
+namespace ControllerModule.Controllers
 {
     /// <summary>
     /// Class that provides methods to use other controller independently
@@ -47,6 +47,19 @@ namespace ControllerModule
         [SerializeField]
         private LookController lookController;
 
+        /// <summary>
+        /// Point from which the player sees the world
+        /// </summary>
+        protected Transform Eyes => this.lookController?.cameraAnchor;
+        
+        private Vector3 camDirection;
+
+        /// <summary>
+        /// Called when the player requests a rotation
+        /// </summary>
+        /// <param name="direction">Direction of the rotation</param>
+        protected virtual void OnLook(Vector2 direction) => this.camDirection = direction;
+
         #endregion
 
         /// <summary>
@@ -58,21 +71,6 @@ namespace ControllerModule
         /// Called when the player presses the 'Interact' button
         /// </summary>
         protected virtual void OnInteract() => ControllerManager.BackTo();
-
-        #region Look
-
-        
-        public Transform Eyes => this.lookController?.cameraAnchor;
-
-        /// <summary>
-        /// Called when the player requests a rotation
-        /// </summary>
-        /// <param name="direction">Direction of the rotation</param>
-        protected virtual void OnLook(Vector2 direction) => this.camDirection = direction;
-
-        private Vector3 camDirection;
-
-        #endregion
 
         #region Switch
 
@@ -103,6 +101,11 @@ namespace ControllerModule
             // Call callback
             this.OnSwitchIn();
         }
+        
+        /// <summary>
+        /// Called when this controller is started to being used
+        /// </summary>
+        protected virtual void OnSwitchIn() { }
 
         /// <summary>
         /// Stops using this controller
@@ -123,11 +126,6 @@ namespace ControllerModule
             // Call callback
             this.OnSwitchOut();
         }
-
-        /// <summary>
-        /// Called when this controller is started to being used
-        /// </summary>
-        protected virtual void OnSwitchIn() { }
 
         /// <summary>
         /// Called when this controller is no longer being used

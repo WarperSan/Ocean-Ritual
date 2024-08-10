@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ControllerModule
+namespace ControllerModule.Controllers
 {
     /// <summary>
     /// Controller that manages how the player behaves
@@ -88,11 +89,11 @@ namespace ControllerModule
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
             
             // Modify the direction
+            moveDir.y = 0;
             moveDir = moveDir.normalized * speed;
-            moveDir.y = Physics.gravity.y;
 
             // Move the character controller
-            this._characterController.Move(moveDir * elapsed);
+            this._characterController.SimpleMove(moveDir);
         }
 
         #endregion
@@ -110,10 +111,11 @@ namespace ControllerModule
         }
 
         /// <inheritdoc/>
-        protected override void OnUpdate(float elapsed) => this.UpdateCursor();
-
-        /// <inheritdoc/>
-        protected override void OnFixedUpdate(float elapsed) => this.UpdateMove(this.direction, this.movementSpeed, elapsed);
+        protected override void OnUpdate(float elapsed)
+        {
+            this.UpdateCursor();
+            this.UpdateMove(this.direction, this.movementSpeed, elapsed);
+        }
 
         /// <inheritdoc/>
         protected override void OnMove(Vector2 dir) => this.direction = dir;
@@ -146,6 +148,21 @@ namespace ControllerModule
             this.SetCursor(false);
             SetCursorLock(false);
         }
+
+        #endregion
+
+        #region MonoBehaviour
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            if (this.Eyes is not null)
+            {
+                Gizmos.color = Color.magenta;;
+                Gizmos.DrawLine(this.Eyes.position, this.Eyes.position + (this.Eyes.forward * this.interactRange));
+            }
+        }
+#endif
 
         #endregion
     }

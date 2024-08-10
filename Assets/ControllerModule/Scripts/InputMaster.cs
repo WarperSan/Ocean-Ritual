@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ControllerModule
+namespace ControllerModule.Controllers
 {
     /// <summary>
     /// Class that manages the inputs of the player
