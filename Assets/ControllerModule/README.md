@@ -17,9 +17,12 @@ To add an input to the game, you will need to do multiple things.
 5. Create a new method with the correct parameters. You will also need to call your delegate inside the method
 6. Go inside `Controller`
 7. Add a new method for your input. This has the same parameters as your delegate
-8. Subscribe/Unsubscribe your method inside `Controller.Subscribe` and `Controller.Unsubscribe`.
+8. Go back to `InputMaster`
+9. Subscribe/Unsubscribe your method inside `InputMaster.Operations.+` and `InputMaster.Operations.-`
 
 This is a long process, but it allows to centralize the inputs between controllers. **If, at any step, you are confused, you can look at the other methods or ask the authors**.
+
+Of course, depending on the desired result, the process can change.
 
 ## Controllers
 The magic is managed by `InputMaster` and `ControllerManager`. They both ease the addition of new controllers.

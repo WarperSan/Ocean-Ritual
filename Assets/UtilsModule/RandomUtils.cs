@@ -40,7 +40,7 @@ namespace UtilsModule
             {
                 return new ProbabilityForLevel[]
                 {
-                new(levels.ElementAt(0), 100)
+                    new(levels.ElementAt(0), 100)
                 };
             }
 

@@ -11,14 +11,15 @@ namespace UtilsModule
         /// <summary>
         /// Unique instance of <typeparamref name="T"/>
         /// </summary>
-        public static T Instance { get; private set; }
+        public static T Instance;
 
         #region MonoBehaviour
 
         /// <inheritdoc cref="Awake" />
         private void Awake()
         {
-            if (Instance != null)
+            // Keep only one
+            if (Instance is not null)
             {
                 Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
                 Destroy(this.gameObject);
@@ -28,7 +29,10 @@ namespace UtilsModule
             Instance = this.gameObject.GetComponent<T>();
 
             if (!this.DestroyOnLoad)
+            {
+                this.transform.SetParent(null);
                 DontDestroyOnLoad(this.gameObject);
+            }
 
             this.OnAwake();
         }
@@ -40,13 +44,12 @@ namespace UtilsModule
         /// <summary>
         /// Defines if the singleton should be destroyed when loading a new scene
         /// </summary>
-        protected virtual bool DestroyOnLoad { get; } = false;
+        protected virtual bool DestroyOnLoad => false;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called
         /// </summary>
-        protected virtual void OnAwake()
-        { }
+        protected virtual void OnAwake() { }
 
         #endregion Virtual
     }

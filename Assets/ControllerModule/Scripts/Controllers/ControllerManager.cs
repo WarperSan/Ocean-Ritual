@@ -44,6 +44,7 @@ namespace ControllerModule.Controllers
             stack.Push(controller);
 
             // Set the controller to the given
+            CameraMovement.Instance.SetController(controller);
         }
 
         /// <summary>

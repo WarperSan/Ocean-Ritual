@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,9 +90,49 @@ namespace ControllerModule.Controllers
             // Modify the direction
             moveDir.y = 0;
             moveDir = moveDir.normalized * speed;
-
+            
             // Move the character controller
-            this._characterController.SimpleMove(moveDir);
+            this._characterController.Move(moveDir * elapsed);
+        }
+
+        #endregion
+
+        #region Gravity
+
+        [Header("Gravity")]
+        [SerializeField, Tooltip("Position where the player's feet are")]
+        private Transform Feet;
+
+        [SerializeField, Tooltip("Layers considered to be ground")]
+        private LayerMask GroundLayers;
+
+        [SerializeField, Tooltip("Radius of the check for the ground")]
+        private float GroundCheckRadius = 0.2f;
+
+        private Vector3 velocity;
+        private bool isGrounded;
+
+        /// <summary>
+        /// Updates the gravity of the player
+        /// </summary>
+        /// <param name="elapsed">Time passed since the last frame</param>
+        private void UpdateGravity(float elapsed)
+        {
+            if (this.Feet is null || this._characterController is null)
+                return;
+
+            this.isGrounded = Physics.CheckSphere(
+                this.Feet.position, 
+                this.GroundCheckRadius, 
+                this.GroundLayers
+            );
+            
+            if (this.isGrounded && this.velocity.y < 0)
+                this.velocity.y = 0;
+                
+            this.velocity += Physics.gravity * elapsed;
+            
+            this._characterController.Move(this.velocity * elapsed);
         }
 
         #endregion
@@ -115,13 +154,14 @@ namespace ControllerModule.Controllers
         {
             this.UpdateCursor();
             this.UpdateMove(this.direction, this.movementSpeed, elapsed);
+            this.UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
-        protected override void OnMove(Vector2 dir) => this.direction = dir;
+        public override void OnMove(Vector2 dir) => this.direction = dir;
 
         /// <inheritdoc/>
-        protected override void OnFireStart() 
+        public override void OnFireStart() 
         {
             // If eyes invalid, skip
             if (this.Eyes == null)
@@ -158,8 +198,14 @@ namespace ControllerModule.Controllers
         {
             if (this.Eyes is not null)
             {
-                Gizmos.color = Color.magenta;;
+                Gizmos.color = Color.magenta;
                 Gizmos.DrawLine(this.Eyes.position, this.Eyes.position + (this.Eyes.forward * this.interactRange));
+            }
+
+            if (this.Feet is not null)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(this.Feet.position, this.GroundCheckRadius);
             }
         }
 #endif

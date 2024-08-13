@@ -7,40 +7,6 @@ namespace ControllerModule.Controllers
     /// </summary>
     public abstract class Controller : MonoBehaviour
     {
-        #region Events
-
-        private void Subscribe()
-        {
-            InputMaster input = InputMaster.Instance;
-
-            if (input is null)
-                return;
-
-            input.OnLook += this.OnLook;
-            input.OnMove += this.OnMove;
-            input.OnFireStart += this.OnFireStart;
-            input.OnFireEnd += this.OnFireEnd;
-            input.OnInteract += this.OnInteract;
-            input.OnPause += this.Pause;
-        }
-
-        private void UnSubscribe()
-        {
-            InputMaster input = InputMaster.Instance;
-
-            if (input is null)
-                return;
-
-            input.OnLook -= this.OnLook;
-            input.OnMove -= this.OnMove;
-            input.OnFireStart -= this.OnFireStart;
-            input.OnFireEnd -= this.OnFireEnd;
-            input.OnInteract -= this.OnInteract;
-            input.OnPause -= this.Pause;
-        }
-
-        #endregion
-
         #region Look
 
         [Header("Look")]
@@ -50,7 +16,7 @@ namespace ControllerModule.Controllers
         /// <summary>
         /// Point from which the player sees the world
         /// </summary>
-        protected Transform Eyes => this.lookController?.cameraAnchor;
+        public Transform Eyes => this.lookController?.cameraAnchor;
         
         private Vector3 camDirection;
 
@@ -58,19 +24,23 @@ namespace ControllerModule.Controllers
         /// Called when the player requests a rotation
         /// </summary>
         /// <param name="direction">Direction of the rotation</param>
-        protected virtual void OnLook(Vector2 direction) => this.camDirection = direction;
+        public virtual void OnLook(Vector2 direction) => this.camDirection = direction;
 
         #endregion
+
+        #region Movement
 
         /// <summary>
         /// Called when the player moves
         /// </summary>
-        protected virtual void OnMove(Vector2 dir) { }
+        public virtual void OnMove(Vector2 dir) { }
 
         /// <summary>
-        /// Called when the player presses the 'Interact' button
+        /// Called when the player jumps
         /// </summary>
-        protected virtual void OnInteract() => ControllerManager.BackTo();
+        public virtual void OnJump() { }
+
+        #endregion
 
         #region Switch
 
@@ -92,7 +62,7 @@ namespace ControllerModule.Controllers
         public void SwitchIn()
         {
             // Subscribe all
-            this.Subscribe();
+            InputMaster.Instance += this;
 
             // Update enable states
             this.IsEnabled = true;
@@ -113,7 +83,7 @@ namespace ControllerModule.Controllers
         public void SwitchOut()
         {
             // Unsubscribe all
-            this.UnSubscribe();
+            InputMaster.Instance -= this;
 
             // Update enable states
             this.IsEnabled = false;
@@ -139,18 +109,18 @@ namespace ControllerModule.Controllers
         /// <summary>
         /// Called when the player presses the 'Fire' button
         /// </summary>
-        protected virtual void OnFireStart() { }
+        public virtual void OnFireStart() { }
 
         /// <summary>
         /// Called when the player releases the 'Fire' button
         /// </summary>
-        protected virtual void OnFireEnd() {}
+        public virtual void OnFireEnd() {}
 
         #endregion
 
         #region Pause
 
-        private void Pause()
+        public void Pause()
         {
             // PauseMenu.Pause();
 
@@ -169,29 +139,6 @@ namespace ControllerModule.Controllers
         /// Called when the player resumed the game
         /// </summary>
         protected virtual void OnResumed() { }
-
-        #endregion
-
-        #region Icons
-
-        [Header("Icons")]
-        [SerializeField, Tooltip("All the icons that will be affected by SetIconsVisibility")]
-        private GameObject[] icons;
-
-        /// <summary>
-        /// Sets the visibility of the icons to the given state
-        /// </summary>
-        /// <param name="isVisible">Are the icons visible or not?</param>
-        protected void SetIconsVisibility(bool isVisible)
-        {
-            foreach (GameObject item in this.icons)
-            {
-                if (item == null)
-                    continue;
-
-                item.SetActive(isVisible);
-            }
-        }
 
         #endregion
 
@@ -228,7 +175,14 @@ namespace ControllerModule.Controllers
         protected virtual void OnFixedUpdate(float elapsed) { }
 
         /// <inheritdoc cref="OnDestroy" />
-        private void OnDestroy() => this.UnSubscribe();
+        private void OnDestroy()
+        {
+            // Switch out before destroying
+            if (this.IsEnabled)
+            {
+                this.SwitchOut();
+            }
+        }
 
         #endregion
 

@@ -13,8 +13,10 @@ namespace ControllerModule.Controllers
         public delegate void LookEvent(Vector2 direction);
         public delegate void MoveEvent(Vector2 direction);
         public delegate void FireEvent();
-        public delegate void InteractEvent();
         public delegate void PauseEvent();
+        public delegate void JumpEvent();
+
+        public delegate void UnmountEvent();
 
         #endregion
 
@@ -24,8 +26,9 @@ namespace ControllerModule.Controllers
         public event MoveEvent OnMove;
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
-        public event InteractEvent OnInteract;
         public event PauseEvent OnPause;
+        public event JumpEvent OnJump;
+        public event UnmountEvent OnUnmount;
 
         #endregion
 
@@ -53,12 +56,52 @@ namespace ControllerModule.Controllers
                 this.OnFireEnd?.Invoke();
         }
 
-        public void Interact(InputAction.CallbackContext context) => this.OnInteract?.Invoke();
-
         public void Pause(InputAction.CallbackContext context)
         {
             if (context.started)
                 this.OnPause?.Invoke();
+        }
+
+        public void Jump(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                this.OnJump?.Invoke();
+        }
+
+        public void Unmount(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                ControllerManager.BackTo();
+        }
+
+        #endregion
+
+        #region Operation
+
+        public static InputMaster operator +(InputMaster input, Controller controller)
+        {
+            // Subscribe all events
+            input.OnLook += controller.OnLook;
+            input.OnMove += controller.OnMove;
+            input.OnFireStart += controller.OnFireStart;
+            input.OnFireEnd += controller.OnFireEnd;
+            input.OnPause += controller.Pause;
+            input.OnJump += controller.OnJump;
+            
+            return input;
+        }
+
+        public static InputMaster operator -(InputMaster input, Controller controller)
+        {
+            // Unsubscribe all events
+            input.OnLook -= controller.OnLook;
+            input.OnMove -= controller.OnMove;
+            input.OnFireStart -= controller.OnFireStart;
+            input.OnFireEnd -= controller.OnFireEnd;
+            input.OnPause -= controller.Pause;
+            input.OnJump -= controller.OnJump;
+            
+            return input;
         }
 
         #endregion
