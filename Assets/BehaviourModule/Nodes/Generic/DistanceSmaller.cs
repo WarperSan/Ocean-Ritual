@@ -1,24 +1,28 @@
-using BehaviourTree.Nodes.Abstract;
+using BehaviourModule.Nodes.Abstract;
 using UnityEngine;
 
-namespace BehaviourTree.Nodes.Generic
+namespace BehaviourModule.Nodes.Generic
 {
     /// <summary>
     /// Node that succeeds when the target is at the given distance or less
     /// </summary>
     public class DistanceSmaller : DistanceNode
     {
-        private readonly float distance;
+        private readonly float _distance;
+
+        #region Constructor
 
         public DistanceSmaller(Transform self, string target, float distance) : base(self, target)
         {
-            this.distance = distance;
+            this._distance = distance;
         }
+
+        #endregion
 
         #region DistanceNode
 
         /// <inheritdoc/>
-        protected override NodeState GetState(float distance) => distance <= this.distance ? NodeState.SUCCESS : NodeState.FAILURE;
+        protected override NodeState GetState(float distance) => distance <= this._distance ? NodeState.SUCCESS : NodeState.FAILURE;
 
         #endregion
     }

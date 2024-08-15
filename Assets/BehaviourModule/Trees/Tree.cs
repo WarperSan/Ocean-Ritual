@@ -1,6 +1,7 @@
+using BehaviourModule.Nodes;
 using UnityEngine;
 
-namespace BehaviourTree
+namespace BehaviourModule.Trees
 {
     /// <summary>
     /// List of nodes to create a behaviour
@@ -10,7 +11,7 @@ namespace BehaviourTree
     {
         #region Tree
 
-        private Node root = null;
+        public Node root;
 
         /// <summary>
         /// Replaces the current tree with a new one
@@ -27,19 +28,22 @@ namespace BehaviourTree
 
         #region MonoBehaviour
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Start" />
         private void Start() => this.RefreshTree();
 
-        /// <inheritdoc/>
-        private void Update() 
+        /// <inheritdoc cref="Update" />
+        private void Update()
         {
             // Disable if root is invalid
             if (this.root == null)
             {
+                // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
+                Debug.LogError("The root was invalid for '" + this.name + "'.");
                 this.enabled = false;
                 return;
             }
 
+            this.root.Reset();
             this.root.Evaluate();
         }
 

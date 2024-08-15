@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BehaviourTree
+namespace BehaviourModule.Nodes
 {
     /// <summary>
     /// Class that represents a single element in the tree
     /// </summary>
     public abstract class Node : IEnumerable<Node>
     {
-        public Node parent = null;
-
         #region Constructor
 
         public Node(params Node[] children)
         {
-            this.AddChildren(children);
+            this.Attach(children);
         }
 
         #endregion
@@ -68,7 +66,7 @@ namespace BehaviourTree
         /// <returns>The key was found</returns>
         public bool ClearData(string key)
         {
-            // If has key, remove
+            // If node has key, remove
             if (this.dataContext.ContainsKey(key))
             {
                 this.dataContext.Remove(key);
@@ -92,29 +90,57 @@ namespace BehaviourTree
     
         #region State
 
-        /// <summary>
-        /// Node of this state
-        /// </summary>
-        protected NodeState state;
+        public NodeState state = NodeState.NONE;
+
+        public NodeState Evaluate()
+        {
+            this.state = this.OnEvaluate();
+            return this.state;
+        }
 
         /// <summary>
         /// Called when this node gets updated
         /// </summary>
         /// <returns>State of this node</returns>
-        public virtual NodeState Evaluate() => NodeState.FAILURE;
+        protected virtual NodeState OnEvaluate() => NodeState.FAILURE;
+
+        /// <summary>
+        /// Resets the state of the node
+        /// </summary>
+        public void Reset()
+        {
+            this.state = NodeState.NONE;
+            foreach (Node child in this)
+                child.Reset();
+        }
         
         #endregion
 
+        #region Editor
+
+        public virtual string GetText() => this.GetType().Name;
+
+        #endregion
+
+        #region Parent
+
+        private Node parent;
+
+        protected Node GetParent() => this.parent?.GetParent() ?? this;
+
+        #endregion
+        
         #region Children
 
         private readonly List<Node> children = new();
-
+        
         /// <summary>
-        /// Sets the parent of the given nodes to this
+        /// Attaches the given nodes to this node
         /// </summary>
-        private void AddChildren(params Node[] children)
+        /// <param name="nodes">Nodes to attach</param>
+        public void Attach(params Node[] nodes)
         {
-            foreach (Node item in children)
+            foreach (Node item in nodes)
             {
                 item.parent = this;
                 this.children.Add(item);

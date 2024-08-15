@@ -1,7 +1,7 @@
-using Extensions;
+using ExtensionsModule;
 using UnityEngine;
 
-namespace BehaviourTree.Nodes.Abstract
+namespace BehaviourModule.Nodes.Abstract
 {
     /// <summary>
     /// Nodes that calculates the distance between self and the target
@@ -11,29 +11,33 @@ namespace BehaviourTree.Nodes.Abstract
         private readonly Transform self;
         private readonly string target;
 
+        #region Constructor
+
         public DistanceNode(Transform self, string target)
         {
             this.self = self;
             this.target = target;
         }
 
+        #endregion
+
         #region Node
 
         /// <inheritdoc/>
-        public sealed override NodeState Evaluate() 
+        protected override NodeState OnEvaluate() 
         {
             // If self is invalid, return failure
-            if (this.self == null)
+            if (this.self is null)
                 return NodeState.FAILURE;
 
             // If target is invalid, return success
-            Transform target = this.GetData<Transform>(this.target);
+            Transform _target = this.GetData<Transform>(this.target);
 
-            if (target == null)
+            if (_target is null)
                 return NodeState.SUCCESS;
 
             // Get distance
-            float distance = this.self.Distance(target);
+            float distance = this.self.Distance(_target);
 
             // If close enough from target
             return this.GetState(distance);
