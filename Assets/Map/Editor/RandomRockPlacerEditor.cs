@@ -22,7 +22,7 @@ namespace MapModule
             }
             else
             {
-                Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
+             //   Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
             }
 
             rockPrefabs = Resources.LoadAll<GameObject>(RocksResourcesPath);

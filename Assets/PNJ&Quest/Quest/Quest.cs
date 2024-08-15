@@ -6,6 +6,8 @@ using UnityEngine;
 public class Quest
 {
     public int ID;
+    public typeOfQuest typeOfTheQuest;
+    public bool QuestComplet;
     public Reward reward;
     public string Name;
     public string questGiver;
@@ -14,9 +16,12 @@ public class Quest
     public List<Hint>? HintList;
 
     // Constructeur pour initialiser les membres de la classe Quest
-    public Quest(int id, string name, string questGiver, string description, Reward reward, List<Hint>? HintList = null, string questConfirmer = null)
+    public Quest(int id, string name, string questGiver, string description, typeOfQuest typeOfTheQuest ,Reward reward,
+        List<Hint>? HintList = null, string questConfirmer = null, bool QuestComplett = false)
     {
         ID = id;
+        QuestComplet = QuestComplett;
+        this.typeOfTheQuest = typeOfTheQuest;
         Name = name;
         this.questGiver = questGiver;
         QuestConfirmer = questConfirmer ?? questGiver;

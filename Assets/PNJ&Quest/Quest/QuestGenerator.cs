@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class QuestGenerator : MonoBehaviour
 {
-    [SerializeField] List< Quest> AddingQuests;
+    [SerializeField] List< Quest> AddingQuests = new();
     [SerializeField] public List<Quest> ModifingExistantQuest;
     [SerializeField] List<ChangeID> ChangeIDQuests;
     // Start is called before the first frame update
