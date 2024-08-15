@@ -4,330 +4,323 @@ using UnityEditor;
 using UnityEngine;
 using Tree = BehaviourModule.Trees.Tree;
 
-public class TreeVisualizer : EditorWindow
+namespace BehaviourModule
 {
-    [MenuItem ("Window/Tree Visualizer")]
-    public static void  ShowWindow () => GetWindow<TreeVisualizer>("Tree Visualizer");
-    
-    public void Update() => this.Repaint();
-
-    private void OnGUI()
+    public class TreeVisualizer : EditorWindow
     {
-        this.CheckForNew();
+        [MenuItem("Window/Tree Visualizer")]
+        public static void ShowWindow() => GetWindow<TreeVisualizer>("Tree Visualizer");
 
-        this.useTypeName = GUILayout.Toggle(this.useTypeName, new GUIContent(
-            "Use Types", 
-            "Shows the type of the node instead of their display name"
-        ));
+        public void Update() => this.Repaint();
 
-        // Tree visualizer
-        this.DrawVisualizer();
-    }
-    private bool useTypeName;
-
-    #region Current Tree
-
-    private Tree currentTree;
-    private CalculationNode root;
-
-    private void CheckForNew()
-    {
-        GameObject target = Selection.activeGameObject;
-        
-        // If invalid, skip
-        if (target is null)
-            return;
-        
-        // If no tree, skip
-        if (!target.TryGetComponent(out Tree tree))
-            return;
-        
-        // If same tree, skip
-        if (this.currentTree?.root is not null && tree == this.currentTree)
-            return;
-
-        this.currentTree = tree;
-        
-        // Create if not created
-        if (this.currentTree.root is null)
-            this.currentTree.RefreshTree();
-        
-        // Reset values
-        this.minPos = this.maxPos = Vector2.zero;
-        
-        // Set up tree
-        Node rootNode = this.currentTree.root;
-        this.root = CalculationNode.Create(rootNode);
-        this.CalculatePositions(this.root, 0, 0);
-    }
-
-    #endregion
-
-    #region Calculation Node
-    
-    private Vector2 minPos;
-    private Vector2 maxPos;
-
-    private class CalculationNode
-    {
-        public float x;
-        public float y;
-        public Node node;
-        public readonly List<CalculationNode> children = new();
-
-        public static CalculationNode Create(Node node)
+        private void OnGUI()
         {
-            var calcNode = new CalculationNode
+            this.CheckForNew();
+
+            this.useTypeName = GUILayout.Toggle(this.useTypeName, new GUIContent(
+                "Use Types",
+                "Shows the type of the node instead of their display name"
+            ));
+
+            // Tree visualizer
+            this.DrawVisualizer();
+        }
+
+        private bool useTypeName;
+
+        #region Current Tree
+
+        private Tree currentTree;
+        private CalculationNode root;
+
+        private void CheckForNew()
+        {
+            GameObject target = Selection.activeGameObject;
+
+            // If invalid, skip
+            if (target is null)
+                return;
+
+            // If no tree, skip
+            if (!target.TryGetComponent(out Tree tree))
+                return;
+
+            // If same tree, skip
+            if (this.currentTree?.root is not null && tree == this.currentTree)
+                return;
+
+            this.currentTree = tree;
+
+            // Create if not created
+            if (this.currentTree.root is null)
+                this.currentTree.RefreshTree();
+
+            // Reset values
+            this.minPos = this.maxPos = Vector2.zero;
+
+            // Set up tree
+            Node rootNode = this.currentTree.root;
+            this.root = CalculationNode.Create(rootNode);
+            this.CalculatePositions(this.root, 0, 0);
+        }
+
+        #endregion
+
+        #region Calculation Node
+
+        private Vector2 minPos;
+        private Vector2 maxPos;
+
+        private class CalculationNode
+        {
+            public float x;
+            public float y;
+            public Node node;
+            public readonly List<CalculationNode> children = new();
+
+            public static CalculationNode Create(Node node)
             {
-                node = node
+                var calcNode = new CalculationNode { node = node };
+
+                // Add children
+                foreach (Node child in node)
+                    calcNode.children.Add(Create(child));
+
+                return calcNode;
+            }
+        }
+
+        private float CalculatePositions(CalculationNode node, float _x, float _y)
+        {
+            float offset = 0f;
+
+            // Calculate positions for children
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (CalculationNode t in node.children)
+            {
+                offset += this.CalculatePositions(
+                    t,
+                    _x + offset,
+                    _y + 1
+                );
+            }
+
+            if (offset <= 0)
+                offset = 1;
+
+            node.x = _x + ((offset - 1) / 2f);
+            node.y = _y;
+
+            if (this.minPos.x > node.x)
+                this.minPos.x = node.x;
+
+            if (this.maxPos.x < node.x)
+                this.maxPos.x = node.x;
+
+            if (this.maxPos.y < node.y)
+                this.maxPos.y = node.y;
+
+            return offset;
+        }
+
+        #endregion
+
+        #region Visualizer
+
+        /// <summary>
+        /// Fetches the text to display for a node
+        /// </summary>
+        /// <param name="calcNode">Node to display</param>
+        /// <returns>Text to display</returns>
+        private string GetNodeText(CalculationNode calcNode)
+        {
+            Node node = calcNode.node;
+
+            // Prevent crashes
+            if (node is null)
+                return "NULL";
+
+            if (this.useTypeName)
+                return node.GetType().Name;
+
+            return node.GetText();
+        }
+
+        // ReSharper disable once MemberCanBeMadeStatic.Local
+        /// <summary>
+        /// Fetches the canvas position of a node at the given position
+        /// </summary>
+        /// <param name="x">X position of the node</param>
+        /// <param name="y">Y position of the node</param>
+        /// <returns>Canvas position of the node</returns>
+        private Vector3 GetNodePosition(float x, float y) => new Vector3(
+            (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
+            (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
+        );
+
+        /// <summary>
+        /// Fetches the color of the given node
+        /// </summary>
+        /// <param name="node">Node to analyze</param>
+        /// <returns>Color of the node</returns>
+        private Color GetNodeColor(Node node) => node?.state switch
+        {
+            NodeState.FAILURE => Color.red,
+            NodeState.RUNNING => Color.yellow,
+            NodeState.SUCCESS => Color.green,
+            _ => Color.white
+        };
+
+        #endregion
+
+        #region Draw
+
+        private const float NODE_WIDTH = 100f;
+        private const float NODE_HEIGHT = 50f;
+        private const float NODE_MARGIN = 25f;
+
+        private GUIStyle nodeStyle;
+        private GUIStyle visualizerStyle;
+        private Vector2 visualizerScrollPos;
+
+        // ReSharper disable once InvertIf
+        /// <summary>
+        /// Initializes the styles for the editor
+        /// </summary>
+        private void InitializeStyles()
+        {
+            this.nodeStyle ??= new GUIStyle(GUI.skin.box)
+            {
+                normal = { textColor = Color.white }, alignment = TextAnchor.MiddleCenter
             };
 
-            // Add children
-            foreach (Node child in node)
-                calcNode.children.Add(Create(child));
+            if (this.visualizerStyle is null)
+            {
+                this.visualizerStyle = new GUIStyle(GUI.skin.box)
+                {
+                    normal = new GUIStyleState
+                    {
+                        background = Texture2D.whiteTexture, // Fallback, will be overwritten
+                        textColor = Color.white
+                    },
+                    padding = new RectOffset(0, 0, 0, 0),
+                    margin = new RectOffset(0, 0, 0, 0)
+                };
 
-            return calcNode;
+                // Set the dark background color
+                var bgTexture = new Texture2D(1, 1);
+                bgTexture.SetPixel(0, 0, new Color(0.2f, 0.2f, 0.2f, 1f)); // Dark gray background
+                bgTexture.Apply();
+                this.visualizerStyle.normal.background = bgTexture;
+            }
         }
-    }
-    
-    private float CalculatePositions(CalculationNode node, float _x, float _y)
-    {
-        float offset = 0f;
-        
-        // Calculate positions for children
-        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-        foreach (CalculationNode t in node.children)
+
+        /// <summary>
+        /// Draws an arrow between the two given nodes
+        /// </summary>
+        /// <param name="parent">Node to start the arrow from</param>
+        /// <param name="child">Node to end the arrow at</param>
+        private void DrawArrowBetweenNodes(CalculationNode parent, CalculationNode child)
         {
-            offset += this.CalculatePositions(
-                t,
-                _x + offset,
-                _y + 1
+            Vector3 pos1 = this.GetNodePosition(parent.x, parent.y) + new Vector3(NODE_WIDTH / 2f, NODE_HEIGHT);
+            Vector3 pos2 = this.GetNodePosition(child.x, child.y) + new Vector3(NODE_WIDTH / 2f, 0);
+
+            Handles.color = this.GetNodeColor(child.node);
+            Handles.DrawLine(
+                pos1,
+                pos2
             );
         }
 
-        if (offset <= 0)
-            offset = 1;
-
-        node.x = _x + ((offset - 1) / 2f);
-        node.y = _y;
-
-        if (this.minPos.x > node.x) 
-            this.minPos.x = node.x;
-
-        if (this.maxPos.x < node.x) 
-            this.maxPos.x = node.x;
-
-        if (this.maxPos.y < node.y) 
-            this.maxPos.y = node.y;
-
-        return offset;
-    }
-
-    #endregion
-
-    #region Visualizer
-
-    /// <summary>
-    /// Fetches the text to display for a node
-    /// </summary>
-    /// <param name="calcNode">Node to display</param>
-    /// <returns>Text to display</returns>
-    private string GetNodeText(CalculationNode calcNode)
-    {
-        Node node = calcNode.node;
-
-        // Prevent crashes
-        if (node is null)
-            return "NULL";
-        
-        if (this.useTypeName)
-            return node.GetType().Name;
-
-        return node.GetText();
-    }
-
-    // ReSharper disable once MemberCanBeMadeStatic.Local
-    /// <summary>
-    /// Fetches the canvas position of a node at the given position
-    /// </summary>
-    /// <param name="x">X position of the node</param>
-    /// <param name="y">Y position of the node</param>
-    /// <returns>Canvas position of the node</returns>
-    private Vector3 GetNodePosition(float x, float y) => new Vector3(
-        (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
-        (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
-    );
-
-    /// <summary>
-    /// Fetches the color of the given node
-    /// </summary>
-    /// <param name="node">Node to analyze</param>
-    /// <returns>Color of the node</returns>
-    private Color GetNodeColor(Node node) => node?.state switch
-    {
-        NodeState.FAILURE => Color.red,
-        NodeState.RUNNING => Color.yellow,
-        NodeState.SUCCESS => Color.green,
-        _ => Color.white
-    };
-
-    #endregion
-
-    #region Draw
-    
-    private const float NODE_WIDTH = 100f;
-    private const float NODE_HEIGHT = 50f;
-    private const float NODE_MARGIN = 25f;
-
-    private GUIStyle nodeStyle;
-    private GUIStyle visualizerStyle;
-    private Vector2 visualizerScrollPos;
-
-    // ReSharper disable once InvertIf
-    /// <summary>
-    /// Initializes the styles for the editor
-    /// </summary>
-    private void InitializeStyles()
-    {
-        this.nodeStyle ??= new GUIStyle(GUI.skin.box)
+        /// <summary>
+        /// Draws the given node with its children
+        /// </summary>
+        /// <param name="parent">Node to draw</param>
+        private void DrawWithChildren(CalculationNode parent)
         {
-            normal =
+            // Skip if invalid
+            if (parent is null)
+                return;
+
+            // Draw self
+            this.DrawSelf(parent);
+
+            // Display recursively
+            foreach (CalculationNode child in parent.children)
             {
-                textColor = Color.white
-            },
-            alignment = TextAnchor.MiddleCenter
-        };
+                // Draw arrow from parent to child
+                this.DrawArrowBetweenNodes(parent, child);
 
-        if (this.visualizerStyle is null)
-        {
-            this.visualizerStyle = new GUIStyle(GUI.skin.box)
-            {
-                normal = new GUIStyleState
-                {
-                    background = Texture2D.whiteTexture, // Fallback, will be overwritten
-                    textColor = Color.white
-                },
-                padding = new RectOffset(0, 0, 0, 0),
-                margin = new RectOffset(0, 0, 0, 0)
-            };
-
-            // Set the dark background color
-            var bgTexture = new Texture2D(1, 1);
-            bgTexture.SetPixel(0, 0, new Color(0.2f, 0.2f, 0.2f, 1f)); // Dark gray background
-            bgTexture.Apply();
-            this.visualizerStyle.normal.background = bgTexture;
+                // Draw children
+                this.DrawWithChildren(child);
+            }
         }
-    }
 
-    /// <summary>
-    /// Draws an arrow between the two given nodes
-    /// </summary>
-    /// <param name="parent">Node to start the arrow from</param>
-    /// <param name="child">Node to end the arrow at</param>
-    private void DrawArrowBetweenNodes(CalculationNode parent, CalculationNode child)
-    {
-        Vector3 pos1 = this.GetNodePosition(parent.x, parent.y) + new Vector3(NODE_WIDTH / 2f, NODE_HEIGHT);
-        Vector3 pos2 = this.GetNodePosition(child.x, child.y) + new Vector3(NODE_WIDTH / 2f, 0);
-
-        Handles.color = this.GetNodeColor(child.node);
-        Handles.DrawLine(
-            pos1,
-            pos2
-        );
-    }
-
-    /// <summary>
-    /// Draws the given node with its children
-    /// </summary>
-    /// <param name="parent">Node to draw</param>
-    private void DrawWithChildren(CalculationNode parent)
-    {
-        // Skip if invalid
-        if (parent is null)
-            return;
-        
-        // Draw self
-        this.DrawSelf(parent);
-        
-        // Display recursively
-        foreach (CalculationNode child in parent.children)
+        /// <summary>
+        /// Draws the given node
+        /// </summary>
+        /// <param name="self">Node to draw</param>
+        private void DrawSelf(CalculationNode self)
         {
-            // Draw arrow from parent to child
-            this.DrawArrowBetweenNodes(parent, child);
+            Node node = self.node;
+            float x = self.x;
+            float y = self.y;
 
-            // Draw children
-            this.DrawWithChildren(child);
+            // Skip if node is invalid
+            if (node is null)
+                return;
+
+            string text = this.GetNodeText(self);
+
+            // Stylize the node
+            if (this.nodeStyle is null)
+                this.InitializeStyles();
+
+            if (this.nodeStyle is null)
+                return;
+
+            this.nodeStyle.normal.textColor = this.GetNodeColor(node);
+
+            // Position the node
+            var rect = new Rect { position = this.GetNodePosition(x, y), width = NODE_WIDTH, height = NODE_HEIGHT };
+
+            GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+
+            GUI.Button(rect, text, this.nodeStyle);
         }
-    }
 
-    /// <summary>
-    /// Draws the given node
-    /// </summary>
-    /// <param name="self">Node to draw</param>
-    private void DrawSelf(CalculationNode self)
-    {
-        Node node = self.node;
-        float x = self.x;
-        float y = self.y;
-        
-        // Skip if node is invalid
-        if (node is null)
-            return;
-        
-        string text = this.GetNodeText(self);
-
-        // Stylize the node
-        if (this.nodeStyle is null) 
-            this.InitializeStyles();
-        
-        if (this.nodeStyle is null)
-            return;
-        
-        this.nodeStyle.normal.textColor = this.GetNodeColor(node);
-        
-        // Position the node
-        var rect = new Rect
+        /// <summary>
+        /// Draws the tree visualizer
+        /// </summary>
+        private void DrawVisualizer()
         {
-            position = this.GetNodePosition(x, y),
-            width = NODE_WIDTH,
-            height = NODE_HEIGHT
-        };
+            // Skip if invalid
+            if (this.root is null)
+                return;
 
-        GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+            if (this.visualizerStyle is null)
+                this.InitializeStyles();
 
-        GUI.Button(rect, text, this.nodeStyle);
+            float height = this.position.height;
+
+            var scrollViewRect = new Rect(0, height * 0.25f, this.position.width, height * 0.75f);
+
+            GUI.Box(scrollViewRect, GUIContent.none, this.visualizerStyle);
+
+            Vector3 viewSize =
+                this.GetNodePosition(this.maxPos.x - this.minPos.x + 1, this.maxPos.y - this.minPos.y + 1);
+
+            this.visualizerScrollPos = GUI.BeginScrollView(
+                scrollViewRect,
+                this.visualizerScrollPos,
+                new Rect(0, 0, viewSize.x, viewSize.y)
+            );
+
+            this.DrawWithChildren(this.root);
+
+            GUI.EndScrollView();
+        }
+
+        #endregion
     }
-    
-    /// <summary>
-    /// Draws the tree visualizer
-    /// </summary>
-    private void DrawVisualizer()
-    {
-        // Skip if invalid
-        if (this.root is null)
-            return;
-        
-        if (this.visualizerStyle is null)
-            this.InitializeStyles();
-        
-        float height = this.position.height;
-        
-        var scrollViewRect = new Rect(0, height * 0.25f, this.position.width, height * 0.75f);
-        
-        GUI.Box(scrollViewRect, GUIContent.none, this.visualizerStyle);
-
-        Vector3 viewSize = this.GetNodePosition(this.maxPos.x - this.minPos.x + 1, this.maxPos.y - this.minPos.y + 1);
-
-        this.visualizerScrollPos = GUI.BeginScrollView(
-            scrollViewRect,
-            this.visualizerScrollPos,
-            new Rect(0, 0, viewSize.x, viewSize.y)
-        );
-        
-        this.DrawWithChildren(this.root);
-        
-        GUI.EndScrollView();
-    }
-
-    #endregion
 }

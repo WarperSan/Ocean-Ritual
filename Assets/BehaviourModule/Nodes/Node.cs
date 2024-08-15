@@ -92,6 +92,10 @@ namespace BehaviourModule.Nodes
 
         public NodeState state = NodeState.NONE;
 
+        /// <summary>
+        /// Updates the state of this node
+        /// </summary>
+        /// <returns>New state of the node</returns>
         public NodeState Evaluate()
         {
             this.state = this.OnEvaluate();
@@ -118,6 +122,10 @@ namespace BehaviourModule.Nodes
 
         #region Editor
 
+        /// <summary>
+        /// Fetches the display name of the node for the editor
+        /// </summary>
+        /// <returns>Text to display</returns>
         public virtual string GetText() => this.GetType().Name;
 
         #endregion
@@ -126,7 +134,11 @@ namespace BehaviourModule.Nodes
 
         private Node parent;
 
-        protected Node GetParent() => this.parent?.GetParent() ?? this;
+        /// <summary>
+        /// Obtains the parent of this node
+        /// </summary>
+        /// <returns>Parent of this node</returns>
+        protected Node GetParent() => this.parent?.GetParent();
 
         #endregion
         
