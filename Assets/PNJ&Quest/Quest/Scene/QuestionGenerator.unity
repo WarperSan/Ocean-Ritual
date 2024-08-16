@@ -370,20 +370,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AddingQuests:
-  - ID: 3
-    typeOfTheQuest: 1
+  - ID: 1
+    ConditionQuest:
+      typeOfTheQuest: 0
+      condition:
+      - name: Dummy
+        quantite: 1
     QuestComplet: 0
     reward:
       Money: 0
       LvlOfGemme: 0
-    Name: adsad
-    questGiver: asdas
-    QuestConfirmer: sdass
-    Description: sssss
+    Name: TestKilling
+    questGiver: TestKilling
+    QuestConfirmer: TestKilling
+    Description: TestKilling
     HintList: []
   ModifingExistantQuest:
   - ID: 3
-    typeOfTheQuest: 1
+    ConditionQuest:
+      typeOfTheQuest: 0
+      condition: []
     QuestComplet: 0
     reward:
       Money: 0

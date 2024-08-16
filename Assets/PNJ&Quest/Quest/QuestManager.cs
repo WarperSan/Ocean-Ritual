@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Xml;
+using System.Linq;
 public static class QuestManager
 {
+    #region gestionDonne
     private static string DataQuestPath = "Quest";
     private static Dictionary<int, Quest> quests = new Dictionary<int, Quest>();
     public static void GetDataQuestLoad()
@@ -145,12 +147,14 @@ public static class QuestManager
 
     public static Quest GetQuestById(int questId)
     {
+        GetDataQuestLoad();
         if (quests.ContainsKey(questId))
         {
             return quests[questId];
         }
         else
         {
+            Debug.Log(quests.Count);
             Debug.LogError("Quest ID not found: " + questId);
             return null;
         }
@@ -191,4 +195,74 @@ public static class QuestManager
 
         return true;
     }
+    #endregion
+    #region SurveillanceQuete
+   private static List<Quest> ListQuestToChek = new();
+    static public bool AddQuestToWatch(Quest questToWatch)
+    {
+        // Vérifie si la quête existe déjà dans la liste
+        if (!ListQuestToChek.Any(q => q.ID == questToWatch.ID))
+        {
+            ListQuestToChek.Add(questToWatch);
+            Debug.Log($"Quête {questToWatch.Name} (ID: {questToWatch.ID}) ajoutée à la liste de vérification.");
+            return true;
+        }
+        else
+        {
+            Debug.Log($"La quête {questToWatch.Name} est déjà dans la liste de vérification.");
+            return false;
+        }
+    }
+
+
+    static public void SomeoneDeath(string mobName)
+    {
+        // Filtrer les quêtes de type 'Extermination'
+        var questsToUpdate = ListQuestToChek
+            .Where(quest => quest.ConditionQuest.typeOfTheQuest == typeOfQuest.Extermination)
+            .ToList();
+
+        // Parcourir les quêtes filtrées
+        foreach (Quest quest in questsToUpdate)
+        {
+            // Vérifier chaque condition de la quête
+            if (quest.ConditionQuest.condition
+                .Any(cond => cond.name == mobName))
+            {
+                // Si le nom correspond, marquer la quête comme complète
+                quest.QuestComplet = true;
+                Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.        " + mobName +"   a été tuer");
+            }
+        }
+    }
+    static public void SomeoneTalking(string PNJName)
+    {
+       // Debug.Log("Je parle à " + PNJName);
+
+        // Filtrer les quêtes de type 'Discution'
+        var questsToUpdate = ListQuestToChek
+            .Where(quest => quest.ConditionQuest.typeOfTheQuest == typeOfQuest.Discution)
+            .ToList();
+
+        // Parcourir les quêtes filtrées
+        foreach (Quest quest in questsToUpdate)
+        {
+            // Vérifier chaque condition de la quête
+            if (quest.ConditionQuest.condition
+                .Any(cond => cond.name == PNJName))
+            {
+                // Si le nom correspond, marquer la quête comme complète
+                quest.QuestComplet = true;
+                Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.");
+            }
+        }
+    }
+    static public void RessourceHarvrest(string RessourceName, int quantite = 1)
+    {
+
+    }
+
+
+
+    #endregion
 }

@@ -1,13 +1,10 @@
+using ControllerModule.Controllers.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class EnnemieDeath : MonoBehaviour, IInteractable
 {
-
-
-    List<Quest> questsInProgress= new List<Quest>();
-    List<Quest> QuestComplet = new List<Quest>();
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +15,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         
+    }
+    public void OnClick()
+    {
+        QuestManager.SomeoneDeath(name);
     }
 }
