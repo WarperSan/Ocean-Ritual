@@ -16,6 +16,7 @@ public class ConditionQuest
 public class condition
 {
     public string name;
+    public int quantiteInProgress;
     public int quantite;
 
 }

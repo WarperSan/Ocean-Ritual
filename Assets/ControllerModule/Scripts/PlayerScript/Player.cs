@@ -19,6 +19,12 @@ public class Player : MonoBehaviour
     {
         
     }
+    public void ReceiveReward()
+    {
+
+        Debug.Log("Reward Obtain");
+
+    }
     public void AddQuest(Quest theAddingQuest)
     {
        

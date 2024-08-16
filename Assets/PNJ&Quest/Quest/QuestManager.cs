@@ -197,14 +197,15 @@ public static class QuestManager
     }
     #endregion
     #region SurveillanceQuete
-   private static List<Quest> ListQuestToChek = new();
+    private static Player playerScript;
+    private static List<Quest> ListQuestToChek = new();
     static public bool AddQuestToWatch(Quest questToWatch)
     {
         // Vérifie si la quête existe déjà dans la liste
         if (!ListQuestToChek.Any(q => q.ID == questToWatch.ID))
         {
             ListQuestToChek.Add(questToWatch);
-            Debug.Log($"Quête {questToWatch.Name} (ID: {questToWatch.ID}) ajoutée à la liste de vérification.");
+           // Debug.Log($"Quête {questToWatch.Name} (ID: {questToWatch.ID}) ajoutée à la liste de vérification.");
             return true;
         }
         else
@@ -225,28 +226,42 @@ public static class QuestManager
         // Parcourir les quêtes filtrées
         foreach (Quest quest in questsToUpdate)
         {
-            // Vérifier chaque condition de la quête
-            if (quest.ConditionQuest.condition
-                .Any(cond => cond.name == mobName))
+            if (!quest.QuestComplet)
             {
-                // Si le nom correspond, marquer la quête comme complète
-                quest.QuestComplet = true;
-                Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.        " + mobName +"   a été tuer");
+                // Parcourir chaque condition de la quête
+                foreach (var cond in quest.ConditionQuest.condition)
+                {
+
+                    if (cond.name == mobName)
+                    {
+                        // Incrémenter quantiteInProgress
+                        cond.quantiteInProgress++;
+
+                        // Vérifier si la condition est remplie
+                        if (cond.quantiteInProgress >= cond.quantite)
+                        {
+                            quest.QuestComplet = true;
+                            //Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète tout les mob sont mort.");
+                        }
+                    }
+                }
             }
         }
     }
     static public void SomeoneTalking(string PNJName)
     {
-       // Debug.Log("Je parle à " + PNJName);
+      
+        // Debug.Log("Je parle à " + PNJName);
 
         // Filtrer les quêtes de type 'Discution'
         var questsToUpdate = ListQuestToChek
             .Where(quest => quest.ConditionQuest.typeOfTheQuest == typeOfQuest.Discution)
             .ToList();
-
+       // Debug.Log(questsToUpdate.Count);
         // Parcourir les quêtes filtrées
         foreach (Quest quest in questsToUpdate)
         {
+            
             // Vérifier chaque condition de la quête
             if (quest.ConditionQuest.condition
                 .Any(cond => cond.name == PNJName))
@@ -255,6 +270,40 @@ public static class QuestManager
                 quest.QuestComplet = true;
                 Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.");
             }
+         
+        }
+        GiveReward(PNJName);
+
+
+    }
+    static public void GiveReward( string name)
+    {
+       
+        List<Quest>completQuestToRemove = new ();
+        foreach (Quest quest in ListQuestToChek)
+        {
+            if (quest.QuestConfirmer == name && quest.QuestComplet)
+            {
+                GetPlayerScript();
+                if (playerScript != null)
+                {
+                    playerScript.ReceiveReward();
+                    playerScript.MoveQuestToComplete(quest);
+                    completQuestToRemove.Add(quest);
+                 
+                }
+                else
+                {
+                    Debug.Log("pas de joueur trouver");
+                }
+
+           
+            }
+        }
+        foreach (Quest quests in completQuestToRemove)
+        {
+            RemoveQuest(quests);
+          
         }
     }
     static public void RessourceHarvrest(string RessourceName, int quantite = 1)
@@ -262,7 +311,36 @@ public static class QuestManager
 
     }
 
+    private static void GetPlayerScript()
+    {
+        GameObject playerObject = GameObject.FindWithTag("Player");
 
+        if (playerObject != null)
+        {
+            playerScript = playerObject.GetComponent<Player>();
+
+            if (playerScript == null)
+            {
+                Debug.LogError("Le script 'Player' n'a pas été trouvé sur l'objet.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Aucun objet avec le tag 'Player' n'a été trouvé.");
+        }
+    }
+    private static void RemoveQuest(Quest removingQuest)
+    {
+        // Enlever la quête des quêtes en cours
+        if (ListQuestToChek.Contains(removingQuest))
+        {
+            ListQuestToChek.Remove(removingQuest);
+        }
+        else
+        {
+            Debug.LogWarning("La quête à supprimer n'est pas dans la liste des quêtes en cours.");
+        }
+    }
 
     #endregion
 }

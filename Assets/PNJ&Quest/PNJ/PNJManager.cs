@@ -87,6 +87,7 @@ public static class PNJManager
     }
     public static void GiveNameToQUestManager(string name)
     {
+   
         QuestManager.SomeoneTalking(name);
     }
 }
