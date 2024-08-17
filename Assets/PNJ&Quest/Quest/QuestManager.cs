@@ -241,10 +241,22 @@ public static class QuestManager
                         if (cond.quantiteInProgress >= cond.quantite)
                         {
                             quest.QuestComplet = true;
+                           
                             //Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète tout les mob sont mort.");
                         }
                     }
                 }
+                if (!quest.QuestComplet)
+                {
+                    QuestInterface.QuestKillingUpdate(quest);
+                }
+                else
+                {
+                    QuestInterface.QuestKillingUpdate(quest);
+                    QuestInterface.QuestToEarnReward(quest);
+
+                }
+                
             }
         }
     }
@@ -268,6 +280,7 @@ public static class QuestManager
             {
                 // Si le nom correspond, marquer la quête comme complète
                 quest.QuestComplet = true;
+                QuestInterface.QuestToEarnReward(quest);
                 Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.");
             }
          

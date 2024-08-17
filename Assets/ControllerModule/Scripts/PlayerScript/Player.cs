@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
    [SerializeField] List<Quest> questsInProgress= new List<Quest>();
     [SerializeField] List<Quest> QuestComplet = new List<Quest>();
+    [SerializeField] GameObject contentTransform;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
       if(QuestManager.AddQuestToWatch(theAddingQuest))
         {
             questsInProgress.Add(theAddingQuest);
+            QuestInterface.AddQuestToUI(theAddingQuest, contentTransform.transform);
         }
 
     }
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
         QuestComplet.Add(completedQuest);
         // Enlever la quête de la liste des quêtes en cours
         RemoveQuest(completedQuest);
+       QuestInterface.QuestToDelete(completedQuest);
 
     }
 }
