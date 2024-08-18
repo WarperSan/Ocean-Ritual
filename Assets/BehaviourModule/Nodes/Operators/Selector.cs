@@ -10,7 +10,7 @@ namespace BehaviourModule.Nodes.Operators
     {
         #region Constructor
 
-        /// <inheritdoc cref="Node(Node[])"/>
+        /// <inheritdoc cref="Selector"/>
         public Selector(params Node[] children) : base(children) { }
 
         #endregion

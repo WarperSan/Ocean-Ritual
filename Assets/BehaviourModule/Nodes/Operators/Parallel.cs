@@ -10,7 +10,7 @@ namespace BehaviourModule.Nodes.Operators
     {
         #region Constructor
 
-        /// <inheritdoc cref="Node(Node[])"/>
+        /// <inheritdoc cref="Parallel"/>
         public Parallel(params Node[] children) : base(children) { }
 
         #endregion

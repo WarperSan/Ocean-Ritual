@@ -4,13 +4,13 @@ namespace BehaviourModule.Nodes.Operators
     /// Node that inverts the state of its child. (NOT)
     /// </summary>
     /// <remarks>
-    /// If the child's state is <see cref="NodeState.RUNNING"/> or the child is invalid, this node exists with <see cref="NodeState.RUNNING"/>.
+    /// If the child's state is <see cref="NodeState.RUNNING"/> or the child is invalid, this node exits with <see cref="NodeState.RUNNING"/>.
     /// </remarks>
     public class Inverter : Node
     {
         #region Constructor
 
-        /// <inheritdoc cref="Node(Node[])"/>
+        /// <inheritdoc cref="Inverter"/>
         public Inverter(Node child) : base(child) { }
 
         #endregion

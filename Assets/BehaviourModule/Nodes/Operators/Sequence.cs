@@ -4,13 +4,13 @@ namespace BehaviourModule.Nodes.Operators
     /// Node that only succeed when all of its children succeed. (AND)
     /// </summary>
     /// <remarks>
-    /// If a child's state is <see cref="NodeState.RUNNING"/> or <see cref="NodeState.FAILURE"/>, this node exists with this state.
+    /// If a child's state is <see cref="NodeState.RUNNING"/> or <see cref="NodeState.FAILURE"/>, this node exits with this state.
     /// </remarks>
     public class Sequence : Node
     {
         #region Constructor
 
-        /// <inheritdoc cref="Node(Node[])"/>
+        /// <inheritdoc cref="Sequence"/>
         public Sequence(params Node[] children) : base(children) { }
 
         #endregion

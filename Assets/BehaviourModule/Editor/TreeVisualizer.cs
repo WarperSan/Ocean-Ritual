@@ -1,5 +1,7 @@
 using BehaviourModule.Nodes;
+using Codice.CM.Common.Merge;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using Tree = BehaviourModule.Trees.Tree;
@@ -27,12 +29,16 @@ namespace BehaviourModule
                 "Recalculates the visualizer when a node is toggled"
             ));
 
+            // Skip if invalid
+            if (this.currentTree == null)
+                return;
+
             // Tree visualizer
             this.DrawVisualizer();
         }
 
         private bool useTypeName;
-        private bool recalculateOnHide;
+        private bool recalculateOnHide = true;
 
         #region Current Tree
 
@@ -61,12 +67,19 @@ namespace BehaviourModule
             if (this.currentTree.root is null)
                 this.currentTree.RefreshTree();
 
-            // Reset values
-            this.minPos = this.maxPos = Vector2.zero;
-
             // Set up tree
             Node rootNode = this.currentTree.root;
             this.root = CalculationNode.Create(rootNode);
+            this.BuildFromRoot();
+        }
+
+        private void BuildFromRoot()
+        {
+            // Reset values
+            this.minPos = this.maxPos = Vector2.zero;
+            this.occupied.Clear();
+
+            // Set up tree
             this.CalculatePositions(this.root, 0, 0);
         }
 
@@ -76,6 +89,7 @@ namespace BehaviourModule
 
         private Vector2 minPos;
         private Vector2 maxPos;
+        private List<Vector2> occupied = new();
 
         private class CalculationNode
         {
@@ -121,6 +135,8 @@ namespace BehaviourModule
             node.x = _x + ((offset - 1) / 2f);
             node.y = _y;
 
+            this.occupied.Add(new Vector2(_x, _y));
+
             if (this.minPos.x > node.x)
                 this.minPos.x = node.x;
 
@@ -156,13 +172,13 @@ namespace BehaviourModule
             return node.Alias ?? node.GetText();
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Local
         /// <summary>
         /// Fetches the canvas position of a node at the given position
         /// </summary>
         /// <param name="x">X position of the node</param>
         /// <param name="y">Y position of the node</param>
         /// <returns>Canvas position of the node</returns>
+        // ReSharper disable once MemberCanBeMadeStatic.Local
         private Vector3 GetNodePosition(float x, float y) => new(
             (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
             (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
@@ -219,7 +235,7 @@ namespace BehaviourModule
 
                 // Set the dark background color
                 var bgTexture = new Texture2D(1, 1);
-                bgTexture.SetPixel(0, 0, new Color(0.2f, 0.2f, 0.2f, 1f)); // Dark gray background
+                bgTexture.SetPixel(0, 0, new Color(0.15f, 0.15f, 0.15f, 1f)); // Dark gray background
                 bgTexture.Apply();
                 this.visualizerStyle.normal.background = bgTexture;
             }
@@ -305,11 +321,7 @@ namespace BehaviourModule
                 self.hideChildren = !self.hideChildren;
 
                 if (this.recalculateOnHide)
-                {
-                    // Reset values
-                    this.minPos = this.maxPos = Vector2.zero;
-                    this.CalculatePositions(this.root, 0, 0);
-                }
+                    this.BuildFromRoot();
             }
         }
 
@@ -318,10 +330,6 @@ namespace BehaviourModule
         /// </summary>
         private void DrawVisualizer()
         {
-            // Skip if invalid
-            if (this.root is null)
-                return;
-
             if (this.visualizerStyle is null)
                 this.InitializeStyles();
 
