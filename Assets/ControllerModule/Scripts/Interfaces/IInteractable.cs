@@ -4,7 +4,8 @@ namespace ControllerModule.Controllers.Interfaces
 {
     public interface IInteractable
     {
-        private static readonly int layer = 1 << LayerMask.NameToLayer("Interactable");
+        public static readonly int LAYER = LayerMask.NameToLayer("Interactable");
+        public static readonly int LAYER_MASK = 1 << LAYER;
         
         /// <summary>
         /// Called when something interacted with this object
@@ -28,7 +29,7 @@ namespace ControllerModule.Controllers.Interfaces
         /// <returns>Is there something to interact with?</returns>
         public static bool CanInteract(Vector3 position, Vector3 direction, out IInteractable interactable, float maxDistance = float.MaxValue)
         {
-            if (Physics.Raycast(position, direction, out RaycastHit hit, maxDistance, layer))
+            if (Physics.Raycast(position, direction, out RaycastHit hit, maxDistance, LAYER_MASK))
                 return hit.collider.gameObject.TryGetComponent(out interactable);
             
             interactable = null;

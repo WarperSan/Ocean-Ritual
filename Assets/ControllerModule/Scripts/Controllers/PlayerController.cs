@@ -30,11 +30,11 @@ namespace ControllerModule.Controllers
         private void UpdateCursor() 
         {
             // If cursor invalid, skip
-            if (this.cursor is null)
+            if (this.cursor == null)
                 return;
 
             // If eyes invalid, skip
-            if (this.Eyes is null)
+            if (this.Eyes == null)
                 return;
 
             if (Interfaces.IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, this.interactRange))
@@ -82,7 +82,7 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes is null || this._characterController is null)
+            if (this.Eyes == null || this._characterController == null)
                 return;
 
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
@@ -118,7 +118,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateGravity(float elapsed)
         {
-            if (this.Feet is null || this._characterController is null)
+            if (this.Feet == null || this._characterController == null)
                 return;
 
             this.isGrounded = Physics.CheckSphere(
@@ -196,13 +196,13 @@ namespace ControllerModule.Controllers
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
-            if (this.Eyes is not null)
+            if (this.Eyes != null)
             {
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawLine(this.Eyes.position, this.Eyes.position + (this.Eyes.forward * this.interactRange));
             }
 
-            if (this.Feet is not null)
+            if (this.Feet != null)
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(this.Feet.position, this.GroundCheckRadius);

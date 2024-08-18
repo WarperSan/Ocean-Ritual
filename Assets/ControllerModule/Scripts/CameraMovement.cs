@@ -22,7 +22,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMovement(float elapsed)
         {
-            if (this.trackedObject is null)
+            if (this.trackedObject == null)
                 return;
 
             float duration = this.isLerping ? this.camSpeed * elapsed : 1;

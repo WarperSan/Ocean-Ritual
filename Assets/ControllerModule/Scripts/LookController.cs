@@ -45,8 +45,6 @@ namespace ControllerModule.Controllers
         /// </summary>
         private Vector3 camRotation = Vector3.zero;
 
-        private float fff;
-        
         /// <summary>
         /// Updates the rotation of the target
         /// </summary>
