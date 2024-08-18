@@ -39,5 +39,15 @@ namespace BehaviourModule.Nodes.Operators
         public override string GetText() => "OR";
 
         #endregion
+        
+        #region Operator
+
+        public static Selector operator +(Selector root, Node child)
+        {
+            root.Attach(child);
+            return root;
+        }
+
+        #endregion
     }
 }

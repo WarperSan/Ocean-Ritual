@@ -37,5 +37,15 @@ namespace BehaviourModule.Nodes.Operators
         }
 
         #endregion
+        
+        #region Operator
+
+        public static Parallel operator +(Parallel root, Node child)
+        {
+            root.Attach(child);
+            return root;
+        }
+
+        #endregion
     }
 }

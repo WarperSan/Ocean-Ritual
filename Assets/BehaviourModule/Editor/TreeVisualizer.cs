@@ -22,11 +22,17 @@ namespace BehaviourModule
                 "Shows the type of the node instead of their display name"
             ));
 
+            this.recalculateOnHide = GUILayout.Toggle(this.recalculateOnHide, new GUIContent(
+                "Recalculate on hide",
+                "Recalculates the visualizer when a node is toggled"
+            ));
+
             // Tree visualizer
             this.DrawVisualizer();
         }
 
         private bool useTypeName;
+        private bool recalculateOnHide;
 
         #region Current Tree
 
@@ -38,7 +44,7 @@ namespace BehaviourModule
             GameObject target = Selection.activeGameObject;
 
             // If invalid, skip
-            if (target is null)
+            if (target == null)
                 return;
 
             // If no tree, skip
@@ -77,6 +83,7 @@ namespace BehaviourModule
             public float y;
             public Node node;
             public readonly List<CalculationNode> children = new();
+            public bool hideChildren;
 
             public static CalculationNode Create(Node node)
             {
@@ -95,14 +102,17 @@ namespace BehaviourModule
             float offset = 0f;
 
             // Calculate positions for children
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (CalculationNode t in node.children)
+            if (!node.hideChildren)
             {
-                offset += this.CalculatePositions(
-                    t,
-                    _x + offset,
-                    _y + 1
-                );
+                // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+                foreach (CalculationNode t in node.children)
+                {
+                    offset += this.CalculatePositions(
+                        t,
+                        _x + offset,
+                        _y + 1
+                    );
+                }
             }
 
             if (offset <= 0)
@@ -143,7 +153,7 @@ namespace BehaviourModule
             if (this.useTypeName)
                 return node.GetType().Name;
 
-            return node.GetText();
+            return node.Alias ?? node.GetText();
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local
@@ -153,7 +163,7 @@ namespace BehaviourModule
         /// <param name="x">X position of the node</param>
         /// <param name="y">Y position of the node</param>
         /// <returns>Canvas position of the node</returns>
-        private Vector3 GetNodePosition(float x, float y) => new Vector3(
+        private Vector3 GetNodePosition(float x, float y) => new(
             (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
             (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
         );
@@ -226,10 +236,11 @@ namespace BehaviourModule
             Vector3 pos2 = this.GetNodePosition(child.x, child.y) + new Vector3(NODE_WIDTH / 2f, 0);
 
             Handles.color = this.GetNodeColor(child.node);
-            Handles.DrawLine(
-                pos1,
-                pos2
-            );
+
+            if (child.hideChildren)
+                Handles.DrawDottedLine(pos1, pos2, 0.2f);
+            else
+                Handles.DrawLine(pos1, pos2);
         }
 
         /// <summary>
@@ -246,13 +257,16 @@ namespace BehaviourModule
             this.DrawSelf(parent);
 
             // Display recursively
-            foreach (CalculationNode child in parent.children)
+            if (!parent.hideChildren)
             {
-                // Draw arrow from parent to child
-                this.DrawArrowBetweenNodes(parent, child);
+                foreach (CalculationNode child in parent.children)
+                {
+                    // Draw arrow from parent to child
+                    this.DrawArrowBetweenNodes(parent, child);
 
-                // Draw children
-                this.DrawWithChildren(child);
+                    // Draw children
+                    this.DrawWithChildren(child);
+                }
             }
         }
 
@@ -286,7 +300,17 @@ namespace BehaviourModule
 
             GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f, 1f);
 
-            GUI.Button(rect, text, this.nodeStyle);
+            if (GUI.Button(rect, text, this.nodeStyle) && self.children.Count > 0)
+            {
+                self.hideChildren = !self.hideChildren;
+
+                if (this.recalculateOnHide)
+                {
+                    // Reset values
+                    this.minPos = this.maxPos = Vector2.zero;
+                    this.CalculatePositions(this.root, 0, 0);
+                }
+            }
         }
 
         /// <summary>

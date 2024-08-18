@@ -27,13 +27,13 @@ namespace BehaviourModule.Nodes.Abstract
         protected override NodeState OnEvaluate() 
         {
             // If self is invalid, return failure
-            if (this.self is null)
+            if (this.self == null)
                 return NodeState.FAILURE;
 
             // If target is invalid, return success
             Transform _target = this.GetData<Transform>(this.target);
 
-            if (_target is null)
+            if (_target == null)
                 return NodeState.SUCCESS;
 
             // Get distance

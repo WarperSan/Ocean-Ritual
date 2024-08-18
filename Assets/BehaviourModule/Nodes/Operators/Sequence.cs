@@ -39,5 +39,15 @@ namespace BehaviourModule.Nodes.Operators
         public override string GetText() => "AND";
 
         #endregion
+
+        #region Operator
+
+        public static Sequence operator +(Sequence root, Node child)
+        {
+            root.Attach(child);
+            return root;
+        }
+
+        #endregion
     }
 }

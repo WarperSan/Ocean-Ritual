@@ -36,7 +36,15 @@ One of the problem with the node is that it is hard to share data between nodes.
 
 In any node, you can set data to a given key by calling `Node.SetData`. This will give access to this information to every child of the node. If you want to pass data upwards (to a node that is not your child), you need to set the data in a shared parent (like the root).
 
-To collect the data, you need to call `Node.GetData` and pass the key for the data. This will look into every parent to see if any has data associated with the key,
+To collect the data, you need to call `Node.GetData` and pass the key for the data. This will look into every parent to see if any has data associated with the key.
+
+### Attach a node to another node
+In order to build a tree, you need to attach nodes together to form the actual tree. In order to do that, there are 3 ways to do it:
+1. Passing the children in the constructor
+2. Calling `Node.Attach` while passing the children
+3. Adding the parent with the child (or doing `root += child`)
+
+*Note that the methods can vary depending on the parent's type. This is true for the most operator nodes*
 
 ## Trees
 Now that we covered how to create custom nodes, we need to create the actual tree with which the AI will work.
@@ -49,6 +57,12 @@ To create a tree, you need to:
 Once you have this set up, you need to create your tree inside `SetUpTree` and returns the root of the tree.
 
 ## Tree Visualizer
-The visualizer is a neat tool that allows you to see your tree in action. 
+The visualizer is a useful tool that allows you to see your tree in action. 
 
-To open it, you need to go to `Window -> Tree Visualizer`, This will open a window that will show you the current tree inspected. This tool shows you the structure of the tree and the different state of each node.
+To open it, you need to go to `Window -> Tree Visualizer`, This will open a window that will show you the current tree inspected. This tool will show you the structure of the tree (which node is connected to which node) and their different state (at runtime).
+
+### `Node.GetText`
+To improve the readability of the visualizer, you can override the method `Node.GetText` inside your custom Node to show an unique text. This will replace the default text shown by a node. *Note that this will change the text for every node of this type*
+
+### Alias
+In the same category, if you want to give a particular name to a certain node without changing `Node.GetText`, you can assign a value to the `Node.Alias` of the node in question. If the alias is set, it will override the text given by the node. This can be useful when you want to name a certain branch of the tree.

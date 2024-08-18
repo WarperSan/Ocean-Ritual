@@ -24,8 +24,9 @@ namespace BehaviourModule.Nodes
         /// <summary>
         /// Stores the given value at the given key
         /// </summary>
-        public void SetData(string key, object value, bool inRoot = false) 
+        public void SetData(string key, object value, bool inRoot = false)
         {
+            // If set in root and has parent
             if (inRoot && this.parent != null)
             {
                 this.parent.SetData(key, value, true);
@@ -60,6 +61,7 @@ namespace BehaviourModule.Nodes
             return default;
         }
 
+        // ReSharper disable once ConvertIfStatementToReturnStatement
         /// <summary>
         /// Removes the data associated with the given key
         /// </summary>
@@ -74,20 +76,14 @@ namespace BehaviourModule.Nodes
             }
 
             // Search in parent
-            Node node = this.parent;
-            while (node != null)
-            {
-                if (node.ClearData(key))
-                    return true;
+            if (this.parent == null)
+                return false;
 
-                node = node.parent;
-            }
-
-            return false;
+            return this.parent.ClearData(key);
         }
 
         #endregion
-    
+
         #region State
 
         public NodeState state = NodeState.NONE;
@@ -106,7 +102,7 @@ namespace BehaviourModule.Nodes
         /// Called when this node gets updated
         /// </summary>
         /// <returns>State of this node</returns>
-        protected virtual NodeState OnEvaluate() => NodeState.FAILURE;
+        protected abstract NodeState OnEvaluate();
 
         /// <summary>
         /// Resets the state of the node
@@ -117,10 +113,12 @@ namespace BehaviourModule.Nodes
             foreach (Node child in this)
                 child.Reset();
         }
-        
+
         #endregion
 
         #region Editor
+
+        public string Alias = null;
 
         /// <summary>
         /// Fetches the display name of the node for the editor
@@ -141,11 +139,11 @@ namespace BehaviourModule.Nodes
         protected Node GetParent() => this.parent?.GetParent();
 
         #endregion
-        
+
         #region Children
 
         private readonly List<Node> children = new();
-        
+
         /// <summary>
         /// Attaches the given nodes to this node
         /// </summary>
@@ -165,7 +163,7 @@ namespace BehaviourModule.Nodes
 
         /// <inheritdoc/>
         public IEnumerator<Node> GetEnumerator() => this.children.GetEnumerator();
-        
+
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
