@@ -22,7 +22,7 @@ namespace SkyModule
                 item.origin.Rotate(Vector3.up, item.factor * elapsed);
             }
 
-            offset += elapsed;// * this.factor;
+            offset += elapsed * this.factor / 100f;// * this.factor;
 
             dome.material.mainTextureOffset = new Vector2(offset, 0);
 
