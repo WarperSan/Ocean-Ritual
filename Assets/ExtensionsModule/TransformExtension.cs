@@ -9,7 +9,7 @@ namespace ExtensionsModule
         /// </summary>
         public static void LerpToTarget(this Transform transform, Transform target, float duration)
         {
-            if (target is null)
+            if (target == null)
                 return;
 
             // Lerp position
@@ -28,7 +28,7 @@ namespace ExtensionsModule
         public static float Distance(this Transform self, Transform target)
         {
             // If either is invalid, return 0
-            if (self is null || target is null)
+            if (self == null || target == null)
                 return 0;
 
             return Vector3.Distance(self.position, target.position);
