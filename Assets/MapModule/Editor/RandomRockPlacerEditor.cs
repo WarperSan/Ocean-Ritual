@@ -18,7 +18,7 @@ namespace MapModule
             
             if (referencePrefab != null)
             {
-                Debug.Log("Prefab de référence chargé avec succès : " + referencePrefab.name);
+                //Debug.Log("Prefab de référence chargé avec succès : " + referencePrefab.name);
             }
             else
             {
@@ -28,7 +28,7 @@ namespace MapModule
             rockPrefabs = Resources.LoadAll<GameObject>(RocksResourcesPath);
             if (rockPrefabs.Length > 0)
             {
-                Debug.Log("Prefabs de rochers chargés avec succès. Nombre de prefabs : " + rockPrefabs.Length);
+                //Debug.Log("Prefabs de rochers chargés avec succès. Nombre de prefabs : " + rockPrefabs.Length);
             }
             else
             {

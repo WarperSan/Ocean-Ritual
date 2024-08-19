@@ -1,3 +1,5 @@
+using BehaviourModule.Nodes.Generic;
+using BehaviourModule.Nodes.Operators;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -118,7 +120,20 @@ namespace BehaviourModule.Nodes
 
         #region Editor
 
-        public string Alias = null;
+        private string _alias = null;
+
+        public string GetAlias() => this._alias;
+
+        /// <summary>
+        /// Shorthand to set the alias of this node
+        /// </summary>
+        /// <param name="alias">New alias</param>
+        /// <returns>Node with the alias</returns>
+        public Node Alias(string alias)
+        {
+            this._alias = alias;
+            return this;
+        }
 
         /// <summary>
         /// Fetches the display name of the node for the editor
@@ -166,6 +181,38 @@ namespace BehaviourModule.Nodes
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+        #endregion
+
+        #region Shorthands
+
+        /// <summary>
+        /// Shorthand for inverting a node
+        /// </summary>
+        /// <returns>Inverted node</returns>
+        public Node Not() => new Inverter(this).Alias("NOT");
+
+        /// <summary>
+        /// Shorthand for checking if a key exists
+        /// </summary>
+        /// <param name="key">Key to check</param>
+        /// <typeparam name="T">Type of the data</typeparam>
+        /// <returns>Exits with <see cref="NodeState.SUCCESS"/> if the key exists, otherwise exits with <see cref="NodeState.FAILURE"></returns>
+        public static Node Exists<T>(string key) => new CallbackNode(
+            n => n.GetData<T>(key) != null 
+            ? NodeState.SUCCESS 
+            : NodeState.FAILURE
+        ).Alias($"Check for '{key}'");
+
+        /// <summary>
+        /// Shorthand for a random bool
+        /// </summary>
+        /// <returns>Exits with <see cref="NodeState.SUCCESS"/> 50% of the time, otherwise exits with <see cref="NodeState.FAILURE"></returns>
+        public static Node RandomBool() => new CallbackNode(
+            n => UnityEngine.Random.Range(0, 2) == 0 
+            ? NodeState.SUCCESS 
+            : NodeState.FAILURE
+        ).Alias("Random 50%");
 
         #endregion
     }

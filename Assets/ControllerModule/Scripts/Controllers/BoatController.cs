@@ -8,8 +8,11 @@ namespace ControllerModule.Controllers
     {
         #region Aboard
 
+        [Header("Aboard")]
+        [SerializeField]
+        private Transform aboardParent;
+
         private readonly List<Rigidbody> aboardRbs = new();
-        private readonly List<CharacterController> aboardCharacters = new();
 
         /// <summary>
         /// Updates the position of all the items aboard
@@ -23,14 +26,6 @@ namespace ControllerModule.Controllers
 
                 item.MovePosition(item.position + movement);
             }
-
-            foreach (CharacterController item in this.aboardCharacters)
-            {
-                if (item == null)
-                    continue;
-
-                item.Move(movement);
-            }
         }
 
         /// <summary>
@@ -39,14 +34,6 @@ namespace ControllerModule.Controllers
         private void UpdateAboardRotation(Vector3 rotation)
         {
             foreach (Rigidbody item in this.aboardRbs)
-            {
-                if (item == null)
-                    continue;
-
-                item.transform.Rotate(rotation);
-            }
-
-            foreach (CharacterController item in this.aboardCharacters)
             {
                 if (item == null)
                     continue;
@@ -206,7 +193,7 @@ namespace ControllerModule.Controllers
 
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
-                this.aboardCharacters.Add(cc);
+                other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
                 return;
             }
         }
@@ -223,7 +210,7 @@ namespace ControllerModule.Controllers
 
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
-                this.aboardCharacters.Remove(cc);
+                other.transform.SetParent(null);
                 return;
             }
         }

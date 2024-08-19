@@ -124,13 +124,13 @@ namespace ControllerModule.Controllers
             this.isGrounded = Physics.CheckSphere(
                 this.Feet.position, 
                 this.GroundCheckRadius, 
-                this.GroundLayers
+                this.GroundLayers,
+                QueryTriggerInteraction.Ignore
             );
             
             if (this.isGrounded && this.velocity.y < 0)
                 this.velocity.y = 0;
-                
-            this.velocity += Physics.gravity * elapsed;
+                this.velocity += Physics.gravity * elapsed;
             
             this._characterController.Move(this.velocity * elapsed);
         }

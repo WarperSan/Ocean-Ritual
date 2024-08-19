@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace BehaviourModule.Nodes.Generic
 {
     /// <summary>
@@ -19,6 +17,11 @@ namespace BehaviourModule.Nodes.Generic
         public CallbackNode(System.Func<Node, NodeState> callback)
         {
             this.CallBack = callback;
+        }
+
+        public CallbackNode(System.Func<NodeState> callback)
+        {
+            this.CallBack = n => callback?.Invoke() ?? NodeState.FAILURE;
         }
 
         #endregion

@@ -2,6 +2,7 @@ using BehaviourModule.Nodes;
 using Codice.CM.Common.Merge;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Tree = BehaviourModule.Trees.Tree;
@@ -13,11 +14,14 @@ namespace BehaviourModule
         [MenuItem("Window/Tree Visualizer")]
         public static void ShowWindow() => GetWindow<TreeVisualizer>("Tree Visualizer");
 
-        public void Update() => this.Repaint();
+        public void Update()
+        {
+            if (Application.isPlaying)
+                this.Repaint();
+        }
 
         private void OnGUI()
         {
-            this.CheckForNew();
 
             this.useTypeName = GUILayout.Toggle(this.useTypeName, new GUIContent(
                 "Use Types",
@@ -28,6 +32,29 @@ namespace BehaviourModule
                 "Recalculate on hide",
                 "Recalculates the visualizer when a node is toggled"
             ));
+
+            this.useSelection = GUILayout.Toggle(this.useSelection, new GUIContent(
+                "Use selection",
+                "Shows the tree selected in the Hierarchy"
+            ));
+
+            if (!this.useSelection)
+            {
+                GameObject[] trees = FindObjectsByType<Tree>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID).Select(t => t.gameObject).ToArray();
+                this.treeSelected = EditorGUILayout.Popup("Tree selection", treeSelected, trees.Select(o => o.name).ToArray());
+
+                if (this.treeSelected < 0 || this.treeSelected >= trees.Length)
+                    this.treeSelected = 0;
+
+                if (trees.Length <= 0)
+                    return;
+
+                this.CheckForNew(trees[this.treeSelected]);
+            }
+            else
+            {
+                this.CheckForNew(Selection.activeGameObject);
+            }
 
             // Skip if invalid
             if (this.currentTree == null)
@@ -40,18 +67,22 @@ namespace BehaviourModule
         private bool useTypeName;
         private bool recalculateOnHide = true;
 
+        private bool useSelection = true;
+        private int treeSelected = -1;
+
         #region Current Tree
 
         private Tree currentTree;
         private CalculationNode root;
 
-        private void CheckForNew()
+        private void CheckForNew(GameObject target)
         {
-            GameObject target = Selection.activeGameObject;
-
             // If invalid, skip
             if (target == null)
+            {
+                this.currentTree = null;
                 return;
+            }
 
             // If no tree, skip
             if (!target.TryGetComponent(out Tree tree))
@@ -77,7 +108,6 @@ namespace BehaviourModule
         {
             // Reset values
             this.minPos = this.maxPos = Vector2.zero;
-            this.occupied.Clear();
 
             // Set up tree
             this.CalculatePositions(this.root, 0, 0);
@@ -89,7 +119,6 @@ namespace BehaviourModule
 
         private Vector2 minPos;
         private Vector2 maxPos;
-        private List<Vector2> occupied = new();
 
         private class CalculationNode
         {
@@ -135,8 +164,6 @@ namespace BehaviourModule
             node.x = _x + ((offset - 1) / 2f);
             node.y = _y;
 
-            this.occupied.Add(new Vector2(_x, _y));
-
             if (this.minPos.x > node.x)
                 this.minPos.x = node.x;
 
@@ -169,7 +196,7 @@ namespace BehaviourModule
             if (this.useTypeName)
                 return node.GetType().Name;
 
-            return node.Alias ?? node.GetText();
+            return node.GetAlias() ?? node.GetText();
         }
 
         /// <summary>
@@ -215,30 +242,28 @@ namespace BehaviourModule
         /// </summary>
         private void InitializeStyles()
         {
-            this.nodeStyle ??= new GUIStyle(GUI.skin.box)
+            this.nodeStyle = new GUIStyle(GUI.skin.box)
             {
-                normal = { textColor = Color.white }, alignment = TextAnchor.MiddleCenter
+                normal = { textColor = Color.white },
+                alignment = TextAnchor.MiddleCenter
             };
 
-            if (this.visualizerStyle is null)
+            this.visualizerStyle = new GUIStyle(GUI.skin.box)
             {
-                this.visualizerStyle = new GUIStyle(GUI.skin.box)
+                normal = new GUIStyleState
                 {
-                    normal = new GUIStyleState
-                    {
-                        background = Texture2D.whiteTexture, // Fallback, will be overwritten
-                        textColor = Color.white
-                    },
-                    padding = new RectOffset(0, 0, 0, 0),
-                    margin = new RectOffset(0, 0, 0, 0)
-                };
+                    background = Texture2D.whiteTexture, // Fallback, will be overwritten
+                    textColor = Color.white
+                },
+                padding = new RectOffset(0, 0, 0, 0),
+                margin = new RectOffset(0, 0, 0, 0)
+            };
 
-                // Set the dark background color
-                var bgTexture = new Texture2D(1, 1);
-                bgTexture.SetPixel(0, 0, new Color(0.15f, 0.15f, 0.15f, 1f)); // Dark gray background
-                bgTexture.Apply();
-                this.visualizerStyle.normal.background = bgTexture;
-            }
+            // Set the dark background color
+            var bgTexture = new Texture2D(1, 1);
+            bgTexture.SetPixel(0, 0, new Color(0.15f, 0.15f, 0.15f, 1f)); // Dark gray background
+            bgTexture.Apply();
+            this.visualizerStyle.normal.background = bgTexture;
         }
 
         /// <summary>
@@ -304,9 +329,6 @@ namespace BehaviourModule
 
             // Stylize the node
             if (this.nodeStyle is null)
-                this.InitializeStyles();
-
-            if (this.nodeStyle is null)
                 return;
 
             this.nodeStyle.normal.textColor = this.GetNodeColor(node);
@@ -330,8 +352,7 @@ namespace BehaviourModule
         /// </summary>
         private void DrawVisualizer()
         {
-            if (this.visualizerStyle is null)
-                this.InitializeStyles();
+            this.InitializeStyles();
 
             float height = this.position.height;
 

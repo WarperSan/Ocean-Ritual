@@ -24,6 +24,9 @@ namespace BehaviourModule.Nodes.Generic
         /// <inheritdoc/>
         protected override NodeState GetState(float distance) => distance >= this._distance ? NodeState.SUCCESS : NodeState.FAILURE;
 
+        /// <inheritdoc/>
+        public override string GetText() => "Greater distance";
+
         #endregion
     }
 }
