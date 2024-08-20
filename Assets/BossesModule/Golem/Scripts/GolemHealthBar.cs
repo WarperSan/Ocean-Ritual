@@ -29,7 +29,7 @@ namespace BossesModule.Golem
 
             if (this.health <= 0)
             {
-                Debug.Log("GOLEM DIED"); // <---- ICI ANTHONY!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                QuestManager.SomeoneDeath(this.name);
             }
         }
 

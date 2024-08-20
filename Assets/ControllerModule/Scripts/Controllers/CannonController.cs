@@ -26,14 +26,8 @@ namespace ControllerModule.Controllers
         private Vector3 angles;
         private Vector2 direction;
 
-        public Transform handles;
-        private Vector3 handleAngles;
-
         public LookController handlesLC;
         public LookController cannonLC;
-
-        public Transform cannon;
-        private Vector3 cannonAngles;
 
         /// <summary>
         /// Updates the rotation of the cannon
@@ -43,18 +37,8 @@ namespace ControllerModule.Controllers
         {
             direction = Vector3.Scale(direction, this.turningSpeed);
 
-            Debug.Log(direction);
-
             this.handlesLC.UpdateRotation(new Vector2(direction.y, 0), Time.deltaTime);
             this.cannonLC.UpdateRotation(new Vector2(-direction.x, 0), Time.deltaTime);
-
-            // this.angles = this.transform.eulerAngles.ClampRotation(
-            //     this.angles,
-            //     Vector3.Scale(direction, this.turningSpeed),
-            //     this.maxAnglesSelf,
-            //     this.clampAxisSelf,
-            //     this.transform.parent != null ? this.transform.parent.eulerAngles : null
-            // );
         }
 
         #endregion

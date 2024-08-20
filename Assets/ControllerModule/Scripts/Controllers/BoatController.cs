@@ -81,7 +81,7 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down")]
         private float movementDeceleration = 0.005f;
 
-        [SerializeField, Min(0), Tooltip("Determines the offset of the boat from the wave height")]
+        [SerializeField, Tooltip("Determines the offset of the boat from the wave height")]
         private float waveOffset = 0;
 
         private Vector3 targetPosition;
@@ -102,7 +102,7 @@ namespace ControllerModule.Controllers
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
-            this.targetPosition.y = 0; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
+            this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
