@@ -6,7 +6,7 @@ namespace MapModule
     [InitializeOnLoad]
     public class RandomRockPlacerEditor
     {
-        private const string ReferencePath = "Assets/MapModule/Prefabs/Rock.prefab";
+        private const string ReferencePath = "Assets/Map/Prefabs/Rock.prefab";
         private const string RocksResourcesPath = "MapModule/Rocks";
         
         private static GameObject referencePrefab;
