@@ -59,9 +59,11 @@ public static class QuestInterface
             var conditionNames = quest.ConditionQuest.condition
                 .Select(cond => cond.name)
                 .ToList();
+            string text = string.Join(", ", conditionNames);
 
+            
             // Retourne les noms des conditions comme une chaîne de caractères séparée par des virgules
-            return string.Join(", ", conditionNames);
+            return  "Allez parlé à "+ text;
         }
         else
         {
