@@ -1201,6 +1201,37 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &5979746434282291451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1035515871219090602}
+  m_Layer: 0
+  m_Name: Feet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1035515871219090602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5979746434282291451}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7722397683882739964}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6027453007459562942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,7 +1319,7 @@ GameObject:
   - component: {fileID: 1452363097933179278}
   - component: {fileID: 9021505828091235812}
   - component: {fileID: 2833290772699016061}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1333,10 +1364,10 @@ MonoBehaviour:
   cursor: {fileID: 1728905337464703902}
   interactRange: 2.5
   movementSpeed: 10
-  Feet: {fileID: 0}
+  Feet: {fileID: 1035515871219090602}
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 3087007825
   GroundCheckRadius: 0.2
 --- !u!114 &9021505828091235812
 MonoBehaviour:
@@ -1739,5 +1770,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 291012474125879459}
+  - {fileID: 1035515871219090602}
   m_Father: {fileID: 6283901322987064102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
