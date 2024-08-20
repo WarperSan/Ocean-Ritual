@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
        
                 b.onClick.AddListener(() => ChangerScene(temporaire));
 
-           
+            Debug.Log(b);
             compteur++;
         }
     }
@@ -33,6 +33,7 @@ public class MenuManager : MonoBehaviour
     
     public void ChangerScene(int i)
     {
+        Debug.Log("click");
         SceneManager.LoadScene(i);
     }
     
