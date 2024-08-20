@@ -83,6 +83,9 @@ namespace ControllerModule.Controllers
 
         #region MonoBehaviour
 
+        /// <inheritdoc cref="Start" />
+        private void Start() => this.camRotation = this.cameraAnchor.localEulerAngles;
+
 #if UNITY_EDITOR
         /// <inheritdoc cref="OnValidate" />
         private void OnValidate()
