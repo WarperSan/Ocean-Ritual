@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Xml;
 using System.Linq;
 public static class QuestManager
 {
@@ -24,7 +22,7 @@ public static class QuestManager
             // Convertit le fichier JSON en QuestData
             QuestData questData = JsonUtility.FromJson<QuestData>(questFile.text);
 
-            // Ajoute les quêtes à la liste des quêtes
+            // Ajoute les quï¿½tes ï¿½ la liste des quï¿½tes
             foreach (Quest quest in questData.quests)
             {
                 quests[quest.ID] = quest;
@@ -41,7 +39,7 @@ public static class QuestManager
         // Charge tous les fichiers JSON dans le dossier Resources/Quest
         TextAsset[] questFiles = Resources.LoadAll<TextAsset>(DataQuestPath);
 
-        // Vérifie si des fichiers ont été trouvés
+        // Vï¿½rifie si des fichiers ont ï¿½tï¿½ trouvï¿½s
         if (questFiles == null || questFiles.Length == 0)
         {
             Debug.LogWarning("No quest files found in the specified path.");
@@ -53,7 +51,7 @@ public static class QuestManager
         {
             QuestData questData = JsonUtility.FromJson<QuestData>(questFiles[0].text);
 
-            // Vérifie si des quêtes ont été chargées
+            // Vï¿½rifie si des quï¿½tes ont ï¿½tï¿½ chargï¿½es
             if (questData == null || questData.quests == null || questData.quests.Count == 0)
             {
                 Debug.LogWarning("No quests found in the loaded quest data.");
@@ -78,7 +76,7 @@ public static class QuestManager
     {
         string directoryPath = Path.Combine(Application.dataPath, "Resources", DataQuestPath);
 
-        // Crée le dossier s'il n'existe pas
+        // Crï¿½e le dossier s'il n'existe pas
         if (!Directory.Exists(directoryPath))
         {
             Directory.CreateDirectory(directoryPath);
@@ -101,7 +99,7 @@ public static class QuestManager
         if (quests.ContainsKey(questId))
         {
             Quest quest = quests[questId];
-            // Logique pour démarrer la quête
+            // Logique pour dï¿½marrer la quï¿½te
             Debug.Log($"Quest started: {quest.Name}");
         }
         else
@@ -115,7 +113,7 @@ public static class QuestManager
         if (quests.ContainsKey(questId))
         {
             Quest quest = quests[questId];
-            // Logique pour compléter la quête
+            // Logique pour complï¿½ter la quï¿½te
             Debug.Log($"Quest completed: {quest.Name}");
         }
         else
@@ -201,16 +199,16 @@ public static class QuestManager
     private static List<Quest> ListQuestToChek = new();
     static public bool AddQuestToWatch(Quest questToWatch)
     {
-        // Vérifie si la quête existe déjà dans la liste
+        // Vï¿½rifie si la quï¿½te existe dï¿½jï¿½ dans la liste
         if (!ListQuestToChek.Any(q => q.ID == questToWatch.ID))
         {
             ListQuestToChek.Add(questToWatch);
-           // Debug.Log($"Quête {questToWatch.Name} (ID: {questToWatch.ID}) ajoutée à la liste de vérification.");
+           // Debug.Log($"Quï¿½te {questToWatch.Name} (ID: {questToWatch.ID}) ajoutï¿½e ï¿½ la liste de vï¿½rification.");
             return true;
         }
         else
         {
-            Debug.Log($"La quête {questToWatch.Name} est déjà dans la liste de vérification.");
+            Debug.Log($"La quï¿½te {questToWatch.Name} est dï¿½jï¿½ dans la liste de vï¿½rification.");
             return false;
         }
     }
@@ -218,31 +216,31 @@ public static class QuestManager
 
     static public void SomeoneDeath(string mobName)
     {
-        // Filtrer les quêtes de type 'Extermination'
+        // Filtrer les quï¿½tes de type 'Extermination'
         var questsToUpdate = ListQuestToChek
             .Where(quest => quest.ConditionQuest.typeOfTheQuest == typeOfQuest.Extermination)
             .ToList();
 
-        // Parcourir les quêtes filtrées
+        // Parcourir les quï¿½tes filtrï¿½es
         foreach (Quest quest in questsToUpdate)
         {
             if (!quest.QuestComplet)
             {
-                // Parcourir chaque condition de la quête
+                // Parcourir chaque condition de la quï¿½te
                 foreach (var cond in quest.ConditionQuest.condition)
                 {
 
                     if (cond.name == mobName)
                     {
-                        // Incrémenter quantiteInProgress
+                        // Incrï¿½menter quantiteInProgress
                         cond.quantiteInProgress++;
 
-                        // Vérifier si la condition est remplie
+                        // Vï¿½rifier si la condition est remplie
                         if (cond.quantiteInProgress >= cond.quantite)
                         {
                             quest.QuestComplet = true;
                            
-                            //Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète tout les mob sont mort.");
+                            //Debug.Log($"La quï¿½te {quest.Name} (ID: {quest.ID}) est maintenant complï¿½te tout les mob sont mort.");
                         }
                     }
                 }
@@ -263,25 +261,25 @@ public static class QuestManager
     static public void SomeoneTalking(string PNJName)
     {
       
-        // Debug.Log("Je parle à " + PNJName);
+        // Debug.Log("Je parle ï¿½ " + PNJName);
 
-        // Filtrer les quêtes de type 'Discution'
+        // Filtrer les quï¿½tes de type 'Discution'
         var questsToUpdate = ListQuestToChek
             .Where(quest => quest.ConditionQuest.typeOfTheQuest == typeOfQuest.Discution)
             .ToList();
        // Debug.Log(questsToUpdate.Count);
-        // Parcourir les quêtes filtrées
+        // Parcourir les quï¿½tes filtrï¿½es
         foreach (Quest quest in questsToUpdate)
         {
             
-            // Vérifier chaque condition de la quête
+            // Vï¿½rifier chaque condition de la quï¿½te
             if (quest.ConditionQuest.condition
                 .Any(cond => cond.name == PNJName))
             {
-                // Si le nom correspond, marquer la quête comme complète
+                // Si le nom correspond, marquer la quï¿½te comme complï¿½te
                 quest.QuestComplet = true;
                 QuestInterface.QuestToEarnReward(quest);
-                Debug.Log($"La quête {quest.Name} (ID: {quest.ID}) est maintenant complète.");
+                Debug.Log($"La quï¿½te {quest.Name} (ID: {quest.ID}) est maintenant complï¿½te.");
             }
          
         }
@@ -334,24 +332,24 @@ public static class QuestManager
 
             if (playerScript == null)
             {
-                Debug.LogError("Le script 'Player' n'a pas été trouvé sur l'objet.");
+                Debug.LogError("Le script 'Player' n'a pas ï¿½tï¿½ trouvï¿½ sur l'objet.");
             }
         }
         else
         {
-            Debug.LogError("Aucun objet avec le tag 'Player' n'a été trouvé.");
+            Debug.LogError("Aucun objet avec le tag 'Player' n'a ï¿½tï¿½ trouvï¿½.");
         }
     }
     private static void RemoveQuest(Quest removingQuest)
     {
-        // Enlever la quête des quêtes en cours
+        // Enlever la quï¿½te des quï¿½tes en cours
         if (ListQuestToChek.Contains(removingQuest))
         {
             ListQuestToChek.Remove(removingQuest);
         }
         else
         {
-            Debug.LogWarning("La quête à supprimer n'est pas dans la liste des quêtes en cours.");
+            Debug.LogWarning("La quï¿½te ï¿½ supprimer n'est pas dans la liste des quï¿½tes en cours.");
         }
     }
 

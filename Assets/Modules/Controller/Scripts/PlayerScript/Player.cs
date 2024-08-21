@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,23 +37,23 @@ public class Player : MonoBehaviour
     }
     public void RemoveQuest(Quest removingQuest)
     {
-        // Enlever la quête des quêtes en cours
+        // Enlever la quï¿½te des quï¿½tes en cours
         if (questsInProgress.Contains(removingQuest))
         {
             questsInProgress.Remove(removingQuest);
         }
         else
         {
-            Debug.LogWarning("La quête à supprimer n'est pas dans la liste des quêtes en cours.");
+            Debug.LogWarning("La quï¿½te ï¿½ supprimer n'est pas dans la liste des quï¿½tes en cours.");
         }
     }
 
     public void MoveQuestToComplete(Quest completedQuest)
     {
 
-        // Ajouter la quête à la liste des quêtes complétées
+        // Ajouter la quï¿½te ï¿½ la liste des quï¿½tes complï¿½tï¿½es
         QuestComplet.Add(completedQuest);
-        // Enlever la quête de la liste des quêtes en cours
+        // Enlever la quï¿½te de la liste des quï¿½tes en cours
         RemoveQuest(completedQuest);
        QuestInterface.QuestToDelete(completedQuest);
 

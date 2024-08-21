@@ -1,4 +1,3 @@
-using ExtensionsModule;
 using ProjectilesModule.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;

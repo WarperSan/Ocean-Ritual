@@ -1,17 +1,16 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class PNJManager
 {
     private static Player playerScript;
 
-    // Méthode statique pour initialiser le script Player
+    // Mï¿½thode statique pour initialiser le script Player
     static PNJManager()
     {
         GetPlayerScript();
     }
 
-    // Méthode privée pour obtenir le script Player de l'objet avec le tag "Player"
+    // Mï¿½thode privï¿½e pour obtenir le script Player de l'objet avec le tag "Player"
     private static void GetPlayerScript()
     {
         GameObject playerObject = GameObject.FindWithTag("Player");
@@ -22,16 +21,16 @@ public static class PNJManager
 
             if (playerScript == null)
             {
-                Debug.LogError("Le script 'Player' n'a pas été trouvé sur l'objet.");
+                Debug.LogError("Le script 'Player' n'a pas ï¿½tï¿½ trouvï¿½ sur l'objet.");
             }
         }
         else
         {
-            Debug.LogError("Aucun objet avec le tag 'Player' n'a été trouvé.");
+            Debug.LogError("Aucun objet avec le tag 'Player' n'a ï¿½tï¿½ trouvï¿½.");
         }
     }
 
-    // Méthode pour donner une quête au joueur
+    // Mï¿½thode pour donner une quï¿½te au joueur
     public static void GiveQuestToPlayer(int idQuest)
     {
         if (playerScript == null)
@@ -46,19 +45,19 @@ public static class PNJManager
             if (quest != null)
             {
                 playerScript.AddQuest(quest);
-                Debug.Log($"Quest {quest.Name} (ID: {quest.ID}) donnée au joueur.");
+                Debug.Log($"Quest {quest.Name} (ID: {quest.ID}) donnï¿½e au joueur.");
             }
             else
             {
-                Debug.LogError($"La quête avec l'ID {idQuest} n'a pas été trouvée.");
+                Debug.LogError($"La quï¿½te avec l'ID {idQuest} n'a pas ï¿½tï¿½ trouvï¿½e.");
             }
         }
         else
         {
-            Debug.LogError("Le joueur n'a pas été trouvé pour donner la quête.");
+            Debug.LogError("Le joueur n'a pas ï¿½tï¿½ trouvï¿½ pour donner la quï¿½te.");
         }
     }
-    // Méthode pour donner une quête au joueur
+    // Mï¿½thode pour donner une quï¿½te au joueur
     public static void GiveQuestToPlayer(Quest quest)
     {
         if (playerScript == null)
@@ -82,7 +81,7 @@ public static class PNJManager
         }
         else
         {
-            Debug.LogError("Le joueur n'a pas été trouvé pour donner la quête.");
+            Debug.LogError("Le joueur n'a pas ï¿½tï¿½ trouvï¿½ pour donner la quï¿½te.");
         }
     }
     public static void GiveNameToQUestManager(string name)
