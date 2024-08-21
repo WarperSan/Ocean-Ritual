@@ -6,8 +6,8 @@ namespace MapModule
     [InitializeOnLoad]
     public class RandomRockPlacerEditor
     {
-        private const string ReferencePath = "Assets/Map/Prefabs/Rock.prefab";
-        private const string RocksResourcesPath = "MapModule/Rocks";
+        private const string ReferencePath = "Assets/Modules/Map/Prefabs/Rock.prefab";
+        private const string RocksResourcesPath = "Map/Rocks";
         
         private static GameObject referencePrefab;
         private static GameObject[] rockPrefabs;
@@ -32,7 +32,7 @@ namespace MapModule
             }
             else
             {
-                Debug.LogError("Aucun prefab trouvé dans le dossier Resources/Rock");
+                Debug.LogError($"Aucun prefab trouvé dans le dossier {RocksResourcesPath}");
             }
 
             // Hook into the scene's drag-and-drop event
