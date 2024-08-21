@@ -20,53 +20,20 @@ namespace BehaviourModule
 
         private void OnGUI()
         {
-
-            this.useTypeName = GUILayout.Toggle(this.useTypeName, new GUIContent(
-                "Use Types",
-                "Shows the type of the node instead of their display name"
-            ));
-
-            this.recalculateOnHide = GUILayout.Toggle(this.recalculateOnHide, new GUIContent(
-                "Recalculate on hide",
-                "Recalculates the visualizer when a node is toggled"
-            ));
-
-            this.useSelection = GUILayout.Toggle(this.useSelection, new GUIContent(
-                "Use selection",
-                "Shows the tree selected in the Hierarchy"
-            ));
-
-            if (!this.useSelection)
-            {
-                GameObject[] trees = FindObjectsByType<Tree>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID).Select(t => t.gameObject).ToArray();
-                this.treeSelected = EditorGUILayout.Popup("Tree selection", treeSelected, trees.Select(o => o.name).ToArray());
-
-                if (this.treeSelected < 0 || this.treeSelected >= trees.Length)
-                    this.treeSelected = 0;
-
-                if (trees.Length <= 0)
-                    return;
-
-                this.CheckForNew(trees[this.treeSelected]);
-            }
-            else
-            {
-                this.CheckForNew(Selection.activeGameObject);
-            }
-
-            // Skip if invalid
-            if (this.currentTree == null)
-                return;
-
-            // Tree visualizer
+            this.DrawOptions();
             this.DrawVisualizer();
         }
+
+        private void OnSelectionChange() => this.Repaint();
 
         private bool useTypeName;
         private bool recalculateOnHide = true;
 
         private bool useSelection = true;
+        private List<GameObject> trees = new();
         private int treeSelected = -1;
+
+        private bool useSquaredLinks = true;
 
         #region Current Tree
 
@@ -117,26 +84,7 @@ namespace BehaviourModule
 
         private Vector2 minPos;
         private Vector2 maxPos;
-
-        private class CalculationNode
-        {
-            public float x;
-            public float y;
-            public Node node;
-            public readonly List<CalculationNode> children = new();
-            public bool hideChildren;
-
-            public static CalculationNode Create(Node node)
-            {
-                var calcNode = new CalculationNode { node = node };
-
-                // Add children
-                foreach (Node child in node)
-                    calcNode.children.Add(Create(child));
-
-                return calcNode;
-            }
-        }
+        private Vector3 posOffset;
 
         private float CalculatePositions(CalculationNode node, float _x, float _y)
         {
@@ -178,6 +126,10 @@ namespace BehaviourModule
 
         #region Visualizer
 
+        private const float NODE_WIDTH = 100f;
+        private const float NODE_HEIGHT = 50f;
+        private const float NODE_MARGIN = 25f;
+
         /// <summary>
         /// Fetches the text to display for a node
         /// </summary>
@@ -204,10 +156,11 @@ namespace BehaviourModule
         /// <param name="y">Y position of the node</param>
         /// <returns>Canvas position of the node</returns>
         // ReSharper disable once MemberCanBeMadeStatic.Local
-        private Vector3 GetNodePosition(float x, float y) => new(
-            (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
-            (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
-        );
+        private Vector3 GetNodePosition(float x, float y) => new Vector3()
+        {
+            x = (x - this.root.x) * (NODE_WIDTH + NODE_MARGIN),
+            y = (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
+        } + this.posOffset;
 
         /// <summary>
         /// Fetches the color of the given node
@@ -225,10 +178,6 @@ namespace BehaviourModule
         #endregion
 
         #region Draw
-
-        private const float NODE_WIDTH = 100f;
-        private const float NODE_HEIGHT = 50f;
-        private const float NODE_MARGIN = 25f;
 
         private GUIStyle nodeStyle;
         private GUIStyle visualizerStyle;
@@ -276,10 +225,30 @@ namespace BehaviourModule
 
             Handles.color = this.GetNodeColor(child.node);
 
-            if (child.hideChildren)
-                Handles.DrawDottedLine(pos1, pos2, 0.2f);
+            List<Vector3> positions = new();
+
+            if (this.useSquaredLinks)
+            {
+                float middleY = pos1.y + (NODE_MARGIN / 2f);
+
+                positions.Add(pos1);
+                positions.Add(new Vector3(pos1.x, middleY));
+                positions.Add(new Vector3(pos2.x, middleY));
+                positions.Add(pos2);
+            }
             else
-                Handles.DrawLine(pos1, pos2);
+            {
+                positions.Add(pos1);
+                positions.Add(pos2);
+            }
+
+            for (int i = 1; i < positions.Count; i++)
+            {
+                if (child.hideChildren)
+                    Handles.DrawDottedLine(positions[i - 1], positions[i], 0.2f);
+                else
+                    Handles.DrawLine(positions[i - 1], positions[i]);
+            }
         }
 
         /// <summary>
@@ -350,6 +319,8 @@ namespace BehaviourModule
         /// </summary>
         private void DrawVisualizer()
         {
+            bool hasTree = this.currentTree != null;
+
             this.InitializeStyles();
 
             float height = this.position.height;
@@ -358,8 +329,16 @@ namespace BehaviourModule
 
             GUI.Box(scrollViewRect, GUIContent.none, this.visualizerStyle);
 
-            Vector3 viewSize =
-                this.GetNodePosition(this.maxPos.x - this.minPos.x + 1, this.maxPos.y - this.minPos.y + 1);
+            Vector3 viewSize = scrollViewRect.size;
+            
+            if (hasTree)
+            {
+                Vector3 max = this.GetNodePosition(this.maxPos.x, this.maxPos.y);
+                Vector3 min = this.GetNodePosition(this.minPos.x, this.minPos.y);
+                min.y += NODE_MARGIN * 2;
+
+                viewSize = max + min;
+            }
 
             this.visualizerScrollPos = GUI.BeginScrollView(
                 scrollViewRect,
@@ -367,9 +346,90 @@ namespace BehaviourModule
                 new Rect(0, 0, viewSize.x, viewSize.y)
             );
 
-            this.DrawWithChildren(this.root);
+            if (hasTree)
+            {
+                this.posOffset.x = (this.position.width / 2f) - (NODE_WIDTH / 2f);
+                this.DrawWithChildren(this.root);
+            }
+            else
+            {
+                GUI.Label(new Rect(0, 0, viewSize.x, viewSize.y), "No Tree Selected", new GUIStyle {
+                    alignment = TextAnchor.MiddleCenter,
+                    normal = {
+                        textColor = new Color(1f, 0.4f, 0.7f)
+                    }
+                });
+            }
 
             GUI.EndScrollView();
+        }
+
+        /// <summary>
+        /// Draws the options of the visualizer
+        /// </summary>
+        private void DrawOptions()
+        {
+            GUILayout.Space(5f);
+            GUILayout.Label(new GUIContent(
+                "Visual",
+                "Options that only change the apparence of the visualizer"
+            ), EditorStyles.boldLabel);
+
+            this.useTypeName = GUILayout.Toggle(this.useTypeName, new GUIContent(
+                "Use Types",
+                "Shows the type of the node instead of their display name"
+            ));
+
+            this.useSquaredLinks = GUILayout.Toggle(this.useSquaredLinks, new GUIContent(
+                "Use Squared Links",
+                "Makes the line between nodes square to ease the reading"
+            ));
+
+            GUILayout.Space(5f);
+            GUILayout.Label(new GUIContent(
+                "Compute",
+                "Options that change how to the visualizer behaves"
+            ), EditorStyles.boldLabel);
+
+            this.recalculateOnHide = GUILayout.Toggle(this.recalculateOnHide, new GUIContent(
+                "Recalculate on hide",
+                "Recalculates the visualizer when a node is toggled"
+            ));
+
+            this.useSelection = GUILayout.Toggle(this.useSelection, new GUIContent(
+                "Use selection",
+                "Shows the tree selected in the Hierarchy"
+            ));
+
+            if (!this.useSelection)
+            {
+                GUILayout.BeginHorizontal();
+
+                this.treeSelected = EditorGUILayout.Popup("Tree selection", this.treeSelected, this.trees.Select(o => o.name).ToArray());
+
+                if (GUILayout.Button(new GUIContent("Scan", "Fetches all the trees in the scene"), GUILayout.Width(50)))
+                {
+                    GameObject cur = null;
+                    
+                    if (this.treeSelected >= 0 && this.treeSelected < this.trees.Count)
+                        cur = this.trees[this.treeSelected];
+
+                    this.trees = FindObjectsByType<Tree>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID).Select(t => t.gameObject).ToList();
+                    this.treeSelected = this.trees.FindIndex(c => c == cur);
+
+                }
+
+                GUILayout.EndHorizontal();
+
+                if (this.treeSelected < 0 || this.treeSelected >= this.trees.Count)
+                    return;
+
+                this.CheckForNew(this.trees[this.treeSelected]);
+            }
+            else
+            {
+                this.CheckForNew(Selection.activeGameObject);
+            }
         }
 
         #endregion

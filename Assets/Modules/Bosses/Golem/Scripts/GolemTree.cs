@@ -64,7 +64,7 @@ namespace BossesModule.Golem
 
             Sequence attackReset = new();
             attackReset += this.SetAttackCooldown();
-            attackReset += new CallbackNode(_ => this.throwAnim.ResetAnim(), NodeState.SUCCESS);
+            attackReset += new CallbackNode(_ => this.throwAnim.ResetAnim(), NodeState.SUCCESS).Alias("Reset Attack Animation");
 
             attackSequence += attackReset.Alias("Attack Reset");
 
