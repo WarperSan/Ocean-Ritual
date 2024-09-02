@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+#nullable enable
+
 [System.Serializable]
 public class Quest
 {
@@ -15,7 +17,7 @@ public class Quest
 
     // Constructeur pour initialiser les membres de la classe Quest
     public Quest(int id, string name, string questGiver, string description, ConditionQuest ConditionQuest ,Reward reward,
-        List<Hint>? HintList = null, string questConfirmer = null, bool QuestComplett = false)
+        List<Hint>? HintList = null, string? questConfirmer = null, bool QuestComplett = false)
     {
         ID = id;
         QuestComplet = QuestComplett;
