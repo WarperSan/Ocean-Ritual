@@ -1,10 +1,11 @@
+using ControllerModule.Controllers.Interfaces;
 using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ControllerModule.Controllers
 {
-    public class BoatController : Controller
+    public class BoatController : Controller, IMovable
     {
         #region Aboard
 
@@ -140,12 +141,7 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-        /// <inheritdoc/>
-        public override void OnMove(Vector2 direction)
-        {
-            //this.targetWheel = direction;
-            this.direction = direction;
-        }
+        
 
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
@@ -214,6 +210,13 @@ namespace ControllerModule.Controllers
                 return;
             }
         }
+
+        #endregion
+
+        #region IMovable
+
+        /// <inheritdoc/>
+        public void OnMove(Vector2 direction) => this.direction = direction;
 
         #endregion
     }

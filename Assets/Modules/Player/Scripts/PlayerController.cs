@@ -1,3 +1,4 @@
+using ControllerModule.Controllers.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ namespace ControllerModule.Controllers
     /// Controller that manages how the player behaves
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : Controller
+    public class PlayerController : Controller, IMovable, IFirable
     {
         #region Cursor 
 
@@ -27,7 +28,7 @@ namespace ControllerModule.Controllers
         /// <summary>
         /// Updates the cursor depending on the possible interactions
         /// </summary>
-        private void UpdateCursor() 
+        private void UpdateCursor()
         {
             // If cursor invalid, skip
             if (this.cursor == null)
@@ -86,11 +87,11 @@ namespace ControllerModule.Controllers
                 return;
 
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
-            
+
             // Modify the direction
             moveDir.y = 0;
             moveDir = moveDir.normalized * speed;
-            
+
             // Move the character controller
             this._characterController.Move(moveDir * elapsed);
         }
@@ -122,16 +123,16 @@ namespace ControllerModule.Controllers
                 return;
 
             this.isGrounded = Physics.CheckSphere(
-                this.Feet.position, 
-                this.GroundCheckRadius, 
+                this.Feet.position,
+                this.GroundCheckRadius,
                 this.GroundLayers,
                 QueryTriggerInteraction.Ignore
             );
-            
+
             if (this.isGrounded && this.velocity.y < 0)
                 this.velocity.y = 0;
-                this.velocity += Physics.gravity * elapsed;
-            
+            this.velocity += Physics.gravity * elapsed;
+
             this._characterController.Move(this.velocity * elapsed);
         }
 
@@ -158,19 +159,6 @@ namespace ControllerModule.Controllers
         }
 
         /// <inheritdoc/>
-        public override void OnMove(Vector2 dir) => this.direction = dir;
-
-        /// <inheritdoc/>
-        public override void OnFireStart() 
-        {
-            // If eyes invalid, skip
-            if (this.Eyes == null)
-                return;
-
-            Interfaces.IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
-        }
-
-        /// <inheritdoc/>
         protected override void OnSwitchIn()
         {
             // Update cursor
@@ -188,6 +176,30 @@ namespace ControllerModule.Controllers
             this.SetCursor(false);
             SetCursorLock(false);
         }
+
+        #endregion
+
+        #region IMovable
+
+        /// <inheritdoc/>
+        public void OnMove(Vector2 dir) => this.direction = dir;
+
+        #endregion
+
+        #region IFirable
+
+        /// <inheritdoc/>
+        public void OnFireStart()
+        {
+            // If eyes invalid, skip
+            if (this.Eyes == null)
+                return;
+
+            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
+        }
+
+        /// <inheritdoc/>
+        public void OnFireEnd() { }
 
         #endregion
 

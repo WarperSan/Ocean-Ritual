@@ -1,3 +1,4 @@
+using ControllerModule.Controllers.Interfaces;
 using ProjectilesModule.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,7 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Controller that manages how the cannon behaves
     /// </summary>
-    public class CannonController : Controller
+    public class CannonController : Controller, IMovable, IFirable
     {
         #region Rotation
 
@@ -176,20 +177,6 @@ namespace ControllerModule.Controllers
         #region Controller
 
         /// <inheritdoc/>
-        public override void OnMove(Vector2 direction) => this.direction = direction;
-
-        /// <inheritdoc/>
-        public override void OnFireStart() => this.StartThrust();
-
-        /// <inheritdoc/>
-        public override void OnFireEnd()
-        {
-            if (this.releaseForShoot)
-                this.Shoot(this.thrustAmount);
-            this.EndThrust();
-        }
-
-        /// <inheritdoc/>
         protected override void OnSwitchIn()
         {
             SetCursorLock(true);
@@ -220,6 +207,28 @@ namespace ControllerModule.Controllers
                 this.UpdateRotation(new Vector3(-this.direction.y, this.direction.x, 0));
 
             this.UpdateThrust(elapsed);
+        }
+
+        #endregion
+
+        #region IMovable
+
+        /// <inheritdoc/>
+        public void OnMove(Vector2 direction) => this.direction = direction;
+
+        #endregion
+
+        #region IFirable
+
+        /// <inheritdoc/>
+        public void OnFireStart() => this.StartThrust();
+
+        /// <inheritdoc/>
+        public void OnFireEnd()
+        {
+            if (this.releaseForShoot)
+                this.Shoot(this.thrustAmount);
+            this.EndThrust();
         }
 
         #endregion

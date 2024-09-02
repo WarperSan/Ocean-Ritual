@@ -28,20 +28,6 @@ namespace ControllerModule.Controllers
 
         #endregion
 
-        #region Movement
-
-        /// <summary>
-        /// Called when the player moves
-        /// </summary>
-        public virtual void OnMove(Vector2 dir) { }
-
-        /// <summary>
-        /// Called when the player jumps
-        /// </summary>
-        public virtual void OnJump() { }
-
-        #endregion
-
         #region Switch
 
         [Header("Switch")]
@@ -101,44 +87,6 @@ namespace ControllerModule.Controllers
         /// Called when this controller is no longer being used
         /// </summary>
         protected virtual void OnSwitchOut() { }
-
-        #endregion
-
-        #region Fire
-
-        /// <summary>
-        /// Called when the player presses the 'Fire' button
-        /// </summary>
-        public virtual void OnFireStart() { }
-
-        /// <summary>
-        /// Called when the player releases the 'Fire' button
-        /// </summary>
-        public virtual void OnFireEnd() {}
-
-        #endregion
-
-        #region Pause
-
-        public void Pause()
-        {
-            // PauseMenu.Pause();
-
-            // if (PauseMenu.IsPaused())
-            //     this.OnPause();
-            // else
-            //     this.OnResumed();
-        }
-
-        /// <summary>
-        /// Called when the player paused the game
-        /// </summary>
-        protected virtual void OnPause() { }
-
-        /// <summary>
-        /// Called when the player resumed the game
-        /// </summary>
-        protected virtual void OnResumed() { }
 
         #endregion
 

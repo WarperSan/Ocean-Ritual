@@ -1,3 +1,4 @@
+using ControllerModule.Controllers.Interfaces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,15 +9,11 @@ namespace ControllerModule.Controllers
     /// </summary>
     public class InputMaster : UtilsModule.Singleton<InputMaster>
     {
-        #region Delegate
+        #region Delegates
 
         public delegate void LookEvent(Vector2 direction);
         public delegate void MoveEvent(Vector2 direction);
         public delegate void FireEvent();
-        public delegate void PauseEvent();
-        public delegate void JumpEvent();
-
-        public delegate void UnmountEvent();
 
         #endregion
 
@@ -26,13 +23,10 @@ namespace ControllerModule.Controllers
         public event MoveEvent OnMove;
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
-        public event PauseEvent OnPause;
-        public event JumpEvent OnJump;
-        public event UnmountEvent OnUnmount;
 
         #endregion
 
-        #region Callback
+        #region Callbacks
 
         public void Look(InputAction.CallbackContext context)
         {
@@ -56,18 +50,6 @@ namespace ControllerModule.Controllers
                 this.OnFireEnd?.Invoke();
         }
 
-        public void Pause(InputAction.CallbackContext context)
-        {
-            if (context.started)
-                this.OnPause?.Invoke();
-        }
-
-        public void Jump(InputAction.CallbackContext context)
-        {
-            if (context.started)
-                this.OnJump?.Invoke();
-        }
-
         public void Unmount(InputAction.CallbackContext context)
         {
             if (context.started)
@@ -76,18 +58,22 @@ namespace ControllerModule.Controllers
 
         #endregion
 
-        #region Operation
+        #region Operations
 
         public static InputMaster operator +(InputMaster input, Controller controller)
         {
             // Subscribe all events
             input.OnLook += controller.OnLook;
-            input.OnMove += controller.OnMove;
-            input.OnFireStart += controller.OnFireStart;
-            input.OnFireEnd += controller.OnFireEnd;
-            input.OnPause += controller.Pause;
-            input.OnJump += controller.OnJump;
-            
+
+            if (controller is IMovable movable)
+                input.OnMove += movable.OnMove;
+
+            if (controller is IFirable firable)
+            {
+                input.OnFireStart += firable.OnFireStart;
+                input.OnFireEnd += firable.OnFireEnd;
+            }
+
             return input;
         }
 
@@ -95,12 +81,16 @@ namespace ControllerModule.Controllers
         {
             // Unsubscribe all events
             input.OnLook -= controller.OnLook;
-            input.OnMove -= controller.OnMove;
-            input.OnFireStart -= controller.OnFireStart;
-            input.OnFireEnd -= controller.OnFireEnd;
-            input.OnPause -= controller.Pause;
-            input.OnJump -= controller.OnJump;
-            
+
+            if (controller is IMovable movable)
+                input.OnMove -= movable.OnMove;
+
+            if (controller is IFirable firable)
+            {
+                input.OnFireStart -= firable.OnFireStart;
+                input.OnFireEnd -= firable.OnFireEnd;
+            }
+
             return input;
         }
 

@@ -10,15 +10,27 @@ To change the actual keybind, you just need to edit [this file](./Input%20Assets
 ### Add an input
 To add an input to the game, you will need to do multiple things. 
 
-1. Create a new keybind for it
-2. Go inside `InputMaster`
-3. Create a delegate for the input. If the input gives information (*like a direction*) or receives information, this is where you will add it
-4. Create an event with the new delegate
-5. Create a new method with the correct parameters. You will also need to call your delegate inside the method
-6. Go inside `Controller`
-7. Add a new method for your input. This has the same parameters as your delegate
-8. Go back to `InputMaster`
-9. Subscribe/Unsubscribe your method inside `InputMaster.Operations.+` and `InputMaster.Operations.-`
+1. Create an action inside [this file](./Input%20Assets/PlayerInput.inputactions).
+
+2. Go inside [InputMaster](./Scripts/InputMaster.cs).
+
+3. Add a delegate for your input. This is where you will add the needed parameters.
+
+4. Add an event that uses the delegate.
+
+5. Add a method with the parameter `InputAction.CallbackContext`. This is where you will need to call the delegate.
+
+6. Create a new interface for your input inside [this folder](./Scripts/Interfaces).
+
+7. Inside the interface, add a method for your input. This has the same signature as your delegate.
+
+8. Go back to [InputMaster](./Scripts/InputMaster.cs).
+
+9. Subscribe your method inside `InputMaster.Operations.+`.
+
+10. Unsubscribe your method inside `InputMaster.Operations.-`.
+
+11. In Unity, add your method from step 5 to the proper callback inside `Player Input`.
 
 This is a long process, but it allows to centralize the inputs between controllers. **If, at any step, you are confused, you can look at the other methods or ask the authors**.
 
