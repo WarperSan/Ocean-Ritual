@@ -391,6 +391,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 46689789}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &46689791 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1604041424450743481, guid: a0feb32f73fae1247a7cecdc50361629,
+    type: 3}
+  m_PrefabInstance: {fileID: 46689789}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73141453e954003be9089c6391cc72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &93868788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1867,6 +1879,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1452363097933179278, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1465419711830955133, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -2386,7 +2403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618870a180c54d45838550eb16c0052a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controller: {fileID: 0}
+  Controller: {fileID: 46689791}
 --- !u!65 &800379216
 BoxCollider:
   m_ObjectHideFlags: 0

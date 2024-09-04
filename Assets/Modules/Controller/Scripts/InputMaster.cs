@@ -13,6 +13,7 @@ namespace ControllerModule.Controllers
 
         public delegate void LookEvent(Vector2 direction);
         public delegate void MoveEvent(Vector2 direction);
+        public delegate void JumpEvent();
         public delegate void FireEvent();
 
         #endregion
@@ -23,6 +24,7 @@ namespace ControllerModule.Controllers
         public event MoveEvent OnMove;
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
+        public event JumpEvent OnJump;
 
         #endregion
 
@@ -55,6 +57,10 @@ namespace ControllerModule.Controllers
             if (context.started)
                 ControllerManager.BackTo();
         }
+        public void Jump(InputAction.CallbackContext context)
+        {
+            this.OnJump?.Invoke();
+        }
 
         #endregion
 
@@ -73,6 +79,11 @@ namespace ControllerModule.Controllers
                 input.OnFireStart += firable.OnFireStart;
                 input.OnFireEnd += firable.OnFireEnd;
             }
+            
+            if (controller is IJumpable jumpable)
+            {
+                input.OnJump += jumpable.OnJump;
+            }
 
             return input;
         }
@@ -89,6 +100,11 @@ namespace ControllerModule.Controllers
             {
                 input.OnFireStart -= firable.OnFireStart;
                 input.OnFireEnd -= firable.OnFireEnd;
+            }
+
+            if (controller is IJumpable jumpable)
+            {
+                input.OnJump -= jumpable.OnJump;
             }
 
             return input;

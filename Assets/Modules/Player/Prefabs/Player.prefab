@@ -172,26 +172,6 @@ MonoBehaviour:
     m_ActionName: Player/Fire[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 6c318c15-6570-49d3-900f-5a7c009fb8f6
-    m_ActionName: Player/Interaction[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3210125780624037466}
-        m_TargetAssemblyTypeName: Input.InputMaster, Assembly-CSharp
-        m_MethodName: Pause
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 4f86d5f2-7bae-4c50-94d5-22634bd42cc6
-    m_ActionName: Player/Pause[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: df1e9c38-6056-4b0c-bfac-7bef61a9331a
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -247,8 +227,20 @@ MonoBehaviour:
     m_ActionId: bb9d96e7-0695-4206-b196-2161f8219f04
     m_ActionName: Player/Unmount[/Keyboard/r]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1d4fcc86-2651-4f3b-a8db-e75da7223c8f
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 32a22df5-1788-4d5f-a377-286c71d1eca9
     m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 

@@ -1,4 +1,5 @@
 using ControllerModule.Controllers.Interfaces;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ namespace ControllerModule.Controllers
     /// Controller that manages how the player behaves
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : Controller, IMovable, IFirable
+    public class PlayerController : Controller, IMovable, IFirable, IJumpable
     {
         #region Cursor 
 
@@ -201,6 +202,24 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         public void OnFireEnd() { }
 
+        #endregion IJumpable
+
+
+
+        #region IJumpable
+        [Header("Jump")]
+        [SerializeField, Tooltip("Determines height of Jump")]
+        private float jumpHeight = 1.0f;
+        public void OnJump()
+        {
+            Debug.Log("Jump");
+            if (this.isGrounded)
+            {
+                this.velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * -9.81f);
+
+                
+            }
+        }
         #endregion
 
         #region MonoBehaviour
