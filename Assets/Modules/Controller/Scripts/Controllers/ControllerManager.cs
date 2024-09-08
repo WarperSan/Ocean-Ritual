@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ControllerModule.Controllers
 {
@@ -33,7 +34,22 @@ namespace ControllerModule.Controllers
         {
             // If exists, switch out current
             if (ActiveController != null)
+            {
+                //character model dissapears when taking control
+                if(ActiveController.tag == "Player")
+                {
+                    if(ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled)
+                    {
+                        ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                    }
+                    
+                }
+                
+                
+                
                 ActiveController.SwitchOut();
+            }
+                
 
             // Cancel if given not found
             if (controller == null)
@@ -42,6 +58,16 @@ namespace ControllerModule.Controllers
             // Switch in the given
             controller.SwitchIn();
             stack.Push(controller);
+
+            //character model reappears when relinquishing control
+            if (ActiveController.tag == "Player")
+            {
+                if (!ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled)
+                {
+                    ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+                }
+
+            }
 
             // Set the controller to the given
             CameraMovement.Instance.SetController(controller);
@@ -59,6 +85,7 @@ namespace ControllerModule.Controllers
             // Remove current
             Controller current = stack.Pop();
             current.SwitchOut();
+            controller.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 
             // Switch to given
             SwitchTo(controller);

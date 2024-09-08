@@ -215,7 +215,7 @@ namespace ControllerModule.Controllers
             Debug.Log("Jump");
             if (this.isGrounded)
             {
-                this.velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * -9.81f);
+                this.velocity.y += Mathf.Sqrt(jumpHeight * -2.5f * -9.81f);
 
                 
             }
