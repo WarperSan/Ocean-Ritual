@@ -1,30 +1,74 @@
-using FishingModule;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-namespace Map
+namespace FishingModule
 {
+    [RequireComponent(typeof(Collider))]
     public class Territory : MonoBehaviour
     {
-        [SerializeField, Tooltip("All the fishes available in this zone")]
-        private Fish[] Fishes;
+        private Collider _collider;
 
-        [SerializeField, Tooltip("All the enemies available in this zone")]
-        private GameObject[] Enemies;
+        [SerializeField]
+        private FishSO[] _fishes = new FishSO[] { };
 
-        public Fish[] GetFishes() => this.Fishes;
-        public GameObject[] GetEnemies() => this.Enemies;
+        private void Start()
+        {
+            _collider = this.GetComponent<Collider>();
 
-        #region Gizmos
 #if UNITY_EDITOR
-        [Header("Gizmos")]
-        public string DisplayName;
-
-        /// <inheritdoc/>
-        private void OnValidate() => this.DisplayName = string.IsNullOrEmpty(this.DisplayName) ? this.gameObject.name : this.DisplayName;
-
-        /// <inheritdoc/>
-        private void OnDrawGizmos() => UnityEditor.Handles.Label(this.transform.position, this.DisplayName);
+            if (!_collider.isTrigger)
+            {
+                Debug.LogWarning($"The object '{this.name}' has a collider that is not trigger. Please mark the collider as trigger.");
+                _collider.isTrigger = true;
+            }
 #endif
+        }
+
+        #region Static
+
+        /// <summary>
+        /// Finds the territories near the given point
+        /// </summary>
+        /// <param name="origin">Origin of the check</param>
+        /// <param name="radius">Maximum distance of the check</param>
+        /// <returns>Territories found</returns>
+        public static List<Territory> Near(Vector3 origin, float radius, int layerMask)
+        {
+            List<Territory> territories = new();
+
+            Collider[] colliders = Physics.OverlapSphere(origin, radius, layerMask);
+
+            foreach (Collider collider in colliders)
+            {
+                if (!collider.TryGetComponent(out Territory territory))
+                    continue;
+
+                territories.Add(territory);
+            }
+
+            return territories;
+        }
+
+        /// <summary>
+        /// Finds all the unique fishes in the given territories
+        /// </summary>
+        /// <param name="territories">Territories to check</param>
+        /// <returns>Fishes found</returns>
+        public static List<FishSO> Fishes(IEnumerable<Territory> territories)
+        {
+            HashSet<FishSO> fishes = new();
+
+            // Finds all the unique fishes
+            foreach (Territory territory in territories)
+            {
+                foreach (FishSO fish in territory._fishes)
+                    fishes.Add(fish);
+            }
+
+            return fishes.ToList();
+        }
+
         #endregion
     }
 }

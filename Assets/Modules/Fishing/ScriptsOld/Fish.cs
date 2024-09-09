@@ -37,19 +37,6 @@ namespace FishingModule
         }
     }
 
-    /// <summary>
-    /// Rarity of the fish
-    /// </summary>
-    public enum Rarity
-    { 
-        Common, 
-        Uncommon, 
-        Rare,
-        Epic,
-        Legendary,
-        Mythic
-    }
-
     [System.Serializable]
     public class FishData : InventoryModule.ItemStackData<FishData>
     {

@@ -6,90 +6,102 @@ namespace FishingModule
 {
     public class FishingBuoy : MonoBehaviour
     {
-        [SerializeField]
-        private uint RemainingWeight = 0;
+        #region Statistics
 
+        [Header("Statistics")]
         [SerializeField]
-        private InventoryModule.Inventory<FishData> BuoyInventory = new();
+        private int maxFishCount;
 
-        [SerializeField]
-        private int Efficiency;
+        #endregion
 
-        /// <summary>
-        /// Resets the buoy to start a new session
-        /// </summary>
-        /// <param name="weight">Total weight available</param>
-        /// <param name="efficiency">Total weight available</param>
-        public void StartNew(uint weight, int efficiency)
+        #region Inventory
+
+        [Header("Inventory")]
+        public List<FishSO> fishesCaught = new();
+        private List<FishSO> fishCatalog = new();
+
+        private bool IsFull() => fishesCaught.Count >= maxFishCount;
+        private void CatchFish()
         {
-            this.BuoyInventory.Clear();
-            this.RemainingWeight = weight;
-            this.Efficiency = efficiency;
+            // Add fish
+            FishSO caught = fishCatalog.Random(out _);
+
+            if (caught == null)
+                return;
+
+            fishesCaught.Add(caught);
+            onCaughtEffects.Play();
+
+            // If became full, enable indicator
+            if (this.IsFull())
+                fullIndicator.SetActive(true);
         }
 
-        #region Catch
+        #endregion
+
+        #region Effects
+
+        [Header("Effects")]
+        [SerializeField]
+        private ParticleSystem onCaughtEffects;
+
+        [SerializeField]
+        private GameObject fullIndicator;
+
+        #endregion
+
+        #region Delay
+
+        [Header("Delay")]
+        [SerializeField, Tooltip("Determines how long the buoy has to wait between catch")]
+        private Vector2 delayRange;
+        private float delayRemaining;
 
         /// <summary>
-        /// Tries to add the given fishes to the buoy
+        /// Processes the current delay of the buoy
         /// </summary>
-        public void AddFishes(params Fish[] fishes)
+        /// <returns>The delay has ended</returns>
+        private bool ProcessDelay(float elapsed)
         {
-            // Fetch the fishes that can fit
-            List<Fish> validFishes = GetValids(fishes, this.RemainingWeight, this.Efficiency);
+            if (delayRemaining <= elapsed)
+                delayRemaining = 0;
+            else
+                delayRemaining -= elapsed;
 
-            // Add fishes to self
-            foreach (Fish fish in validFishes)
-            {
-                fish.Amount = 1;
-                this.BuoyInventory.Add(fish);
-                this.RemainingWeight -= fish.Weight;
-            }
+            return delayRemaining <= 0;
         }
 
-        /// <summary>
-        /// Filters the fishes that can enter the buoy
-        /// </summary>
-        /// <param name="fishes">All the fishes picked up</param>
-        /// <param name="maxWeight">Maximum weight</param>
-        /// <param name="attemptCount">How many attempts to pick up a fish</param>
-        /// <returns>Fishes obtained</returns>
-        private static List<Fish> GetValids(Fish[] fishes, uint maxWeight, int attemptCount)
+        private void ResetDelay() => delayRemaining = Random.Range(delayRange.x, delayRange.y);
+
+
+        #endregion
+
+        #region Set up
+
+        public void SetFishesAvailable(List<FishSO> fishes)
         {
-            List<Fish> validFishes = new();
-
-            uint validTotalWeight = 0;
-
-            int count = fishes.Length;
-
-            // Try to pick up X fishes
-            for (int i = 0; i < attemptCount; i++)
-            {
-                Fish fish = fishes.Random(out int index);
-
-                if (fish == null)
-                    continue;
-
-                // If fish can fit, add
-                if (maxWeight >= (validTotalWeight + fish.Weight))
-                {
-                    validFishes.Add(fish);
-                    validTotalWeight += fish.Weight;
-                }
-
-                count--;
-
-                // Swap last with selected
-                (fishes[count], fishes[index]) = (fishes[index], fishes[count]);
-
-                if (count <= 0)
-                    break;
-            }
-
-            return validFishes;
+            this.fishCatalog = fishes;
         }
 
-        /// <returns>Clone of the current inventory of the buoy</returns>
-        public InventoryModule.Inventory<FishData> GetInventory() => this.BuoyInventory.Clone();
+        #endregion
+
+        #region MonoBehaviour
+
+        private void Update()
+        {
+            // If full, skip
+            if (this.IsFull())
+                return;
+
+            // If delay not finished, skip
+            if (!this.ProcessDelay(Time.deltaTime))
+                return;
+
+            this.ResetDelay();
+            this.CatchFish();
+        }
+
+        private void OnEnable() => fullIndicator.SetActive(false);
 
         #endregion
     }

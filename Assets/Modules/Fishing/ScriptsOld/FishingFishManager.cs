@@ -82,12 +82,12 @@ namespace FishingModule
 
         #region Buoy
 
-        private FishingBuoy buoy;
+        private FishingBuoy2 buoy;
 
         /// <summary>
         /// Sets the target buoy of this manager
         /// </summary>
-        public void SetBuoy(FishingBuoy buoy) => this.buoy = buoy;
+        public void SetBuoy(FishingBuoy2 buoy) => this.buoy = buoy;
 
         #endregion
 

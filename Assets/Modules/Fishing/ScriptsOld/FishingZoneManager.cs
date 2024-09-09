@@ -85,7 +85,7 @@ namespace FishingModule
         private void OutsideEnter()
         {
             this.FollowPlayer = false;
-            FishingManager.Instance.End();
+            FishingManager2.Instance.End();
         }
 
 #if UNITY_EDITOR

@@ -2,6 +2,7 @@ using FishingModule;
 using Map;
 using System.Collections.Generic;
 using UnityEngine;
+using Territory = Map.Territory;
 
 namespace Extensions
 {
