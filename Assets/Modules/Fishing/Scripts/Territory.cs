@@ -57,7 +57,7 @@ namespace FishingModule
         /// <returns>Fishes found</returns>
         public static List<FishSO> Fishes(IEnumerable<Territory> territories)
         {
-            HashSet<FishSO> fishes = new();
+            List<FishSO> fishes = new();
 
             // Finds all the unique fishes
             foreach (Territory territory in territories)
@@ -66,7 +66,7 @@ namespace FishingModule
                     fishes.Add(fish);
             }
 
-            return fishes.ToList();
+            return fishes;
         }
 
         #endregion

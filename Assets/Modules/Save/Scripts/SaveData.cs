@@ -4,7 +4,7 @@ namespace SaveModule
     public struct SaveData
     {
         public string VERSION;
-        public InventoryModule.Inventory<FishingModule.FishData> Fishes;
+        //public InventoryModule.Inventory<FishingModule.FishData> Fishes;
         public ListeGBNData gbnData;
         public int test;
     }

@@ -6,35 +6,55 @@ namespace FishingModule
 {
     public class FishingBuoy : MonoBehaviour
     {
-        #region Statistics
-
-        [Header("Statistics")]
-        [SerializeField]
-        private int maxFishCount;
-
-        #endregion
-
         #region Inventory
 
         [Header("Inventory")]
-        public List<FishSO> fishesCaught = new();
-        private List<FishSO> fishCatalog = new();
+        [SerializeField, Min(0), Tooltip("Maximum amount of fishes this buoy can hold")]
+        private int maxFishCount;
 
+        [SerializeField, Min(0), Tooltip("Determines how many fishes the buoy can catch at once")]
+        private Vector2Int maxFishAtOnce;
+
+        private readonly List<FishSO> fishesCaught = new();
+        private readonly List<FishSO> fishCatalog = new();
+
+        /// <summary>
+        /// Determines if the buoy is full
+        /// </summary>
         private bool IsFull() => fishesCaught.Count >= maxFishCount;
+
+        /// <summary>
+        /// Catches a fish
+        /// </summary>
         private void CatchFish()
         {
-            // Add fish
-            FishSO caught = fishCatalog.Random(out _);
+            // Random amount
+            int amount = Random.Range(maxFishAtOnce.x, maxFishAtOnce.y);
+            bool caughtSomething = false;
 
-            if (caught == null)
-                return;
+            for (; amount > 0; amount--)
+            {
+                // Add fish
+                FishSO caught = fishCatalog.Random(out _);
 
-            fishesCaught.Add(caught);
-            onCaughtEffects.Play();
+                if (caught == null)
+                    return;
 
-            // If became full, enable indicator
-            if (this.IsFull())
-                fullIndicator.SetActive(true);
+                fishesCaught.Add(caught);
+                caughtSomething = true;
+
+                // If became full, enable indicator
+                if (this.IsFull())
+                {
+                    fullIndicator.SetActive(true);
+                    break;
+                }
+            }
+
+            if (caughtSomething)
+            {
+                onCaughtEffects.Play();
+            }
         }
 
         #endregion
@@ -71,22 +91,29 @@ namespace FishingModule
             return delayRemaining <= 0;
         }
 
+        /// <summary>
+        /// Resets the current delay
+        /// </summary>
         private void ResetDelay() => delayRemaining = Random.Range(delayRange.x, delayRange.y);
-
 
         #endregion
 
         #region Set up
 
+        /// <summary>
+        /// Sets the fishes catchable
+        /// </summary>
         public void SetFishesAvailable(List<FishSO> fishes)
         {
-            this.fishCatalog = fishes;
+            this.fishCatalog.Clear();
+            this.fishCatalog.AddRange(fishes);
         }
 
         #endregion
 
         #region MonoBehaviour
 
+        /// <inheritdoc/>
         private void Update()
         {
             // If full, skip
@@ -101,6 +128,7 @@ namespace FishingModule
             this.CatchFish();
         }
 
+        /// <inheritdoc/>
         private void OnEnable() => fullIndicator.SetActive(false);
 
         #endregion
