@@ -8,11 +8,14 @@ namespace FishingModule
         [Tooltip("Internal name of this fish")]
         public string Name;
 
+        [Tooltip("Icon of this fish")]
+        public Sprite Icon;
+
         [Tooltip("Rarity of this fish")]
         public Rarity Rarity;
 
-        [Tooltip("Icon of this fish")]
-        public Sprite Icon;
+        [Min(0), Tooltip("How many entries does this take in the loot table")]
+        public float Chance;
     }
 
     /// <summary>

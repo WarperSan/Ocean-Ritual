@@ -1,5 +1,6 @@
 using ExtensionsModule;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FishingModule
@@ -15,8 +16,9 @@ namespace FishingModule
         [SerializeField, Min(0), Tooltip("Determines how many fishes the buoy can catch at once")]
         private Vector2Int maxFishAtOnce;
 
-        private readonly List<FishSO> fishesCaught = new();
-        private readonly List<FishSO> fishCatalog = new();
+        [SerializeField]
+        private List<FishSO> fishesCaught = new();
+        private readonly Dictionary<float, List<FishSO>> fishCatalog = new();
 
         /// <summary>
         /// Determines if the buoy is full
@@ -35,7 +37,7 @@ namespace FishingModule
             for (; amount > 0; amount--)
             {
                 // Add fish
-                FishSO caught = fishCatalog.Random(out _);
+                FishSO caught = this.GetRandom();
 
                 if (caught == null)
                     return;
@@ -47,6 +49,16 @@ namespace FishingModule
                 if (this.IsFull())
                 {
                     fullIndicator.SetActive(true);
+
+                    for (int i = fishCatalog.Keys.Count - 1; i >= 0; i--)
+                    {
+                        Debug.Log(fishCatalog.Keys.ElementAt(i));
+                        foreach (FishSO v in fishCatalog[fishCatalog.Keys.ElementAt(i)])
+                        {
+                            Debug.Log(v.Name + ": " + fishesCaught.Where(f => f == v).Count());
+                        }
+                    }
+
                     break;
                 }
             }
@@ -55,6 +67,21 @@ namespace FishingModule
             {
                 onCaughtEffects.Play();
             }
+        }
+
+        private FishSO GetRandom()
+        {
+            float chance = Random.Range(0, fishCatalog.Keys.Sum());
+
+            foreach (KeyValuePair<float, List<FishSO>> item in fishCatalog)
+            {
+                if (item.Key >= chance)
+                    return item.Value.Random(out _);
+
+                chance -= item.Key;
+            }
+
+            return fishCatalog.Last().Value.Random(out _);
         }
 
         #endregion
@@ -105,8 +132,18 @@ namespace FishingModule
         /// </summary>
         public void SetFishesAvailable(List<FishSO> fishes)
         {
+            IEnumerable<IGrouping<float, FishSO>> groups = fishes.GroupBy(f => f.Chance).OrderByDescending(g => g.Key);
+
             this.fishCatalog.Clear();
-            this.fishCatalog.AddRange(fishes);
+
+            foreach (IGrouping<float, FishSO> group in groups)
+            {
+                List<FishSO> f = new();
+                foreach (FishSO item in group)
+                    f.Add(item);
+
+                this.fishCatalog.Add(group.Key, f);
+            }
         }
 
         #endregion
