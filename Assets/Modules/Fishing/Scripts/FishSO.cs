@@ -13,9 +13,6 @@ namespace FishingModule
 
         [Tooltip("Rarity of this fish")]
         public Rarity Rarity;
-
-        [Min(0), Tooltip("How many entries does this take in the loot table")]
-        public float Chance;
     }
 
     /// <summary>

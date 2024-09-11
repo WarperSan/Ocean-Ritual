@@ -10,7 +10,7 @@ namespace FishingModule
         private Collider _collider;
 
         [SerializeField]
-        private FishSO[] _fishes = new FishSO[] { };
+        private FishPercent[] _fishes = new FishPercent[] { };
 
         private void Start()
         {
@@ -23,6 +23,13 @@ namespace FishingModule
                 _collider.isTrigger = true;
             }
 #endif
+        }
+
+        [System.Serializable]
+        public class FishPercent
+        {
+            public FishSO fish;
+            public float percent;
         }
 
         #region Static
@@ -55,20 +62,39 @@ namespace FishingModule
         /// </summary>
         /// <param name="territories">Territories to check</param>
         /// <returns>Fishes found</returns>
-        public static List<FishSO> Fishes(IEnumerable<Territory> territories)
+        public static List<FishPercent> Fishes(IEnumerable<Territory> territories)
         {
-            List<FishSO> fishes = new();
+            List<FishPercent> fishes = new();
 
             // Finds all the unique fishes
             foreach (Territory territory in territories)
-            {
-                foreach (FishSO fish in territory._fishes)
-                    fishes.Add(fish);
-            }
+                fishes.AddRange(territory._fishes);
 
             return fishes;
         }
 
+        #endregion
+
+        #region Editor
+#if UNITY_EDITOR
+
+        private void OnValidate()
+        {
+            const float total = 100;
+
+            float sum = _fishes.Sum(f => f.percent);
+
+            // If equal to 100, skip
+            if (Mathf.Approximately(sum, total))
+                return;
+
+            if (sum > total)
+                Debug.LogWarning($"The territory '{name}' does not add up to {total}. Please add the missing {sum - total}.");
+            else
+                Debug.LogWarning($"The territory '{name}' does not add up to {total}. Please remove the missing '{total - sum}'.");
+        }
+
+#endif
         #endregion
     }
 }

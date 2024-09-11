@@ -31,7 +31,7 @@ namespace FishingModule
 
         private FishingBuoy _buoy = null;
 
-        private bool StartBuoy(List<FishSO> fishesToCatch)
+        private bool StartBuoy(List<Territory.FishPercent> fishesToCatch)
         {
             // Spawn buoy
             if (_buoy == null)
