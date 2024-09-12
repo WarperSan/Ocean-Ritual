@@ -6,16 +6,21 @@ public class ComponantGBN : MonoBehaviour
 {
     [SerializeField] public GBN GBNScript = new();
     // Start is called before the first frame update
-    void Start()
+
+
+
+    public void GenereSocle()
     {
-        GBNScript.ResetLists();
-        GBNScript.StatCalculator();
-        GBNScript.GetSocleToScriptList();
+        foreach (ComponantPowerGemmeObject socle in GBNScript.SocleListe)
+        {
+            socle.Generateinitiate();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
+    
 }
