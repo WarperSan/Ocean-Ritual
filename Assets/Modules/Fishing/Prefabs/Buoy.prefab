@@ -5004,6 +5004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7643415117335893770}
   - component: {fileID: 2782474341744008936}
+  - component: {fileID: 4923335370230827153}
   m_Layer: 0
   m_Name: Buoy
   m_TagString: Buoy
@@ -5041,12 +5042,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e3a5a353a23bde2817f4a64474e5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFishCount: 100
+  maxFishCount: 10
   maxFishAtOnce: {x: 1, y: 3}
-  fishesCaught: []
   onCaughtEffects: {fileID: 5169346372229960032}
   fullIndicator: {fileID: 4184070472372015185}
-  delayRange: {x: 0, y: 0}
+  delayRange: {x: 2, y: 10}
+  ChanceDividor: 1000
+  KeepCollecting: 1
+  isCollected: 0
+--- !u!114 &4923335370230827153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4936839583539260942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358cd93c77cf827ea8343be2f38fab90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  harvestRadius: 30
+  aggroRadius: 60
+  fleeRadius: 90
 --- !u!1001 &2482361954142978827
 PrefabInstance:
   m_ObjectHideFlags: 0

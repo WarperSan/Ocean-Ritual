@@ -131,7 +131,7 @@ namespace ControllerModule.Controllers
 
             // Regular speed if turning
             if (direction.x != 0)
-                return 1;
+                return 0;
 
             // No speed if not moving
             return 0;

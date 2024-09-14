@@ -1,26 +1,64 @@
+using ControllerModule.Controllers.Interfaces;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace FishingModule
 {
-    class FishingManager : MonoBehaviour
+    public class FishingManager : MonoBehaviour, IInteractable
     {
-        // Start fishing
-        // End fishing
-
-        private void Start() {
-            this.StartFishing();
-        }
-
         public void StartFishing()
         {
+            // If buoy exists, skip
+            if (this._buoy != null)
+                return;
+
             List<Territory> territories = Territory.Near(
                 this.GetTerritoryCheckOrigin(),
                 this.territoryCheckRadius,
                 this.territoryLayer
             );
 
+            Dictionary<FishSO, float> fishes = Territory.Fishes(territories);
+
+            foreach (KeyValuePair<FishSO, float> item in fishes)
+                Debug.Log(item.Key.name + ": " + item.Value + "%");
+
             this.StartBuoy(Territory.Fishes(territories));
+        }
+
+        public void EndFishing()
+        {
+            bool isCollected = this._buoy != null && this._buoy.isCollected;
+
+            if (isCollected)
+            {
+                // <Success>
+                Debug.Log("Player has succeed the fishing!");
+                Dictionary<FishSO, int> fishes = this._buoy.GetFishCaught();
+                foreach (KeyValuePair<FishSO, int> item in fishes)
+                    Debug.Log($"You caught x{item.Value} '{item.Key.DisplayName}'!");
+            }
+            else
+            {
+                // <Failure>
+                Debug.Log("Player has failed the fishing!");
+            }
+
+            // Destroy buoy
+            Destroy(this._buoy.gameObject);
+        }
+
+        public void OnClick()
+        {
+            if (this._buoy == null)
+            {
+                this.StartFishing();
+            }
+            else if (Vector3.Distance(this.transform.position, this._buoy.transform.position) <= 20f)
+            {
+                this.CollectBuoy();
+            }
         }
 
         #region Buoy
@@ -29,26 +67,46 @@ namespace FishingModule
         [SerializeField, Tooltip("Prefab for the buoy")]
         private GameObject buoyPrefab;
 
+        [SerializeField]
+        private Transform buoyHolder;
+
         private FishingBuoy _buoy = null;
 
-        private bool StartBuoy(List<Territory.FishPercent> fishesToCatch)
+        private bool StartBuoy(Dictionary<FishSO, float> fishesToCatch)
         {
             // Spawn buoy
-            if (_buoy == null)
+            if (this._buoy == null)
             {
-                _buoy = Instantiate(buoyPrefab).GetComponent<FishingBuoy>();
+                this._buoy = Instantiate(this.buoyPrefab).GetComponent<FishingBuoy>();
+                this._buoy.transform.position = this.GetTerritoryCheckOrigin();
+
+                // Set up ZoneManager
+                if (this._buoy.TryGetComponent(out ZoneManager zoneManager))
+                {
+                    zoneManager.SetTarget(this.transform);
+                    zoneManager.manager = this;
+                }
             }
 
             // If invalid, skip
-            if (_buoy == null)
+            if (this._buoy == null)
             {
                 Debug.LogError("Could not find nor create the buoy.");
                 return false;
             }
 
             // Set up buoy
-            _buoy.SetFishesAvailable(fishesToCatch);
-            return true;
+            return this._buoy.SetFishesAvailable(fishesToCatch);
+        }
+
+        private void CollectBuoy()
+        {
+            if (this._buoy == null)
+                return;
+
+            this._buoy.isCollected = true;
+            this._buoy.transform.SetParent(this.buoyHolder, false);
+            this._buoy.transform.localPosition = Vector3.zero;
         }
 
         #endregion
@@ -62,8 +120,19 @@ namespace FishingModule
         [SerializeField, Tooltip("Determines how far from the check goes")]
         private float territoryCheckRadius;
 
+        [SerializeField]
+        private Vector3 territoryCheckOffset;
+
         /// <returns>From where the territory check starts</returns>
-        private Vector3 GetTerritoryCheckOrigin() => this.transform.position;
+        private Vector3 GetTerritoryCheckOrigin()
+        {
+            Vector3 pos = this.transform.position + this.territoryCheckOffset;
+
+            // Remove Y
+            pos.y = 0;
+
+            return pos;
+        }
 
         #endregion
 
@@ -73,9 +142,21 @@ namespace FishingModule
         /// <inheritdoc/>
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(this.GetTerritoryCheckOrigin(), this.territoryCheckRadius);
+            Handles.color = Color.cyan;
+            Handles.DrawSolidDisc(this.GetTerritoryCheckOrigin(), Vector3.up, this.territoryCheckRadius);
         }
+
+        /// <inheritdoc/>
+        private void OnValidate()
+        {
+            // Prevent vertical offset
+            if (this.territoryCheckOffset.y != 0)
+            {
+                Debug.LogWarning("The territory check is executed at Y = 0. You cannot put a vertical offset.");
+                this.territoryCheckOffset.y = 0;
+            }
+        }
+
 #endif
 
         #endregion
