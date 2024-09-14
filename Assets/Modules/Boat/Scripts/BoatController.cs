@@ -42,7 +42,7 @@ namespace ControllerModule.Controllers
                 if (item == null)
                     continue;
 
-                
+                // changé à une rotation avec RB au lieu du transform
                 item.MoveRotation(item.rotation * rotation);
             }
         }
@@ -56,11 +56,15 @@ namespace ControllerModule.Controllers
         private float turningSpeed = 1;
         private Vector2 direction;
 
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up while turning")]
-        private float turningAcceleration = 0.01f;
 
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down while turning")]
-        private float turningDeceleration = 0.01f;
+        //Pour essayer d'avoir du momentum quand le bateau tourne
+        //[SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up while turning")]
+        //private float turningAcceleration = 0.01f;
+
+        //[SerializeField, Min(0), Tooltip("Determines how fast the boat slows down while turning")]
+        //private float turningDeceleration = 0.01f;
+
+
 
         /// <summary>
         /// Updates the rotation of the boat
@@ -74,7 +78,7 @@ namespace ControllerModule.Controllers
 
             var eulerAngleVelocity =new Vector3();
 
-            
+            //Désigne le sense de la rotation et la vitesse de rotation 
             if (this.direction.x > 0)
             {
                 eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
@@ -83,13 +87,15 @@ namespace ControllerModule.Controllers
             {
                 eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
             }
+
+            // Rotation avec transform
             //float amount = this.direction.x * this.turningSpeed;
-            //Debug.Log(amount * elapsed * Vector3.up);
             //this.transform.Rotate(amount * elapsed * Vector3.up);
             
+            // Rotation RB
             var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
-            
             _rb.MoveRotation(_rb.rotation * deltaRotation);
+
             //this.UpdateAboardRotation(deltaRotation);
         }
 
@@ -137,10 +143,15 @@ namespace ControllerModule.Controllers
             
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
+            
+            // Movement Transform
             //this.transform.position = newPosition;
-            //_rb.AddForce(transform.forward * currentSpeed,ForceMode.Acceleration);
+
+            // Movement RB
             _rb.MovePosition(newPosition);
-            this.UpdateAboardPosition(diff);
+
+            // Update Aboard
+            //this.UpdateAboardPosition(diff);
         }
 
         /// <summary>
