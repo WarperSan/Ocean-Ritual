@@ -202,9 +202,7 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         public void OnFireEnd() { }
 
-        #endregion IJumpable
-
-
+        #endregion 
 
         #region IJumpable
         [Header("Jump")]

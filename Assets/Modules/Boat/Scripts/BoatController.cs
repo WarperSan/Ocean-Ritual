@@ -7,6 +7,9 @@ namespace ControllerModule.Controllers
 {
     public class BoatController : Controller, IMovable
     {
+
+        [SerializeField]
+        private Rigidbody _rb;
         #region Aboard
 
         [Header("Aboard")]
@@ -32,14 +35,15 @@ namespace ControllerModule.Controllers
         /// <summary>
         /// Updates the rotation of all the items aboard
         /// </summary>
-        private void UpdateAboardRotation(Vector3 rotation)
+        private void UpdateAboardRotation(Quaternion rotation)
         {
             foreach (Rigidbody item in this.aboardRbs)
             {
                 if (item == null)
                     continue;
 
-                item.transform.Rotate(rotation);
+                
+                item.MoveRotation(item.rotation * rotation);
             }
         }
 
@@ -52,6 +56,12 @@ namespace ControllerModule.Controllers
         private float turningSpeed = 1;
         private Vector2 direction;
 
+        [SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up while turning")]
+        private float turningAcceleration = 0.01f;
+
+        [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down while turning")]
+        private float turningDeceleration = 0.01f;
+
         /// <summary>
         /// Updates the rotation of the boat
         /// </summary>
@@ -62,10 +72,25 @@ namespace ControllerModule.Controllers
             if (this.direction.x == 0)
                 return;
 
-            float amount = this.direction.x * this.turningSpeed;
+            var eulerAngleVelocity =new Vector3();
 
-            this.transform.Rotate(amount * elapsed * Vector3.up);
-            this.UpdateAboardRotation(amount * elapsed * Vector3.up);
+            
+            if (this.direction.x > 0)
+            {
+                eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
+            }
+            if (this.direction.x < 0)
+            {
+                eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
+            }
+            //float amount = this.direction.x * this.turningSpeed;
+            //Debug.Log(amount * elapsed * Vector3.up);
+            //this.transform.Rotate(amount * elapsed * Vector3.up);
+            
+            var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
+            
+            _rb.MoveRotation(_rb.rotation * deltaRotation);
+            //this.UpdateAboardRotation(deltaRotation);
         }
 
         #endregion
@@ -80,7 +105,7 @@ namespace ControllerModule.Controllers
         private float movementAcceleration = 0.01f;
 
         [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down")]
-        private float movementDeceleration = 0.005f;
+        private float movementDeceleration = 0.01f;
 
         [SerializeField, Tooltip("Determines the offset of the boat from the wave height")]
         private float waveOffset = 0;
@@ -94,6 +119,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
+            //Debug.Log(this.direction);
             float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
 
             // Lerp the current speed to the wanted speed
@@ -101,16 +127,19 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.currentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.currentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
+            
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
             this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
-
+            
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
-            this.transform.position = newPosition;
+            //this.transform.position = newPosition;
+            //_rb.AddForce(transform.forward * currentSpeed,ForceMode.Acceleration);
+            _rb.MovePosition(newPosition);
             this.UpdateAboardPosition(diff);
         }
 
@@ -131,7 +160,7 @@ namespace ControllerModule.Controllers
 
             // Regular speed if turning
             if (direction.x != 0)
-                return 1;
+                return 0;
 
             // No speed if not moving
             return 0;
@@ -157,7 +186,10 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
+            
             this.UpdateMove(elapsed);
+            
+            
         }
 
         /// <inheritdoc/>
