@@ -35,8 +35,8 @@ namespace FishingModule
             {
                 // <Success>
                 Debug.Log("Player has succeed the fishing!");
-                Dictionary<FishSO, int> fishes = this._buoy.GetFishCaught();
-                foreach (KeyValuePair<FishSO, int> item in fishes)
+                Dictionary<FishSO, uint> fishes = this._buoy.GetFishCaught();
+                foreach (KeyValuePair<FishSO, uint> item in fishes)
                     Debug.Log($"You caught x{item.Value} '{item.Key.DisplayName}'!");
             }
             else
@@ -70,6 +70,8 @@ namespace FishingModule
         [SerializeField]
         private Transform buoyHolder;
 
+        public event FishingBuoy.FishCaught OnFishCaught;
+
         private FishingBuoy _buoy = null;
 
         private bool StartBuoy(Dictionary<FishSO, float> fishesToCatch)
@@ -79,6 +81,9 @@ namespace FishingModule
             {
                 this._buoy = Instantiate(this.buoyPrefab).GetComponent<FishingBuoy>();
                 this._buoy.transform.position = this.GetTerritoryCheckOrigin();
+
+                // Add callback
+                this._buoy.OnFishCaught += f => this.OnFishCaught?.Invoke(f);
 
                 // Set up ZoneManager
                 if (this._buoy.TryGetComponent(out ZoneManager zoneManager))

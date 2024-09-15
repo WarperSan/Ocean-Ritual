@@ -15,7 +15,7 @@ namespace FishingModule
         [SerializeField, Min(0), Tooltip("Determines how many fishes the buoy can catch at once")]
         private Vector2Int maxFishAtOnce;
 
-        private readonly Dictionary<FishSO, int> fishesCaught = new();
+        private readonly Dictionary<FishSO, uint> fishesCaught = new();
         private List<(FishSO fish, float percent)> fishesToCatch = new();
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace FishingModule
         {
             // Random amount
             int amount = Random.Range(maxFishAtOnce.x, maxFishAtOnce.y);
-            Dictionary<FishSO, int> fishCaught = new();
+            Dictionary<FishSO, uint> fishCaught = new();
 
             for (; amount > 0; amount--)
             {
@@ -54,7 +54,7 @@ namespace FishingModule
 
             if (fishCaught.Count > 0)
             {
-                this.OnFishCaught(fishCaught);
+                this.OnFishCaught?.Invoke(fishCaught);
                 onCaughtEffects.Play();
             }
         }
@@ -72,7 +72,7 @@ namespace FishingModule
         /// <summary>
         /// Obtains the fishes caught in this buoy
         /// </summary>
-        public Dictionary<FishSO, int> GetFishCaught() => this.fishesCaught;
+        public Dictionary<FishSO, uint> GetFishCaught() => this.fishesCaught;
 
         #endregion
 
@@ -85,11 +85,8 @@ namespace FishingModule
         [SerializeField]
         private GameObject fullIndicator;
 
-        /// <summary>
-        /// Called when fishes have been caught
-        /// </summary>
-        /// <param name="fishCaught">Fishes caught</param>
-        public void OnFishCaught(Dictionary<FishSO, int> fishCaught) { }
+        public delegate void FishCaught(Dictionary<FishSO, uint> fishCaught);
+        public event FishCaught OnFishCaught;
 
         #endregion
 
