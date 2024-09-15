@@ -17,6 +17,8 @@ namespace ControllerModule.Controllers
         private Transform aboardParent;
 
         private readonly List<Rigidbody> aboardRbs = new();
+        [SerializeField]
+        private CharacterController cc;
 
         /// <summary>
         /// Updates the position of all the items aboard
@@ -30,12 +32,16 @@ namespace ControllerModule.Controllers
 
                 item.MovePosition(item.position + movement);
             }
+            if (cc != null)
+            {
+                cc.transform.position = cc.transform.position + movement;
+            }
         }
 
         /// <summary>
         /// Updates the rotation of all the items aboard
         /// </summary>
-        private void UpdateAboardRotation(Quaternion rotation)
+        private void UpdateAboardRotation(Quaternion rotationItem, Vector3 rotationCC)
         {
             foreach (Rigidbody item in this.aboardRbs)
             {
@@ -43,7 +49,11 @@ namespace ControllerModule.Controllers
                     continue;
 
                 // changé à une rotation avec RB au lieu du transform
-                item.MoveRotation(item.rotation * rotation);
+                item.MoveRotation(item.rotation * rotationItem);
+            }
+            if (cc != null)
+            {
+                cc.transform.Rotate(rotationCC);
             }
         }
 
@@ -89,14 +99,14 @@ namespace ControllerModule.Controllers
             }
 
             // Rotation avec transform
-            //float amount = this.direction.x * this.turningSpeed;
+            float amount = this.direction.x * this.turningSpeed;
             //this.transform.Rotate(amount * elapsed * Vector3.up);
-            
+
             // Rotation RB
             var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
             _rb.MoveRotation(_rb.rotation * deltaRotation);
 
-            //this.UpdateAboardRotation(deltaRotation);
+            this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
         }
 
         #endregion
@@ -151,7 +161,7 @@ namespace ControllerModule.Controllers
             _rb.MovePosition(newPosition);
 
             // Update Aboard
-            //this.UpdateAboardPosition(diff);
+            this.UpdateAboardPosition(diff);
         }
 
         /// <summary>
@@ -218,20 +228,23 @@ namespace ControllerModule.Controllers
         }
 
         #endregion
-    
-        #region MonoBehaviour
 
+        #region MonoBehaviour
+        [SerializeField]
+        FixedJoint fixedJoint;
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other) 
         {
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
                 this.aboardRbs.Add(rb);
+                fixedJoint.connectedBody = rb;
                 return;
             }
 
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
+                
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
                 return;
             }

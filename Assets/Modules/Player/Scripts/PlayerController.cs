@@ -240,5 +240,25 @@ namespace ControllerModule.Controllers
 #endif
 
         #endregion
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            Rigidbody body = hit.collider.attachedRigidbody;
+            
+            // no rigidbody
+            if (body == null || body.isKinematic)
+            {
+                return;
+            }
+
+            // We dont want to push objects below us
+            if (hit.moveDirection.y < -0.3)
+            {
+                return;
+            }
+            Debug.Log("collided");
+            hit.collider.attachedRigidbody.velocity = Vector3.zero;
+            hit.collider.attachedRigidbody.angularVelocity = Vector3.zero;
+        }
     }
 }
