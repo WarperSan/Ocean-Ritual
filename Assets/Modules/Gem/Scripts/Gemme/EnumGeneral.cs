@@ -41,7 +41,10 @@ static public class EnumGeneral
         attack,
         bulletspeed,
         bulletSize,
-        fireRate
+        fireRate,
+        AmmoCapacity,
+   
+        Range
     }
 
     // Énumération pour les types de bateaux
@@ -66,7 +69,12 @@ static public class EnumGeneral
     }
 
 
-
+    public enum EffectType
+    {
+        Nothing,
+        Glace,
+        Feu
+    }
 }
 //
 [System.Serializable]
