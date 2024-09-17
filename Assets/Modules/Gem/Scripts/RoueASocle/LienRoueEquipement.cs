@@ -9,7 +9,7 @@ public class LienRoueEquipement : MonoBehaviour
     [SerializeField] List<GameObject> PointDePlacement;
     [SerializeField] float GrosseurSocle = 1;
     [SerializeField] float rotation = 0;
-    private bool faireSocle = false;
+    private bool faireSocle = true;
     // Start is called before the first frame update
     void Start()
     {

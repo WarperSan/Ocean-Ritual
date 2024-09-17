@@ -63,8 +63,8 @@ public class ParticuleControleur : MonoBehaviour
             glaceInstance = glaceObj.GetComponent<ParticleSystem>();
 
             var main = glaceInstance.main;
-            float range = lanceFlameScript.Range.Quantite;
-            float bulletSpeed = lanceFlameScript.BulletSpeed.Quantite;
+            float range = lanceFlameScript.RangeBoost.Quantite;
+            float bulletSpeed = lanceFlameScript.BulletSpeedWithBoost.Quantite;
 
             // Ajuste la vitesse de départ
             main.startSpeed = bulletSpeed;
