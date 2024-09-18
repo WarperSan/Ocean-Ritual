@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Save
+namespace SaveModule
 {
     /// <summary>
     /// MonoBehaviour that can be saved and loaded from a save file
