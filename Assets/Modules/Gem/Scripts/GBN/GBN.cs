@@ -14,31 +14,82 @@ using static EnumGeneral;
         [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
         [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet = new();
 
+
     [SerializeField]  public List<ComponantPowerGemmeObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
     [SerializeField] public List<PowerGemmeObject> PowerGemmeObjectListe = new();
+
+    public void GetStat()
+    {
+        ResetLists();
+       StatCalculator();
+       GetSocleToScriptList();
+    }
+    private List<TypeQuantite<TEnum>> GetListForEnum<TEnum>()
+    {
+        if (typeof(TEnum) == typeof(TypeWeapon))
+        {
+            return typeArme as List<TypeQuantite<TEnum>>;
+        }
+        else if (typeof(TEnum) == typeof(TypeBoat))
+        {
+            return typeBoat as List<TypeQuantite<TEnum>>;
+        }
+        else if (typeof(TEnum) == typeof(TypeNet))
+        {
+            return typeFilet as List<TypeQuantite<TEnum>>;
+        }
+        else
+        {
+            Debug.LogError("Unsupported type.");
+            return null;
+        }
+    }
+
+    public void UpdateStatsWithBoost<TEnum>(List<TypeQuantite<TEnum>> baseStats, List<TypeQuantite<TEnum>> boostedStats)
+    {
+        List<TypeQuantite<TEnum>> correspondingList = GetListForEnum<TEnum>();
+
+        if (correspondingList == null)
+        {
+            Debug.LogError("No corresponding list found.");
+            return;
+        }
+
+        foreach (var boostedStat in boostedStats)
+        {
+            var baseStat = baseStats.Find(x => x.Type.Equals(boostedStat.Type));
+            if (baseStat != null)
+            {
+                boostedStat.Quantite = baseStat.Quantite + correspondingList.Find(x => x.Type.Equals(boostedStat.Type))?.Quantite ?? baseStat.Quantite;
+            }
+        }
+    }
+
     #region List Initialization and Reset
 
     // Initializes the lists with default values
     /// <summary>
     /// Initiate the list
     /// </summary>
+    /// 
+
     private void InitializeLists()
         {
             foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
             {
-                typeArme.Add(new TypeQuantite<TypeWeapon>(arme, 1));
+                typeArme.Add(new TypeQuantite<TypeWeapon>(arme, 0));
             }
 
             foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
             {
-                typeBoat.Add(new TypeQuantite<TypeBoat>(boat, 1));
+                typeBoat.Add(new TypeQuantite<TypeBoat>(boat, 0));
             }
 
             foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
             {
-                typeFilet.Add(new TypeQuantite<TypeNet>(filet, 1));
+                typeFilet.Add(new TypeQuantite<TypeNet>(filet, 0));
             }
         }
     /// <summary>

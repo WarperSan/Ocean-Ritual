@@ -8,12 +8,12 @@ public class SocleGenerator : MonoBehaviour
     public static SocleGenerator Instance { get; private set; }
 
     // Serialized fields for object references and settings
-    [SerializeField] GameObject ObjectToSocle;
-    [SerializeField] GameObject ConteneurSocle;
+    
+
     [SerializeField] string SideName = "";
     [SerializeField] string voidSpaceName = "";
     [SerializeField] string SoclePatch = "";
-    [SerializeField] public float spaceBetweenCube = 1f;
+    [SerializeField] public float spaceBetweenCube = 3f;
     [SerializeField] float SpacebetweenRectangleAndCube = 1f;
 
     // Dictionary to store loaded prefabs
@@ -32,10 +32,10 @@ public class SocleGenerator : MonoBehaviour
             Destroy(gameObject); // Destroy the new instance if one already exists
         }
         LoadSocleData(); // Load socle data
-        // GenerateSocle(ObjectToSocle, ConteneurSocle); // Commented out by default
+        
     }
 
-    // Unity update method (currently empty)
+
     void Update() { }
 
     #region Socle Generation
@@ -43,6 +43,7 @@ public class SocleGenerator : MonoBehaviour
     // Method to generate socle/grid
     public void GenerateSocle(GameObject ObjectSocle, GameObject Conteneur)
     {
+       
         // Get the GemmeGrid component from the ObjectSocle
         GemmeGrid scriptGemmeGrid = ObjectSocle.GetComponent<GemmeGrid>();
 
@@ -70,6 +71,16 @@ public class SocleGenerator : MonoBehaviour
             {
                 Vector3 position = new Vector3(i * spaceBetweenCube, 0, j * spaceBetweenCube);
                 GameObject instance = Instantiate(voidPrefab, Conteneur.transform);
+                EmplacementSocle scritpGemme = instance.GetComponent<EmplacementSocle>();
+                if (scritpGemme != null)
+                {
+                    scritpGemme.x = i;
+                    scritpGemme.z = j;
+                }
+                else
+                {
+                    Debug.Log("scritpGemme est null dans Socle générator fonction GenerateSocle");
+                }
                 instance.transform.position += position; // Adjust position
                 instance.transform.localScale += new Vector3(spaceBetweenCube - 2, 0, spaceBetweenCube - 2); // Adjust scale
             }
