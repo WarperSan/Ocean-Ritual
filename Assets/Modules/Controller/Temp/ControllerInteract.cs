@@ -7,7 +7,9 @@ namespace ControllerModule.Temp
     public class ControllerInteract : MonoBehaviour, IInteractable
     {
         public Controller Controller;
-        
+        public InteractionAsset interactionAsset;
+
         public void OnClick() => ControllerManager.SwitchTo(this.Controller);
+        public InteractionAsset InteractionAsset => this.interactionAsset;
     }
 }

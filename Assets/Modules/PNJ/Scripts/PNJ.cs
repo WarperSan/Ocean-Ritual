@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ControllerModule.Controllers.Interfaces;
+using ControllerModule;
 
 public class PNJ : MonoBehaviour, IInteractable 
 {
@@ -12,7 +13,11 @@ public class PNJ : MonoBehaviour, IInteractable
     [SerializeField] Quest theQUest ;
     [SerializeField] List<Quest> questsToGive = new ();
     [SerializeField] List<Quest> questsToConfirm = new ();
+
+    public InteractionAsset InteractionAsset => null;
+
     // Start is called before the first frame update
+
     void Start()
     {
         if (donneQuest)

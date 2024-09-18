@@ -1,3 +1,4 @@
+using ControllerModule;
 using ControllerModule.Controllers.Interfaces;
 using System.Collections.Generic;
 using UnityEditor;
@@ -49,6 +50,13 @@ namespace FishingModule
             Destroy(this._buoy.gameObject);
         }
 
+        #region IInteractable
+
+        [Header("Interaction")]
+        [SerializeField]
+        private InteractionAsset interactionAsset;
+
+        /// <inheritdoc/>
         public void OnClick()
         {
             if (this._buoy == null)
@@ -60,6 +68,11 @@ namespace FishingModule
                 this.CollectBuoy();
             }
         }
+
+        /// <inheritdoc/>
+        public InteractionAsset InteractionAsset => this.interactionAsset;
+
+        #endregion
 
         #region Buoy
 

@@ -24,7 +24,7 @@ namespace ControllerModule.Editor
                 return;
             
             // If target has no interactable script, skip
-            if (target.GetComponent<IInteractable>() is null)
+            if (target.GetComponent<IInteractable>() == null)
                 return;
 
             bool clickedOK = EditorUtility.DisplayDialog(

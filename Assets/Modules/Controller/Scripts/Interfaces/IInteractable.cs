@@ -12,6 +12,8 @@ namespace ControllerModule.Controllers.Interfaces
         /// </summary>
         public void OnClick();
 
+        public InteractionAsset InteractionAsset { get; }
+
         /// <summary>
         /// Tries to find a target and interacts with it
         /// </summary>

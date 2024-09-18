@@ -1,9 +1,13 @@
+using ControllerModule;
 using ControllerModule.Controllers.Interfaces;
 using UnityEngine;
 
 public class EnnemieDeath : MonoBehaviour, IInteractable
 {
+    public InteractionAsset InteractionAsset => null;
+
     // Start is called before the first frame update
+
     void Start()
     {
         
