@@ -1,3 +1,4 @@
+using DhafinFawwaz.AnimationUILib;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 namespace FishingModule
 {
+    [RequireComponent(typeof(AnimationUI))]
     public class FishNewsEntry : MonoBehaviour
     {
         #region UI Components
@@ -43,6 +45,8 @@ namespace FishingModule
         [SerializeField, Tooltip("How many seconds the item stays on screen")]
         private float lengthStay = 5f;
 
+        private AnimationUI animationUI;
+
         #endregion
 
         #region Methods
@@ -65,6 +69,11 @@ namespace FishingModule
 
             // ICON
             this.newFishIcon.sprite = fish != null ? fish.Icon : null;
+        }
+
+        public void Clear()
+        {
+            Destroy(this.gameObject);
         }
 
         #endregion
@@ -152,13 +161,19 @@ namespace FishingModule
         /// <summary>Plays the animations for the life cycle of an entry</summary>
         public IEnumerator LifeCycle()
         {
-            yield return this.ShowAnimation(this.lengthShow);
-            yield return new WaitForSeconds(this.lengthStay);
-            yield return this.HideAnimation(this.lengthHide);
+            yield return null;
+            // yield return this.ShowAnimation(this.lengthShow);
+            // yield return new WaitForSeconds(this.lengthStay);
+            // yield return this.HideAnimation(this.lengthHide);
 
-            Destroy(this.gameObject);
+            // Destroy(this.gameObject);
         }
 
         #endregion
+
+        private void Start()
+        {
+            this.animationUI = this.GetComponent<AnimationUI>();
+        }
     }
 }
