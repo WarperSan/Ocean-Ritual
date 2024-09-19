@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ItemData
 {
-    int quantiterMax;
-    int quantiter;
+    public int quantiterMax;
+   public int quantiter;
     
 }

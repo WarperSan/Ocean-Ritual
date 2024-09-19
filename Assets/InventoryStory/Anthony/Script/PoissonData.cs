@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PoissonData : ItemData
 {
-    string nom;
+   public string nom;
 }
