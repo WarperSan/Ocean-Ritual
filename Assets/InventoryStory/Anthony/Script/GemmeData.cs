@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class GemmeData : MonoBehaviour
+using static EnumGeneral;
+[System.Serializable]
+public class GemmeData : ItemData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Data
+    // X coordinate of the gem's position
+    [SerializeField] public int PositionX = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // Z coordinate of the gem's position
+    [SerializeField] public int PositionZ = 0;
+
+    // Shape of the gem (2D boolean array)
+    [SerializeField]
+    public FormeBool? forme;
+
+    // Name of the gem's color
+    [SerializeField] public string GemmeColorsName;
+
+    // Level of the gem
+    [SerializeField] public int LVL = 0;
+
+    // List of weapon types with quantities
+    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+
+    // List of boat types with quantities
+    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+
+    // List of net types with quantities
+    [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+    #endregion
+
 }
