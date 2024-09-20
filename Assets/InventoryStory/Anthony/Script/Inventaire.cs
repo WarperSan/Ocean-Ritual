@@ -217,28 +217,33 @@ public class Inventaire : MonoBehaviour
     {
       
     }
-    public void TrierItemList(TypeOfSort SortType,bool gemmeFirst)
+    public void TrierItemList(TypeOfSort SortType)
     {
         switch (SortType)
         {
             case TypeOfSort.Nom:
-                TrierNom(gemmeFirst);
-                Console.WriteLine("Tri par nom");
+                TrierNom();
+                Console.WriteLine("Tri par nom de poisson les gemme apres");
                 break;
 
             case TypeOfSort.Type:
-                TrierParType(gemmeFirst);
-                Console.WriteLine("Tri par type");
+                TrierParType();
+                Console.WriteLine("Tri par type poisson ou gemme");
                 break;
 
             case TypeOfSort.Quantite:
-                TrierQuantiter(gemmeFirst);
-                Console.WriteLine("Tri par quantité");
+                TrierQuantiter();
+                Console.WriteLine("Tri par quantité de poisson");
                 break;
 
             case TypeOfSort.Fusion:
-                FusionAuto(gemmeFirst);
-                Console.WriteLine("Tri par fusion");
+                FusionAuto();
+                Console.WriteLine(" faire la fusion");
+                break;
+
+            case TypeOfSort.Niveau:
+                TrierNiveau();
+                Console.WriteLine(" trie par niveau de gemme poisson après");
                 break;
 
             default:
@@ -247,23 +252,27 @@ public class Inventaire : MonoBehaviour
                 break;
         }
     }
-    public void TrierNom(bool gemmeFirst)// trie  les poissonData de la liste par nom
+    public void TrierNom( )// trie  les poissonData de la liste par nom
     {
 
     }
-    public void TrierParNiveau(bool gemmeFirst) // trie  les gemmeData de la liste par niveau
+    public void TrierParNiveau( ) // trie  les gemmeData de la liste par niveau
     {
 
     }
-    public void TrierParType(bool gemmeFirst) // trie  la liste celon le type de chaque object dans la liste
+    public void TrierParType( ) // trie  la liste celon le type de chaque object dans la liste
     {
 
     }
-    public void TrierQuantiter(bool gemmeFirst) // trie  la liste celon la quantité de chaque object dans la liste
+    public void TrierQuantiter( ) // trie  la liste celon la quantité de chaque object dans la liste
     {
 
     }
-    public void FusionAuto(bool gemmeFirst)//// a implémenter on touche pas
+    public void TrierNiveau( ) // trie  la liste celon la quantité de chaque object dans la liste
+    {
+
+    }
+    public void FusionAuto( )//// a implémenter on touche pas
     {
 
     }

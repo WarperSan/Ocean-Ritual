@@ -81,6 +81,7 @@ static public class EnumGeneral
         Type,
         Quantite,
         Fusion,
+        Niveau
     }
 }
 //
