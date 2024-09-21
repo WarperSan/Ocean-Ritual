@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b0d8e645a714e42968e1718ae8561b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poissons: []
+  gemmes: []
 --- !u!4 &261530292
 Transform:
   m_ObjectHideFlags: 0
@@ -291,6 +293,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventaireJoueur: {fileID: 261530291}
+  ajouterPoisson: 0
+  ajouterGemme: 0
+  clearInventaire: 0
+  faireLeTrie: 0
+  SwapPlace: 0
+  drop: 0
+  index1: 0
+  index2: 0
+  indexDrop: 0
+  poisson:
+    quantiterMax: 5
+    quantiter: 5
+    nom: poissonA
+  gemme:
+    quantiterMax: 0
+    quantiter: 0
+    PositionX: 0
+    PositionZ: 0
+    forme:
+      width: 0
+      height: 0
+      flatForme: 
+    GemmeColorsName: 
+    LVL: 0
+    typeArme: []
+    typeBoat: []
+    typeFilet: []
+  typeDeTri: 0
 --- !u!4 &850196552
 Transform:
   m_ObjectHideFlags: 0

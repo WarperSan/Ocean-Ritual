@@ -17,9 +17,61 @@ public class Inventaire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ItemList.Add(new PoissonData { nom = "Poisson A", quantiterMax = 5 });
-        ItemList.Add(new GemmeData { GemmeColorsName = "Gemme Rouge", LVL = 1 });
+        AjouterPoissonsDeTest();
+        AjouterGemmesDeTest();
         UpdateSousListe();
+    }
+    void AjouterGemmesDeTest()
+    {
+        string[] gemmeColors = { "Gemme Rouge", "Gemme Bleue", "Gemme Verte" };
+
+        for (int i = 0; i < 6; i++)
+        {
+            GemmeData gemme = new GemmeData
+            {
+                GemmeColorsName = gemmeColors[i % gemmeColors.Length], // Alternance des couleurs Rouge, Bleue, Verte
+                LVL = i + 1 // Niveau croissant
+            };
+            ItemList.Add(gemme);
+        }
+    }
+    void AjouterPoissonsDeTest()
+    {
+        // Poisson A
+        for (int i = 0; i < 3; i++)
+        {
+            PoissonData poissonA = new PoissonData
+            {
+                nom = "Poisson A",
+                quantiterMax = 5,
+                quantiter = 5 // Quantité égale à la quantité maximale
+            };
+            ItemList.Add(poissonA);
+        }
+
+        // Poisson B
+        for (int i = 0; i < 3; i++)
+        {
+            PoissonData poissonB = new PoissonData
+            {
+                nom = "Poisson B",
+                quantiterMax = 8,
+                quantiter = 8 // Quantité égale à la quantité maximale
+            };
+            ItemList.Add(poissonB);
+        }
+
+        // Poisson C
+        for (int i = 0; i < 3; i++)
+        {
+            PoissonData poissonC = new PoissonData
+            {
+                nom = "Poisson C",
+                quantiterMax = 10,
+                quantiter = 10 // Quantité égale à la quantité maximale
+            };
+            ItemList.Add(poissonC);
+        }
     }
     public void UpdateSousListe()
     {
@@ -102,6 +154,7 @@ public class Inventaire : MonoBehaviour
             // Supprime les éléments null s'ils sont inutiles à la fin de la liste
             ItemList.RemoveAt(i);
         }
+        UpdateSousListe();
     }
 
     public void SwapPlace(int index1, int index2)
@@ -116,7 +169,8 @@ public class Inventaire : MonoBehaviour
         // Effectue l'échange des éléments
         ItemData temp = ItemList[index1];  
         ItemList[index1] = ItemList[index2];  
-        ItemList[index2] = temp;  
+        ItemList[index2] = temp;
+        UpdateSousListe();
     }
     public void DropItem(int index)
     {
@@ -131,6 +185,7 @@ public class Inventaire : MonoBehaviour
             // Avertit que l'index est invalide
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
+        UpdateSousListe();
     }
     public ItemData GetItem(int index)
     {
@@ -264,6 +319,7 @@ public class Inventaire : MonoBehaviour
                 Console.WriteLine("Type de tri non reconnu");
                 break;
         }
+        UpdateSousListe();
     }
     public void TrierNom()
     {
@@ -349,17 +405,19 @@ public class Inventaire : MonoBehaviour
                                              .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les poissons par nom
-        Dictionary<string, int> fusionPoissons = new Dictionary<string, int>();
+        Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
 
         foreach (var poisson in poissons)
         {
             if (!fusionPoissons.ContainsKey(poisson.nom))
             {
-                fusionPoissons[poisson.nom] = poisson.quantiter;
+                // On stocke la quantité totale et le quantiterMax
+                fusionPoissons[poisson.nom] = (poisson.quantiter, poisson.quantiterMax);
             }
             else
             {
-                fusionPoissons[poisson.nom] += poisson.quantiter;
+                // On ajoute la quantité au total déjà enregistré
+                fusionPoissons[poisson.nom] = (fusionPoissons[poisson.nom].quantiteTotale + poisson.quantiter, poisson.quantiterMax);
             }
         }
 
@@ -368,13 +426,18 @@ public class Inventaire : MonoBehaviour
 
         foreach (var entry in fusionPoissons)
         {
-            int quantiteTotale = entry.Value;
+            string nomPoisson = entry.Key;
+            int quantiteTotale = entry.Value.quantiteTotale;
+            int quantiterMax = entry.Value.quantiterMax;
+
+            // On répartit les poissons en respectant la quantité maximale propre à chaque poisson
             while (quantiteTotale > 0)
             {
                 PoissonData nouveauPoisson = new PoissonData
                 {
-                    nom = entry.Key,
-                    quantiter = Math.Min(5, quantiteTotale) // 5 est la quantité max
+                    nom = nomPoisson,
+                    quantiter = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantiterMax propre à ce poisson
+                    quantiterMax = quantiterMax
                 };
                 poissonsFusionnes.Add(nouveauPoisson);
                 quantiteTotale -= nouveauPoisson.quantiter;
@@ -383,11 +446,11 @@ public class Inventaire : MonoBehaviour
 
         // Maintenant on replace tout dans ItemList
         // En gardant d'abord les poissons fusionnés, puis les gemmes
-
         ItemList = poissonsFusionnes.Cast<ItemData>()
                                     .Concat(gemmes)
                                     .ToList();
     }
+
 
 
 }

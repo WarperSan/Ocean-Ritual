@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnumGeneral;
 
 public class TestInventaire : MonoBehaviour
 {
@@ -8,13 +9,20 @@ public class TestInventaire : MonoBehaviour
 
     [SerializeField] bool ajouterPoisson = false;
     [SerializeField] bool ajouterGemme = false;
+    [SerializeField] bool clearInventaire = false;
+    [SerializeField] bool faireLeTrie  = false;
+    [SerializeField] bool SwapPlace = false;
+    [SerializeField] bool drop = false;
+    [SerializeField] int index1;
+    [SerializeField] int index2;
+    [SerializeField] int indexDrop;
     [SerializeField] PoissonData poisson;
     [SerializeField] GemmeData gemme;
-
+    [SerializeField] TypeOfSort typeDeTri;
     // Start is called before the first frame update
     void Start()
     {
-        inventaireJoueur.InitiateListe();
+      //  inventaireJoueur.InitiateListe();
     }
 
     // Update is called once per frame
@@ -49,6 +57,31 @@ public class TestInventaire : MonoBehaviour
             };
 
             inventaireJoueur.AddItem(nouvelleGemme); // Utilise la nouvelle instance
+        }
+        if (clearInventaire)
+        {
+            clearInventaire = false;
+            inventaireJoueur.NettoyerEmplacement();
+
+        }
+        if (faireLeTrie)
+        {
+            faireLeTrie = false;
+            inventaireJoueur.TrierItemList(typeDeTri);
+
+
+        }
+        if (SwapPlace)
+        {
+            SwapPlace = false; 
+            inventaireJoueur.SwapPlace(index1, index2);
+
+        }
+        if (drop)
+        {
+            drop = false;
+            inventaireJoueur.DropItem(indexDrop);
+
         }
     }
 }
