@@ -1,12 +1,10 @@
-using ControllerModule;
-using ControllerModule.Controllers.Interfaces;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace FishingModule
 {
-    public class FishingManager : MonoBehaviour, IInteractable
+    public class FishingManager : MonoBehaviour
     {
         public void StartFishing()
         {
@@ -52,12 +50,7 @@ namespace FishingModule
 
         #region IInteractable
 
-        [Header("Interaction")]
-        [SerializeField]
-        private InteractionAsset interactionAsset;
-
-        /// <inheritdoc/>
-        public void OnClick()
+        public void OnInteraction()
         {
             if (this._buoy == null)
             {
@@ -68,9 +61,6 @@ namespace FishingModule
                 this.CollectBuoy();
             }
         }
-
-        /// <inheritdoc/>
-        public InteractionAsset InteractionAsset => this.interactionAsset;
 
         #endregion
 

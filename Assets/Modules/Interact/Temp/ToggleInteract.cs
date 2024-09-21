@@ -1,5 +1,4 @@
-using ControllerModule;
-using ControllerModule.Controllers.Interfaces;
+using InteractModule;
 using UnityEngine;
 
 public class ToggleInteract : MonoBehaviour, IInteractable
@@ -10,7 +9,6 @@ public class ToggleInteract : MonoBehaviour, IInteractable
     private bool isOn;
 
     public InteractionAsset InteractionAsset => null;
-
 
     public void OnClick()
     {

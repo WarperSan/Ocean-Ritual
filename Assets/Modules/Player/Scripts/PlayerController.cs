@@ -1,4 +1,5 @@
 using ControllerModule.Controllers.Interfaces;
+using InteractModule;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -525,6 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 651484003}
+  asset: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
 --- !u!1 &1197071082
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +657,7 @@ GameObject:
   - component: {fileID: 1304361905}
   - component: {fileID: 1304361904}
   - component: {fileID: 1304361908}
+  - component: {fileID: 1304361909}
   m_Layer: 6
   m_Name: Fish Anchor
   m_TagString: Untagged
@@ -762,7 +764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e0b347e2b7e6339ffda1130c0abe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionAsset: {fileID: 11400000, guid: eab06599a0f1e733299644540708f5bd, type: 2}
   buoyPrefab: {fileID: 4936839583539260942, guid: d148bb4f19308249ea55dfccc06a5105,
     type: 3}
   buoyHolder: {fileID: 544767730}
@@ -771,6 +772,34 @@ MonoBehaviour:
     m_Bits: 2147483648
   territoryCheckRadius: 2
   territoryCheckOffset: {x: -3, y: 0, z: -8}
+--- !u!114 &1304361909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304361902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c52e863a3f5d2ec985ed8a4c5b8889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1304361908}
+        m_TargetAssemblyTypeName: FishingModule.FishingManager, Assembly-CSharp
+        m_MethodName: OnInteraction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  asset: {fileID: 11400000, guid: eab06599a0f1e733299644540708f5bd, type: 2}
 --- !u!1 &1311854658
 GameObject:
   m_ObjectHideFlags: 0
