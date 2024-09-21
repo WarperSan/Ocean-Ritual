@@ -1,10 +1,11 @@
+using EntityModule;
 using UnityEngine;
 
 public class BalleLF : MonoBehaviour, BalleGenerique
 {
-    #region Propriétés
+    #region Propriï¿½tï¿½s
 
-    // Utilise SerializeField pour les valeurs que tu veux définir dans l'éditeur
+    // Utilise SerializeField pour les valeurs que tu veux dï¿½finir dans l'ï¿½diteur
     [SerializeField] public float vitesse = 10f;
     [SerializeField] private bool disparaitApresHit = false;
     [SerializeField] private bool grossissement = false;
@@ -18,7 +19,7 @@ public class BalleLF : MonoBehaviour, BalleGenerique
     [SerializeField] private float range = 50;
 
 
-    // Propriétés publiques pour accéder aux valeurs
+    // Propriï¿½tï¿½s publiques pour accï¿½der aux valeurs
 
     public float Vitesse { get => vitesse; set => vitesse = value; }
     public bool DisparaitApresHit { get => disparaitApresHit; set => disparaitApresHit = value; }
@@ -39,7 +40,7 @@ public class BalleLF : MonoBehaviour, BalleGenerique
     // Start is called before the first frame update
     void Start()
     {
-        // Initialisation ou logique de démarrage ici
+        // Initialisation ou logique de dï¿½marrage ici
     }
 
     // Update is called once per frame
@@ -47,61 +48,56 @@ public class BalleLF : MonoBehaviour, BalleGenerique
     {
         Deplacement();
         Grossisement();
-        
+
     }
 
     #region Interface Methods
 
-   public  LanceFlameControleur lanceFlameScript;
+    public LanceFlameControleur lanceFlameScript;
     public void EnnemiHit(Collider other)
     {
-      
-        
-        
-        
-            // Vérifie si l'objet touché a un script implémentant l'interface EnnemieGenerique
-            EnnemieGenerique ennemi = other.GetComponent<EnnemieGenerique>();
-            if (ennemi != null && lanceFlameScript != null)
-            {
-                // Applique les dégâts de LanceFlame
-                float damage = lanceFlameScript.GetDamage(); // Ou lanceFlameScript.AttackWithBoost.Quantite
-                ennemi.TakeHit(damage);
-                if (DisparaitApresHit)
-                {
-                    gameObject.SetActive(false); // Désactiver la balle
-                }
+        if (!other.TryGetComponent(out Entity entity))
+            return;
 
-            }
-        }
-    
+        entity.UseAttack(new Attack()
+        {
+            Damage = lanceFlameScript.GetDamage(),
+            Type = AttackType.FIRE
+        });
+
+        // Dï¿½sactiver la balle
+        if (DisparaitApresHit)
+            gameObject.SetActive(false);
+    }
+
     public void Grossisement()
     {
-        // Si l'option Grossissement est activée
+        // Si l'option Grossissement est activï¿½e
         if (Grossissement)
         {
-           
-           
-                // Récupérer le premier enfant
-                Transform enfant = transform.GetChild(0);
 
-                // Grossit l'enfant en utilisant la valeur de ValeurGrossissement
-                float scaleIncrement = ValeurGrossissement * Vitesse * Time.deltaTime;
-                enfant.localScale += new Vector3(0, scaleIncrement, scaleIncrement);
-            
-            
+
+            // Rï¿½cupï¿½rer le premier enfant
+            Transform enfant = transform.GetChild(0);
+
+            // Grossit l'enfant en utilisant la valeur de ValeurGrossissement
+            float scaleIncrement = ValeurGrossissement * Vitesse * Time.deltaTime;
+            enfant.localScale += new Vector3(0, scaleIncrement, scaleIncrement);
+
+
         }
     }
     public void ResetGrossisement()
     {
-        // Si l'option Grossissement est activée
+        // Si l'option Grossissement est activï¿½e
         if (Grossissement)
         {
 
 
-            // Récupérer le premier enfant
+            // Rï¿½cupï¿½rer le premier enfant
             Transform enfant = transform.GetChild(0);
 
-          
+
             enfant.localScale = new Vector3(0.1f, 1, 1);
 
 
@@ -110,40 +106,40 @@ public class BalleLF : MonoBehaviour, BalleGenerique
 
     public void Deplacement()
     {
-        // Calculer la distance que la balle a parcourue depuis la dernière frame
+        // Calculer la distance que la balle a parcourue depuis la derniï¿½re frame
         float distanceThisFrame = Vitesse * Time.deltaTime;
 
-        // Ajouter cette distance à la distance totale parcourue
+        // Ajouter cette distance ï¿½ la distance totale parcourue
         distanceTravel += distanceThisFrame;
 
-        // Si la distance parcourue dépasse la portée, désactiver la balle
+        // Si la distance parcourue dï¿½passe la portï¿½e, dï¿½sactiver la balle
         if (distanceTravel >= range)
         {
             distanceTravel = 0;
             gameObject.SetActive(false);
-            
+
         }
         else
         {
-            // Déplacer la balle vers l'avant
+            // Dï¿½placer la balle vers l'avant
             transform.Translate(Vector3.forward * distanceThisFrame);
         }
     }
     void OnTriggerEnter(Collider other)
     {
-        // Vérifie si l'objet touché appartient au layer Ennemi
+        // Vï¿½rifie si l'objet touchï¿½ appartient au layer Ennemi
         if (other.gameObject.layer == LayerMask.NameToLayer("Ennemi"))
         {
             // Appelle la logique d'impact avec l'ennemi
             EnnemiHit(other);
 
-            // Si la balle doit disparaître après avoir touché un ennemi
+            // Si la balle doit disparaï¿½tre aprï¿½s avoir touchï¿½ un ennemi
             if (DisparaitApresHit)
             {
-                gameObject.SetActive(false); // Désactiver la balle
+                gameObject.SetActive(false); // Dï¿½sactiver la balle
             }
         }
     }
- 
+
     #endregion
 }
