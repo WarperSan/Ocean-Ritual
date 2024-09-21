@@ -5,15 +5,26 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
 using static EnumGeneral;
+using System.Linq;
+[System.Serializable]
 public class Inventaire : MonoBehaviour
 {
     private int nombreDePlaceInventaire =10;
-   private List<ItemData> ItemList;
+  [SerializeField]  public List<ItemData> ItemList = new ();
+    [SerializeField] List<PoissonData> poissons;
+    [SerializeField] List<GemmeData> gemmes;
     bool InventaireOuvert = false;
     // Start is called before the first frame update
     void Start()
     {
-    
+        ItemList.Add(new PoissonData { nom = "Poisson A", quantiterMax = 5 });
+        ItemList.Add(new GemmeData { GemmeColorsName = "Gemme Rouge", LVL = 1 });
+        UpdateSousListe();
+    }
+    public void UpdateSousListe()
+    {
+        poissons = ItemList.OfType<PoissonData>().ToList();
+        gemmes = ItemList.OfType<GemmeData>().ToList();
     }
     public void InitiateListe()
     {
@@ -130,7 +141,8 @@ public class Inventaire : MonoBehaviour
     {
         // Récupère les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
-
+        Debug.Log("Liste des indices d'objets identiques : " + string.Join(", ", ListeIndexItemIdentique));
+        Debug.Log("Liste des indices d'emplacements disponibles : " + string.Join(", ", ListeIndexDisponible));
         int quantiteRestante = item.quantiter;
 
         // 1. Ajoute aux emplacements d'objets identiques si possible
@@ -204,6 +216,7 @@ public class Inventaire : MonoBehaviour
                 break; // Sort de la boucle pour éviter de bloquer le programme
             }
         }
+        UpdateSousListe();
     }
 
 
@@ -252,28 +265,129 @@ public class Inventaire : MonoBehaviour
                 break;
         }
     }
-    public void TrierNom( )// trie  les poissonData de la liste par nom
+    public void TrierNom()
     {
+        // Séparer les poissons et les gemmes
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
+        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
 
+        // Trier les poissons par nom (supposant que PoissonData a un champ 'nom')
+        poissons = poissons.OrderBy(p => p.nom).ToList();
+
+        // Réorganiser l'inventaire avec poissons d'abord, puis les gemmes
+        ItemList = new List<ItemData>();
+        ItemList.AddRange(poissons);
+        ItemList.AddRange(gemmes);
+
+        Debug.Log("Liste triée par nom de poisson.");
     }
-    public void TrierParNiveau( ) // trie  les gemmeData de la liste par niveau
+
+    public void TrierParNiveau()
     {
+        // Séparer les poissons et les gemmes
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
+        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
 
+        // Trier les gemmes par niveau
+        gemmes = gemmes.OrderByDescending(g => g.LVL).ToList();
+
+        // Réorganiser l'inventaire avec les gemmes d'abord, puis les poissons
+        ItemList = new List<ItemData>();
+        ItemList.AddRange(gemmes);
+        ItemList.AddRange(poissons);
+
+        Debug.Log("Liste triée par niveau de gemmes.");
     }
-    public void TrierParType( ) // trie  la liste celon le type de chaque object dans la liste
+
+    public void TrierParType()
     {
+        // Séparer les poissons et les gemmes
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
+        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
 
+        // Réorganiser l'inventaire avec les poissons d'abord, puis les gemmes
+        ItemList = new List<ItemData>();
+        ItemList.AddRange(poissons);
+        ItemList.AddRange(gemmes);
+
+        Debug.Log("Liste triée par type (poissons puis gemmes).");
     }
-    public void TrierQuantiter( ) // trie  la liste celon la quantité de chaque object dans la liste
+
+    public void TrierQuantiter()
     {
+        // Trier les objets par quantité (qu'ils soient des poissons ou des gemmes)
+        ItemList = ItemList.OrderByDescending(item => item.quantiter).ToList();
 
+        Debug.Log("Liste triée par quantité.");
     }
-    public void TrierNiveau( ) // trie  la liste celon la quantité de chaque object dans la liste
+
+    public void TrierNiveau()
     {
+        // Séparer les poissons et les gemmes
+        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
 
+        // Trier uniquement les gemmes par niveau
+        gemmes = gemmes.OrderByDescending(g => g.LVL).ToList();
+
+        // Réorganiser l'inventaire avec les gemmes d'abord, puis les poissons
+        ItemList = new List<ItemData>();
+        ItemList.AddRange(gemmes);
+        ItemList.AddRange(poissons);
+
+        Debug.Log("Liste triée par niveau de gemmes.");
     }
-    public void FusionAuto( )//// a implémenter on touche pas
+
+    public void FusionAuto()
     {
+        // On garde les gemmes intactes
+        List<ItemData> gemmes = ItemList.Where(item => item is GemmeData).ToList();
 
+        // On filtre les poissons avec quantité > 0
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>()
+                                             .Where(poisson => poisson.quantiter > 0)
+                                             .ToList();
+
+        // On crée un dictionnaire pour compter et fusionner les poissons par nom
+        Dictionary<string, int> fusionPoissons = new Dictionary<string, int>();
+
+        foreach (var poisson in poissons)
+        {
+            if (!fusionPoissons.ContainsKey(poisson.nom))
+            {
+                fusionPoissons[poisson.nom] = poisson.quantiter;
+            }
+            else
+            {
+                fusionPoissons[poisson.nom] += poisson.quantiter;
+            }
+        }
+
+        // Nouvelle liste des poissons fusionnés
+        List<PoissonData> poissonsFusionnes = new List<PoissonData>();
+
+        foreach (var entry in fusionPoissons)
+        {
+            int quantiteTotale = entry.Value;
+            while (quantiteTotale > 0)
+            {
+                PoissonData nouveauPoisson = new PoissonData
+                {
+                    nom = entry.Key,
+                    quantiter = Math.Min(5, quantiteTotale) // 5 est la quantité max
+                };
+                poissonsFusionnes.Add(nouveauPoisson);
+                quantiteTotale -= nouveauPoisson.quantiter;
+            }
+        }
+
+        // Maintenant on replace tout dans ItemList
+        // En gardant d'abord les poissons fusionnés, puis les gemmes
+
+        ItemList = poissonsFusionnes.Cast<ItemData>()
+                                    .Concat(gemmes)
+                                    .ToList();
     }
+
+
 }

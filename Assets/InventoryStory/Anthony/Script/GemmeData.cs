@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
+
 [System.Serializable]
 public class GemmeData : ItemData
 {
