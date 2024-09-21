@@ -6,6 +6,7 @@ namespace InteractModule.Premade
     /// <summary>
     /// Script that allows to easily switch to a desired controller
     /// </summary>
+    [RequireComponent(typeof(Collider))]
     public class ControllerInteract : MonoBehaviour, IInteractable
     {
         public Controller Controller;
