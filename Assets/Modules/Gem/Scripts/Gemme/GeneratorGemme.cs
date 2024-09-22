@@ -54,16 +54,7 @@ public   class GeneratorGemme: MonoBehaviour
     // Function to generate a random gemme
     public static Gemme? GenerateRandomGemme(int LVL, string ColorName)
     {
-        if (!dataLoad)
-        {
-            LoadGemmeData();
-            dataLoad = true;
-        }
-        if (SampleGemme == null)
-        {
-            Debug.LogError($"Sample gemme prefab not found at path: {SampleGemmePath}");
-            return null;
-        }
+       
 
         Gemme gemmeScript = new Gemme();
 
@@ -83,7 +74,10 @@ public   class GeneratorGemme: MonoBehaviour
 
         return null;
     }
+    public static void GenerateStat(int LVL)
+    {
 
+    }
     // Function to generate the shape of the gemme based on the level
     private static FormeBool GenerateForme(int LVL)
     {

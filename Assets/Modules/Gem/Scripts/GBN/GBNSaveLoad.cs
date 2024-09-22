@@ -4,7 +4,9 @@
 //using UnityEngine;
 //using static EnumGeneral;
 
-public class GBNSaveLoad 
+using UnityEngine;
+
+public class GBNSaveLoad: MonoBehaviour
 {
 //    [SerializeField] private ListeGBNData dataGBN = new();
 //    [SerializeField] private List<ComponantGBN> ListGBN = new();
