@@ -2,17 +2,15 @@ using UnityEngine;
 
 namespace EntityModule
 {
-    [RequireComponent(typeof(Collider))]
     public class Projectile : MonoBehaviour
     {
         /// <inheritdoc/>
         private void Awake()
         {
 #if UNITY_EDITOR
-            Collider collider = this.GetComponent<Collider>();
-            if (!collider.isTrigger)
+            if (!_collider.isTrigger)
             {
-                collider.isTrigger = true;
+                _collider.isTrigger = true;
                 Debug.LogWarning($"The projectile '{this.name}' has a collider that is not trigger. Please fix the collider.");
             }
 #endif
@@ -38,7 +36,11 @@ namespace EntityModule
 
         #endregion
 
-        #region Give Damage
+        #region Collision
+
+        [Header("Collision")]
+        [SerializeField]
+        private Collider _collider;
 
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
@@ -47,6 +49,11 @@ namespace EntityModule
             if (!other.TryGetComponent(out Entity entity))
                 return;
 
+            this.HitEntity(entity);
+        }
+
+        private void HitEntity(Entity entity)
+        {
             this.OnPreApply(entity, this.attack);
             entity.UseAttack(this.attack);
             this.OnPostApply(entity, this.attack);
