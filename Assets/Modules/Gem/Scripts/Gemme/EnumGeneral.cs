@@ -83,6 +83,14 @@ static public class EnumGeneral
         Fusion,
         Niveau
     }
+    public enum ColorsName
+    {
+       Red,
+       Blue,
+       Purple,
+       Yellow,
+       Green,
+    }
 }
 //
 [System.Serializable]

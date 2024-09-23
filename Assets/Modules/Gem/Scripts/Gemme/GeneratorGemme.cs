@@ -1,13 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnumGeneral;
 
 public   class GeneratorGemme: MonoBehaviour
     
 {
+
+    #region StatPropritite
+
+    private static List<int> LuckLevels = new List<int> { 20, 10, 5 };
+
+
+    #endregion
+
+
     #region Fields and Properties
     // Singleton instance
-    
+
     static bool dataLoad = false;
     static string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
     static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
@@ -17,10 +28,10 @@ public   class GeneratorGemme: MonoBehaviour
     static private GameObject SampleGemme; // Sample gemme prefab
     static int lvlTest = 3; // Test level
     static int Hauteurgemme = 1; // Height of the gemme
-    #endregion
+
     // Start is called before the first frame update
-    
-    
+    #endregion
+
     #region Load Data
     // Function to load gemme data from resources
     public static void LoadGemmeData()
@@ -39,32 +50,35 @@ public   class GeneratorGemme: MonoBehaviour
     #region Gemme Creation
 
     // Function to create a random gemme
-    public static void CreatGemmeRandomFunction(int lvlTests, string GemmeNames, Transform Conteneur)
-    {
-        if (!dataLoad)
-        {
-            LoadGemmeData();
-            dataLoad = true;
-        }
-        CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames), Conteneur);
-    }
+    //public static void CreatGemmeRandomFunction(int lvlTests, string GemmeNames, Transform Conteneur)
+    //{
+    //    if (!dataLoad)
+    //    {
+    //        LoadGemmeData();
+    //        dataLoad = true;
+    //    }
+    //    CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames), Conteneur);
+    //}
 
    
 
     // Function to generate a random gemme
-    public static Gemme? GenerateRandomGemme(int LVL, string ColorName)
+    public static GemmeData GenerateRandomGemme(int LVL)
     {
-       
 
-        Gemme gemmeScript = new Gemme();
+
+        GemmeData gemmeScript = new GemmeData();
 
         if (gemmeScript != null)
         {
+            gemmeScript.quantiterMax = 1;
+            gemmeScript.quantiter = 1;
             gemmeScript.forme = GenerateForme(LVL);
-            gemmeScript.GemmeColorsName = ColorName;
+            gemmeScript.GemmeColorsName = GeneratsRandomlColors();
             gemmeScript.LVL = LVL;
-            gemmeScript.PositionX = 3;
-            gemmeScript.PositionZ = 3;
+            gemmeScript.typeArme = GeneratsRandomlvlStat<TypeWeapon>(LVL);
+            gemmeScript.typeBoat = GeneratsRandomlvlStat<TypeBoat>(LVL);
+            gemmeScript.typeFilet = GeneratsRandomlvlStat<TypeNet>(LVL);
             return gemmeScript;
         }
         else
@@ -74,9 +88,64 @@ public   class GeneratorGemme: MonoBehaviour
 
         return null;
     }
-    public static void GenerateStat(int LVL)
+    public static int GenerateStats(int LVL)
     {
+        
 
+        int stat = LVL;
+
+        for (int i = 0;i < LuckLevels.Count; i++)
+        {
+            int luck = LuckLevels[i];
+            int chance = UnityEngine.Random.Range(1, 101);
+
+            if (chance <= luck)
+            {
+                stat += LVL;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return stat;
+    }
+
+
+
+
+    // Méthode générique qui génère une liste de TypeQuantite<T> où chaque quantité est égale au niveau LVL
+    public static List<TypeQuantite<T>> GeneratsRandomlvlStat<T>(int LVL) where T : Enum
+    {
+        // Obtenir tous les types disponibles dans l'énumération T
+        T[] enumValues = (T[])Enum.GetValues(typeof(T));
+
+        // Créer une liste pour stocker les résultats
+        List<TypeQuantite<T>> resultList = new List<TypeQuantite<T>>();
+
+        // Boucle pour ajouter chaque type avec la quantité LVL
+        foreach (T enumValue in enumValues)
+        {
+            // Ajouter la paire (type, quantité) dans la liste, avec la quantité égale à LVL
+            resultList.Add(new TypeQuantite<T>(enumValue, GenerateStats( LVL)));
+        }
+
+        return resultList;
+    }
+    public static string GeneratsRandomlColors()
+    {
+        // Récupérer tous les noms de l'énumération ColorsName
+        Array colors = Enum.GetValues(typeof(EnumGeneral.ColorsName));
+
+        // Créer une instance de Random pour sélectionner un élément aléatoire
+        System.Random random = new System.Random();
+
+        // Sélectionner un index aléatoire dans la liste des couleurs
+        int randomIndex = random.Next(colors.Length);
+
+        // Retourner le nom de la couleur sélectionnée aléatoirement
+        return colors.GetValue(randomIndex).ToString();
     }
     // Function to generate the shape of the gemme based on the level
     private static FormeBool GenerateForme(int LVL)

@@ -7,11 +7,7 @@ using static EnumGeneral;
 public class GemmeData : ItemData
 {
     #region Data
-    // X coordinate of the gem's position
-    [SerializeField] public int PositionX = 0;
 
-    // Z coordinate of the gem's position
-    [SerializeField] public int PositionZ = 0;
 
     // Shape of the gem (2D boolean array)
     [SerializeField]

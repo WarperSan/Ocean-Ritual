@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class PickableGemme : MonoBehaviour, IInteractable
 {
-
+    [SerializeField] GemmeData laGemme;
     [SerializeField] int lvlOfGemme;
     public void OnClick()
     {
-        GeneratorGemme.GenerateRandomGemme(lvlOfGemme, "Red");
+        laGemme= GeneratorGemme.GenerateRandomGemme(lvlOfGemme);
+        Inventaire.Instance.AddItem(laGemme);
     }
 }

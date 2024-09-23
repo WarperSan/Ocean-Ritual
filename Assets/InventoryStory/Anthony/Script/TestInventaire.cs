@@ -40,7 +40,7 @@ public class TestInventaire : MonoBehaviour
                 quantiterMax = poisson.quantiterMax
             };
 
-            inventaireJoueur.AddItem(nouveauPoisson); // Utilise la nouvelle instance
+            Inventaire.Instance.AddItem(nouveauPoisson); // Utilise la nouvelle instance
         }
 
         if (ajouterGemme)
@@ -56,7 +56,7 @@ public class TestInventaire : MonoBehaviour
                 quantiterMax =1
             };
 
-            inventaireJoueur.AddItem(nouvelleGemme); // Utilise la nouvelle instance
+            Inventaire.Instance.AddItem(nouvelleGemme); // Utilise la nouvelle instance
         }
         if (clearInventaire)
         {

@@ -9,6 +9,24 @@ using System.Linq;
 [System.Serializable]
 public class Inventaire : MonoBehaviour
 {
+    private static Inventaire instance;
+
+    public static Inventaire Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<Inventaire>();
+                if (instance == null)
+                {
+                    GameObject obj = new GameObject("Inventaire");
+                    instance = obj.AddComponent<Inventaire>();
+                }
+            }
+            return instance;
+        }
+    }
     private int nombreDePlaceInventaire =10;
   [SerializeField]  public List<ItemData> ItemList = new ();
     [SerializeField] List<PoissonData> poissons;
@@ -17,9 +35,9 @@ public class Inventaire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AjouterPoissonsDeTest();
-        AjouterGemmesDeTest();
-        UpdateSousListe();
+        //AjouterPoissonsDeTest();
+        //AjouterGemmesDeTest();
+        //UpdateSousListe();
     }
     void AjouterGemmesDeTest()
     {
@@ -194,10 +212,11 @@ public class Inventaire : MonoBehaviour
     }
     public void AddItem(ItemData item)
     {
+     
         // Récupère les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
-        Debug.Log("Liste des indices d'objets identiques : " + string.Join(", ", ListeIndexItemIdentique));
-        Debug.Log("Liste des indices d'emplacements disponibles : " + string.Join(", ", ListeIndexDisponible));
+        //Debug.Log("Liste des indices d'objets identiques : " + string.Join(", ", ListeIndexItemIdentique));
+        //Debug.Log("Liste des indices d'emplacements disponibles : " + string.Join(", ", ListeIndexDisponible));
         int quantiteRestante = item.quantiter;
 
         // 1. Ajoute aux emplacements d'objets identiques si possible
@@ -246,6 +265,7 @@ public class Inventaire : MonoBehaviour
 
         while (quantiteRestante > 0)
         {
+            Debug.Log("passe dans le while");
             AjoutEmplacement();
             int dernierIndex = ItemList.Count - 1;
             ItemList[dernierIndex] = item;
@@ -272,6 +292,7 @@ public class Inventaire : MonoBehaviour
             }
         }
         UpdateSousListe();
+        Debug.Log(ItemList.Count);
     }
 
 
