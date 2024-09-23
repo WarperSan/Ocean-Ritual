@@ -30,12 +30,10 @@ namespace ControllerModule.Controllers
                 if (item == null)
                     continue;
 
+                item.velocity = Vector3.zero;
                 item.MovePosition(item.position + movement);
             }
-            if (cc != null)
-            {
-                cc.transform.position = cc.transform.position + movement;
-            }
+            
         }
 
         /// <summary>
@@ -47,13 +45,9 @@ namespace ControllerModule.Controllers
             {
                 if (item == null)
                     continue;
-
-                // changé à une rotation avec RB au lieu du transform
+                item.velocity = Vector3.zero;
+                
                 item.MoveRotation(item.rotation * rotationItem);
-            }
-            if (cc != null)
-            {
-                cc.transform.Rotate(rotationCC);
             }
         }
 
@@ -67,12 +61,7 @@ namespace ControllerModule.Controllers
         private Vector2 direction;
 
 
-        //Pour essayer d'avoir du momentum quand le bateau tourne
-        //[SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up while turning")]
-        //private float turningAcceleration = 0.01f;
-
-        //[SerializeField, Min(0), Tooltip("Determines how fast the boat slows down while turning")]
-        //private float turningDeceleration = 0.01f;
+        
 
 
 
@@ -100,13 +89,13 @@ namespace ControllerModule.Controllers
 
             // Rotation avec transform
             float amount = this.direction.x * this.turningSpeed;
-            //this.transform.Rotate(amount * elapsed * Vector3.up);
+            
 
             // Rotation RB
             var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
             _rb.MoveRotation(_rb.rotation * deltaRotation);
 
-            this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
+            //this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
         }
 
         #endregion
@@ -129,20 +118,26 @@ namespace ControllerModule.Controllers
         private Vector3 targetPosition;
         private float currentSpeed;
 
+        //For player movememnt correction
+        private Vector3 movement;
+        public Vector3 MovementBoat { get{
+                return movement;
+            } }
+
         /// <summary>
         /// Updates the movement of the boat
         /// </summary>
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
-            //Debug.Log(this.direction);
+            
             float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
 
             // Lerp the current speed to the wanted speed
             this.currentSpeed = this.currentSpeed < speed
                 ? Mathf.Clamp(this.currentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.currentSpeed - this.movementDeceleration, speed, float.MaxValue);
-
+            
             
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
@@ -153,17 +148,21 @@ namespace ControllerModule.Controllers
             
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
+            movement = diff;
+
             
-            // Movement Transform
-            //this.transform.position = newPosition;
-
-            // Movement RB
             _rb.MovePosition(newPosition);
-
+            
             // Update Aboard
-            this.UpdateAboardPosition(diff);
+            //this.UpdateAboardPosition(diff);
+        }
+        private void LateUpdate()
+        {
+            movement = Vector3.zero;
         }
 
+        public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
+       
         /// <summary>
         /// Gets the speed multiplier depending of the direction of the movement
         /// </summary>
@@ -200,7 +199,7 @@ namespace ControllerModule.Controllers
             if (this.IsEnabled)
             {
                 //this.UpdateWheel(elapsed);
-                this.UpdateTurn(elapsed);
+                
             }
         }
 
@@ -209,8 +208,8 @@ namespace ControllerModule.Controllers
         {
             
             this.UpdateMove(elapsed);
-            
-            
+            this.UpdateTurn(elapsed);
+
         }
 
         /// <inheritdoc/>
@@ -218,6 +217,7 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(true);
+            movementDeceleration = movementDeceleration * 2;
         }
 
         /// <inheritdoc/>
@@ -225,46 +225,42 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(false);
+            movementDeceleration = movementDeceleration / 2;
         }
 
         #endregion
 
         #region MonoBehaviour
         [SerializeField]
-        FixedJoint fixedJoint;
+        
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other) 
         {
+            
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
-                this.aboardRbs.Add(rb);
-                fixedJoint.connectedBody = rb;
-                return;
-            }
-
-            if (other.gameObject.TryGetComponent(out CharacterController cc))
-            {
-                
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
+                this.aboardRbs.Add(rb);
+                
                 return;
             }
+            
+            
         }
 
         /// <inheritdoc/>
         private void OnTriggerExit(Collider other)
         {
-
+            
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
+                other.transform.SetParent(null);
                 this.aboardRbs.Remove(rb);
                 return;
             }
+            
 
-            if (other.gameObject.TryGetComponent(out CharacterController cc))
-            {
-                other.transform.SetParent(null);
-                return;
-            }
+            
         }
 
         #endregion

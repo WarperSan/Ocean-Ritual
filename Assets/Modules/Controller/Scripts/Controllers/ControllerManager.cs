@@ -25,6 +25,7 @@ namespace ControllerModule.Controllers
         /// Current controller being used
         /// </summary>
         private static Controller ActiveController => stack.Count > 0 ? stack.Peek() : null;
+        
 
         /// <summary>
         /// Switches to the given controller
@@ -32,20 +33,28 @@ namespace ControllerModule.Controllers
         /// <param name="controller">Controller to switch to</param>
         public static void SwitchTo(Controller controller)
         {
+            
             // If exists, switch out current
             if (ActiveController != null)
             {
+                Debug.Log(ActiveController.tag);
+                
                 //character model dissapears when taking control
-                if(ActiveController.tag == "Player")
+                if (ActiveController.tag == "Player")
                 {
-                    if(ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled)
+                    if(ActiveController.gameObject.activeSelf)
                     {
-                        ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+                        ActiveController.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        ActiveController.gameObject.SetActive(false);
                     }
                     
                 }
                 
-                
+                if (ActiveController.tag == "Boat")
+                {
+                    Debug.Log("ShutdownSpeed");
+                    ActiveController.gameObject.GetComponent<BoatController>().ShutdownBoatAcceleration();
+                }
                 
                 ActiveController.SwitchOut();
             }
@@ -58,13 +67,17 @@ namespace ControllerModule.Controllers
             // Switch in the given
             controller.SwitchIn();
             stack.Push(controller);
-
+            Debug.Log(ActiveController.tag);
             //character model reappears when relinquishing control
             if (ActiveController.tag == "Player")
             {
-                if (!ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled)
+                if (!ActiveController.gameObject.activeSelf)
                 {
-                    ActiveController.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+
+                    ActiveController.gameObject.SetActive(true);
+                    
+                    ActiveController.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    ActiveController.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 }
 
             }
@@ -83,9 +96,9 @@ namespace ControllerModule.Controllers
                 return;
 
             // Remove current
-            Controller current = stack.Pop();
-            current.SwitchOut();
-            controller.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+            //Controller current = stack.Pop();
+            //current.SwitchOut();
+            //controller.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 
             // Switch to given
             SwitchTo(controller);

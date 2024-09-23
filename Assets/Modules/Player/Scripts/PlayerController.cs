@@ -8,7 +8,7 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Controller that manages how the player behaves
     /// </summary>
-    [RequireComponent(typeof(CharacterController))]
+    
     public class PlayerController : Controller, IMovable, IFirable, IJumpable
     {
         #region Cursor 
@@ -71,8 +71,11 @@ namespace ControllerModule.Controllers
         [SerializeField, Tooltip("Determines how fast the player can move")]
         private float movementSpeed = 20;
 
-        private CharacterController _characterController;
-
+        //Used to move the character while on the boat
+        [SerializeField]
+        BoatController boatController;
+        
+        private Rigidbody _rigidbody;
         private Vector3 direction;
 
         /// <summary>
@@ -84,17 +87,21 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes == null || this._characterController == null)
+            if (this.Eyes == null || this._rigidbody == null)
                 return;
 
+            if (facing.x == 0 && facing.y == 0 && CheckGrounded())
+            {
+                this._rigidbody.velocity = Vector3.zero;
+            }
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
-            moveDir = moveDir.normalized * speed;
+            
 
             // Move the character controller
-            this._characterController.Move(moveDir * elapsed);
+            this._rigidbody.MovePosition( this.transform.position +  (speed *moveDir * elapsed) + boatController.MovementBoat);
         }
 
         #endregion
@@ -120,7 +127,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateGravity(float elapsed)
         {
-            if (this.Feet == null || this._characterController == null)
+            if (this.Feet == null || this._rigidbody == null)
                 return;
 
             this.isGrounded = Physics.CheckSphere(
@@ -134,9 +141,28 @@ namespace ControllerModule.Controllers
                 this.velocity.y = 0;
             this.velocity += Physics.gravity * elapsed;
 
-            this._characterController.Move(this.velocity * elapsed);
+            this._rigidbody.MovePosition(this.velocity*elapsed);
         }
 
+        private bool CheckGrounded()
+        {
+            if (this.Feet != null && this._rigidbody != null)
+            {
+                this.isGrounded = Physics.CheckSphere(
+                    this.Feet.position,
+                    this.GroundCheckRadius,
+                    this.GroundLayers,
+                    QueryTriggerInteraction.Ignore
+                );
+                
+
+                return isGrounded;
+            }
+            return false;
+
+            
+                
+        }
         #endregion
 
         #region Controller
@@ -145,8 +171,8 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            this._characterController = this.GetComponent<CharacterController>();
-
+            
+            this._rigidbody = this.GetComponent<Rigidbody>();
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }
@@ -155,8 +181,13 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
+            
+            //this.UpdateGravity(elapsed);
+        }
+
+        protected override void OnFixedUpdate(float elapsed)
+        {
             this.UpdateMove(this.direction, this.movementSpeed, elapsed);
-            this.UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
@@ -210,10 +241,11 @@ namespace ControllerModule.Controllers
         private float jumpHeight = 1.0f;
         public void OnJump()
         {
-            Debug.Log("Jump");
-            if (this.isGrounded)
+            //Debug.Log("Jump");
+            if (CheckGrounded())
             {
-                this.velocity.y += Mathf.Sqrt(jumpHeight * -2.5f * -9.81f);
+                //Debug.Log("grounded");
+                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0),ForceMode.Impulse);
 
                 
             }
@@ -241,24 +273,6 @@ namespace ControllerModule.Controllers
 
         #endregion
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            Rigidbody body = hit.collider.attachedRigidbody;
-            
-            // no rigidbody
-            if (body == null || body.isKinematic)
-            {
-                return;
-            }
-
-            // We dont want to push objects below us
-            if (hit.moveDirection.y < -0.3)
-            {
-                return;
-            }
-            Debug.Log("collided");
-            hit.collider.attachedRigidbody.velocity = Vector3.zero;
-            hit.collider.attachedRigidbody.angularVelocity = Vector3.zero;
-        }
+        
     }
 }
