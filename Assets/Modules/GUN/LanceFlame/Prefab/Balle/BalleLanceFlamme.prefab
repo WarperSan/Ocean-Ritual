@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7253273537143018039}
   - component: {fileID: 6883320924880998033}
+  - component: {fileID: 6342903696701145300}
   m_Layer: 24
   m_Name: BalleLanceFlamme
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d7afa3ee25cb44992a144317725844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 3111487822387323264}
+  _collider: {fileID: 1543644773566997243}
   vitesse: 10
   disparaitApresHit: 0
   grossissement: 1
@@ -58,6 +59,33 @@ MonoBehaviour:
   effetSpecial: 1
   range: 50
   lanceFlameScript: {fileID: 0}
+--- !u!54 &6342903696701145300
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631054407567438953}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5914866118146816626
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,7 +97,7 @@ GameObject:
   - component: {fileID: 5244068968213592308}
   - component: {fileID: 4681292707522369900}
   - component: {fileID: 4946038254441105774}
-  - component: {fileID: 3111487822387323264}
+  - component: {fileID: 1543644773566997243}
   m_Layer: 24
   m_Name: Sphere
   m_TagString: Untagged
@@ -86,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 5914866118146816626}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.2, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -142,7 +170,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3111487822387323264
+--- !u!64 &1543644773566997243
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
