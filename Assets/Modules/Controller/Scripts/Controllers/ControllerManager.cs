@@ -39,23 +39,6 @@ namespace ControllerModule.Controllers
             {
                 Debug.Log(ActiveController.tag);
                 
-                //character model dissapears when taking control
-                if (ActiveController.tag == "Player")
-                {
-                    if(ActiveController.gameObject.activeSelf)
-                    {
-                        ActiveController.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        ActiveController.gameObject.SetActive(false);
-                    }
-                    
-                }
-                
-                if (ActiveController.tag == "Boat")
-                {
-                    Debug.Log("ShutdownSpeed");
-                    ActiveController.gameObject.GetComponent<BoatController>().ShutdownBoatAcceleration();
-                }
-                
                 ActiveController.SwitchOut();
             }
                 
@@ -67,21 +50,8 @@ namespace ControllerModule.Controllers
             // Switch in the given
             controller.SwitchIn();
             stack.Push(controller);
-            Debug.Log(ActiveController.tag);
-            //character model reappears when relinquishing control
-            if (ActiveController.tag == "Player")
-            {
-                if (!ActiveController.gameObject.activeSelf)
-                {
-
-                    ActiveController.gameObject.SetActive(true);
-                    
-                    ActiveController.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    ActiveController.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                }
-
-            }
-
+            
+            
             // Set the controller to the given
             CameraMovement.Instance.SetController(controller);
         }

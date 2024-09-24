@@ -226,6 +226,7 @@ namespace ControllerModule.Controllers
             // Update cursor
             SetCursorLock(false);
             movementDeceleration = movementDeceleration / 2;
+            ShutdownBoatAcceleration();
         }
 
         #endregion

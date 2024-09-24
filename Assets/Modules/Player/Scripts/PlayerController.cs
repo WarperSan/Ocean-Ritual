@@ -193,20 +193,27 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnSwitchIn()
         {
+            this.gameObject.SetActive(true);
             // Update cursor
             this.SetCursor(true);
             SetCursorLock(true);
 
             // Reset direction
             this.direction = Vector2.zero;
+
+            
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
+
+            //this._rigidbody.velocity = Vector3.zero;
+            //this._rigidbody.angularVelocity = Vector3.zero;
             // Update cursor
             this.SetCursor(false);
             SetCursorLock(false);
+            this.gameObject.SetActive(false);
         }
 
         #endregion
