@@ -1,4 +1,4 @@
-using ControllerModule.Controllers;
+using EntityModule;
 using System.Collections.Generic;
 using UnityEngine;
 using WeaponModule;
@@ -138,6 +138,21 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         {
             Debug.LogError("Aucun script BalleLF trouv� sur cet objet.");
         }
+
+        if (balle.TryGetComponent(out Projectile projectile))
+        {
+            projectile.Attribute(new Attack()
+            {
+                Damage = this.GetDamage(),
+                Type = this.currentMode switch
+                {
+                    LanceFlameModes.FIRE => AttackType.FIRE,
+                    LanceFlameModes.ICE => AttackType.ICE,
+                    _ => AttackType.NORMAL,
+                },
+                TargetType = ProjectileTarget.OPPONENTS
+            });
+        }
     }
 
     #endregion
@@ -199,11 +214,9 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         if (OverheatMeter != null)
             initialScaleOverheatMeter = OverheatMeter.localScale;
         // ---
-
-        ControllerManager.SwitchTo(this);
     }
 
-    protected override void OnUpdate(float elapsed) 
+    protected override void OnUpdate(float elapsed)
     {
         base.OnUpdate(elapsed);
 
@@ -216,6 +229,10 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     /// <inheritdoc/>
     public override bool CanShoot()
     {
+        // If the controller is disabled, skip
+        if (!this.IsEnabled)
+            return false;
+
         // Emp�che de tirer si l'arme est en surchauffe
         if (isOverheated)
             return false;
@@ -283,7 +300,6 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         Vector3 newPosition = OverheatMeter.localPosition;
         newPosition.y -= heightDifference; // Ajuste la position pour maintenir le contact avec le sol
         OverheatMeter.localPosition = newPosition;
-
     }
 
     /// <inheritdoc/>

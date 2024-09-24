@@ -1,7 +1,22 @@
+using System;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 namespace EntityModule
 {
+    [Flags]
+    public enum ProjectileTarget
+    {
+        NONE = 0, // No entity
+        ALL = -~0, // Every entity
+
+        PLAYER = 1 << 0, // Only player
+
+        ENEMY = 1 << 1, // Only enemies
+        BOSS = 1 << 2, // Only bosses
+        OPPONENTS = ENEMY | BOSS // Enemies and Bosses
+    }
+
     public class Projectile : MonoBehaviour
     {
         /// <inheritdoc/>
@@ -14,6 +29,15 @@ namespace EntityModule
                 Debug.LogWarning($"The projectile '{this.name}' has a collider that is not trigger. Please fix the collider.");
             }
 #endif
+
+            if (BOSS_LAYER == -1)
+                BOSS_LAYER = LayerMask.NameToLayer("Boss");
+
+            if (ENEMY_LAYER == -1)
+                ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
+
+            if (PLAYER_LAYER == -1)
+                PLAYER_LAYER = LayerMask.NameToLayer("Player");
         }
 
         #region Attack
@@ -42,6 +66,10 @@ namespace EntityModule
         [SerializeField]
         private Collider _collider;
 
+        public static int BOSS_LAYER = -1;
+        public static int ENEMY_LAYER = -1;
+        public static int PLAYER_LAYER = -1;
+
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
         {
@@ -49,7 +77,44 @@ namespace EntityModule
             if (!other.TryGetComponent(out Entity entity))
                 return;
 
+            // If entity not targettable, skip
+            if (!this.IsEntityTarget(entity))
+                return;
+
             this.HitEntity(entity);
+        }
+
+        /// <summary>
+        /// Checks if the given entity is targettable by this projectile
+        /// </summary>
+        protected virtual bool IsEntityTarget(Entity entity)
+        {
+            int layer = entity.gameObject.layer;
+
+            Debug.Log(this.attack.TargetType);
+
+            // If targeting none
+            if (this.attack.TargetType == ProjectileTarget.NONE)
+                return false;
+
+            // If targeting anyone
+            if (this.attack.TargetType == ProjectileTarget.ALL)
+                return true;
+
+            // If hit a player, but not targeting player
+            if (!this.attack.TargetType.HasFlag(ProjectileTarget.PLAYER) && layer == PLAYER_LAYER)
+                return false;
+
+            // If hit an enemy, but not targeting enemies
+            if (!this.attack.TargetType.HasFlag(ProjectileTarget.ENEMY) && layer == ENEMY_LAYER)
+                return false;
+
+            // If hit a boss, but not targeting bosses
+            if (!this.attack.TargetType.HasFlag(ProjectileTarget.BOSS) && layer == BOSS_LAYER)
+                return false;
+
+            // Layer matches the target type
+            return true;
         }
 
         private void HitEntity(Entity entity)

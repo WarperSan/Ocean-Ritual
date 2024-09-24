@@ -2344,7 +2344,9 @@ GameObject:
   - component: {fileID: 1499518861}
   - component: {fileID: 1499518863}
   - component: {fileID: 1499518862}
-  m_Layer: 0
+  - component: {fileID: 1499518864}
+  - component: {fileID: 1499518865}
+  m_Layer: 6
   m_Name: LanceFlame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2497,6 +2499,41 @@ MonoBehaviour:
   feu: {fileID: 2100000, guid: c2b161ca447cb674db5cafd82fcb6f20, type: 2}
   glace: {fileID: 2100000, guid: aac47cd6fe3ed1a49b4478bcc919b581, type: 2}
   modeRenderer: {fileID: 293936164}
+--- !u!65 &1499518864
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499518858}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &1499518865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499518858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618870a180c54d45838550eb16c0052a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 1499518863}
+  asset: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
 --- !u!1 &1553066215
 GameObject:
   m_ObjectHideFlags: 0

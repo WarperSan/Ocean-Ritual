@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public interface BalleGenerique 
 {
     // Propri�t�s
@@ -18,7 +14,6 @@ public interface BalleGenerique
     bool EffetSpecial { get; set; }
 
     // M�thode
-    void EnnemiHit(Collider other); // Fonction appel�e lors de l'impact avec un ennemi
     void Deplacement(); // la Fa�on quelle ce d�place
   
 }

@@ -7,6 +7,7 @@ namespace EntityModule
     {
         public float Damage;
         public AttackType Type = AttackType.NORMAL;
+        public ProjectileTarget TargetType = ProjectileTarget.ALL;
     }
 
     /// <summary>Type of the attack</summary>

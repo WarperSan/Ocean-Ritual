@@ -1,7 +1,7 @@
 using EntityModule;
 using UnityEngine;
 
-public class BalleLF : MonoBehaviour, BalleGenerique
+public class BalleLF : Projectile, BalleGenerique
 {
     #region Propri�t�s
 
@@ -33,58 +33,32 @@ public class BalleLF : MonoBehaviour, BalleGenerique
     public bool EffetSpecial { get => effetSpecial; set => effetSpecial = value; }
     public float Range { get => range; set => range = value; }
 
-
     float distanceTravel = 0;
-    #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Initialisation ou logique de d�marrage ici
-    }
+    #endregion
 
     // Update is called once per frame
     void Update()
     {
         Deplacement();
         Grossisement();
-
     }
 
     #region Interface Methods
 
     public LanceFlameControleur lanceFlameScript;
-    public void EnnemiHit(Collider other)
-    {
-        if (!other.TryGetComponent(out Entity entity))
-            return;
-
-        entity.UseAttack(new Attack()
-        {
-            Damage = lanceFlameScript.GetDamage(),
-            Type = AttackType.FIRE
-        });
-
-        // D�sactiver la balle
-        if (DisparaitApresHit)
-            gameObject.SetActive(false);
-    }
 
     public void Grossisement()
     {
         // Si l'option Grossissement est activ�e
         if (Grossissement)
         {
-
-
             // R�cup�rer le premier enfant
             Transform enfant = transform.GetChild(0);
 
             // Grossit l'enfant en utilisant la valeur de ValeurGrossissement
             float scaleIncrement = ValeurGrossissement * Vitesse * Time.deltaTime;
             enfant.localScale += new Vector3(0, scaleIncrement, scaleIncrement);
-
-
         }
     }
     public void ResetGrossisement()
@@ -92,15 +66,10 @@ public class BalleLF : MonoBehaviour, BalleGenerique
         // Si l'option Grossissement est activ�e
         if (Grossissement)
         {
-
-
             // R�cup�rer le premier enfant
             Transform enfant = transform.GetChild(0);
 
-
             enfant.localScale = new Vector3(0.1f, 1, 1);
-
-
         }
     }
 
@@ -125,21 +94,22 @@ public class BalleLF : MonoBehaviour, BalleGenerique
             transform.Translate(Vector3.forward * distanceThisFrame);
         }
     }
-    void OnTriggerEnter(Collider other)
-    {
-        // V�rifie si l'objet touch� appartient au layer Ennemi
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ennemi"))
-        {
-            // Appelle la logique d'impact avec l'ennemi
-            EnnemiHit(other);
+    
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     // V�rifie si l'objet touch� appartient au layer Ennemi
+    //     if (other.gameObject.layer == LayerMask.NameToLayer("Ennemi"))
+    //     {
+    //         // Appelle la logique d'impact avec l'ennemi
+    //         EnnemiHit(other);
 
-            // Si la balle doit dispara�tre apr�s avoir touch� un ennemi
-            if (DisparaitApresHit)
-            {
-                gameObject.SetActive(false); // D�sactiver la balle
-            }
-        }
-    }
+    //         // Si la balle doit dispara�tre apr�s avoir touch� un ennemi
+    //         if (DisparaitApresHit)
+    //         {
+    //             gameObject.SetActive(false); // D�sactiver la balle
+    //         }
+    //     }
+    // }
 
     #endregion
 }
