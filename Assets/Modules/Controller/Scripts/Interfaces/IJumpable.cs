@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IJumpable
+namespace ControllerModule.Controllers.Interfaces
 {
-    /// <summary>
-    /// Called when the player jumps
-    /// </summary>
-    public void OnJump();
+    public interface IJumpable
+    {
+        /// <summary>
+        /// Called when the player jumps
+        /// </summary>
+        public void OnJump();
+    }
 }
