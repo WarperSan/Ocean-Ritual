@@ -41,7 +41,10 @@ static public class EnumGeneral
         attack,
         bulletspeed,
         bulletSize,
-        fireRate
+        fireRate,
+        AmmoCapacity,
+   
+        Range
     }
 
     // Énumération pour les types de bateaux
@@ -66,8 +69,14 @@ static public class EnumGeneral
     }
 
 
-
+    public enum EffectType
+    {
+        Nothing,
+        Glace,
+        Feu
+    }
 }
+//
 [System.Serializable]
 public class TypeQuantite<TEnum>
 {
@@ -116,6 +125,60 @@ public class FormeBool
             }
         }
         return forme;
+    }
+    public bool[,] Rotate(bool[,] forme, int angle)
+    {
+        bool[,] rotatedForme = forme;
+
+        // Normalize the angle to one of the expected values (90, 180, -90)
+        angle = (angle % 360 + 360) % 360;
+
+        if (angle == 90)
+        {
+            RotateForme90(); // Rotate 90° clockwise
+        }
+        else if (angle == 180)
+        {
+            RotateForme90();
+             RotateForme90(); // Rotate twice for 180°
+        }
+        else if (angle == -90 || angle == 270)
+        {
+            RotateForme90();
+            RotateForme90();
+            RotateForme90(); // Rotate three times for -90° (270° clockwise)
+        }
+
+        return rotatedForme;
+    }
+
+    private void RotateMinus90(bool[,] forme)
+    {
+        
+    }
+    private void RotateForme90()
+    {
+        int size = (int)Mathf.Round(Mathf.Sqrt(flatForme.Count));
+        List<bool> rotated = new List<bool>(new bool[size * size]);
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                // Calcul des index à partir de flatForme pour une rotation de 90°
+                int originalIndex = y * size + x;
+                int rotatedIndex = x * size + (size - 1 - y);
+                rotated[rotatedIndex] = flatForme[originalIndex];
+            }
+        }
+
+        // Mise à jour de flatForme avec les nouvelles valeurs
+        flatForme = rotated;
+    }
+
+    private void Rotate180(bool[,] forme)
+    {
+       
     }
 }
 

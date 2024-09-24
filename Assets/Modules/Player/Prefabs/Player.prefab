@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88369b610459624b1b8fbe58fcb80dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 5
+  sensitivity: 20
   maxAngles: {x: 90, y: 0, z: 0}
   clampAxis: {x: 1, y: 0, z: 0}
   parentController: {fileID: 0}
@@ -516,7 +516,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -100
   m_TargetDisplay: 0
 --- !u!114 &9218422065029361317
 MonoBehaviour:
@@ -1343,6 +1343,7 @@ MonoBehaviour:
   normalCursor: {fileID: 21300000, guid: 96c0f2505aa10fe20a801ea18130f8ac, type: 3}
   cursor: {fileID: 1728905337464703902}
   interactRange: 2.5
+  defaultInteraction: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
   movementSpeed: 10
   Feet: {fileID: 1035515871219090602}
   GroundLayers:

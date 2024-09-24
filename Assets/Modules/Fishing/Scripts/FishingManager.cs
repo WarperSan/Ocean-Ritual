@@ -1,0 +1,172 @@
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+namespace FishingModule
+{
+    public class FishingManager : MonoBehaviour
+    {
+        public void StartFishing()
+        {
+            // If buoy exists, skip
+            if (this._buoy != null)
+                return;
+
+            List<Territory> territories = Territory.Near(
+                this.GetTerritoryCheckOrigin(),
+                this.territoryCheckRadius,
+                this.territoryLayer
+            );
+
+            Dictionary<FishSO, float> fishes = Territory.Fishes(territories);
+
+            foreach (KeyValuePair<FishSO, float> item in fishes)
+                Debug.Log(item.Key.name + ": " + item.Value + "%");
+
+            this.StartBuoy(Territory.Fishes(territories));
+        }
+
+        public void EndFishing()
+        {
+            bool isCollected = this._buoy != null && this._buoy.isCollected;
+
+            if (isCollected)
+            {
+                // <Success>
+                Debug.Log("Player has succeed the fishing!");
+                Dictionary<FishSO, uint> fishes = this._buoy.GetFishCaught();
+                foreach (KeyValuePair<FishSO, uint> item in fishes)
+                    Debug.Log($"You caught x{item.Value} '{item.Key.DisplayName}'!");
+            }
+            else
+            {
+                // <Failure>
+                Debug.Log("Player has failed the fishing!");
+            }
+
+            // Destroy buoy
+            Destroy(this._buoy.gameObject);
+        }
+
+        #region IInteractable
+
+        public void OnInteraction()
+        {
+            if (this._buoy == null)
+            {
+                this.StartFishing();
+            }
+            else if (Vector3.Distance(this.transform.position, this._buoy.transform.position) <= 20f)
+            {
+                this.CollectBuoy();
+            }
+        }
+
+        #endregion
+
+        #region Buoy
+
+        [Header("Buoy")]
+        [SerializeField, Tooltip("Prefab for the buoy")]
+        private GameObject buoyPrefab;
+
+        [SerializeField]
+        private Transform buoyHolder;
+
+        public event FishingBuoy.FishCaught OnFishCaught;
+
+        private FishingBuoy _buoy = null;
+
+        private bool StartBuoy(Dictionary<FishSO, float> fishesToCatch)
+        {
+            // Spawn buoy
+            if (this._buoy == null)
+            {
+                this._buoy = Instantiate(this.buoyPrefab).GetComponent<FishingBuoy>();
+                this._buoy.transform.position = this.GetTerritoryCheckOrigin();
+
+                // Add callback
+                this._buoy.OnFishCaught += f => this.OnFishCaught?.Invoke(f);
+
+                // Set up ZoneManager
+                if (this._buoy.TryGetComponent(out ZoneManager zoneManager))
+                {
+                    zoneManager.SetTarget(this.transform);
+                    zoneManager.manager = this;
+                }
+            }
+
+            // If invalid, skip
+            if (this._buoy == null)
+            {
+                Debug.LogError("Could not find nor create the buoy.");
+                return false;
+            }
+
+            // Set up buoy
+            return this._buoy.SetFishesAvailable(fishesToCatch);
+        }
+
+        private void CollectBuoy()
+        {
+            if (this._buoy == null)
+                return;
+
+            this._buoy.isCollected = true;
+            this._buoy.transform.SetParent(this.buoyHolder, false);
+            this._buoy.transform.localPosition = Vector3.zero;
+        }
+
+        #endregion
+
+        #region Territories
+
+        [Header("Territories")]
+        [SerializeField, Tooltip("Determines the layers on which the territories' colliders are")]
+        private LayerMask territoryLayer;
+
+        [SerializeField, Tooltip("Determines how far from the check goes")]
+        private float territoryCheckRadius;
+
+        [SerializeField]
+        private Vector3 territoryCheckOffset;
+
+        /// <returns>From where the territory check starts</returns>
+        private Vector3 GetTerritoryCheckOrigin()
+        {
+            Vector3 pos = this.transform.position + this.territoryCheckOffset;
+
+            // Remove Y
+            pos.y = 0;
+
+            return pos;
+        }
+
+        #endregion
+
+        #region Editor
+
+#if UNITY_EDITOR
+        /// <inheritdoc/>
+        private void OnDrawGizmosSelected()
+        {
+            Handles.color = Color.cyan;
+            Handles.DrawSolidDisc(this.GetTerritoryCheckOrigin(), Vector3.up, this.territoryCheckRadius);
+        }
+
+        /// <inheritdoc/>
+        private void OnValidate()
+        {
+            // Prevent vertical offset
+            if (this.territoryCheckOffset.y != 0)
+            {
+                Debug.LogWarning("The territory check is executed at Y = 0. You cannot put a vertical offset.");
+                this.territoryCheckOffset.y = 0;
+            }
+        }
+
+#endif
+
+        #endregion
+    }
+}

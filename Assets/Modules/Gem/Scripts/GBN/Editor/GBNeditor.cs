@@ -106,7 +106,7 @@ public class GBNeditor : UnityEditor.Editor
                 listProperty.InsertArrayElementAtIndex(listProperty.arraySize);
                 var element = listProperty.GetArrayElementAtIndex(listProperty.arraySize - 1);
                 element.FindPropertyRelative("Type").enumValueIndex = (int)value;
-                element.FindPropertyRelative("Quantite").floatValue = 1;
+                element.FindPropertyRelative("Quantite").floatValue = 0;
             }
         }
 

@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Save
+namespace SaveModule
 {
     /// <summary>
     /// Class that manages the saving and the loading of the game state
@@ -70,9 +70,9 @@ namespace Save
         /// </summary>
         /// <param name="data">Loaded data</param>
         /// <returns>Succeed to load</returns>
-        private static bool ReadDataFromFile(string path, out SaveData? data)
+        private static bool ReadDataFromFile(string path, out SaveData data)
         {
-            data = null;
+            data = new();
 
             // Check if file exists
             if (!File.Exists(path))
@@ -86,7 +86,7 @@ namespace Save
                 string content = File.ReadAllText(path);
                 data = JsonUtility.FromJson<SaveData>(content);
 
-                Debug.Log($"File loaded from: '{path}'.");
+                Debug.Log($"File loaded from: {path}.");
 
                 return true;
             }
@@ -164,7 +164,7 @@ namespace Save
             string path = GetPath(saveIndex);
 
             // Fetch content and cache
-            bool succeed = ReadDataFromFile(path, out SaveData? data);
+            bool succeed = ReadDataFromFile(path, out SaveData data);
             cachedData = data;
 
             // If the load succeed
@@ -172,7 +172,7 @@ namespace Save
                 OnLoad?.Invoke(cachedData.Value);
 
             // Update selected save
-            SaveManager.currentSaveIndex = saveIndex;
+            currentSaveIndex = saveIndex;
 
             return succeed;
         }

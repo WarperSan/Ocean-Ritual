@@ -1,5 +1,5 @@
 using ControllerModule.Controllers.Interfaces;
-using System;
+using InteractModule;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +26,9 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how far the player can interact with things")]
         private float interactRange;
 
+        [SerializeField]
+        private InteractionAsset defaultInteraction;
+
         /// <summary>
         /// Updates the cursor depending on the possible interactions
         /// </summary>
@@ -39,9 +42,10 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null)
                 return;
 
-            if (Interfaces.IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, this.interactRange))
+            if (IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, out IInteractable interactable, this.interactRange))
             {
-                this.cursor.sprite = this.interactCursor;
+                InteractionAsset asset = interactable.InteractionAsset != null ? interactable.InteractionAsset : this.defaultInteraction;
+                this.cursor.sprite = asset != null ? asset.icon : null;
                 this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
             }
             else
@@ -61,6 +65,15 @@ namespace ControllerModule.Controllers
                 return;
 
             this.cursor.enabled = visible;
+        }
+
+        private void Interact()
+        {
+            // If eyes invalid, skip
+            if (this.Eyes == null)
+                return;
+
+            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
         }
 
         #endregion
@@ -228,14 +241,7 @@ namespace ControllerModule.Controllers
         #region IFirable
 
         /// <inheritdoc/>
-        public void OnFireStart()
-        {
-            // If eyes invalid, skip
-            if (this.Eyes == null)
-                return;
-
-            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
-        }
+        public void OnFireStart() => this.Interact();
 
         /// <inheritdoc/>
         public void OnFireEnd() { }

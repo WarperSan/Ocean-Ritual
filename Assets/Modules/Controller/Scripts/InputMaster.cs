@@ -1,4 +1,6 @@
 using ControllerModule.Controllers.Interfaces;
+using UIModule;
+using UIModule.Menus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -62,6 +64,11 @@ namespace ControllerModule.Controllers
             this.OnJump?.Invoke();
         }
 
+        public void Inventory(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                UIManager.Toggle<InventoryMenu>();
+        }
         #endregion
 
         #region Operations
