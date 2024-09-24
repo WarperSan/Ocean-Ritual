@@ -59,7 +59,7 @@ namespace ControllerModule.Controllers
         }
         
         /// <summary>
-        /// Called when this controller is started to being used
+        /// Called when this controller is starting to be used
         /// </summary>
         protected virtual void OnSwitchIn() { }
 

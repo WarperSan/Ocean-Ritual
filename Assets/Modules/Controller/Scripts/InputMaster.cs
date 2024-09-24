@@ -15,6 +15,7 @@ namespace ControllerModule.Controllers
 
         public delegate void LookEvent(Vector2 direction);
         public delegate void MoveEvent(Vector2 direction);
+        public delegate void JumpEvent();
         public delegate void FireEvent();
 
         #endregion
@@ -25,6 +26,7 @@ namespace ControllerModule.Controllers
         public event MoveEvent OnMove;
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
+        public event JumpEvent OnJump;
 
         #endregion
 
@@ -57,6 +59,10 @@ namespace ControllerModule.Controllers
             if (context.started)
                 ControllerManager.BackTo();
         }
+        public void Jump(InputAction.CallbackContext context)
+        {
+            this.OnJump?.Invoke();
+        }
 
         public void Inventory(InputAction.CallbackContext context)
         {
@@ -69,34 +75,53 @@ namespace ControllerModule.Controllers
 
         public static InputMaster operator +(InputMaster input, Controller controller)
         {
-            // Subscribe all events
-            input.OnLook += controller.OnLook;
-
-            if (controller is IMovable movable)
-                input.OnMove += movable.OnMove;
-
-            if (controller is IFirable firable)
+            if (input != null && controller != null)
             {
-                input.OnFireStart += firable.OnFireStart;
-                input.OnFireEnd += firable.OnFireEnd;
-            }
+                // Subscribe all events
+                input.OnLook += controller.OnLook;
+
+                if (controller is IMovable movable)
+                    input.OnMove += movable.OnMove;
+
+                if (controller is IFirable firable)
+                {
+                    input.OnFireStart += firable.OnFireStart;
+                    input.OnFireEnd += firable.OnFireEnd;
+                }
+
+                if (controller is IJumpable jumpable)
+                {
+                    input.OnJump += jumpable.OnJump;
+                }
+            }    
+
+            
 
             return input;
         }
 
         public static InputMaster operator -(InputMaster input, Controller controller)
         {
-            // Unsubscribe all events
-            input.OnLook -= controller.OnLook;
-
-            if (controller is IMovable movable)
-                input.OnMove -= movable.OnMove;
-
-            if (controller is IFirable firable)
+            if (input != null && controller != null)
             {
-                input.OnFireStart -= firable.OnFireStart;
-                input.OnFireEnd -= firable.OnFireEnd;
+                // Unsubscribe all events
+                input.OnLook -= controller.OnLook;
+
+                if (controller is IMovable movable)
+                    input.OnMove -= movable.OnMove;
+
+                if (controller is IFirable firable)
+                {
+                    input.OnFireStart -= firable.OnFireStart;
+                    input.OnFireEnd -= firable.OnFireEnd;
+                }
+
+                if (controller is IJumpable jumpable)
+                {
+                    input.OnJump -= jumpable.OnJump;
+                }
             }
+                
 
             return input;
         }
