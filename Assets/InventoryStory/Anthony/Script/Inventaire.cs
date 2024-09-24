@@ -311,7 +311,15 @@ public class Inventaire : MonoBehaviour
     public List<ItemData> GetInventaire()
     {
         Debug.Log($"get inventaire {ItemList.Count}");
-        return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
+        List<ItemData> inventairePlein = new List<ItemData>(ItemList);
+
+        // Ajouter des slots vides si la liste contient moins de 10 objets
+        while (inventairePlein.Count < nombreDePlaceInventaire)
+        {
+            inventairePlein.Add(null);
+        }
+
+        return inventairePlein;
     }
 
     public void UpdateItemListeUI()
