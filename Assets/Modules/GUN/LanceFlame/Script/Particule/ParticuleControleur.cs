@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ParticuleControleur : MonoBehaviour
 {
-    [SerializeField] GameObject feuPrefab;  // Préfabriqué pour le feu
-    [SerializeField] GameObject glacePrefab; // Préfabriqué pour la glace
+    [SerializeField] GameObject feuPrefab;  // Prï¿½fabriquï¿½ pour le feu
+    [SerializeField] GameObject glacePrefab; // Prï¿½fabriquï¿½ pour la glace
     [SerializeField] GameObject FeuConteneur;  // Conteneur pour les effets de feu
     [SerializeField] GameObject GlaceConteneur; // Conteneur pour les effets de glace
     [SerializeField] LanceFlameControleur lanceFlameScript; // Conteneur lanceFlame
@@ -13,68 +13,68 @@ public class ParticuleControleur : MonoBehaviour
     private ParticleSystem feuInstance;
     private ParticleSystem glaceInstance;
 
-    // Méthodes d'activation des particules
+    // Mï¿½thodes d'activation des particules
     public void ActiverFeu()
     {
-        // Désactive la glace si elle est active
+        // Dï¿½sactive la glace si elle est active
         if (glaceInstance != null)
         {
             glaceInstance.Stop();
             glaceInstance = null;
         }
 
-        // Instancie une nouvelle instance de feu si nécessaire
+        // Instancie une nouvelle instance de feu si nï¿½cessaire
         if (feuInstance == null)
         {
             GameObject feuObj = Instantiate(feuPrefab, FeuConteneur.transform.position, FeuConteneur.transform.rotation);
-            feuObj.transform.parent = FeuConteneur.transform; // Place le feu sous l'objet contrôleur
+            feuObj.transform.parent = FeuConteneur.transform; // Place le feu sous l'objet contrï¿½leur
             feuInstance = feuObj.GetComponent<ParticleSystem>();
 
             var main = feuInstance.main;
             float range = lanceFlameScript.RangeBoost.Quantite;
             float bulletSpeed = lanceFlameScript.BulletSpeedWithBoost.Quantite;
 
-            // Ajuste la vitesse de départ
+            // Ajuste la vitesse de dï¿½part
             main.startSpeed = bulletSpeed;
 
-            // Ajuste la durée de vie pour que la distance reste constante
-            main.startLifetime = range / bulletSpeed; // Durée de vie calculée pour que la particule parcoure la même distance
+            // Ajuste la durï¿½e de vie pour que la distance reste constante
+            main.startLifetime = range / bulletSpeed; // Durï¿½e de vie calculï¿½e pour que la particule parcoure la mï¿½me distance
         }
         else
         {
-            feuInstance.gameObject.SetActive(true); // Réactive l'objet de feu si nécessaire
+            feuInstance.gameObject.SetActive(true); // Rï¿½active l'objet de feu si nï¿½cessaire
         }
     }
 
     public void ActiverGlace()
     {
-        // Désactive le feu si il est actif
+        // Dï¿½sactive le feu si il est actif
         if (feuInstance != null)
         {
             feuInstance.Stop();
             feuInstance = null;
         }
 
-        // Instancie une nouvelle instance de glace si nécessaire
+        // Instancie une nouvelle instance de glace si nï¿½cessaire
         if (glaceInstance == null)
         {
             GameObject glaceObj = Instantiate(glacePrefab, GlaceConteneur.transform.position, GlaceConteneur.transform.rotation);
-            glaceObj.transform.parent = GlaceConteneur.transform; // Place la glace sous l'objet contrôleur
+            glaceObj.transform.parent = GlaceConteneur.transform; // Place la glace sous l'objet contrï¿½leur
             glaceInstance = glaceObj.GetComponent<ParticleSystem>();
 
             var main = glaceInstance.main;
             float range = lanceFlameScript.RangeBoost.Quantite;
             float bulletSpeed = lanceFlameScript.BulletSpeedWithBoost.Quantite;
 
-            // Ajuste la vitesse de départ
+            // Ajuste la vitesse de dï¿½part
             main.startSpeed = bulletSpeed;
 
-            // Ajuste la durée de vie pour que la distance reste constante
-            main.startLifetime = range / bulletSpeed; // Durée de vie calculée pour que la particule parcoure la même distance
+            // Ajuste la durï¿½e de vie pour que la distance reste constante
+            main.startLifetime = range / bulletSpeed; // Durï¿½e de vie calculï¿½e pour que la particule parcoure la mï¿½me distance
         }
         else
         {
-            glaceInstance.gameObject.SetActive(true); // Réactive l'objet de glace si nécessaire
+            glaceInstance.gameObject.SetActive(true); // Rï¿½active l'objet de glace si nï¿½cessaire
         }
     }
 
@@ -83,11 +83,11 @@ public class ParticuleControleur : MonoBehaviour
         if (OverheatParticule != null)
         {
             OverheatParticule.gameObject.SetActive(true);
-            OverheatParticule.Play(); // Démarre les particules pour indiquer la surchauffe
+            OverheatParticule.Play(); // Dï¿½marre les particules pour indiquer la surchauffe
         }
         else
         {
-            Debug.LogWarning("OverheatParticule n'est pas assigné.");
+            Debug.LogWarning("OverheatParticule n'est pas assignï¿½.");
         }
     }
 
@@ -96,18 +96,18 @@ public class ParticuleControleur : MonoBehaviour
         if (OverheatParticule != null)
         {
             OverheatParticule.Stop();
-            OverheatParticule.Clear();// Arrête les particules quand la surchauffe est terminée
+            OverheatParticule.Clear();// Arrï¿½te les particules quand la surchauffe est terminï¿½e
             OverheatParticule.gameObject.SetActive(false);
         }
         else
         {
-            Debug.LogWarning("OverheatParticule n'est pas assigné.");
+            Debug.LogWarning("OverheatParticule n'est pas assignï¿½.");
         }
     }
 
     public void DesactiverParticules()
     {
-        // Désactive
+        // Dï¿½sactive
         if (feuInstance != null)
         {
             feuInstance.Stop();
@@ -128,7 +128,7 @@ public class ParticuleControleur : MonoBehaviour
 
     public void ControleParticule(bool canShoot,bool modeGlace)
     {
-        if (canShoot && Input.GetMouseButton(0)) // Bouton gauche pour activer les particules
+        if (Input.GetMouseButton(0)) // Bouton gauche pour activer les particules
         {
             if (modeGlace)
             {

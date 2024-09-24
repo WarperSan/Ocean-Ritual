@@ -1,5 +1,4 @@
 using ControllerModule.Controllers;
-using EntityModule;
 using System.Collections.Generic;
 using UnityEngine;
 using WeaponModule;
@@ -192,7 +191,6 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         }
         // Remplace les statistiques de base par les statistiques boost�es
 
-
         reloadSpeed = ReloadSpeedWithBoost.Quantite;
 
         AmmoInClip = Mathf.RoundToInt(AmmoCapacityBoost.Quantite); // Initialise les munitions � la capacit� maximale
@@ -205,6 +203,12 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         ControllerManager.SwitchTo(this);
     }
 
+    protected override void OnUpdate(float elapsed) 
+    {
+        base.OnUpdate(elapsed);
+
+        this.ParticuleControleurs.ControleParticule(this.CanShoot(), this.currentMode == LanceFlameModes.ICE);
+    }
     #endregion
 
     #region WeaponController
@@ -233,12 +237,10 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         // Bouton gauche pour tirer, d�pend du mode s�lectionn�
         if (this.currentMode == LanceFlameModes.FIRE)
         {
-            this.ParticuleControleurs.ActiverFeu();
             this.FireShoot(); // Tire avec le feu si en mode feu
         }
         else
         {
-            this.ParticuleControleurs.ActiverGlace();
             this.IceShoot(); // Tire avec la glace si en mode glace
         }
     }

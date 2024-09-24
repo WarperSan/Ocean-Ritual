@@ -8,7 +8,7 @@ public class DetectionEnnemie : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
       
-        // Vérifie si l'objet touché appartient au layer Ennemi
+        // Vï¿½rifie si l'objet touchï¿½ appartient au layer Ennemi
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             // Appelle la logique d'impact avec l'ennemi
