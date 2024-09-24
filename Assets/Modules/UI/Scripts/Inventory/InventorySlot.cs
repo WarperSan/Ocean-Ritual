@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(DragAndDropHandler))]
 public class InventorySlot : MonoBehaviour
 {
-    [SerializeField] Image item;
+    [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
 
@@ -27,16 +27,19 @@ public class InventorySlot : MonoBehaviour
         if (sprite == null)
             return;
 
-        item.sprite = sprite;
+        itemImage.sprite = sprite;
         quantity.text = "x" + qty.ToString();
-        Color itemColor = item.color;
+        Color itemColor = itemImage.color;
         itemColor.a = 1f;
-        item.color = itemColor;
+        itemImage.color = itemColor;
     }
 
     public void ClearSlot()
     {
-        item.gameObject.SetActive(false);
+        Color itemColor = itemImage.color;
+        itemColor.a = 0f;
+        itemImage.color = itemColor;
+        quantity.text = "";
     }
 
     /// <summary>
@@ -101,9 +104,15 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
-            if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)originalParent, Input.mousePosition, Camera.main))
+            //Debug.Log(raycasts.Count);
+            //if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)originalParent, Input.mousePosition, Camera.main))
+            //{
+            //    Inventaire.Instance.DropItem(originalIndex);
+            //}
+            if(raycasts.Count == 0)
             {
                 Inventaire.Instance.DropItem(originalIndex);
+                this.ClearSlot();
             }
 
             transform.SetParent(originalParent);
