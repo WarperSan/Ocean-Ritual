@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using System.Linq.Expressions;
 using UnityEngine;
 using static EnumGeneral;
 using System.Linq;
+
 [System.Serializable]
 public class Inventaire : MonoBehaviour
 {
@@ -27,11 +27,14 @@ public class Inventaire : MonoBehaviour
             return instance;
         }
     }
-    private int nombreDePlaceInventaire =10;
-  [SerializeField]  public List<ItemData> ItemList = new ();
+
+    private int nombreDePlaceInventaire = 10;
+    [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<PoissonData> poissons;
     [SerializeField] List<GemmeData> gemmes;
+    [SerializeField] InventoryUI inventoryUI;
     bool InventaireOuvert = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,7 @@ public class Inventaire : MonoBehaviour
         //AjouterGemmesDeTest();
         //UpdateSousListe();
     }
+
     void AjouterGemmesDeTest()
     {
         string[] gemmeColors = { "Gemme Rouge", "Gemme Bleue", "Gemme Verte" };
@@ -53,6 +57,7 @@ public class Inventaire : MonoBehaviour
             ItemList.Add(gemme);
         }
     }
+
     void AjouterPoissonsDeTest()
     {
         // Poisson A
@@ -91,15 +96,18 @@ public class Inventaire : MonoBehaviour
             ItemList.Add(poissonC);
         }
     }
+
     public void UpdateSousListe()
     {
         poissons = ItemList.OfType<PoissonData>().ToList();
         gemmes = ItemList.OfType<GemmeData>().ToList();
     }
+
     public void InitiateListe()
     {
         ItemList = new List<ItemData>();
     }
+
     public void UpgradeInventory(int AddingStockage)
     {
         if (AddingStockage < 0)
@@ -110,9 +118,7 @@ public class Inventaire : MonoBehaviour
         {
             nombreDePlaceInventaire += AddingStockage;
         }
-       
     }
-
 
     public (List<int>, List<int>) ItemExistantDansListe(ItemData item)
     {
@@ -153,6 +159,7 @@ public class Inventaire : MonoBehaviour
     {
         ItemList.Add(null);
     }
+
     public void NettoyerEmplacement()
     {
         // Traverse la liste à l'envers
@@ -185,18 +192,18 @@ public class Inventaire : MonoBehaviour
         }
 
         // Effectue l'échange des éléments
-        ItemData temp = ItemList[index1];  
-        ItemList[index1] = ItemList[index2];  
+        ItemData temp = ItemList[index1];
+        ItemList[index1] = ItemList[index2];
         ItemList[index2] = temp;
         UpdateSousListe();
     }
+
     public void DropItem(int index)
     {
         // Vérifie si l'index est dans les limites de la liste
         if (index >= 0 && index < ItemList.Count)
         {
             ItemList.RemoveAt(index);
-           
         }
         else
         {
@@ -205,14 +212,16 @@ public class Inventaire : MonoBehaviour
         }
         UpdateSousListe();
     }
+
     public ItemData GetItem(int index)
     {
-     return  ItemList[index];
-
+        return ItemList[index];
     }
+
+    public event Action<List<ItemData>> OnInventoryChanged;
+
     public void AddItem(ItemData item)
     {
-     
         // Récupère les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
         //Debug.Log("Liste des indices d'objets identiques : " + string.Join(", ", ListeIndexItemIdentique));
@@ -293,19 +302,23 @@ public class Inventaire : MonoBehaviour
         }
         UpdateSousListe();
         Debug.Log(ItemList.Count);
-    }
 
+        ////
+        OnInventoryChanged?.Invoke(ItemList);
+        UpdateItemListeUI();
+    }
 
     public List<ItemData> GetInventaire()
     {
+        Debug.Log($"get inventaire {ItemList.Count}");
         return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
     }
 
-
-    public void UpdateItemListeUI()     
+    public void UpdateItemListeUI()
     {
-      
+        inventoryUI.UpdateUI(ItemList);
     }
+
     public void TrierItemList(TypeOfSort SortType)
     {
         switch (SortType)
@@ -336,12 +349,13 @@ public class Inventaire : MonoBehaviour
                 break;
 
             default:
-               
+
                 Console.WriteLine("Type de tri non reconnu");
                 break;
         }
         UpdateSousListe();
     }
+
     public void TrierNom()
     {
         // Séparer les poissons et les gemmes
@@ -471,7 +485,4 @@ public class Inventaire : MonoBehaviour
                                     .Concat(gemmes)
                                     .ToList();
     }
-
-
-
 }

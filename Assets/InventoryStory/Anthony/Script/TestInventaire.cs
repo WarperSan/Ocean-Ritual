@@ -10,7 +10,7 @@ public class TestInventaire : MonoBehaviour
     [SerializeField] bool ajouterPoisson = false;
     [SerializeField] bool ajouterGemme = false;
     [SerializeField] bool clearInventaire = false;
-    [SerializeField] bool faireLeTrie  = false;
+    [SerializeField] bool faireLeTrie = false;
     [SerializeField] bool SwapPlace = false;
     [SerializeField] bool drop = false;
     [SerializeField] int index1;
@@ -19,10 +19,11 @@ public class TestInventaire : MonoBehaviour
     [SerializeField] PoissonData poisson;
     [SerializeField] GemmeData gemme;
     [SerializeField] TypeOfSort typeDeTri;
+
     // Start is called before the first frame update
     void Start()
     {
-      //  inventaireJoueur.InitiateListe();
+        inventaireJoueur.InitiateListe();
     }
 
     // Update is called once per frame
@@ -37,7 +38,8 @@ public class TestInventaire : MonoBehaviour
             {
                 nom = poisson.nom,
                 quantiter = poisson.quantiter,
-                quantiterMax = poisson.quantiterMax
+                quantiterMax = poisson.quantiterMax,
+                sprite = poisson.sprite,
             };
 
             Inventaire.Instance.AddItem(nouveauPoisson); // Utilise la nouvelle instance
@@ -52,8 +54,8 @@ public class TestInventaire : MonoBehaviour
             {
                 GemmeColorsName = gemme.GemmeColorsName,
                 LVL = gemme.LVL,
-                 quantiter =1,
-                quantiterMax =1
+                quantiter = 1,
+                quantiterMax = 1
             };
 
             Inventaire.Instance.AddItem(nouvelleGemme); // Utilise la nouvelle instance
@@ -62,26 +64,21 @@ public class TestInventaire : MonoBehaviour
         {
             clearInventaire = false;
             inventaireJoueur.NettoyerEmplacement();
-
         }
         if (faireLeTrie)
         {
             faireLeTrie = false;
             inventaireJoueur.TrierItemList(typeDeTri);
-
-
         }
         if (SwapPlace)
         {
-            SwapPlace = false; 
+            SwapPlace = false;
             inventaireJoueur.SwapPlace(index1, index2);
-
         }
         if (drop)
         {
             drop = false;
             inventaireJoueur.DropItem(indexDrop);
-
         }
     }
 }

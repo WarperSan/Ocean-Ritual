@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace UIModule
 {
-    /// <summary>
-    /// 
-    /// </summary>
+
     [RequireComponent(typeof(Canvas))]
     public class UIManager : UtilsModule.Singleton<UIManager>
     {
