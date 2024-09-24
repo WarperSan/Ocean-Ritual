@@ -28,7 +28,7 @@ public class Inventaire : MonoBehaviour
         }
     }
 
-    private int nombreDePlaceInventaire = 10;
+    private int nombreDePlaceInventaire = 12;
     [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<PoissonData> poissons;
     [SerializeField] List<GemmeData> gemmes;
@@ -106,6 +106,12 @@ public class Inventaire : MonoBehaviour
     public void InitiateListe()
     {
         ItemList = new List<ItemData>();
+        
+        // Tant que l'inventaire n'est pas plein, ajoute des null
+        while(ItemList.Count < nombreDePlaceInventaire)
+        {
+            AjoutEmplacement();
+        }
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -218,8 +224,6 @@ public class Inventaire : MonoBehaviour
         return ItemList[index];
     }
 
-    public event Action<List<ItemData>> OnInventoryChanged;
-
     public void AddItem(ItemData item)
     {
         // Récupère les emplacements d'objets similaires et disponibles
@@ -304,22 +308,13 @@ public class Inventaire : MonoBehaviour
         Debug.Log(ItemList.Count);
 
         ////
-        OnInventoryChanged?.Invoke(ItemList);
         UpdateItemListeUI();
     }
 
     public List<ItemData> GetInventaire()
     {
         Debug.Log($"get inventaire {ItemList.Count}");
-        List<ItemData> inventairePlein = new List<ItemData>(ItemList);
-
-        // Ajouter des slots vides si la liste contient moins de 10 objets
-        while (inventairePlein.Count < nombreDePlaceInventaire)
-        {
-            inventairePlein.Add(null);
-        }
-
-        return inventairePlein;
+        return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
     }
 
     public void UpdateItemListeUI()

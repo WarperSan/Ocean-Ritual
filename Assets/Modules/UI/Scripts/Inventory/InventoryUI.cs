@@ -10,30 +10,22 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] GameObject slot;
     [SerializeField] Transform parent;
     [SerializeField] TextMeshProUGUI playerGold;
-    List<ItemData> listeItems = new();
 
     private void OnEnable()
     {
-        listeItems = Inventaire.Instance.GetInventaire();
-        UpdateUI(listeItems);
-    }
-
-    private void OnDisable()
-    {
-        Inventaire.Instance.OnInventoryChanged -= UpdateUI;
+        Inventaire.Instance.UpdateItemListeUI();
     }
 
     public void UpdateUI(List<ItemData> itemList)
     {
-        // Nettoyer les slots actuels
         foreach (Transform child in parent)
         {
             Destroy(child.gameObject);
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < itemList.Count; i++)
         {
-            if (i < itemList.Count && itemList[i] != null)
+            if (itemList[i] != null)
             {
                 ItemData item = itemList[i];
                 Sprite sprite = GetSpriteFromItem(item);
@@ -55,7 +47,7 @@ public class InventoryUI : MonoBehaviour
 
     private Sprite GetSpriteFromItem(ItemData item)
     {
-        if (item == null || item.sprite == null)
+        if (item == null)
             return null;
 
         return item.sprite;

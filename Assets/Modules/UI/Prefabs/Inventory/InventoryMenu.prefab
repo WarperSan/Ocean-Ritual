@@ -1003,6 +1003,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be414813020ad564592f2f48cbef60e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openAnimation: {fileID: 0}
+  closeAnimation: {fileID: 0}
 --- !u!1 &4452909886854130793
 GameObject:
   m_ObjectHideFlags: 0
@@ -2138,7 +2140,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8024390578986299003}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2149,7 +2151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -80.000244}
+  m_AnchoredPosition: {x: 0, y: -80.00027}
   m_SizeDelta: {x: 0, y: -160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8531048863070971605
@@ -2164,9 +2166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae8813a31ce8a24692af3940f338e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listSprite:
-  - {fileID: 21300000, guid: 3bb30edd0501b1dee8b2d1b2b5f8658e, type: 3}
-  listQuantity: 02000000
   slot: {fileID: 9192869792413234619, guid: 5fa211296d6f42f42bf16d79146c9f2e, type: 3}
   parent: {fileID: 7278043022298045775}
   playerGold: {fileID: 3787012066666354481}
