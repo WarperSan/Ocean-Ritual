@@ -16,7 +16,7 @@ public class GemmeGrid : MonoBehaviour
 
     void Start()
     {
-        //InitializeTableau();
+        //InitializeTab();
         // Exemple();
     }
 
@@ -25,7 +25,7 @@ public class GemmeGrid : MonoBehaviour
     #region Initialization
 
     // Initializes the tableau with the specified width and height
-    public void InitializeTableau()
+    public void InitializeTab()
     {
         tableau = new bool[width, height];
     }
