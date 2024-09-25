@@ -235,7 +235,7 @@ public class Inventaire : MonoBehaviour
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
         UpdateSousListe();
-        UpdateItemListeUI();
+       // UpdateItemListeUI();
     }
 
     public ItemData GetItem(int index)
@@ -299,7 +299,7 @@ public class Inventaire : MonoBehaviour
                 quantiteRestante -= item.quantiterMax;
             }
         }
-
+        
         //// 3. Si encore de la quantité à placer, crée un nouvel emplacement
         //int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
         //int iterationCount = 0;   // Compteur d'itérations
