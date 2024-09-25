@@ -18,15 +18,27 @@ public class DragAndDropHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData) => OnDragStart?.Invoke();
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!this.enabled)
+            return;
+
+        OnDragStart?.Invoke();
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!this.enabled)
+            return;
+
         rectTransform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!this.enabled)
+            return;
+
         // Set up the new Pointer Event
         PointerEventData m_PointerEventData = new(EventSystem.current);
         

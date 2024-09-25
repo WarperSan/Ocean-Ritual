@@ -51,7 +51,6 @@ namespace ControllerModule.Controllers
             controller.SwitchIn();
             stack.Push(controller);
             
-            
             // Set the controller to the given
             CameraMovement.Instance.SetController(controller);
         }

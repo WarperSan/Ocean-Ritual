@@ -31,9 +31,9 @@ public class TestInventaire : MonoBehaviour
     {
         if (ajouterPoisson)
         {
-            ajouterPoisson = false; // Remplace ! par false pour ne pas inverser à chaque update
+            ajouterPoisson = false; // Remplace ! par false pour ne pas inverser Ã  chaque update
 
-            // Crée une nouvelle instance de PoissonData
+            // CrÃ©e une nouvelle instance de PoissonData
             PoissonData nouveauPoisson = new PoissonData()
             {
                 nom = poisson.nom,
@@ -47,9 +47,9 @@ public class TestInventaire : MonoBehaviour
 
         if (ajouterGemme)
         {
-            ajouterGemme = false; // Remplace ! par false pour ne pas inverser à chaque update
+            ajouterGemme = false; // Remplace ! par false pour ne pas inverser Ã  chaque update
 
-            // Crée une nouvelle instance de GemmeData
+            // CrÃ©e une nouvelle instance de GemmeData
             GemmeData nouvelleGemme = new GemmeData()
             {
                 GemmeColorsName = gemme.GemmeColorsName,
@@ -64,12 +64,12 @@ public class TestInventaire : MonoBehaviour
         if (clearInventaire)
         {
             clearInventaire = false;
-            inventaireJoueur.CleanSpace();
+            inventaireJoueur.NettoyerEmplacement();
         }
         if (faireLeTrie)
         {
             faireLeTrie = false;
-            inventaireJoueur.SortItem(typeDeTri);
+            inventaireJoueur.TrierItemList(typeDeTri);
         }
         if (SwapPlace)
         {

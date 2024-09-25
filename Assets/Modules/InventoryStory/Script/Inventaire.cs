@@ -67,7 +67,7 @@ public class Inventaire : MonoBehaviour
             {
                 nom = "Poisson A",
                 quantiterMax = 5,
-                quantiter = 5 // Quantité égale à la quantité maximale
+                quantiter = 5 // QuantitÃ© Ã©gale Ã  la quantitÃ© maximale
             };
             ItemList.Add(poissonA);
         }
@@ -79,7 +79,7 @@ public class Inventaire : MonoBehaviour
             {
                 nom = "Poisson B",
                 quantiterMax = 8,
-                quantiter = 8 // Quantité égale à la quantité maximale
+                quantiter = 8 // QuantitÃ© Ã©gale Ã  la quantitÃ© maximale
             };
             ItemList.Add(poissonB);
         }
@@ -91,7 +91,7 @@ public class Inventaire : MonoBehaviour
             {
                 nom = "Poisson C",
                 quantiterMax = 10,
-                quantiter = 10 // Quantité égale à la quantité maximale
+                quantiter = 10 // QuantitÃ© Ã©gale Ã  la quantitÃ© maximale
             };
             ItemList.Add(poissonC);
         }
@@ -110,7 +110,7 @@ public class Inventaire : MonoBehaviour
         //// Tant que l'inventaire n'est pas plein, ajoute des null
         while (ItemList.Count < nombreDePlaceInventaire)
         {
-            AddSpace();
+            AjoutEmplacement();
         }
     }
 
@@ -128,8 +128,8 @@ public class Inventaire : MonoBehaviour
 
     public (List<int>, List<int>) ItemExistantDansListe(ItemData item)
     {
-        List<int> ListeIndexDisponible = new(); // Index où l'objet peut être placé (vide)
-        List<int> ListeIndexItemIdentique = new(); // Index d'objets identiques (même nom/type)
+        List<int> ListeIndexDisponible = new(); // Index oÃ¹ l'objet peut Ãªtre placÃ© (vide)
+        List<int> ListeIndexItemIdentique = new(); // Index d'objets identiques (mÃªme nom/type)
 
         // Parcourt l'inventaire pour trouver des emplacements disponibles ou identiques
         for (int i = 0; i < ItemList.Count; i++)
@@ -144,7 +144,7 @@ public class Inventaire : MonoBehaviour
                 // Si l'objet est un PoissonData
                 if (item is PoissonData poisson && ItemList[i] is PoissonData poissonInList)
                 {
-                    // Vérifie que le nom est identique et que la quantité max n'est pas atteinte
+                    // VÃ©rifie que le nom est identique et que la quantitÃ© max n'est pas atteinte
                     if (poissonInList.nom == poisson.nom && poissonInList.quantiter < poissonInList.quantiterMax)
                     {
                         ListeIndexItemIdentique.Add(i);
@@ -161,28 +161,28 @@ public class Inventaire : MonoBehaviour
         return (ListeIndexItemIdentique, ListeIndexDisponible);
     }
 
-    private void AddSpace()
+    private void AjoutEmplacement()
     {
         ItemList.Add(null);
     }
 
-    public void CleanSpace()
+    public void NettoyerEmplacement()
     {
-        // Supprimer les éléments null au début
+        // Supprimer les Ã©lÃ©ments null au dÃ©but
         for (int i = 0; i < ItemList.Count; i++)
         {
             if (ItemList[i] == null)
             {
                 ItemList.RemoveAt(i);
-                i--; // Ajuster l'index après suppression
+                i--; // Ajuster l'index aprÃ¨s suppression
             }
             else
             {
-                break; // Arrêter la suppression dès qu'on trouve un élément non null
+                break; // ArrÃªter la suppression dÃ¨s qu'on trouve un Ã©lÃ©ment non null
             }
         }
 
-        // Supprimer les éléments null à la fin
+        // Supprimer les Ã©lÃ©ments null Ã  la fin
         for (int i = ItemList.Count - 1; i >= 0; i--)
         {
             if (ItemList[i] == null)
@@ -191,14 +191,14 @@ public class Inventaire : MonoBehaviour
             }
             else
             {
-                break; // Arrêter la suppression dès qu'on trouve un élément non null
+                break; // ArrÃªter la suppression dÃ¨s qu'on trouve un Ã©lÃ©ment non null
             }
         }
 
-        // Ajouter un emplacement vide à la fin si nécessaire
+        // Ajouter un emplacement vide Ã  la fin si nÃ©cessaire
         if (ItemList.Count == 0 || ItemList[^1] != null)
         {
-            AddSpace(); // Ajoute un emplacement vide
+            AjoutEmplacement(); // Ajoute un emplacement vide
         }
 
         UpdateSousListe();
@@ -208,14 +208,14 @@ public class Inventaire : MonoBehaviour
 
     public void SwapPlace(int index1, int index2)
     {
-        // Vérifie que les index sont valides
+        // VÃ©rifie que les index sont valides
         if (index1 < 0 || index1 >= ItemList.Count || index2 < 0 || index2 >= ItemList.Count)
         {
             Debug.LogError("Les index fournis ne sont pas valides.");
             return;
         }
 
-        // Effectue l'échange des éléments
+        // Effectue l'Ã©change des Ã©lÃ©ments
         ItemData temp = ItemList[index1];
         ItemList[index1] = ItemList[index2];
         ItemList[index2] = temp;
@@ -224,7 +224,7 @@ public class Inventaire : MonoBehaviour
 
     public void DropItem(int index)
     {
-        // Vérifie si l'index est dans les limites de la liste
+        // VÃ©rifie si l'index est dans les limites de la liste
         if (index >= 0 && index < ItemList.Count)
         {
             ItemList[index]=null;
@@ -232,7 +232,7 @@ public class Inventaire : MonoBehaviour
         else
         {
             // Avertit que l'index est invalide
-            Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
+            Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuÃ©e.");
         }
         UpdateSousListe();
      
@@ -245,16 +245,16 @@ public class Inventaire : MonoBehaviour
 
     public void AddItem(ItemData item)
     {
-        // Récupère les emplacements d'objets similaires et disponibles
+        // RÃ©cupÃ¨re les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
 
-        //// Calcul du nombre d'éléments déjà présents dans l'inventaire
+        //// Calcul du nombre d'Ã©lÃ©ments dÃ©jÃ  prÃ©sents dans l'inventaire
         //int nombreItemsTotal = ItemList.Sum(item => item?.quantiter ?? 0);
 
-        //// Vérifier si l'inventaire est plein
+        //// VÃ©rifier si l'inventaire est plein
         //if (nombreItemsTotal >= nombreDePlaceInventaire)
         //{
-        //    // Inventaire déjà plein, on ne fait rien
+        //    // Inventaire dÃ©jÃ  plein, on ne fait rien
         //    return;
         //}
 
@@ -279,7 +279,7 @@ public class Inventaire : MonoBehaviour
             }
         }
 
-        // 2. Si la quantité restante > 0, ajoute dans les emplacements disponibles
+        // 2. Si la quantitÃ© restante > 0, ajoute dans les emplacements disponibles
         foreach (int index in ListeIndexDisponible)
         {
             if (quantiteRestante == 0)
@@ -300,14 +300,14 @@ public class Inventaire : MonoBehaviour
             }
         }
         
-        //// 3. Si encore de la quantité à placer, crée un nouvel emplacement
-        //int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
-        //int iterationCount = 0;   // Compteur d'itérations
+        //// 3. Si encore de la quantitÃ© Ã  placer, crÃ©e un nouvel emplacement
+        //int iterationLimit = 100; // Limite maximale d'itÃ©rations pour Ã©viter les boucles infinies
+        //int iterationCount = 0;   // Compteur d'itÃ©rations
 
         //while (quantiteRestante > 0)
         //{
         //    Debug.Log("passe dans le while");
-        //    AddSpace();
+        //    AjoutEmplacement();
         //    int dernierIndex = ItemList.Count - 1;
         //    ItemList[dernierIndex] = item;
 
@@ -322,14 +322,14 @@ public class Inventaire : MonoBehaviour
         //        quantiteRestante -= item.quantiterMax;
         //    }
 
-        //    // Incrémentation du compteur d'itérations
+        //    // IncrÃ©mentation du compteur d'itÃ©rations
         //    iterationCount++;
 
-        //    // Si la limite d'itérations est atteinte, on sort de la boucle
+        //    // Si la limite d'itÃ©rations est atteinte, on sort de la boucle
         //    if (iterationCount >= iterationLimit)
         //    {
-        //        Debug.LogError("Boucle infinie détectée, la boucle a été interrompue après " + iterationLimit + " itérations.");
-        //        break; // Sort de la boucle pour éviter de bloquer le programme
+        //        Debug.LogError("Boucle infinie dÃ©tectÃ©e, la boucle a Ã©tÃ© interrompue aprÃ¨s " + iterationLimit + " itÃ©rations.");
+        //        break; // Sort de la boucle pour Ã©viter de bloquer le programme
         //    }
         //}
 
@@ -343,42 +343,42 @@ public class Inventaire : MonoBehaviour
     public List<ItemData> GetInventaire()
     {
         Debug.Log($"get inventaire {ItemList.Count}");
-        return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
+        return new List<ItemData>(ItemList); // CrÃ©e une nouvelle liste en copiant l'ancienne
     }
 
     public void UpdateItemListeUI()
     {
-     //  CleanSpace();
+     //  NettoyerEmplacement();
         inventoryUI.UpdateUI(ItemList);
     }
 
-    public void SortItem(TypeOfSort SortType)
+    public void TrierItemList(TypeOfSort SortType)
     {
         switch (SortType)
         {
             case TypeOfSort.Nom:
-                SortName();
+                TrierNom();
                 Console.WriteLine("Tri par nom de poisson les gemme apres");
                 break;
 
             case TypeOfSort.Type:
-                SortByType();
+                TrierParType();
                 Console.WriteLine("Tri par type poisson ou gemme");
                 break;
 
             case TypeOfSort.Quantite:
-                SortByQuantite();
-                Console.WriteLine("Tri par quantité de poisson");
+                TrierQuantiter();
+                Console.WriteLine("Tri par quantitÃ© de poisson");
                 break;
 
             case TypeOfSort.Fusion:
-                AutoMerge();
+                FusionAuto();
                 Console.WriteLine(" faire la fusion");
                 break;
 
             case TypeOfSort.Niveau:
-                SortByLVL();
-                Console.WriteLine(" trie par niveau de gemme poisson après");
+                TrierNiveau();
+                Console.WriteLine(" trie par niveau de gemme poisson aprÃ¨s");
                 break;
 
             default:
@@ -390,91 +390,107 @@ public class Inventaire : MonoBehaviour
         UpdateItemListeUI();
     }
 
-    public void SortName()
+    public void TrierNom()
     {
-        // Séparer les poissons et les gemmes
+        // SÃ©parer les poissons et les gemmes
         List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
         List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
 
         // Trier les poissons par nom (supposant que PoissonData a un champ 'nom')
         poissons = poissons.OrderBy(p => p.nom).ToList();
 
-        // Réorganiser l'inventaire avec poissons d'abord, puis les gemmes
+        // RÃ©organiser l'inventaire avec poissons d'abord, puis les gemmes
         ItemList = new List<ItemData>();
         ItemList.AddRange(poissons);
         ItemList.AddRange(gemmes);
 
-        Debug.Log("Liste triée par nom de poisson.");
+        Debug.Log("Liste triÃ©e par nom de poisson.");
     }
 
-   
-    public void SortByType()
+    public void TrierParNiveau()
     {
-        // Séparer les poissons et les gemmes
+        // SÃ©parer les poissons et les gemmes
         List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
         List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
 
-        // Réorganiser l'inventaire avec les poissons d'abord, puis les gemmes
+        // Trier les gemmes par niveau
+        gemmes = gemmes.OrderByDescending(g => g.LVL).ToList();
+
+        // RÃ©organiser l'inventaire avec les gemmes d'abord, puis les poissons
+        ItemList = new List<ItemData>();
+        ItemList.AddRange(gemmes);
+        ItemList.AddRange(poissons);
+
+        Debug.Log("Liste triÃ©e par niveau de gemmes.");
+    }
+
+    public void TrierParType()
+    {
+        // SÃ©parer les poissons et les gemmes
+        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
+        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
+
+        // RÃ©organiser l'inventaire avec les poissons d'abord, puis les gemmes
         ItemList = new List<ItemData>();
         ItemList.AddRange(poissons);
         ItemList.AddRange(gemmes);
 
-        Debug.Log("Liste triée par type (poissons puis gemmes).");
+        Debug.Log("Liste triÃ©e par type (poissons puis gemmes).");
     }
 
-    public void SortByQuantite()
+    public void TrierQuantiter()
     {
-        // Trier les objets par quantité (qu'ils soient des poissons ou des gemmes)
+        // Trier les objets par quantitÃ© (qu'ils soient des poissons ou des gemmes)
         ItemList = ItemList.OrderByDescending(item => item.quantiter).ToList();
 
-        Debug.Log("Liste triée par quantité.");
+        Debug.Log("Liste triÃ©e par quantitÃ©.");
     }
 
-    public void SortByLVL()
+    public void TrierNiveau()
     {
-        // Séparer les poissons et les gemmes
+        // SÃ©parer les poissons et les gemmes
         List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
         List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
 
         // Trier uniquement les gemmes par niveau
         gemmes = gemmes.OrderByDescending(g => g.LVL).ToList();
 
-        // Réorganiser l'inventaire avec les gemmes d'abord, puis les poissons
+        // RÃ©organiser l'inventaire avec les gemmes d'abord, puis les poissons
         ItemList = new List<ItemData>();
         ItemList.AddRange(gemmes);
         ItemList.AddRange(poissons);
 
-        Debug.Log("Liste triée par niveau de gemmes.");
+        Debug.Log("Liste triÃ©e par niveau de gemmes.");
     }
 
-    public void AutoMerge()
+    public void FusionAuto()
     {
         // On garde les gemmes intactes
         List<ItemData> gemmes = ItemList.Where(item => item is GemmeData).ToList();
 
-        // On filtre les poissons avec quantité > 0
+        // On filtre les poissons avec quantitÃ© > 0
         List<PoissonData> poissons = ItemList.OfType<PoissonData>()
                                              .Where(poisson => poisson.quantiter > 0)
                                              .ToList();
 
-        // On crée un dictionnaire pour compter et fusionner les poissons par nom
+        // On crÃ©e un dictionnaire pour compter et fusionner les poissons par nom
         Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
 
         foreach (var poisson in poissons)
         {
             if (!fusionPoissons.ContainsKey(poisson.nom))
             {
-                // On stocke la quantité totale et le quantiterMax
+                // On stocke la quantitÃ© totale et le quantiterMax
                 fusionPoissons[poisson.nom] = (poisson.quantiter, poisson.quantiterMax);
             }
             else
             {
-                // On ajoute la quantité au total déjà enregistré
+                // On ajoute la quantitÃ© au total dÃ©jÃ  enregistrÃ©
                 fusionPoissons[poisson.nom] = (fusionPoissons[poisson.nom].quantiteTotale + poisson.quantiter, poisson.quantiterMax);
             }
         }
 
-        // Nouvelle liste des poissons fusionnés
+        // Nouvelle liste des poissons fusionnÃ©s
         List<PoissonData> poissonsFusionnes = new List<PoissonData>();
 
         foreach (var entry in fusionPoissons)
@@ -483,13 +499,13 @@ public class Inventaire : MonoBehaviour
             int quantiteTotale = entry.Value.quantiteTotale;
             int quantiterMax = entry.Value.quantiterMax;
 
-            // On répartit les poissons en respectant la quantité maximale propre à chaque poisson
+            // On rÃ©partit les poissons en respectant la quantitÃ© maximale propre Ã  chaque poisson
             while (quantiteTotale > 0)
             {
                 PoissonData nouveauPoisson = new PoissonData
                 {
                     nom = nomPoisson,
-                    quantiter = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantiterMax propre à ce poisson
+                    quantiter = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantiterMax propre Ã  ce poisson
                     quantiterMax = quantiterMax
                 };
                 poissonsFusionnes.Add(nouveauPoisson);
@@ -498,7 +514,7 @@ public class Inventaire : MonoBehaviour
         }
 
         // Maintenant on replace tout dans ItemList
-        // En gardant d'abord les poissons fusionnés, puis les gemmes
+        // En gardant d'abord les poissons fusionnÃ©s, puis les gemmes
         ItemList = poissonsFusionnes.Cast<ItemData>()
                                     .Concat(gemmes)
                                     .ToList();
