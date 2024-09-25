@@ -106,12 +106,12 @@ public class Inventaire : MonoBehaviour
     public void InitiateListe()
     {
         ItemList = new List<ItemData>();
-        
+
         //// Tant que l'inventaire n'est pas plein, ajoute des null
-        //while(ItemList.Count < nombreDePlaceInventaire)
-        //{
-        //    AjoutEmplacement();
-        //}
+        while (ItemList.Count < nombreDePlaceInventaire)
+        {
+            AjoutEmplacement();
+        }
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -227,7 +227,7 @@ public class Inventaire : MonoBehaviour
         // Vérifie si l'index est dans les limites de la liste
         if (index >= 0 && index < ItemList.Count)
         {
-            ItemList.RemoveAt(index);
+            ItemList[index]=null;
         }
         else
         {
@@ -248,26 +248,17 @@ public class Inventaire : MonoBehaviour
         // Récupère les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
 
-        // Calcul du nombre d'éléments déjà présents dans l'inventaire
-        int nombreItemsTotal = ItemList.Sum(item => item?.quantiter ?? 0);
+        //// Calcul du nombre d'éléments déjà présents dans l'inventaire
+        //int nombreItemsTotal = ItemList.Sum(item => item?.quantiter ?? 0);
 
-        // Vérifier si l'inventaire est plein ou si l'ajout de la quantité dépasse la capacité
-        if (nombreItemsTotal >= nombreDePlaceInventaire)
-        {
-            // Inventaire déjà plein, on ne fait rien
-            return;
-        }
+        //// Vérifier si l'inventaire est plein
+        //if (nombreItemsTotal >= nombreDePlaceInventaire)
+        //{
+        //    // Inventaire déjà plein, on ne fait rien
+        //    return;
+        //}
 
         int quantiteRestante = item.quantiter;
-
-        // Limite d'ajout d'items en fonction de la place disponible
-        int placeDisponibleDansInventaire = nombreDePlaceInventaire - nombreItemsTotal;
-
-        // Ajuster la quantité d'items à ajouter pour ne pas dépasser la limite de l'inventaire
-        if (quantiteRestante > placeDisponibleDansInventaire)
-        {
-            quantiteRestante = placeDisponibleDansInventaire;
-        }
 
         // 1. Ajoute aux emplacements d'objets identiques si possible
         foreach (int index in ListeIndexItemIdentique)
@@ -309,32 +300,43 @@ public class Inventaire : MonoBehaviour
             }
         }
 
-        // 3. Si encore de la quantité à placer et il reste de la place dans l'inventaire, crée un nouvel emplacement
-        while (quantiteRestante > 0 && ItemList.Count < nombreDePlaceInventaire)
-        {
-            AjoutEmplacement();
-            int dernierIndex = ItemList.Count - 1;
-            ItemList[dernierIndex] = item;
+        //// 3. Si encore de la quantité à placer, crée un nouvel emplacement
+        //int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
+        //int iterationCount = 0;   // Compteur d'itérations
 
-            if (quantiteRestante <= item.quantiterMax)
-            {
-                ItemList[dernierIndex].quantiter = quantiteRestante;
-                quantiteRestante = 0;
-            }
-            else
-            {
-                ItemList[dernierIndex].quantiter = item.quantiterMax;
-                quantiteRestante -= item.quantiterMax;
-            }
-        }
+        //while (quantiteRestante > 0)
+        //{
+        //    Debug.Log("passe dans le while");
+        //    AjoutEmplacement();
+        //    int dernierIndex = ItemList.Count - 1;
+        //    ItemList[dernierIndex] = item;
 
-        // Si on atteint la limite de l'inventaire, on arrête tout ajout
-        if (quantiteRestante > 0)
-        {
-            Debug.LogWarning("Inventaire plein, une partie des items n'a pas pu être ajoutée.");
-        }
+        //    if (quantiteRestante <= item.quantiterMax)
+        //    {
+        //        ItemList[dernierIndex].quantiter = quantiteRestante;
+        //        quantiteRestante = 0;
+        //    }
+        //    else
+        //    {
+        //        ItemList[dernierIndex].quantiter = item.quantiterMax;
+        //        quantiteRestante -= item.quantiterMax;
+        //    }
+
+        //    // Incrémentation du compteur d'itérations
+        //    iterationCount++;
+
+        //    // Si la limite d'itérations est atteinte, on sort de la boucle
+        //    if (iterationCount >= iterationLimit)
+        //    {
+        //        Debug.LogError("Boucle infinie détectée, la boucle a été interrompue après " + iterationLimit + " itérations.");
+        //        break; // Sort de la boucle pour éviter de bloquer le programme
+        //    }
+        //}
 
         UpdateSousListe();
+        Debug.Log(ItemList.Count);
+
+        ////
         UpdateItemListeUI();
     }
 
@@ -346,7 +348,7 @@ public class Inventaire : MonoBehaviour
 
     public void UpdateItemListeUI()
     {
-        NettoyerEmplacement();
+     //  NettoyerEmplacement();
         inventoryUI.UpdateUI(ItemList);
     }
 
