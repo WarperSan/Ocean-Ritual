@@ -40,7 +40,7 @@ namespace ControllerModule.Controllers
         /// <remarks>
         /// This allows a controller to receive certain updates while being "disabled"
         /// </remarks>
-        protected bool IsEnabled { get; private set; } = true;
+        protected bool IsEnabled { get; private set; } = false;
 
         /// <summary>
         /// Starts using this controller
@@ -59,7 +59,7 @@ namespace ControllerModule.Controllers
         }
         
         /// <summary>
-        /// Called when this controller is started to being used
+        /// Called when this controller is starting to be used
         /// </summary>
         protected virtual void OnSwitchIn() { }
 

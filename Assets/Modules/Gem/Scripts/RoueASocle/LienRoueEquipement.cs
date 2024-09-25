@@ -16,7 +16,7 @@ public class LienRoueEquipement : MonoBehaviour
         if (faireSocle)
         {
             faireSocle = !faireSocle;
-            placerSocle();
+            PlaceSocle();
         }
   
     }
@@ -27,7 +27,7 @@ public class LienRoueEquipement : MonoBehaviour
         
     }
 
-    public void placerSocle()
+    public void PlaceSocle()
     {
         List<ComponantPowerGemmeObject> listSocle = equipement.GBNScript.SocleListe;
         List<GameObject> pointDePlacementSocle = new List<GameObject>();

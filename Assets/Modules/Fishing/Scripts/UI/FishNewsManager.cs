@@ -34,7 +34,6 @@ namespace FishingModule
 
                 // Set up
                 entry.Set(item.Key, item.Value);
-                this.StartCoroutine(entry.LifeCycle());
             }
         }
 

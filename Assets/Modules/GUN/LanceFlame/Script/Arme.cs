@@ -8,18 +8,18 @@ public abstract class Arme : Controller
 {
 
 
-    public abstract float GetDamage();// donne a la balle le nombre de dégat qu'elle fait
-    public abstract void OverHeat();// réaction du a la surchaufe
+    public abstract float GetDamage();// donne a la balle le nombre de dï¿½gat qu'elle fait
+    public abstract void OverHeat();// rï¿½action du a la surchaufe
     public abstract void OverHeatIndicator();//Indicateur de surchaufe
     public abstract void Reload();//rechargement
     public abstract void MainShoot();// tire principale
     public abstract void ChangeMode();// Changerde mode si il y a lieu
     public abstract void SecondaryShoot(); //tire secondaire si il y a lieu
 
-    public abstract void Rotation();// gère la rotation de l'arme
+    public abstract void Rotation();// gï¿½re la rotation de l'arme
 
     public abstract void InstantiateAmmo();//Fonction appeler pour tire une balle
 
-    public abstract void GetEffect();//Fonction pour passe les effet spéciaux
-    public abstract void SetBulletProriety(GameObject balle);// gère les stat de la balle
+    public abstract void GetEffect();//Fonction pour passe les effet spï¿½ciaux
+    public abstract void SetBulletProriety(GameObject balle);// gï¿½re les stat de la balle
 }

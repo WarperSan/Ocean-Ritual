@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ControllerModule.Controllers
 {
@@ -24,6 +25,7 @@ namespace ControllerModule.Controllers
         /// Current controller being used
         /// </summary>
         private static Controller ActiveController => stack.Count > 0 ? stack.Peek() : null;
+        
 
         /// <summary>
         /// Switches to the given controller
@@ -31,9 +33,15 @@ namespace ControllerModule.Controllers
         /// <param name="controller">Controller to switch to</param>
         public static void SwitchTo(Controller controller)
         {
+            
             // If exists, switch out current
             if (ActiveController != null)
+            {
+                Debug.Log(ActiveController.tag);
+                
                 ActiveController.SwitchOut();
+            }
+                
 
             // Cancel if given not found
             if (controller == null)
@@ -42,7 +50,8 @@ namespace ControllerModule.Controllers
             // Switch in the given
             controller.SwitchIn();
             stack.Push(controller);
-
+            
+            
             // Set the controller to the given
             CameraMovement.Instance.SetController(controller);
         }
@@ -57,8 +66,9 @@ namespace ControllerModule.Controllers
                 return;
 
             // Remove current
-            Controller current = stack.Pop();
-            current.SwitchOut();
+            //Controller current = stack.Pop();
+            //current.SwitchOut();
+            //controller.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 
             // Switch to given
             SwitchTo(controller);

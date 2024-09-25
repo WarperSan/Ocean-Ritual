@@ -1,15 +1,14 @@
-using ControllerModule.Controllers.Interfaces;
 using UnityEditor;
 using UnityEngine;
 
-namespace ControllerModule.Editor
+namespace InteractModule.Editor
 {
     [InitializeOnLoad]
     public class IInteractableEditor
     {
+        // Subscribe to the event that gets called whenever the scene is loaded or an object is changed
         static IInteractableEditor()
         {
-            // Subscribe to the event that gets called whenever the scene is loaded or an object is changed
             EditorApplication.hierarchyChanged += () => CheckLayer(Selection.activeGameObject);
         }
 
@@ -22,9 +21,9 @@ namespace ControllerModule.Editor
             // If target is on correct layer, skip
             if (target.layer == IInteractable.LAYER)
                 return;
-            
+
             // If target has no interactable script, skip
-            if (target.GetComponent<IInteractable>() is null)
+            if (target.GetComponent<IInteractable>() == null)
                 return;
 
             bool clickedOK = EditorUtility.DisplayDialog(
@@ -32,7 +31,7 @@ namespace ControllerModule.Editor
                 $"We found an object with a script implementing '{nameof(IInteractable)}' not on the '{LayerMask.LayerToName(IInteractable.LAYER)}' layer. This makes the script unusable.\n\nDo you want to fix this?",
                 "Yes, fix it",
                 "No, I know what I'm doing");
-            
+
             // If didn't skip OK, skip
             if (!clickedOK)
                 return;

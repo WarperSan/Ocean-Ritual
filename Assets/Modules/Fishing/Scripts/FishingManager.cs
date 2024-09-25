@@ -1,11 +1,10 @@
-using ControllerModule.Controllers.Interfaces;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace FishingModule
 {
-    public class FishingManager : MonoBehaviour, IInteractable
+    public class FishingManager : MonoBehaviour
     {
         public void StartFishing()
         {
@@ -49,7 +48,9 @@ namespace FishingModule
             Destroy(this._buoy.gameObject);
         }
 
-        public void OnClick()
+        #region IInteractable
+
+        public void OnInteraction()
         {
             if (this._buoy == null)
             {
@@ -60,6 +61,8 @@ namespace FishingModule
                 this.CollectBuoy();
             }
         }
+
+        #endregion
 
         #region Buoy
 

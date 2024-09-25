@@ -43,7 +43,7 @@ public class RoueASocleManager : MonoBehaviour
 
         if (isTicActive)
         {
-            TicDeRoue();
+            CercleTic();
         }
     }
 
@@ -86,7 +86,7 @@ public class RoueASocleManager : MonoBehaviour
         ticTimeElapsed = 0f;
     }
 
-    void TicDeRoue()
+    void CercleTic()
     {
         ticTimeElapsed += Time.deltaTime;
         float t = ticTimeElapsed / ticDuration;
