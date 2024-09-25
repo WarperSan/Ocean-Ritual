@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-[RequireComponent(typeof(DragAndDropHandler))]
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] Image itemImage;
@@ -14,32 +13,44 @@ public class InventorySlot : MonoBehaviour
 
     private void Awake()
     {
-        DragAndDropHandler handler = GetComponent<DragAndDropHandler>();
-
-        handler.OnDragStart += this.OnDragStart;
-        handler.OnDragEnd += this.OnDragEnd;
+        dragAndDropHandler.OnDragStart += this.OnDragStart;
+        dragAndDropHandler.OnDragEnd += this.OnDragEnd;
 
         canvasParent = this.GetComponentInParent<Canvas>().transform;
     }
 
-    public void SetSlot(Sprite sprite, uint qty = 1)
+    /// <summary>
+    ///  Sets the inventory slot with the sprite and quantity of an item
+    /// </summary>
+    public void SetSlot(Sprite sprite, uint qty = 1, bool isStackable = true)
     {
         if (sprite == null)
+        {
+            this.ClearSlot();
             return;
+        }
 
         itemImage.sprite = sprite;
-        quantity.text = "x" + qty.ToString();
+        
+        quantity.text = isStackable ? "x" + qty.ToString() : "";
         Color itemColor = itemImage.color;
         itemColor.a = 1f;
         itemImage.color = itemColor;
+
+        dragAndDropHandler.enabled = true;
     }
 
+    /// <summary>
+    /// Clears an inventory slot
+    /// </summary>
     public void ClearSlot()
     {
         Color itemColor = itemImage.color;
         itemColor.a = 0f;
         itemImage.color = itemColor;
         quantity.text = "";
+
+        dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
     /// <summary>
@@ -56,13 +67,12 @@ public class InventorySlot : MonoBehaviour
     #region Drag
 
     [Header("Drag")]
-    [SerializeField]
-    private CanvasGroup canvasGroup;
-
-    private Transform originalParent;
-    private int originalIndex;
-    private GameObject fillingChild;
-    private Transform canvasParent;
+    [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] DragAndDropHandler dragAndDropHandler;
+    Transform originalParent;
+    int originalIndex;
+    GameObject fillingChild;
+    Transform canvasParent;
 
     private void OnDragStart()
     {
@@ -71,7 +81,7 @@ public class InventorySlot : MonoBehaviour
         originalIndex = transform.GetSiblingIndex();
         canvasGroup.blocksRaycasts = false;
 
-        // Add ghost slot
+        // Adds temporary ghost slot
         fillingChild = Instantiate(gameObject, transform.parent);
         fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
         fillingChild.transform.SetSiblingIndex(originalIndex);
@@ -104,12 +114,7 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
-            //Debug.Log(raycasts.Count);
-            //if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)originalParent, Input.mousePosition, Camera.main))
-            //{
-            //    Inventaire.Instance.DropItem(originalIndex);
-            //}
-            if(raycasts.Count == 0)
+            if (raycasts.Count == 0)
             {
                 Inventaire.Instance.DropItem(originalIndex);
                 this.ClearSlot();

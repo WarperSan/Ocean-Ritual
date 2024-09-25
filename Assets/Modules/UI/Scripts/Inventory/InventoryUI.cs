@@ -1,9 +1,6 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -25,24 +22,26 @@ public class InventoryUI : MonoBehaviour
 
         for (int i = 0; i < itemList.Count; i++)
         {
+            Sprite sprite = null;
+            uint quantity = 0;
+            uint maxStack = 0;
+
             if (itemList[i] != null)
             {
                 ItemData item = itemList[i];
-                Sprite sprite = GetSpriteFromItem(item);
-                uint quantity = (uint)item.quantiter;
-                CreateSlot(sprite, quantity);
+                sprite = this.GetSpriteFromItem(item);
+                quantity = (uint)item.quantiter;
+                maxStack = (uint)item.quantiterMax;
             }
-            else
-            {
-                CreateSlot(null, 0);
-            }
+
+            this.CreateSlot(sprite, quantity, maxStack);
         }
     }
 
-    private void CreateSlot(Sprite sprite, uint quantity)
+    private void CreateSlot(Sprite sprite, uint quantity, uint maxStack)
     {
         GameObject newSlot = Instantiate(slot, parent);
-        newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity);
+        newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity, maxStack > 1);
     }
 
     private Sprite GetSpriteFromItem(ItemData item)
