@@ -51,7 +51,7 @@ public class LanceFlameControleur : Arme ,Equipement
 
 
     private float reloadSpeed = 1f; // Vitesse de recharge en pourcentage par seconde
-    private float timeSinceLastShot = 0f; // Temps écoulé depuis le dernier tir
+    private float timeSinceLastShot = 0f; // Temps ï¿½coulï¿½ depuis le dernier tir
     [SerializeField] private Vector3 initialScaleChargeur;
     #region Unity Methods
    
@@ -64,12 +64,12 @@ public class LanceFlameControleur : Arme ,Equipement
             ComponantGBN.GBNScript.GetStat();
             UpdateStat();
         }
-        // Remplace les statistiques de base par les statistiques boostées
+        // Remplace les statistiques de base par les statistiques boostï¿½es
 
 
         reloadSpeed = ReloadSpeedWithBoost.Quantite;
 
-        AmmoInClip = Mathf.RoundToInt(AmmoCapacityBoost.Quantite); // Initialise les munitions à la capacité maximale
+        AmmoInClip = Mathf.RoundToInt(AmmoCapacityBoost.Quantite); // Initialise les munitions ï¿½ la capacitï¿½ maximale
         if (ChargeurBalle != null)
         {
             initialScaleChargeur = ChargeurBalle.transform.localScale;
@@ -80,7 +80,7 @@ public class LanceFlameControleur : Arme ,Equipement
     {
 
         ParticuleControleurs.ControleParticule(!isOverheated, modeGlace);
-        timeSinceLastShot += Time.deltaTime; // Met à jour le temps écoulé depuis le dernier tir
+        timeSinceLastShot += Time.deltaTime; // Met ï¿½ jour le temps ï¿½coulï¿½ depuis le dernier tir
 
         if (!isOverheated)
         {
@@ -89,7 +89,7 @@ public class LanceFlameControleur : Arme ,Equipement
                 ChangeMode();
             }
 
-            if (Input.GetMouseButton(0)) // Bouton gauche pour tirer, dépend du mode sélectionné
+            if (Input.GetMouseButton(0)) // Bouton gauche pour tirer, dï¿½pend du mode sï¿½lectionnï¿½
             {
                 if (modeGlace)
                 {
@@ -127,17 +127,17 @@ public class LanceFlameControleur : Arme ,Equipement
     {
         if (ChargeurBalle != null)
         {
-            // Calcule la proportion de balles restantes par rapport à la capacité totale
+            // Calcule la proportion de balles restantes par rapport ï¿½ la capacitï¿½ totale
             float ammoRatio = (float)AmmoInClip / AmmoCapacityBoost.Quantite;
             Vector3 initialScale = ChargeurBalle.transform.localScale;
-            // Réduit l'échelle sur l'axe Y en fonction du nombre de balles restantes
+            // Rï¿½duit l'ï¿½chelle sur l'axe Y en fonction du nombre de balles restantes
             Vector3 newScale = initialScaleChargeur;
             newScale.y = Mathf.Clamp(ammoRatio * initialScaleChargeur.y, 0, initialScaleChargeur.y);
 
-            // Applique la nouvelle échelle au chargeur
+            // Applique la nouvelle ï¿½chelle au chargeur
             ChargeurBalle.transform.localScale = newScale;
             // Ajuste la position en Y pour garder le bas du cylindre en contact avec le sol
-            // On calcule la différence de hauteur, puis on ajuste la position sur l'axe Y
+            // On calcule la diffï¿½rence de hauteur, puis on ajuste la position sur l'axe Y
             float heightDifference = initialScale.y - newScale.y;
             Vector3 newPosition = ChargeurBalle.transform.localPosition;
             newPosition.y -= heightDifference; // Ajuste la position pour maintenir le contact avec le sol
@@ -145,36 +145,36 @@ public class LanceFlameControleur : Arme ,Equipement
         }
         else
         {
-            Debug.LogWarning("ChargeurBalle n'est pas assigné.");
+            Debug.LogWarning("ChargeurBalle n'est pas assignï¿½.");
         }
     }
 
     float ExtraTimeBullet = 0;
     public override void Reload()
     {
-        // Si le chargeur n'est pas déjà plein
+        // Si le chargeur n'est pas dï¿½jï¿½ plein
         if (AmmoInClip < AmmoCapacityBoost.Quantite)
         {
-            // Calcule le temps nécessaire pour recharger une balle
+            // Calcule le temps nï¿½cessaire pour recharger une balle
             float timeToReloadOneBullet = 1f / reloadSpeed; // secondes par balle
 
-            // Ajoute le temps écoulé depuis la dernière mise à jour au temps excédentaire
+            // Ajoute le temps ï¿½coulï¿½ depuis la derniï¿½re mise ï¿½ jour au temps excï¿½dentaire
             ExtraTimeBullet += Time.deltaTime;
 
-            // Calcule le nombre de balles à recharger basé sur le temps écoulé
+            // Calcule le nombre de balles ï¿½ recharger basï¿½ sur le temps ï¿½coulï¿½
             int bulletsToReload = Mathf.FloorToInt(ExtraTimeBullet / timeToReloadOneBullet);
 
-            // Ajoute les balles en respectant la capacité maximale
+            // Ajoute les balles en respectant la capacitï¿½ maximale
             AmmoInClip += bulletsToReload;
             AmmoInClip = Mathf.Clamp(AmmoInClip, 0, (int)AmmoCapacityBoost.Quantite);
 
-            // Conserve le reste du temps excédentaire après avoir rechargé les balles
+            // Conserve le reste du temps excï¿½dentaire aprï¿½s avoir rechargï¿½ les balles
             ExtraTimeBullet %= timeToReloadOneBullet;
 
-            // Si les munitions sont complètement rechargées, on désactive la surchauffe
+            // Si les munitions sont complï¿½tement rechargï¿½es, on dï¿½sactive la surchauffe
             if (AmmoInClip >= AmmoCapacityBoost.Quantite)
             {
-                isOverheated = false; // Arrête la surchauffe une fois le chargeur plein
+                isOverheated = false; // Arrï¿½te la surchauffe une fois le chargeur plein
                 ParticuleControleurs.OverHeatParticuleStop();
             }
             OverHeatIndicator();
@@ -182,13 +182,13 @@ public class LanceFlameControleur : Arme ,Equipement
     }
     public  bool CanShoot()
     {
-        // Empêche de tirer si l'arme est en surchauffe
+        // Empï¿½che de tirer si l'arme est en surchauffe
         if (isOverheated)
         {
             return false;
         }
 
-        // Empêche de tirer si le temps de recharge est insuffisant ou si il n'y a pas de munitions
+        // Empï¿½che de tirer si le temps de recharge est insuffisant ou si il n'y a pas de munitions
         if (timeSinceLastShot >= 1f / FireRateWithBoost.Quantite && AmmoInClip > 0)
         {
             return true;
@@ -210,7 +210,7 @@ public class LanceFlameControleur : Arme ,Equipement
     {
         if (ZoneDeTire != null && balle != null)
         {
-            // Assigner la position et la rotation de ZoneDeTire à la balle
+            // Assigner la position et la rotation de ZoneDeTire ï¿½ la balle
             balle.transform.position = ZoneDeTire.transform.position;
             balle.transform.rotation = ZoneDeTire.transform.rotation;
         }
@@ -226,11 +226,11 @@ public class LanceFlameControleur : Arme ,Equipement
 
         if (ChargeurBalle != null)
         {
-            Renderer chargeurRenderer = ChargeurBalle.GetComponent<Renderer>(); // Récupère le Renderer du ChargeurBalle
+            Renderer chargeurRenderer = ChargeurBalle.GetComponent<Renderer>(); // Rï¿½cupï¿½re le Renderer du ChargeurBalle
 
             if (chargeurRenderer != null)
             {
-                // Applique le matériau approprié en fonction du mode
+                // Applique le matï¿½riau appropriï¿½ en fonction du mode
                 chargeurRenderer.material = modeGlace ? glace : feu;
             }
             else
@@ -240,7 +240,7 @@ public class LanceFlameControleur : Arme ,Equipement
         }
         else
         {
-            Debug.LogWarning("ChargeurBalle n'est pas assigné.");
+            Debug.LogWarning("ChargeurBalle n'est pas assignï¿½.");
         }
     }
 
@@ -267,13 +267,13 @@ public class LanceFlameControleur : Arme ,Equipement
             Balle.SetActive(true);
 
             AmmoInClip--; // Consommer une balle du chargeur
-                          // Si on est à court de munitions, activer la surchauffe
+                          // Si on est ï¿½ court de munitions, activer la surchauffe
             if (AmmoInClip <= 0)
             {
                 isOverheated = true; // Active la surchauffe
                 ParticuleControleurs.OverHeatParticulePlay();
             }
-            timeSinceLastShot = 0f; // Réinitialise le temps depuis le dernier tir
+            timeSinceLastShot = 0f; // Rï¿½initialise le temps depuis le dernier tir
             OverHeatIndicator();
         }
 
@@ -297,7 +297,7 @@ public class LanceFlameControleur : Arme ,Equipement
         }
         else
         {
-            Debug.LogError("Aucun script BalleLF trouvé sur cet objet.");
+            Debug.LogError("Aucun script BalleLF trouvï¿½ sur cet objet.");
         }
     }
     #endregion
@@ -305,7 +305,7 @@ public class LanceFlameControleur : Arme ,Equipement
     #region Stat Management
     public void UpdateStat()
     {
-        // Création de la liste des statistiques de base
+        // Crï¿½ation de la liste des statistiques de base
         List<TypeQuantite<TypeWeapon>> baseStats = new List<TypeQuantite<TypeWeapon>>
         {
             ReloadSpeed,
@@ -317,7 +317,7 @@ public class LanceFlameControleur : Arme ,Equipement
             Range
         };
 
-        // Création de la liste des statistiques boostées
+        // Crï¿½ation de la liste des statistiques boostï¿½es
         List<TypeQuantite<TypeWeapon>> boostedStats = new List<TypeQuantite<TypeWeapon>>
         {
             ReloadSpeedWithBoost,
@@ -329,7 +329,7 @@ public class LanceFlameControleur : Arme ,Equipement
             RangeBoost
         };
 
-        // Mise à jour des statistiques avec les boosts
+        // Mise ï¿½ jour des statistiques avec les boosts
         ComponantGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
     }
     #endregion

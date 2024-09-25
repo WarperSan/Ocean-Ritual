@@ -7,6 +7,9 @@ namespace ControllerModule.Controllers
 {
     public class BoatController : Controller, IMovable
     {
+
+        [SerializeField]
+        private Rigidbody _rb;
         #region Aboard
 
         [Header("Aboard")]
@@ -14,6 +17,8 @@ namespace ControllerModule.Controllers
         private Transform aboardParent;
 
         private readonly List<Rigidbody> aboardRbs = new();
+        [SerializeField]
+        private CharacterController cc;
 
         /// <summary>
         /// Updates the position of all the items aboard
@@ -25,21 +30,24 @@ namespace ControllerModule.Controllers
                 if (item == null)
                     continue;
 
+                item.velocity = Vector3.zero;
                 item.MovePosition(item.position + movement);
             }
+            
         }
 
         /// <summary>
         /// Updates the rotation of all the items aboard
         /// </summary>
-        private void UpdateAboardRotation(Vector3 rotation)
+        private void UpdateAboardRotation(Quaternion rotationItem, Vector3 rotationCC)
         {
             foreach (Rigidbody item in this.aboardRbs)
             {
                 if (item == null)
                     continue;
-
-                item.transform.Rotate(rotation);
+                item.velocity = Vector3.zero;
+                
+                item.MoveRotation(item.rotation * rotationItem);
             }
         }
 
@@ -52,6 +60,11 @@ namespace ControllerModule.Controllers
         private float turningSpeed = 1;
         private Vector2 direction;
 
+
+        
+
+
+
         /// <summary>
         /// Updates the rotation of the boat
         /// </summary>
@@ -62,10 +75,27 @@ namespace ControllerModule.Controllers
             if (this.direction.x == 0)
                 return;
 
-            float amount = this.direction.x * this.turningSpeed;
+            var eulerAngleVelocity =new Vector3();
 
-            this.transform.Rotate(amount * elapsed * Vector3.up);
-            this.UpdateAboardRotation(amount * elapsed * Vector3.up);
+            //Désigne le sense de la rotation et la vitesse de rotation 
+            if (this.direction.x > 0)
+            {
+                eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
+            }
+            if (this.direction.x < 0)
+            {
+                eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
+            }
+
+            // Rotation avec transform
+            float amount = this.direction.x * this.turningSpeed;
+            
+
+            // Rotation RB
+            var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
+            _rb.MoveRotation(_rb.rotation * deltaRotation);
+
+            //this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
         }
 
         #endregion
@@ -80,7 +110,7 @@ namespace ControllerModule.Controllers
         private float movementAcceleration = 0.01f;
 
         [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down")]
-        private float movementDeceleration = 0.005f;
+        private float movementDeceleration = 0.01f;
 
         [SerializeField, Tooltip("Determines the offset of the boat from the wave height")]
         private float waveOffset = 0;
@@ -88,32 +118,51 @@ namespace ControllerModule.Controllers
         private Vector3 targetPosition;
         private float currentSpeed;
 
+        //For player movememnt correction
+        private Vector3 movement;
+        public Vector3 MovementBoat { get{
+                return movement;
+            } }
+
         /// <summary>
         /// Updates the movement of the boat
         /// </summary>
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
+            
             float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
 
             // Lerp the current speed to the wanted speed
             this.currentSpeed = this.currentSpeed < speed
                 ? Mathf.Clamp(this.currentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.currentSpeed - this.movementDeceleration, speed, float.MaxValue);
-
+            
+            
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
             this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
-
+            
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
-            this.transform.position = newPosition;
-            this.UpdateAboardPosition(diff);
+            movement = diff;
+
+            
+            _rb.MovePosition(newPosition);
+            
+            // Update Aboard
+            //this.UpdateAboardPosition(diff);
+        }
+        private void LateUpdate()
+        {
+            movement = Vector3.zero;
         }
 
+        public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
+       
         /// <summary>
         /// Gets the speed multiplier depending of the direction of the movement
         /// </summary>
@@ -150,14 +199,17 @@ namespace ControllerModule.Controllers
             if (this.IsEnabled)
             {
                 //this.UpdateWheel(elapsed);
-                this.UpdateTurn(elapsed);
+                
             }
         }
 
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
+            
             this.UpdateMove(elapsed);
+            this.UpdateTurn(elapsed);
+
         }
 
         /// <inheritdoc/>
@@ -165,6 +217,7 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(true);
+            movementDeceleration = movementDeceleration * 2;
         }
 
         /// <inheritdoc/>
@@ -172,43 +225,43 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(false);
+            movementDeceleration = movementDeceleration / 2;
+            ShutdownBoatAcceleration();
         }
 
         #endregion
-    
-        #region MonoBehaviour
 
+        #region MonoBehaviour
+        [SerializeField]
+        
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other) 
         {
+            
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
-                this.aboardRbs.Add(rb);
-                return;
-            }
-
-            if (other.gameObject.TryGetComponent(out CharacterController cc))
-            {
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
+                this.aboardRbs.Add(rb);
+                
                 return;
             }
+            
+            
         }
 
         /// <inheritdoc/>
         private void OnTriggerExit(Collider other)
         {
-
+            
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
+                other.transform.SetParent(null);
                 this.aboardRbs.Remove(rb);
                 return;
             }
+            
 
-            if (other.gameObject.TryGetComponent(out CharacterController cc))
-            {
-                other.transform.SetParent(null);
-                return;
-            }
+            
         }
 
         #endregion

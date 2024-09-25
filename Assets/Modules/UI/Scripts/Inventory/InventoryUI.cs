@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -42,6 +43,14 @@ public class InventoryUI : MonoBehaviour
     {
         GameObject newSlot = Instantiate(slot, parent);
         newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity, maxStack > 1);
+    }
+
+    private Sprite GetSpriteFromItem(ItemData item)
+    {
+        if (item == null)
+            return null;
+
+        return item.sprite;
     }
 
     private Sprite GetSpriteFromItem(ItemData item)

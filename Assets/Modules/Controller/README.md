@@ -49,14 +49,5 @@ Sometimes, the controller could actually hide the base function without any cons
 
 By default, the controller on top of the stack is `PlayerController`. The system won't let you exit a controller if no other controller are present in the stack.
 
-## Interact system
-The controllers can also interact with the world. To make a controller able to interact, you will need to call the appropriate functions from `IInteractable`.
-
-### Add an interactable object
-To add an interactable object to the world, you need to create a script that implements the interface `IInteractable`. You will get a method that will be called upon an interaction. You also need to add a collider to the object and put its layer as `Interactable`.
-Otherwise, the system will not see it.
-
-If you want to make an interact blocker, you can omit to add the script whilst adding everything else.
-
 ### Authors:
 - WarperSan

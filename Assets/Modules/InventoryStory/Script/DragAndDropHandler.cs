@@ -30,8 +30,7 @@ public class DragAndDropHandler : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         if (!this.enabled)
             return;
-
-        rectTransform.position = eventData.position;
+            rectTransform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
