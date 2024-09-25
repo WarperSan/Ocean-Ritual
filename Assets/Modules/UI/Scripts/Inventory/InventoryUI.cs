@@ -53,13 +53,6 @@ public class InventoryUI : MonoBehaviour
         return item.sprite;
     }
 
-    private Sprite GetSpriteFromItem(ItemData item)
-    {
-        if (item == null)
-            return null;
-
-        return item.sprite;
-    }
 
     public void SetPlayerGold(int gold = 9999)
     {

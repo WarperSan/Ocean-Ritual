@@ -1,6 +1,4 @@
-using ControllerModule.Controllers.Interfaces;
-using System.Collections;
-using System.Collections.Generic;
+using InteractModule;
 using UnityEngine;
 
 public class PickableFish : MonoBehaviour, IInteractable
@@ -9,6 +7,9 @@ public class PickableFish : MonoBehaviour, IInteractable
     [SerializeField] int MaxQUantiter;
     [SerializeField] int Quantiter;
     [SerializeField] Sprite sprite;
+
+    public InteractionAsset InteractionAsset => null;
+
     public void OnClick()
     {
        PoissonData poison =  new PoissonData();

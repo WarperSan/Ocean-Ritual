@@ -184,8 +184,8 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            
             this._rigidbody = this.GetComponent<Rigidbody>();
+
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }
@@ -285,7 +285,5 @@ namespace ControllerModule.Controllers
 #endif
 
         #endregion
-
-        
     }
 }

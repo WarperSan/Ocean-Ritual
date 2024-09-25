@@ -242,6 +242,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 32a22df5-1788-4d5f-a377-286c71d1eca9
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Inventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5c6a8f27-7131-45a5-ab45-f02b4ffddda1
+    m_ActionName: Player/Inventory[/Keyboard/i]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1345,6 +1361,7 @@ MonoBehaviour:
   interactRange: 2.5
   defaultInteraction: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
   movementSpeed: 10
+  boatController: {fileID: 0}
   Feet: {fileID: 1035515871219090602}
   GroundLayers:
     serializedVersion: 2
