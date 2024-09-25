@@ -235,7 +235,7 @@ public class Inventaire : MonoBehaviour
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
         UpdateSousListe();
-       // UpdateItemListeUI();
+     
     }
 
     public ItemData GetItem(int index)
