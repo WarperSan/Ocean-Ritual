@@ -1616,6 +1616,91 @@ MonoBehaviour:
   PlayOnStart: 0
   CurrentTime: 0
   IsPlayingInEditMode: 0
+--- !u!1001 &1532535311
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.9203024
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.262169
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 888742384878719869, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253355795925045332, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 58f03ac6adad3cc92973289c1260047b,
+        type: 3}
+    - target: {fileID: 2447870361313666250, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: m_Name
+      value: Plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5d41a23a38054125aba35cc771c2cdf9,
+        type: 3}
+    - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: MaxQUantiter
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 948ef7d1577fd27428f119cad6a68925, type: 3}
 --- !u!1 &1925206802 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4366388570361195251, guid: 6ecf83e74d67b1a49b99c37455a44b6d,
@@ -1660,7 +1745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventaireJoueur: {fileID: 2146102321}
   ajouterPoisson: 1
-  ajouterGemme: 0
+  ajouterGemme: 1
   clearInventaire: 0
   faireLeTrie: 0
   SwapPlace: 0
@@ -1674,15 +1759,15 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 5d41a23a38054125aba35cc771c2cdf9, type: 3}
     nom: PoissonA
   gemme:
-    quantiterMax: 0
-    quantiter: 0
-    sprite: {fileID: 0}
+    quantiterMax: 1
+    quantiter: 1
+    sprite: {fileID: 21300000, guid: 58f03ac6adad3cc92973289c1260047b, type: 3}
     forme:
-      width: 0
-      height: 0
-      flatForme: 
-    GemmeColorsName: 
-    LVL: 0
+      width: 3
+      height: 3
+      flatForme: 000000000101000000
+    GemmeColorsName: Red
+    LVL: 2
     typeArme: []
     typeBoat: []
     typeFilet: []
@@ -1808,11 +1893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b0d8e645a714e42968e1718ae8561b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poissons:
-  - quantiterMax: 5
-    quantiter: 3
-    sprite: {fileID: 21300000, guid: 5d41a23a38054125aba35cc771c2cdf9, type: 3}
-    nom: PoissonA
+  poissons: []
   gemmes: []
   inventoryUI: {fileID: 982931823}
 --- !u!4 &2146102322
@@ -1841,3 +1922,4 @@ SceneRoots:
   - {fileID: 1438288058}
   - {fileID: 842631174}
   - {fileID: 1378584737}
+  - {fileID: 1532535311}

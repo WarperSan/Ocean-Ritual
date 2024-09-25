@@ -107,11 +107,11 @@ public class Inventaire : MonoBehaviour
     {
         ItemList = new List<ItemData>();
         
-        // Tant que l'inventaire n'est pas plein, ajoute des null
-        while(ItemList.Count < nombreDePlaceInventaire)
-        {
-            AjoutEmplacement();
-        }
+        //// Tant que l'inventaire n'est pas plein, ajoute des null
+        //while(ItemList.Count < nombreDePlaceInventaire)
+        //{
+        //    AjoutEmplacement();
+        //}
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -168,25 +168,43 @@ public class Inventaire : MonoBehaviour
 
     public void NettoyerEmplacement()
     {
-        // Traverse la liste à l'envers
+        // Supprimer les éléments null au début
+        for (int i = 0; i < ItemList.Count; i++)
+        {
+            if (ItemList[i] == null)
+            {
+                ItemList.RemoveAt(i);
+                i--; // Ajuster l'index après suppression
+            }
+            else
+            {
+                break; // Arrêter la suppression dès qu'on trouve un élément non null
+            }
+        }
+
+        // Supprimer les éléments null à la fin
         for (int i = ItemList.Count - 1; i >= 0; i--)
         {
-            // Si on trouve un élément non null, on garde un seul null à la fin et on arrête
-            if (ItemList[i] != null)
+            if (ItemList[i] == null)
             {
-                // S'il y a déjà un null à la fin, on le garde, sinon on en ajoute un
-                if (i == ItemList.Count - 1 || ItemList[^1] != null)
-                {
-                    AjoutEmplacement();// On garde un emplacement vide (null) à la fin
-                }
-                break;
+                ItemList.RemoveAt(i);
             }
-
-            // Supprime les éléments null s'ils sont inutiles à la fin de la liste
-            ItemList.RemoveAt(i);
+            else
+            {
+                break; // Arrêter la suppression dès qu'on trouve un élément non null
+            }
         }
+
+        // Ajouter un emplacement vide à la fin si nécessaire
+        if (ItemList.Count == 0 || ItemList[^1] != null)
+        {
+            AjoutEmplacement(); // Ajoute un emplacement vide
+        }
+
         UpdateSousListe();
     }
+
+
 
     public void SwapPlace(int index1, int index2)
     {
@@ -217,6 +235,7 @@ public class Inventaire : MonoBehaviour
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
         UpdateSousListe();
+        UpdateItemListeUI();
     }
 
     public ItemData GetItem(int index)
@@ -228,9 +247,27 @@ public class Inventaire : MonoBehaviour
     {
         // Récupère les emplacements d'objets similaires et disponibles
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
-        //Debug.Log("Liste des indices d'objets identiques : " + string.Join(", ", ListeIndexItemIdentique));
-        //Debug.Log("Liste des indices d'emplacements disponibles : " + string.Join(", ", ListeIndexDisponible));
+
+        // Calcul du nombre d'éléments déjà présents dans l'inventaire
+        int nombreItemsTotal = ItemList.Sum(item => item?.quantiter ?? 0);
+
+        // Vérifier si l'inventaire est plein ou si l'ajout de la quantité dépasse la capacité
+        if (nombreItemsTotal >= nombreDePlaceInventaire)
+        {
+            // Inventaire déjà plein, on ne fait rien
+            return;
+        }
+
         int quantiteRestante = item.quantiter;
+
+        // Limite d'ajout d'items en fonction de la place disponible
+        int placeDisponibleDansInventaire = nombreDePlaceInventaire - nombreItemsTotal;
+
+        // Ajuster la quantité d'items à ajouter pour ne pas dépasser la limite de l'inventaire
+        if (quantiteRestante > placeDisponibleDansInventaire)
+        {
+            quantiteRestante = placeDisponibleDansInventaire;
+        }
 
         // 1. Ajoute aux emplacements d'objets identiques si possible
         foreach (int index in ListeIndexItemIdentique)
@@ -272,13 +309,9 @@ public class Inventaire : MonoBehaviour
             }
         }
 
-        // 3. Si encore de la quantité à placer, crée un nouvel emplacement
-        int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
-        int iterationCount = 0;   // Compteur d'itérations
-
-        while (quantiteRestante > 0)
+        // 3. Si encore de la quantité à placer et il reste de la place dans l'inventaire, crée un nouvel emplacement
+        while (quantiteRestante > 0 && ItemList.Count < nombreDePlaceInventaire)
         {
-            Debug.Log("passe dans le while");
             AjoutEmplacement();
             int dernierIndex = ItemList.Count - 1;
             ItemList[dernierIndex] = item;
@@ -293,21 +326,15 @@ public class Inventaire : MonoBehaviour
                 ItemList[dernierIndex].quantiter = item.quantiterMax;
                 quantiteRestante -= item.quantiterMax;
             }
-
-            // Incrémentation du compteur d'itérations
-            iterationCount++;
-
-            // Si la limite d'itérations est atteinte, on sort de la boucle
-            if (iterationCount >= iterationLimit)
-            {
-                Debug.LogError("Boucle infinie détectée, la boucle a été interrompue après " + iterationLimit + " itérations.");
-                break; // Sort de la boucle pour éviter de bloquer le programme
-            }
         }
-        UpdateSousListe();
-        Debug.Log(ItemList.Count);
 
-        ////
+        // Si on atteint la limite de l'inventaire, on arrête tout ajout
+        if (quantiteRestante > 0)
+        {
+            Debug.LogWarning("Inventaire plein, une partie des items n'a pas pu être ajoutée.");
+        }
+
+        UpdateSousListe();
         UpdateItemListeUI();
     }
 
@@ -319,6 +346,7 @@ public class Inventaire : MonoBehaviour
 
     public void UpdateItemListeUI()
     {
+        NettoyerEmplacement();
         inventoryUI.UpdateUI(ItemList);
     }
 
@@ -357,6 +385,7 @@ public class Inventaire : MonoBehaviour
                 break;
         }
         UpdateSousListe();
+        UpdateItemListeUI();
     }
 
     public void TrierNom()

@@ -55,7 +55,8 @@ public class TestInventaire : MonoBehaviour
                 GemmeColorsName = gemme.GemmeColorsName,
                 LVL = gemme.LVL,
                 quantiter = 1,
-                quantiterMax = 1
+                quantiterMax = 1,
+                sprite = gemme.sprite,
             };
 
             Inventaire.Instance.AddItem(nouvelleGemme); // Utilise la nouvelle instance
