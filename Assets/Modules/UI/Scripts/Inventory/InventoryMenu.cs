@@ -18,12 +18,12 @@ namespace UIModule.Menus
             yield return null;
         }
 
-        public override IEnumerator Close()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            closeAnimation.Play();
-            yield return null;
-        }
+        //public override IEnumerator Close()
+        //{
+        //    Cursor.lockState = CursorLockMode.None;
+        //    Cursor.visible = true;
+        //    closeAnimation.Play();
+        //    yield return null;
+        //}
     }
 }

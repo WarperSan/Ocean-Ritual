@@ -29,7 +29,7 @@ public class PowerGemmeObject
     #region Gemme Placement
     int AddSpace = 1;
     // Places gems in the grid and sets their position
-    public void PlacerGemme(List<GemmeComponant> ListGemme)
+    public void PlaceGemme(List<GemmeComponant> ListGemme)
     {
         foreach (GemmeComponant Gemmes in ListGemme)
         {

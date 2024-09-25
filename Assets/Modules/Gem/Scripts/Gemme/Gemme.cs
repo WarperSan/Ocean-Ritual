@@ -30,13 +30,13 @@ public class Gemme
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities
-    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
 
-    // List of boat types with quantities
-    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+        // List of boat types with quantities
+        [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
 
-    // List of net types with quantities
-    [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+        // List of net types with quantities
+        [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
     #endregion
 
 

@@ -9,10 +9,10 @@ public class ComponantPowerGemmeObject : MonoBehaviour
     public void Generateinitiate()
     {
         PowerGemmeObjectScript.GetGemmeToScriptList();
-        PowerGemmeObjectScript.GridGemme.InitializeTableau();
+        PowerGemmeObjectScript.GridGemme.InitializeTab();
       
         SocleGenerator.Instance.GenerateSocle(gameObject, PowerGemmeObjectScript.SocleConteneur);
-        PowerGemmeObjectScript.PlacerGemme(PowerGemmeObjectScript.GemmeComponantList);
+        PowerGemmeObjectScript.PlaceGemme(PowerGemmeObjectScript.GemmeComponantList);
     }
   
 

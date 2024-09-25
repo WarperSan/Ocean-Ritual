@@ -9,8 +9,7 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
-        inventoryUI.SetInventory(maxSlot);
+
         inventoryUI.SetPlayerGold();
     }
-
 }

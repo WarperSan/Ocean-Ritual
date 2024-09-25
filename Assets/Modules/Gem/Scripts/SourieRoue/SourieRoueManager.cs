@@ -4,10 +4,10 @@ public class SourieRoueManager : MonoBehaviour
 {
     public LayerMask layerSocle;
     public LayerMask layerVoid;
-    private GameObject objetMemoire; // Pour garder en mémoire le CG détecté
+    private GameObject objetMemory; // Pour garder en mémoire le CG détecté
     private int layerInitial = 26;
     private GameObject objetTouche; // Pour garder l'objet CV détecté
-    private GameObject ObjetSurbrillance = null;
+    private GameObject ObjetGlow = null;
     private GameObject Socle;
     private bool[,] formBoolPrincipal;
     [SerializeField] string layerInitialName = "Socle";
@@ -16,29 +16,29 @@ public class SourieRoueManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (objetMemoire == null)
+            if (objetMemory == null)
             {
-                DetecterEtSelectionnerObjet();
+                DetectAndSelectObject();
             }
             else
             {
-                PosseGemme();
+                PlaceGemme();
             }
 
 
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            if (objetMemoire != null)
+            if (objetMemory != null)
             {
                 rotate();
             }
         }
         else
         {
-            if (objetMemoire != null)
+            if (objetMemory != null)
             {
-                GameObject temp = DeteterCV();
+                GameObject temp = DetectCV();
                 if (temp != null)
                 {
 
@@ -49,13 +49,13 @@ public class SourieRoueManager : MonoBehaviour
 
                 if (objetTouche != null)
                 {
-                    DeplacerObjetSurCV(objetMemoire.transform, objetTouche.transform);
+                    MoveObjectOnCV(objetMemory.transform, objetTouche.transform);
                 }
             }
             else
             {
                 
-                surbrillance();
+                Glow();
             }
 
 
@@ -64,23 +64,23 @@ public class SourieRoueManager : MonoBehaviour
 
 
     }
-    void surbrillance()
+    void Glow()
     {
-        GameObject temp = DetecterGemmeAvecRaycast();
+        GameObject temp = DetectGemmeRC();
         if (temp != null)
         {
          
-            temp = RemonterDeDeuxParents(temp.transform).gameObject;
+            temp = ClimbeUp2Parent(temp.transform).gameObject;
 
-            if (temp != ObjetSurbrillance )
+            if (temp != ObjetGlow )
             {
-                if (ObjetSurbrillance != null)
+                if (ObjetGlow != null)
                 {
-                    enleverSurbrillance();
+                    RemoveGlow();
                 }
 
-                ObjetSurbrillance = temp;
-                foreach (Transform child in ObjetSurbrillance.transform)
+                ObjetGlow = temp;
+                foreach (Transform child in ObjetGlow.transform)
                 {
                     child.GetComponent<Outline>().enabled = true;
                 }
@@ -92,21 +92,21 @@ public class SourieRoueManager : MonoBehaviour
         }
         else
         {
-            if (ObjetSurbrillance != null)
+            if (ObjetGlow != null)
             {
-                enleverSurbrillance();
-                ObjetSurbrillance = temp;
+                RemoveGlow();
+                ObjetGlow = temp;
             }
         }
        
         
     }
 
-    void enleverSurbrillance()
+    void RemoveGlow()
     {
-        if (ObjetSurbrillance != null)
+        if (ObjetGlow != null)
         {
-            foreach (Transform child in ObjetSurbrillance.transform)
+            foreach (Transform child in ObjetGlow.transform)
             {
                 child.GetComponent<Outline>().enabled = false;
             }
@@ -114,31 +114,31 @@ public class SourieRoueManager : MonoBehaviour
     }
     void rotate()
     {
-        GemmeComponant gemme = objetMemoire.GetComponent<GemmeComponant>();
+        GemmeComponant gemme = objetMemory.GetComponent<GemmeComponant>();
 
 
         gemme.GemmeScript.forme.Rotate(gemme.GemmeScript.forme.GetForme(), 90);
-        objetMemoire.transform.Rotate(Vector3.up, 90f);
+        objetMemory.transform.Rotate(Vector3.up, 90f);
     }
-    void PosseGemme()
+    void PlaceGemme()
     {
-        GemmeComponant gemme = objetMemoire.GetComponent<GemmeComponant>();
+        GemmeComponant gemme = objetMemory.GetComponent<GemmeComponant>();
 
         GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
 
         EmplacementSocle coordone = objetTouche.GetComponentInParent<EmplacementSocle>();
         if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemmeScript.forme.GetForme(), gemme.GemmeScript, formBoolPrincipal))
         {
-            DeplacerObjet(objetMemoire.transform, true);
-            DeselectionnerObjet();
+            DeplacerObjet(objetMemory.transform, true);
+            notSelectObject();
         }
 
 
     }
 
-    void DetecterEtSelectionnerObjet()
+    void DetectAndSelectObject()
     {
-        GameObject temp = DetecterGemmeAvecRaycast();
+        GameObject temp = DetectGemmeRC();
         if (temp != null)
         {
             objetTouche = temp;
@@ -147,7 +147,7 @@ public class SourieRoueManager : MonoBehaviour
 
         if (objetTouche != null)
         {
-            Transform parent = RemonterDeDeuxParents(objetTouche.transform);
+            Transform parent = ClimbeUp2Parent(objetTouche.transform);
 
             // Vérifier si le parent existe
             if (parent != null)
@@ -158,7 +158,7 @@ public class SourieRoueManager : MonoBehaviour
                 if (scriptGemme != null) // C'est un CG
                 {
                     // Si un CG est déjà en mémoire, on ne fait rien (ne pas interagir avec un autre CG)
-                    if (objetMemoire != null)
+                    if (objetMemory != null)
                     {
                         Debug.Log("Un CubeGemme est déjà sélectionné, rien à faire.");
                         return; // Ne fait rien si un CG est déjà en mémoire
@@ -167,12 +167,12 @@ public class SourieRoueManager : MonoBehaviour
                     // Si aucun CG n'est en mémoire, on mémorise le CG
                     Debug.Log("CubeGemme détecté.");
                     DeplacerObjet(parent);
-                    objetMemoire = parent.gameObject; // On garde le CG en mémoire
+                    objetMemory = parent.gameObject; // On garde le CG en mémoire
 
-                    layerInitial = objetMemoire.layer; // Stocker le layer initial
-                    Transform SocleParent = RemonterjusquaSocleParents(objetMemoire.transform);
+                    layerInitial = objetMemory.layer; // Stocker le layer initial
+                    Transform SocleParent = ClimbeUpParent(objetMemory.transform);
                     Socle = SocleParent.gameObject;
-                    ChangerLayer(objetMemoire, 0); // Changer temporairement le layer
+                    LayerChange(objetMemory, 0); // Changer temporairement le layer
                     if (formBoolPrincipal == null)
                     {
                         formBoolPrincipal = scriptGemme.GemmeScript.forme.GetForme();
@@ -182,7 +182,7 @@ public class SourieRoueManager : MonoBehaviour
                 {
                     Debug.Log("CubeVide détecté.");
 
-                    if (objetMemoire != null) // Si on a déjà détecté un CG avant
+                    if (objetMemory != null) // Si on a déjà détecté un CG avant
                     {
                         // Mémoriser le CV détecté
                         this.objetTouche = objetTouche;
@@ -191,7 +191,7 @@ public class SourieRoueManager : MonoBehaviour
             }
         }
     }
-    GameObject DeteterCV()
+    GameObject DetectCV()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -219,7 +219,7 @@ public class SourieRoueManager : MonoBehaviour
 
     }
 
-    GameObject DetecterGemmeAvecRaycast()
+    GameObject DetectGemmeRC()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -233,7 +233,7 @@ public class SourieRoueManager : MonoBehaviour
         return null;
     }
 
-    Transform RemonterDeDeuxParents(Transform objet)
+    Transform ClimbeUp2Parent(Transform objet)
     {
         Transform parent = objet.parent;
 
@@ -244,7 +244,7 @@ public class SourieRoueManager : MonoBehaviour
 
         return null;
     }
-    Transform RemonterjusquaSocleParents(Transform objet)
+    Transform ClimbeUpParent(Transform objet)
     {
         Transform parent = objet.parent;
 
@@ -264,7 +264,7 @@ public class SourieRoueManager : MonoBehaviour
         return null;
     }
 
-    void DeplacerObjetSurCV(Transform objetCG, Transform objetCV)
+    void MoveObjectOnCV(Transform objetCG, Transform objetCV)
     {
         Transform VoidParent = objetCV.parent;
         // Calculer la nouvelle position en coordonnées locales du CV
@@ -278,7 +278,7 @@ public class SourieRoueManager : MonoBehaviour
         objetCG.localPosition = nouvellePositionLocale;
     }
 
-    void ChangerLayer(GameObject objet, int nouveauLayer)
+    void LayerChange(GameObject objet, int nouveauLayer)
     {
         // Changer le layer de l'objet lui-même
         objet.layer = nouveauLayer;
@@ -286,27 +286,27 @@ public class SourieRoueManager : MonoBehaviour
         // Changer le layer de tous ses enfants récursivement
         foreach (Transform child in objet.transform)
         {
-            ChangerLayer(child.gameObject, nouveauLayer);
+            LayerChange(child.gameObject, nouveauLayer);
         }
     }
 
-    void RestaurerLayerInitial(GameObject objet)
+    void ResetInitialLayer(GameObject objet)
     {
 
         objet.layer = LayerMask.NameToLayer(layerInitialName);
 
         foreach (Transform child in objet.transform)
         {
-            RestaurerLayerInitial(child.gameObject);
+            ResetInitialLayer(child.gameObject);
         }
     }
 
-    void DeselectionnerObjet()
+    void notSelectObject()
     {
-        if (objetMemoire != null)
+        if (objetMemory != null)
         {
-            RestaurerLayerInitial(objetMemoire); // Rétablir le layer initial
-            objetMemoire = null; // Réinitialiser l'objet en mémoire
+            ResetInitialLayer(objetMemory); // Rétablir le layer initial
+            objetMemory = null; // Réinitialiser l'objet en mémoire
             objetTouche = null;  // Réinitialiser l'objet CV en mémoire
             formBoolPrincipal = null;
         }

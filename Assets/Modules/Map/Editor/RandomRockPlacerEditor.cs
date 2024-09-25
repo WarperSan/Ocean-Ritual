@@ -22,7 +22,7 @@ namespace MapModule
             }
             else
             {
-                Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
+               // Debug.LogError("Échec du chargement du prefab de référence. Chemin incorrect : " + ReferencePath);
             }
 
             rockPrefabs = Resources.LoadAll<GameObject>(RocksResourcesPath);
@@ -32,7 +32,7 @@ namespace MapModule
             }
             else
             {
-                Debug.LogError($"Aucun prefab trouvé dans le dossier {RocksResourcesPath}");
+              //  Debug.LogError($"Aucun prefab trouvé dans le dossier {RocksResourcesPath}");
             }
 
             // Hook into the scene's drag-and-drop event

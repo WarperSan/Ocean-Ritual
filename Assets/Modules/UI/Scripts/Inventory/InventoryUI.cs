@@ -1,47 +1,56 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
-    [SerializeField] List<Sprite> listSprite = new();
-
-    [SerializeField] List<uint> listQuantity = new();
-
     [SerializeField] GameObject slot;
-
     [SerializeField] Transform parent;
-
     [SerializeField] TextMeshProUGUI playerGold;
-    
-    public void SetInventory(int maxSlot)
+
+    private void OnEnable()
     {
-        // Add missing items
-        for (int i = 0; i < maxSlot - listSprite.Count; i++)
-            listSprite.Add(null);
+        Inventaire.Instance.UpdateItemListeUI();
+    }
 
-        for (int i = 0; i < maxSlot; i++)
+    public void UpdateUI(List<ItemData> itemList)
+    {
+        foreach (Transform child in parent)
         {
-            Sprite sprite = null;
-            uint quantity = 0;
-            
-            // If there is an item
-            if (listQuantity.Count > i)
-            {
-                sprite = listSprite[i];
-                quantity = listQuantity[i];
-            }
+            Destroy(child.gameObject);
+        }
 
-            this.CreateSlot(sprite, quantity, i);
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            if (itemList[i] != null)
+            {
+                ItemData item = itemList[i];
+                Sprite sprite = GetSpriteFromItem(item);
+                uint quantity = (uint)item.quantiter;
+                CreateSlot(sprite, quantity);
+            }
+            else
+            {
+                CreateSlot(null, 0);
+            }
         }
     }
 
-    private void CreateSlot(Sprite sprite, uint quantity, int index)
+    private void CreateSlot(Sprite sprite, uint quantity)
     {
         GameObject newSlot = Instantiate(slot, parent);
-        newSlot.name = $"Slot{index + 1}";
         newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity);
+    }
+
+    private Sprite GetSpriteFromItem(ItemData item)
+    {
+        if (item == null)
+            return null;
+
+        return item.sprite;
     }
 
     public void SetPlayerGold(int gold = 9999)

@@ -75,6 +75,22 @@ static public class EnumGeneral
         Glace,
         Feu
     }
+    public enum TypeOfSort
+    {
+        Nom,
+        Type,
+        Quantite,
+        Fusion,
+        Niveau
+    }
+    public enum ColorsName
+    {
+       Red,
+       Blue,
+       Purple,
+       Yellow,
+       Green,
+    }
 }
 //
 [System.Serializable]
