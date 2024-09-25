@@ -64,12 +64,12 @@ public class TestInventaire : MonoBehaviour
         if (clearInventaire)
         {
             clearInventaire = false;
-            inventaireJoueur.NettoyerEmplacement();
+            inventaireJoueur.CleanSpace();
         }
         if (faireLeTrie)
         {
             faireLeTrie = false;
-            inventaireJoueur.TrierItemList(typeDeTri);
+            inventaireJoueur.SortItem(typeDeTri);
         }
         if (SwapPlace)
         {

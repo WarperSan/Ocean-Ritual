@@ -110,7 +110,7 @@ public class Inventaire : MonoBehaviour
         //// Tant que l'inventaire n'est pas plein, ajoute des null
         while (ItemList.Count < nombreDePlaceInventaire)
         {
-            AjoutEmplacement();
+            AddSpace();
         }
     }
 
@@ -161,12 +161,12 @@ public class Inventaire : MonoBehaviour
         return (ListeIndexItemIdentique, ListeIndexDisponible);
     }
 
-    private void AjoutEmplacement()
+    private void AddSpace()
     {
         ItemList.Add(null);
     }
 
-    public void NettoyerEmplacement()
+    public void CleanSpace()
     {
         // Supprimer les éléments null au début
         for (int i = 0; i < ItemList.Count; i++)
@@ -198,7 +198,7 @@ public class Inventaire : MonoBehaviour
         // Ajouter un emplacement vide à la fin si nécessaire
         if (ItemList.Count == 0 || ItemList[^1] != null)
         {
-            AjoutEmplacement(); // Ajoute un emplacement vide
+            AddSpace(); // Ajoute un emplacement vide
         }
 
         UpdateSousListe();
@@ -307,7 +307,7 @@ public class Inventaire : MonoBehaviour
         //while (quantiteRestante > 0)
         //{
         //    Debug.Log("passe dans le while");
-        //    AjoutEmplacement();
+        //    AddSpace();
         //    int dernierIndex = ItemList.Count - 1;
         //    ItemList[dernierIndex] = item;
 
@@ -348,36 +348,36 @@ public class Inventaire : MonoBehaviour
 
     public void UpdateItemListeUI()
     {
-     //  NettoyerEmplacement();
+     //  CleanSpace();
         inventoryUI.UpdateUI(ItemList);
     }
 
-    public void TrierItemList(TypeOfSort SortType)
+    public void SortItem(TypeOfSort SortType)
     {
         switch (SortType)
         {
             case TypeOfSort.Nom:
-                TrierNom();
+                SortName();
                 Console.WriteLine("Tri par nom de poisson les gemme apres");
                 break;
 
             case TypeOfSort.Type:
-                TrierParType();
+                SortByType();
                 Console.WriteLine("Tri par type poisson ou gemme");
                 break;
 
             case TypeOfSort.Quantite:
-                TrierQuantiter();
+                SortByQuantite();
                 Console.WriteLine("Tri par quantité de poisson");
                 break;
 
             case TypeOfSort.Fusion:
-                FusionAuto();
+                AutoMerge();
                 Console.WriteLine(" faire la fusion");
                 break;
 
             case TypeOfSort.Niveau:
-                TrierNiveau();
+                SortByLVL();
                 Console.WriteLine(" trie par niveau de gemme poisson après");
                 break;
 
@@ -390,7 +390,7 @@ public class Inventaire : MonoBehaviour
         UpdateItemListeUI();
     }
 
-    public void TrierNom()
+    public void SortName()
     {
         // Séparer les poissons et les gemmes
         List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
@@ -407,24 +407,8 @@ public class Inventaire : MonoBehaviour
         Debug.Log("Liste triée par nom de poisson.");
     }
 
-    public void TrierParNiveau()
-    {
-        // Séparer les poissons et les gemmes
-        List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
-        List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
-
-        // Trier les gemmes par niveau
-        gemmes = gemmes.OrderByDescending(g => g.LVL).ToList();
-
-        // Réorganiser l'inventaire avec les gemmes d'abord, puis les poissons
-        ItemList = new List<ItemData>();
-        ItemList.AddRange(gemmes);
-        ItemList.AddRange(poissons);
-
-        Debug.Log("Liste triée par niveau de gemmes.");
-    }
-
-    public void TrierParType()
+   
+    public void SortByType()
     {
         // Séparer les poissons et les gemmes
         List<PoissonData> poissons = ItemList.OfType<PoissonData>().ToList();
@@ -438,7 +422,7 @@ public class Inventaire : MonoBehaviour
         Debug.Log("Liste triée par type (poissons puis gemmes).");
     }
 
-    public void TrierQuantiter()
+    public void SortByQuantite()
     {
         // Trier les objets par quantité (qu'ils soient des poissons ou des gemmes)
         ItemList = ItemList.OrderByDescending(item => item.quantiter).ToList();
@@ -446,7 +430,7 @@ public class Inventaire : MonoBehaviour
         Debug.Log("Liste triée par quantité.");
     }
 
-    public void TrierNiveau()
+    public void SortByLVL()
     {
         // Séparer les poissons et les gemmes
         List<GemmeData> gemmes = ItemList.OfType<GemmeData>().ToList();
@@ -463,7 +447,7 @@ public class Inventaire : MonoBehaviour
         Debug.Log("Liste triée par niveau de gemmes.");
     }
 
-    public void FusionAuto()
+    public void AutoMerge()
     {
         // On garde les gemmes intactes
         List<ItemData> gemmes = ItemList.Where(item => item is GemmeData).ToList();

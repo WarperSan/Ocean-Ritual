@@ -15,7 +15,7 @@ public class GestionTableauEditor : UnityEditor.Editor
 
         if (gemmeGrid.tableau == null || gemmeGrid.tableau.GetLength(0) != gemmeGrid.width || gemmeGrid.tableau.GetLength(1) != gemmeGrid.height)
         {
-            gemmeGrid.InitializeTableau();
+            gemmeGrid.InitializeTab();
         }
 
         for (int j = 0; j < gemmeGrid.height; j++) // Loop from 0 to height
