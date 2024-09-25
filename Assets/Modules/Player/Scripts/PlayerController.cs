@@ -1,4 +1,5 @@
 using ControllerModule.Controllers.Interfaces;
+using InteractModule;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,8 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Controller that manages how the player behaves
     /// </summary>
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : Controller, IMovable, IFirable
+    
+    public class PlayerController : Controller, IMovable, IFirable, IJumpable
     {
         #region Cursor 
 
@@ -25,6 +26,9 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how far the player can interact with things")]
         private float interactRange;
 
+        [SerializeField]
+        private InteractionAsset defaultInteraction;
+
         /// <summary>
         /// Updates the cursor depending on the possible interactions
         /// </summary>
@@ -38,9 +42,10 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null)
                 return;
 
-            if (Interfaces.IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, this.interactRange))
+            if (IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, out IInteractable interactable, this.interactRange))
             {
-                this.cursor.sprite = this.interactCursor;
+                InteractionAsset asset = interactable.InteractionAsset != null ? interactable.InteractionAsset : this.defaultInteraction;
+                this.cursor.sprite = asset != null ? asset.icon : null;
                 this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
             }
             else
@@ -62,6 +67,15 @@ namespace ControllerModule.Controllers
             this.cursor.enabled = visible;
         }
 
+        private void Interact()
+        {
+            // If eyes invalid, skip
+            if (this.Eyes == null)
+                return;
+
+            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
+        }
+
         #endregion
 
         #region Move
@@ -70,8 +84,11 @@ namespace ControllerModule.Controllers
         [SerializeField, Tooltip("Determines how fast the player can move")]
         private float movementSpeed = 20;
 
-        private CharacterController _characterController;
-
+        //Used to move the character while on the boat
+        [SerializeField]
+        BoatController boatController;
+        
+        private Rigidbody _rigidbody;
         private Vector3 direction;
 
         /// <summary>
@@ -83,17 +100,21 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes == null || this._characterController == null)
+            if (this.Eyes == null || this._rigidbody == null)
                 return;
 
+            if (facing.x == 0 && facing.y == 0 && CheckGrounded())
+            {
+                this._rigidbody.velocity = Vector3.zero;
+            }
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
-            moveDir = moveDir.normalized * speed;
+            
 
             // Move the character controller
-            this._characterController.Move(moveDir * elapsed);
+            this._rigidbody.MovePosition( this.transform.position +  (speed *moveDir * elapsed) + boatController.MovementBoat);
         }
 
         #endregion
@@ -119,7 +140,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateGravity(float elapsed)
         {
-            if (this.Feet == null || this._characterController == null)
+            if (this.Feet == null || this._rigidbody == null)
                 return;
 
             this.isGrounded = Physics.CheckSphere(
@@ -133,9 +154,28 @@ namespace ControllerModule.Controllers
                 this.velocity.y = 0;
             this.velocity += Physics.gravity * elapsed;
 
-            this._characterController.Move(this.velocity * elapsed);
+            this._rigidbody.MovePosition(this.velocity*elapsed);
         }
 
+        private bool CheckGrounded()
+        {
+            if (this.Feet != null && this._rigidbody != null)
+            {
+                this.isGrounded = Physics.CheckSphere(
+                    this.Feet.position,
+                    this.GroundCheckRadius,
+                    this.GroundLayers,
+                    QueryTriggerInteraction.Ignore
+                );
+                
+
+                return isGrounded;
+            }
+            return false;
+
+            
+                
+        }
         #endregion
 
         #region Controller
@@ -144,8 +184,8 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            this._characterController = this.GetComponent<CharacterController>();
-
+            
+            this._rigidbody = this.GetComponent<Rigidbody>();
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }
@@ -154,27 +194,39 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
+            
+            //this.UpdateGravity(elapsed);
+        }
+
+        protected override void OnFixedUpdate(float elapsed)
+        {
             this.UpdateMove(this.direction, this.movementSpeed, elapsed);
-            this.UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchIn()
         {
+            this.gameObject.SetActive(true);
             // Update cursor
             this.SetCursor(true);
             SetCursorLock(true);
 
             // Reset direction
             this.direction = Vector2.zero;
+
+            
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
+
+            //this._rigidbody.velocity = Vector3.zero;
+            //this._rigidbody.angularVelocity = Vector3.zero;
             // Update cursor
             this.SetCursor(false);
             SetCursorLock(false);
+            this.gameObject.SetActive(false);
         }
 
         #endregion
@@ -189,18 +241,28 @@ namespace ControllerModule.Controllers
         #region IFirable
 
         /// <inheritdoc/>
-        public void OnFireStart()
-        {
-            // If eyes invalid, skip
-            if (this.Eyes == null)
-                return;
-
-            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
-        }
+        public void OnFireStart() => this.Interact();
 
         /// <inheritdoc/>
         public void OnFireEnd() { }
 
+        #endregion 
+
+        #region IJumpable
+        [Header("Jump")]
+        [SerializeField, Tooltip("Determines height of Jump")]
+        private float jumpHeight = 1.0f;
+        public void OnJump()
+        {
+            //Debug.Log("Jump");
+            if (CheckGrounded())
+            {
+                //Debug.Log("grounded");
+                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0),ForceMode.Impulse);
+
+                
+            }
+        }
         #endregion
 
         #region MonoBehaviour
@@ -223,5 +285,7 @@ namespace ControllerModule.Controllers
 #endif
 
         #endregion
+
+        
     }
 }

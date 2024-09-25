@@ -11,6 +11,7 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how fast the camera rotates")]
         private float sensitivity = 5.0f;
 
+
         #endregion
 
         #region Angles Clamp
@@ -31,7 +32,7 @@ namespace ControllerModule.Controllers
         private Transform parentController;
 
         [SerializeField, Tooltip("Root of the object to turn horizontally")]
-        private Transform self;
+        private Rigidbody self;
 
         [Tooltip("Object that will turn the camera")]
         public Transform cameraAnchor;

@@ -10,7 +10,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
-
+    
     private void Awake()
     {
         dragAndDropHandler.OnDragStart += this.OnDragStart;
@@ -43,6 +43,7 @@ public class InventorySlot : MonoBehaviour
     /// <summary>
     /// Clears an inventory slot
     /// </summary>
+
     public void ClearSlot()
     {
         Color itemColor = itemImage.color;
@@ -91,6 +92,7 @@ public class InventorySlot : MonoBehaviour
         this.SetBackgroundAlpha(0f);
     }
 
+
     private void OnDragEnd(List<RaycastResult> raycasts)
     {
         GameObject firstTarget = null;
@@ -114,6 +116,7 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
+
             if (raycasts.Count == 0)
             {
                 Inventaire.Instance.DropItem(originalIndex);
