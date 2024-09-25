@@ -17,47 +17,30 @@ public enum LanceFlameModes
 public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable, IMultiMode<LanceFlameModes>
 {
     [Header("UNSORTED MESS")]
-    [SerializeField] ComponantGBN ComponantGBN;
-    [SerializeField] ParticuleControleur ParticuleControleurs;
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> BulletSpeed = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSize = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
-
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AttackWithBoost = new(TypeWeapon.attack, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> BulletSpeedWithBoost = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSizeWithBoost = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRateWithBoost = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AmmoCapacityBoost = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> RangeBoost = new(TypeWeapon.Range, 1f);
-
     [SerializeField] GameObject balleDeLF;
     [SerializeField] GameObject ZoneDeTire;
+    [SerializeField] ParticuleControleur ParticuleControleurs;
 
     [SerializeField] float grosseurDExpension = 2;
 
     [SerializeField] int AmmoInClip;
-    public ComponantGBN ComposnantGBN => ComponantGBN;
 
     private bool faireStat = true;
 
     private float reloadSpeed = 1f; // Vitesse de recharge en pourcentage par seconde
 
     #region Arme Interface Methods
+
     public override float GetDamage()
     {
-        return AttackWithBoost.Quantite;
+        return BOOSTED_ATTACK.Quantite;
     }
 
     float ExtraTimeBullet = 0;
     public override void Reload()
     {
         // Si le chargeur d�j� plein
-        if (AmmoInClip >= AmmoCapacityBoost.Quantite)
+        if (AmmoInClip >= BOOSTED_AMMO_CAPACITY.Quantite)
             return;
 
         // Calcule le temps n�cessaire pour recharger une balle
@@ -71,13 +54,13 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
 
         // Ajoute les balles en respectant la capacit� maximale
         AmmoInClip += bulletsToReload;
-        AmmoInClip = Mathf.Clamp(AmmoInClip, 0, (int)AmmoCapacityBoost.Quantite);
+        AmmoInClip = Mathf.Clamp(AmmoInClip, 0, (int)BOOSTED_AMMO_CAPACITY.Quantite);
 
         // Conserve le reste du temps exc�dentaire apr�s avoir recharg� les balles
         ExtraTimeBullet %= timeToReloadOneBullet;
 
         // Si les munitions sont compl�tement recharg�es, on d�sactive la surchauffe
-        if (AmmoInClip >= AmmoCapacityBoost.Quantite)
+        if (AmmoInClip >= BOOSTED_AMMO_CAPACITY.Quantite)
         {
             isOverheated = false; // Arr�te la surchauffe une fois le chargeur plein
             ParticuleControleurs.OverHeatParticuleStop();
@@ -129,9 +112,9 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         scriptBall.ResetGrossisement();
         if (scriptBall != null)
         {
-            scriptBall.Vitesse = BulletSpeedWithBoost.Quantite;
+            scriptBall.Vitesse = BOOSTED_BULLET_SPEED.Quantite;
             scriptBall.ValeurGrossissement = grosseurDExpension;
-            scriptBall.Range = RangeBoost.Quantite;
+            scriptBall.Range = BOOSTED_RANGE.Quantite;
             scriptBall.lanceFlameScript = this;
         }
         else
@@ -164,25 +147,25 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         // Cr�ation de la liste des statistiques de base
         List<TypeQuantite<TypeWeapon>> baseStats = new List<TypeQuantite<TypeWeapon>>
         {
-            ReloadSpeed,
-            Attack,
-            BulletSpeed,
-            BulletSize,
-            FireRate,
-            AmmoCapacity,
-            Range
+            BASE_RELOAD_SPEED,
+            BASE_ATTACK,
+            BASE_BULLET_SPEED,
+            BASE_BULLET_SIZE,
+            BASE_FIRERATE,
+            BASE_AMMO_CAPACITY,
+            BASE_RANGE
         };
 
         // Cr�ation de la liste des statistiques boost�es
         List<TypeQuantite<TypeWeapon>> boostedStats = new List<TypeQuantite<TypeWeapon>>
         {
-            ReloadSpeedWithBoost,
-            AttackWithBoost,
-            BulletSpeedWithBoost,
-            BulletSizeWithBoost,
-            FireRateWithBoost,
-            AmmoCapacityBoost,
-            RangeBoost
+            BOOSTED_RELOAD_SPEED,
+            BOOSTED_ATTACK,
+            BOOSTED_BULLET_SPEED,
+            BOOSTED_BULLET_SIZE,
+            BOOSTED_FIRERATE,
+            BOOSTED_AMMO_CAPACITY,
+            BOOSTED_RANGE
         };
 
         // Mise � jour des statistiques avec les boosts
@@ -206,9 +189,9 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         }
         // Remplace les statistiques de base par les statistiques boost�es
 
-        reloadSpeed = ReloadSpeedWithBoost.Quantite;
+        reloadSpeed = BOOSTED_RELOAD_SPEED.Quantite;
 
-        AmmoInClip = Mathf.RoundToInt(AmmoCapacityBoost.Quantite); // Initialise les munitions � la capacit� maximale
+        AmmoInClip = Mathf.RoundToInt(BOOSTED_AMMO_CAPACITY.Quantite); // Initialise les munitions � la capacit� maximale
 
         // --- OVERHEAT ---
         if (OverheatMeter != null)
@@ -242,7 +225,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
             return false;
 
         // Emp�che de tirer si le temps de recharge est insuffisant
-        if (timeSinceLastShot < 1f / FireRateWithBoost.Quantite)
+        if (timeSinceLastShot < 1f / BOOSTED_FIRERATE.Quantite)
             return false;
 
         return true;
@@ -284,7 +267,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
             return;
 
         // Calcule la proportion de balles restantes par rapport � la capacit� totale
-        float ammoRatio = AmmoInClip / AmmoCapacityBoost.Quantite;
+        float ammoRatio = AmmoInClip / BOOSTED_AMMO_CAPACITY.Quantite;
         Vector3 initialScale = OverheatMeter.localScale;
 
         // R�duit l'�chelle sur l'axe Y en fonction du nombre de balles restantes
@@ -356,6 +339,40 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     {
         this.InstantiateAmmo();
     }
+
+    #endregion
+
+    #region IEquipement
+
+    [Header("IEquipement")]
+    [SerializeField] private ComponantGBN ComponantGBN;
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BASE_RANGE = new(TypeWeapon.Range, 1f);
+
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.attack, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
+
+    public ComponantGBN ComposnantGBN => ComponantGBN;
+
+    /// <summary>
+    /// Fetches the range of this weapon
+    /// </summary>
+    public float GetRange(bool getBoosted = true) => getBoosted ? this.BOOSTED_RANGE.Quantite : this.BASE_RANGE.Quantite; 
+
+    /// <summary>
+    /// Fetches the bullet speed of this weapon
+    /// </summary>
+    public float GetBulletSpeed(bool getBoosted = true) => getBoosted ? this.BASE_BULLET_SPEED.Quantite : this.BASE_BULLET_SPEED.Quantite;
 
     #endregion
 }

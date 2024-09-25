@@ -16,7 +16,7 @@ namespace EntityModule
         OPPONENTS = ENEMY | BOSS // Enemies and Bosses
     }
 
-    public class Projectile : MonoBehaviour
+    public abstract class Projectile : MonoBehaviour
     {
         /// <inheritdoc/>
         private void Awake()
@@ -89,8 +89,6 @@ namespace EntityModule
         protected virtual bool IsEntityTarget(Entity entity)
         {
             int layer = entity.gameObject.layer;
-
-            Debug.Log(this.attack.TargetType);
 
             // If targeting none
             if (this.attack.TargetType == ProjectileTarget.NONE)

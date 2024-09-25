@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace EntityModule
 {
+    /// <summary>
+    /// Class that represents an entity
+    /// </summary>
     public abstract class Entity : MonoBehaviour
     {
         #region Health
