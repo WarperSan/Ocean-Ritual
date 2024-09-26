@@ -32,7 +32,7 @@ public static class QuestInterface
                 if (questText != null)
                 {
                     questText.text = GetTextForQuest(quest);
-                        //quest.Name;  // Mettre à jour le texte avec le nom de la quête
+                        //quest.Name;  // Mettre à jour le texte avec le name de la quête
                 }
 
                 // Ajouter l'objet texte au dictionnaire

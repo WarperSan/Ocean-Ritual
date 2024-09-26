@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class SourieRoueManager : MonoBehaviour
+public class MouseWheelManager : MonoBehaviour
 {
     public LayerMask layerSocle;
     public LayerMask layerVoid;
     private GameObject objetMemory; // Pour garder en mémoire le CG détecté
     private int layerInitial = 26;
-    private GameObject objetTouche; // Pour garder l'objet CV détecté
+    private GameObject objectTouch; // Pour garder l'objet CV détecté
     private GameObject ObjetGlow = null;
     private GameObject Socle;
-    private bool[,] formBoolPrincipal;
+    private bool[,] ShapeBoolMain;
     [SerializeField] string layerInitialName = "Socle";
     void Update()
     {
@@ -43,13 +43,13 @@ public class SourieRoueManager : MonoBehaviour
                 {
 
 
-                    objetTouche = temp;
+                    objectTouch = temp;
 
                 }
 
-                if (objetTouche != null)
+                if (objectTouch != null)
                 {
-                    MoveObjectOnCV(objetMemory.transform, objetTouche.transform);
+                    MoveObjectOnCV(objetMemory.transform, objectTouch.transform);
                 }
             }
             else
@@ -126,10 +126,10 @@ public class SourieRoueManager : MonoBehaviour
 
         GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
 
-        EmplacementSocle coordone = objetTouche.GetComponentInParent<EmplacementSocle>();
-        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemmeScript.forme.GetForme(), gemme.GemmeScript, formBoolPrincipal))
+        EmplacementSocle coordone = objectTouch.GetComponentInParent<EmplacementSocle>();
+        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemmeScript.forme.GetForme(), gemme.GemmeScript, ShapeBoolMain))
         {
-            DeplacerObjet(objetMemory.transform, true);
+            MoveObject(objetMemory.transform, true);
             notSelectObject();
         }
 
@@ -141,13 +141,13 @@ public class SourieRoueManager : MonoBehaviour
         GameObject temp = DetectGemmeRC();
         if (temp != null)
         {
-            objetTouche = temp;
+            objectTouch = temp;
         }
 
 
-        if (objetTouche != null)
+        if (objectTouch != null)
         {
-            Transform parent = ClimbeUp2Parent(objetTouche.transform);
+            Transform parent = ClimbeUp2Parent(objectTouch.transform);
 
             // Vérifier si le parent existe
             if (parent != null)
@@ -166,16 +166,16 @@ public class SourieRoueManager : MonoBehaviour
 
                     // Si aucun CG n'est en mémoire, on mémorise le CG
                     Debug.Log("CubeGemme détecté.");
-                    DeplacerObjet(parent);
+                    MoveObject(parent);
                     objetMemory = parent.gameObject; // On garde le CG en mémoire
 
                     layerInitial = objetMemory.layer; // Stocker le layer initial
                     Transform SocleParent = ClimbeUpParent(objetMemory.transform);
                     Socle = SocleParent.gameObject;
                     LayerChange(objetMemory, 0); // Changer temporairement le layer
-                    if (formBoolPrincipal == null)
+                    if (ShapeBoolMain == null)
                     {
-                        formBoolPrincipal = scriptGemme.GemmeScript.forme.GetForme();
+                        ShapeBoolMain = scriptGemme.GemmeScript.forme.GetForme();
                     }
                 }
                 else // C'est un CV
@@ -185,7 +185,7 @@ public class SourieRoueManager : MonoBehaviour
                     if (objetMemory != null) // Si on a déjà détecté un CG avant
                     {
                         // Mémoriser le CV détecté
-                        this.objetTouche = objetTouche;
+                        this.objectTouch = objectTouch;
                     }
                 }
             }
@@ -205,7 +205,7 @@ public class SourieRoueManager : MonoBehaviour
         return null;
     }
 
-    void DeplacerObjet(Transform parent, bool inverse = false)
+    void MoveObject(Transform parent, bool inverse = false)
     {
         // Déplacer l'objet de 2 unités sur l'axe Y en coordonnées locales
         if (!inverse)
@@ -307,8 +307,8 @@ public class SourieRoueManager : MonoBehaviour
         {
             ResetInitialLayer(objetMemory); // Rétablir le layer initial
             objetMemory = null; // Réinitialiser l'objet en mémoire
-            objetTouche = null;  // Réinitialiser l'objet CV en mémoire
-            formBoolPrincipal = null;
+            objectTouch = null;  // Réinitialiser l'objet CV en mémoire
+            ShapeBoolMain = null;
         }
     }
 }

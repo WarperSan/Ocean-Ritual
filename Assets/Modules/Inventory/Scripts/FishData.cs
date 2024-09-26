@@ -5,7 +5,7 @@ using UnityEngine;
 
 [System.Serializable]
 
-public class PoissonData : ItemData
+public class FishData : ItemData
 {
-   public string nom;
+   public string name;
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PickableGemme : MonoBehaviour, IInteractable
 {
-    [SerializeField] GemmeData laGemme;
+    [SerializeField] GemmeData TheGemme;
     [SerializeField] int lvlOfGemme;
     [SerializeField] Sprite sprite;
 
@@ -14,8 +14,8 @@ public class PickableGemme : MonoBehaviour, IInteractable
 
     public void OnClick()
     {
-        laGemme= GeneratorGemme.GenerateRandomGemme(lvlOfGemme);
-        laGemme.sprite= sprite;
-        Inventaire.Instance.AddItem(laGemme);
+        TheGemme= GeneratorGemme.GenerateRandomGemme(lvlOfGemme);
+        TheGemme.sprite= sprite;
+        Inventory.Instance.AddItem(TheGemme);
     }
 }

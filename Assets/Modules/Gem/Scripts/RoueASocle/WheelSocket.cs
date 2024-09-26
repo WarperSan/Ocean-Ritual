@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoueASocleManager : MonoBehaviour
+public class WheelSocket : MonoBehaviour
 {
     private float timeSinceLastRotation = 0f;
     public float rotationInterval = 10f;

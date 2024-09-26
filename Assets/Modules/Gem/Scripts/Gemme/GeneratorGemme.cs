@@ -71,14 +71,14 @@ public   class GeneratorGemme: MonoBehaviour
 
         if (gemmeScript != null)
         {
-            gemmeScript.quantiterMax = 1;
-            gemmeScript.quantiter = 1;
-            gemmeScript.forme = GenerateForme(LVL);
+            gemmeScript.quantityMax = 1;
+            gemmeScript.quantity = 1;
+            gemmeScript.Shape = GenerateForme(LVL);
             gemmeScript.GemmeColorsName = GeneratsRandomlColors();
             gemmeScript.LVL = LVL;
-            gemmeScript.typeArme = GeneratsRandomlvlStat<TypeWeapon>(LVL);
+            gemmeScript.typeWeapon = GeneratsRandomlvlStat<TypeWeapon>(LVL);
             gemmeScript.typeBoat = GeneratsRandomlvlStat<TypeBoat>(LVL);
-            gemmeScript.typeFilet = GeneratsRandomlvlStat<TypeNet>(LVL);
+            gemmeScript.typeNet = GeneratsRandomlvlStat<TypeNet>(LVL);
             return gemmeScript;
         }
         else
@@ -144,7 +144,7 @@ public   class GeneratorGemme: MonoBehaviour
         // Sélectionner un index aléatoire dans la liste des couleurs
         int randomIndex = random.Next(colors.Length);
 
-        // Retourner le nom de la couleur sélectionnée aléatoirement
+        // Retourner le name de la couleur sélectionnée aléatoirement
         return colors.GetValue(randomIndex).ToString();
     }
     // Function to generate the shape of the gemme based on the level
@@ -248,7 +248,7 @@ public   class GeneratorGemme: MonoBehaviour
         // 3. Ajuster la position d'instantiatedGemme (enlever si tu ne veux pas que le centre soit impacté)
         instantiatedGemme.transform.localPosition = positionOffset;
       
-        // Calcul du centre de la forme
+        // Calcul du centre de la Shape
         int centreX = Mathf.FloorToInt(forme.width / 2.0f);
         int centreY = Mathf.FloorToInt(forme.height / 2.0f);
 
@@ -258,7 +258,7 @@ public   class GeneratorGemme: MonoBehaviour
             {
                 if (boolArray[i, j])
                 {
-                    // Positionner chaque cube par rapport au centre de la forme
+                    // Positionner chaque cube par rapport au centre de la Shape
                     Vector3 localPosition = new Vector3((i - centreY) * space, Hauteurgemme, (j - centreX) * space);
                     GameObject gemmeCube = Instantiate(prefabToInstantiate, instantiatedGemme.transform);
                     gemmeCube.transform.localPosition = localPosition;

@@ -103,7 +103,7 @@ public class InventorySlot : MonoBehaviour
         {
             int targetIndex = targetSlot.transform.GetSiblingIndex();
 
-            Inventaire.Instance.SwapPlace(originalIndex, targetIndex);
+            Inventory.Instance.SwapPlace(originalIndex, targetIndex);
 
             transform.SetParent(originalParent);
             transform.SetSiblingIndex(targetIndex);
@@ -116,7 +116,7 @@ public class InventorySlot : MonoBehaviour
         {
             if (raycasts.Count == 0)
             {
-                Inventaire.Instance.DropItem(originalIndex);
+                Inventory.Instance.DropItem(originalIndex);
                 this.ClearSlot();
             }
 

@@ -276,7 +276,7 @@ public static class QuestManager
             if (quest.ConditionQuest.condition
                 .Any(cond => cond.name == PNJName))
             {
-                // Si le nom correspond, marquer la qu�te comme compl�te
+                // Si le name correspond, marquer la qu�te comme compl�te
                 quest.QuestComplet = true;
                 QuestInterface.QuestToEarnReward(quest);
                 Debug.Log($"La qu�te {quest.Name} (ID: {quest.ID}) est maintenant compl�te.");

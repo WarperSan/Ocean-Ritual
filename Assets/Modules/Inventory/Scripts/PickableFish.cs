@@ -4,19 +4,19 @@ using UnityEngine;
 public class PickableFish : MonoBehaviour, IInteractable
 {
     [SerializeField] string FishName;
-    [SerializeField] int MaxQUantiter;
-    [SerializeField] int Quantiter;
+    [SerializeField] int MaxQuantity;
+    [SerializeField] int Quantity;
     [SerializeField] Sprite sprite;
 
     public InteractionAsset InteractionAsset => null;
 
     public void OnClick()
     {
-       PoissonData poison =  new PoissonData();
-        poison.nom = FishName;
-        poison.quantiter = Quantiter;
-        poison.quantiterMax = MaxQUantiter;
+       FishData poison =  new FishData();
+        poison.name = FishName;
+        poison.quantity = Quantity;
+        poison.quantityMax = MaxQuantity;
         poison.sprite = sprite;
-        Inventaire.Instance.AddItem(poison);
+        Inventory.Instance.AddItem(poison);
     }
 }

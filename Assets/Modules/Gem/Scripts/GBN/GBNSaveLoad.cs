@@ -68,9 +68,9 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            Name = gbn.Name,
 //            typeOfSocle = gbn.typeSocle,
-//            typeArme = gbn.typeArme,
+//            typeWeapon = gbn.typeWeapon,
 //            typeBoat = gbn.typeBoat,
-//            typeFilet = gbn.typeFilet,
+//            typeNet = gbn.typeNet,
 //            ListPowerGemmeObjectData = new List<PowerGemmeObjectData>()
 //        };
       
@@ -114,12 +114,12 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            PositionX = gemme.PositionX,
 //            PositionZ = gemme.PositionZ,
-//            forme = gemme.forme,
+//            Shape = gemme.Shape,
 //            GemmeColorsName = gemme.GemmeColorsName,
 //            LVL = gemme.LVL,
-//            typeArme = gemme.typeArme,
+//            typeWeapon = gemme.typeWeapon,
 //            typeBoat = gemme.typeBoat,
-//            typeFilet = gemme.typeFilet
+//            typeNet = gemme.typeNet
 //        };
 //    }
 //    /// <summary>
@@ -168,9 +168,9 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            Name = gbnData.Name,
 //            typeSocle = gbnData.typeOfSocle,
-//            typeArme = gbnData.typeArme,
+//            typeWeapon = gbnData.typeWeapon,
 //            typeBoat = gbnData.typeBoat,
-//            typeFilet = gbnData.typeFilet
+//            typeNet = gbnData.typeNet
 //        };
 
 //        foreach (var powerGemmeObjectData in gbnData.ListPowerGemmeObjectData)
@@ -211,12 +211,12 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            PositionX = gemmeData.PositionX,
 //            PositionZ = gemmeData.PositionZ,
-//            forme = gemmeData.forme,
+//            Shape = gemmeData.Shape,
 //            GemmeColorsName = gemmeData.GemmeColorsName,
 //            LVL = gemmeData.LVL,
-//            typeArme = gemmeData.typeArme,
+//            typeWeapon = gemmeData.typeWeapon,
 //            typeBoat = gemmeData.typeBoat,
-//            typeFilet = gemmeData.typeFilet
+//            typeNet = gemmeData.typeNet
 //        };
 //    }
 //    #endregion

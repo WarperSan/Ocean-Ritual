@@ -21,9 +21,9 @@ public class GBNeditor : UnityEditor.Editor
         GBNProp = serializedObject.FindProperty("GBNScript");
         NameProp = GBNProp.FindPropertyRelative("Name");
         typeDeSocleProp = GBNProp.FindPropertyRelative("typeSocle");
-        typeArmeProp = GBNProp.FindPropertyRelative("typeArme");
+        typeArmeProp = GBNProp.FindPropertyRelative("typeWeapon");
         typeBateauProp = GBNProp.FindPropertyRelative("typeBoat");
-        typeFiletProp = GBNProp.FindPropertyRelative("typeFilet");
+        typeFiletProp = GBNProp.FindPropertyRelative("typeNet");
         SocleListProp = GBNProp.FindPropertyRelative("SocleListe");
     }
     //
