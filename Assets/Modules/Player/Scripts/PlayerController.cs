@@ -103,7 +103,7 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null || this._rigidbody == null)
                 return;
 
-            if (facing.x == 0 && facing.y == 0 && CheckGrounded())
+            if (facing.x == 0 && facing.y == 0 && this.CheckGrounded())
             {
                 this._rigidbody.velocity = Vector3.zero;
             }
@@ -112,9 +112,14 @@ namespace ControllerModule.Controllers
             // Modify the direction
             moveDir.y = 0;
             
-
             // Move the character controller
-            this._rigidbody.MovePosition( this.transform.position +  (speed *moveDir * elapsed) + boatController.MovementBoat);
+            moveDir *= speed * elapsed;
+            moveDir += this.transform.position;
+
+            if (boatController != null)
+                moveDir += boatController.MovementBoat;
+
+            this._rigidbody.MovePosition(moveDir);
         }
 
         #endregion

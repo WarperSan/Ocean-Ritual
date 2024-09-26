@@ -1,28 +1,24 @@
-using DhafinFawwaz.AnimationUILib;
 using System.Collections;
 using UnityEngine;
 
 namespace UIModule.Menus
 {
-    public class InventoryMenu : UIMenu
+    public class InventoryMenu : AnimatedMenu
     {
-        [SerializeField] AnimationUI openAnimation;
-        [SerializeField] AnimationUI closeAnimation;
-
         public override IEnumerator Open()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            openAnimation.Play();
-            yield return null;
+
+            yield return base.Open();
         }
 
         public override IEnumerator Close()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            closeAnimation.Play();
-            yield return null;
+
+            yield return base.Close();
         }
     }
 }

@@ -27,6 +27,7 @@ namespace UIModule
         #region Toggle
 
         private static Stack<UIMenu> openedMenus = new();
+        private static readonly Queue<System.Guid> toggleHistory = new();
 
         public static void Toggle<T>() where T : UIMenu
         {
@@ -35,12 +36,19 @@ namespace UIModule
                 if (menu is not T)
                     continue;
 
-                Instance.StartCoroutine(Instance.ToggleMenu(menu));
+                Instance.StartCoroutine(Instance.ToggleMenu(menu, System.Guid.NewGuid()));
             }
         }
 
-        private IEnumerator ToggleMenu(UIMenu menu)
+        private IEnumerator ToggleMenu(UIMenu menu, System.Guid token)
         {
+            // Add to the queue
+            toggleHistory.Enqueue(token);
+
+            // Wait for your turn
+            while (toggleHistory.TryPeek(out System.Guid nextToken) && nextToken != token)
+                yield return null;
+
             openedMenus.TryPeek(out UIMenu openedMenu);
 
             // If a menu is opened
@@ -56,6 +64,9 @@ namespace UIModule
                 yield return menu.Open();
                 openedMenus.Push(menu);
             }
+
+            // Consume your token
+            toggleHistory.Dequeue();
         }
 
         #endregion
