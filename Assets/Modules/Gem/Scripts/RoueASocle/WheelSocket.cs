@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WheelSocket : MonoBehaviour
 {
-    private float timeSinceLastRotation = 0f;
+   // private float timeSinceLastRotation = 0f;
     public float rotationInterval = 10f;
     public float rotationDuration = 2f;
     public float rotationAmount = 45f;
@@ -13,7 +13,7 @@ public class WheelSocket : MonoBehaviour
     private Quaternion targetRotation;
     private Quaternion initialRotation;
     private float rotationTimeElapsed = 0f;
-    private bool rotateLeft = true;
+   // private bool rotateLeft = true;
     [SerializeField] bool dejaTourner = true;
     public float ticIntensity = 2f; 
     public float ticDuration = 0.5f; 
@@ -50,7 +50,7 @@ public class WheelSocket : MonoBehaviour
     void StartRotationGauche()
     {
         isRotating = true;
-        timeSinceLastRotation = 0f;
+       
         rotationTimeElapsed = 0f;
         initialRotation = transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
@@ -59,7 +59,7 @@ public class WheelSocket : MonoBehaviour
     void StartRotationDroite()
     {
         isRotating = true;
-        timeSinceLastRotation = 0f;
+ 
         rotationTimeElapsed = 0f;
         initialRotation = transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);

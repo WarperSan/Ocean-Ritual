@@ -18,7 +18,7 @@ using static EnumGeneral;
     [SerializeField]  public List<ComponantPowerGemObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
-    [SerializeField] public List<PowerGemObject> PowerGemmeObjectListe = new();
+    [SerializeField] public List<PowerGemObject> PowerGemObjectListe = new();
 
     public void GetStat()
     {
@@ -107,15 +107,15 @@ using static EnumGeneral;
         #endregion
 
     /// <summary>
-    /// only convert the SocleListe To PowerGemmeObjectListe for the test
+    /// only convert the SocleListe To PowerGemObjectListe for the test
     /// </summary>
         public void GetSocleToScriptList()
         {
-            PowerGemmeObjectListe.Clear();
+            PowerGemObjectListe.Clear();
             foreach (ComponantPowerGemObject item in SocleListe)
             {
             
-                PowerGemmeObjectListe.Add(item.PowerGemObjectScript);
+                PowerGemObjectListe.Add(item.PowerGemObjectScript);
             }
         
         }

@@ -74,7 +74,7 @@ public class GBNSaveLoad: MonoBehaviour
 //            ListPowerGemmeObjectData = new List<PowerGemmeObjectData>()
 //        };
       
-//        foreach (PowerGemObject powerGemmeObject in gbn.PowerGemmeObjectListe)
+//        foreach (PowerGemObject powerGemmeObject in gbn.PowerGemObjectListe)
 //        {
             
 //            gbnData.ListPowerGemmeObjectData.Add(ConvertToPowerGemmeObjectData(powerGemmeObject));
@@ -175,7 +175,7 @@ public class GBNSaveLoad: MonoBehaviour
 
 //        foreach (var powerGemmeObjectData in gbnData.ListPowerGemmeObjectData)
 //        {
-//            gbn.PowerGemmeObjectListe.Add(ConvertFromPowerGemmeObjectData(powerGemmeObjectData));
+//            gbn.PowerGemObjectListe.Add(ConvertFromPowerGemmeObjectData(powerGemmeObjectData));
 //        }
 
 //        return gbn;

@@ -9,7 +9,7 @@ public class ComponantGBN : MonoBehaviour
 
 
 
-    public void GenereSocle()
+    public void GenerationSocle()
     {
         foreach (ComponantPowerGemObject socle in GBNScript.SocleListe)
         {
@@ -17,10 +17,6 @@ public class ComponantGBN : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
+  
     
 }

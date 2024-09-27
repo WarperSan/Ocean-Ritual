@@ -22,11 +22,11 @@ public   class GeneratorGem: MonoBehaviour
     static bool dataLoad = false;
     static string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
     static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
-    static string GemmeName = "Red"; // Default gemme name
-    static float Spacebetween = 1f; // Space between gemmes
+   // static string GemmeName = "Red"; // Default gemme name
+    //static float Spacebetween = 1f; // Space between gemmes
     static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gemme prefabs
     static private GameObject SampleGemme; // Sample gemme prefab
-    static int lvlTest = 3; // Test level
+    //static int lvlTest = 3; // Test level
     static int height = 1; // Height of the gemme
 
     // Start is called before the first frame update

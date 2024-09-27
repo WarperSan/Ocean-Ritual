@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public class LanceFlameControleur : Arme ,Equipement
+public class LanceFlameControleur : Arme ,Equipment
 {
     [SerializeField] ComponantGBN ComponantGBN;
     [SerializeField] ParticuleControleur ParticuleControleurs;
@@ -35,7 +35,7 @@ public class LanceFlameControleur : Arme ,Equipement
     [SerializeField] Material glace;
 
     [SerializeField] float grosseurDExpension = 2;
-    private bool secondaryShoot = false;
+  //  private bool secondaryShoot = false;
 
     [SerializeField] GameObject ChargeurBalle;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public interface Equipement 
+public interface Equipment 
 {
    ComponantGBN ComposnantGBN { get; }
    

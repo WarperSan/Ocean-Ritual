@@ -33,7 +33,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemmeData> gemmes;
     [SerializeField] InventoryUI inventoryUI;
-    bool InventaireOuvert = false;
+    //bool InventaireOuvert = false;
 
     // Start is called before the first frame update
     void Start()

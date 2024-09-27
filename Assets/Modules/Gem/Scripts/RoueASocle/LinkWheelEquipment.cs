@@ -31,7 +31,7 @@ public class LinkWheelEquipment : MonoBehaviour
     {
         List<ComponantPowerGemObject> listStand = equipment.GBNScript.SocleListe;
         List<GameObject> PlacementpointBase = new List<GameObject>();
-        equipment.GenereSocle();
+        equipment.GenerationSocle();
        
         foreach (ComponantPowerGemObject socle in listStand)
         {

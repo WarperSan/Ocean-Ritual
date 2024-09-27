@@ -185,7 +185,7 @@ public class MouseWheelManager : MonoBehaviour
                     if (objetMemory != null) // Si on a déjà détecté un CG avant
                     {
                         // Mémoriser le CV détecté
-                        this.objectTouch = objectTouch;
+                       // this.objectTouch = objectTouch;
                     }
                 }
             }
