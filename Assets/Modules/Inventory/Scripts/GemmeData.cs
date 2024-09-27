@@ -14,19 +14,19 @@ public class GemmeData : ItemData
     public FormBool? Shape;
 
     // Name of the gem's color
-    [SerializeField] public string GemmeColorsName;
+    [SerializeField] public string GemColorsName;
 
     // Level of the gem
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities
-    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon;
+    [SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon;
 
     // List of boat types with quantities
-    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+    [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat;
 
     // List of net types with quantities
-    [SerializeField] public List<TypeQuantite<TypeNet>> typeNet;
+    [SerializeField] public List<TypeQuantity<TypeNet>> typeNet;
     #endregion
 
 }

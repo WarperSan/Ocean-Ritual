@@ -9,21 +9,21 @@ public class LanceFlameControleur : Arme ,Equipment
 {
     [SerializeField] componentGBN GBNComponent;
     [SerializeField] ParticuleControleur ParticuleControleurs;
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> BulletSpeed = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSize = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> BulletSpeed = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSize = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
 
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AttackWithBoost = new(TypeWeapon.attack, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> BulletSpeedWithBoost = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSizeWithBoost = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRateWithBoost = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AmmoCapacityBoost = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] public TypeQuantite<TypeWeapon> RangeBoost = new(TypeWeapon.Range, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> AttackWithBoost = new(TypeWeapon.attack, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> BulletSpeedWithBoost = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSizeWithBoost = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> FireRateWithBoost = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacityBoost = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> RangeBoost = new(TypeWeapon.Range, 1f);
 
     [SerializeField] GameObject balleDeLF;
     [SerializeField] GameObject ConteneurBall;
@@ -306,7 +306,7 @@ public class LanceFlameControleur : Arme ,Equipment
     public void UpdateStat()
     {
         // Cr�ation de la liste des statistiques de base
-        List<TypeQuantite<TypeWeapon>> baseStats = new List<TypeQuantite<TypeWeapon>>
+        List<TypeQuantity<TypeWeapon>> baseStats = new List<TypeQuantity<TypeWeapon>>
         {
             ReloadSpeed,
             Attack,
@@ -318,7 +318,7 @@ public class LanceFlameControleur : Arme ,Equipment
         };
 
         // Cr�ation de la liste des statistiques boost�es
-        List<TypeQuantite<TypeWeapon>> boostedStats = new List<TypeQuantite<TypeWeapon>>
+        List<TypeQuantity<TypeWeapon>> boostedStats = new List<TypeQuantity<TypeWeapon>>
         {
             ReloadSpeedWithBoost,
             AttackWithBoost,

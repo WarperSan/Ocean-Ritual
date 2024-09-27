@@ -52,7 +52,7 @@ public class InventoryTest : MonoBehaviour
             // Crée une nouvelle instance de GemmeData
             GemmeData NewGemme = new GemmeData()
             {
-                GemmeColorsName = gem.GemmeColorsName,
+                GemColorsName = gem.GemColorsName,
                 LVL = gem.LVL,
                 quantity = 1,
                 quantityMax = 1,

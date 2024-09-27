@@ -15,9 +15,9 @@ public class GBNData
 {
     //[SerializeField] public string Name;
     //[SerializeField] public TypeOfSocle typeOfSocle;
-    //[SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon = new();
-    //[SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
-    //[SerializeField] public List<TypeQuantite<TypeNet>> typeNet = new();
+    //[SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon = new();
+    //[SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat = new();
+    //[SerializeField] public List<TypeQuantity<TypeNet>> typeNet = new();
     //[SerializeField] public List<PowerGemmeObjectData> ListPowerGemmeObjectData;
     //
 }
@@ -58,13 +58,13 @@ public class GBNData
 //    [SerializeField] public int LVL = 0;
 
 //    // List of weapon types with quantities
-//    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon;
+//    [SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon;
 
 //    // List of boat types with quantities
-//    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+//    [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat;
 
 //    // List of net types with quantities
-//    [SerializeField] public List<TypeQuantite<TypeNet>> typeNet;
+//    [SerializeField] public List<TypeQuantity<TypeNet>> typeNet;
 //    #endregion
 
 

@@ -45,13 +45,13 @@ public class Inventory : MonoBehaviour
 
     void AddTestGemme()
     {
-        string[] gemmeColors = { "gem Rouge", "gem Bleue", "gem Verte" };
+        string[] gemColors = { "gem Rouge", "gem Bleue", "gem Verte" };
 
         for (int i = 0; i < 6; i++)
         {
             GemmeData gem = new GemmeData
             {
-                GemmeColorsName = gemmeColors[i % gemmeColors.Length], // Alternance des couleurs Rouge, Bleue, Verte
+                GemColorsName = gemColors[i % gemColors.Length], // Alternance des couleurs Rouge, Bleue, Verte
                 LVL = i + 1 // Niveau croissant
             };
             ItemList.Add(gem);
@@ -63,37 +63,37 @@ public class Inventory : MonoBehaviour
         // Poisson A
         for (int i = 0; i < 3; i++)
         {
-            FishData poissonA = new FishData
+            FishData FishA = new FishData
             {
                 name = "Poisson A",
                 quantityMax = 5,
                 quantity = 5 // Quantité égale à la quantité maximale
             };
-            ItemList.Add(poissonA);
+            ItemList.Add(FishA);
         }
 
         // Poisson B
         for (int i = 0; i < 3; i++)
         {
-            FishData poissonB = new FishData
+            FishData FishB = new FishData
             {
                 name = "Poisson B",
                 quantityMax = 8,
                 quantity = 8 // Quantité égale à la quantité maximale
             };
-            ItemList.Add(poissonB);
+            ItemList.Add(FishB);
         }
 
         // Poisson C
         for (int i = 0; i < 3; i++)
         {
-            FishData poissonC = new FishData
+            FishData FishC = new FishData
             {
                 name = "Poisson C",
                 quantityMax = 10,
                 quantity = 10 // Quantité égale à la quantité maximale
             };
-            ItemList.Add(poissonC);
+            ItemList.Add(FishC);
         }
     }
 
