@@ -34,7 +34,7 @@ public class GBNData
 //{
 //    [SerializeField] public int width;
 //    [SerializeField] public int height;
-//    [SerializeField] public bool[,] tableau;
+//    [SerializeField] public bool[,] Grid;
 
 //}
 //[System.Serializable]
@@ -49,10 +49,10 @@ public class GBNData
 
 //    // Shape of the gem (2D boolean array)
 //    [SerializeField]
-//    public FormeBool? Shape;
+//    public FormBool? Shape;
 
 //    // Name of the gem's color
-//    [SerializeField] public string GemmeColorsName;
+//    [SerializeField] public string GemColorsName;
 
 //    // Level of the gem
 //    [SerializeField] public int LVL = 0;

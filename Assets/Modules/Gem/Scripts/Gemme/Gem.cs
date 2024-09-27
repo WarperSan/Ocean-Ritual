@@ -4,7 +4,7 @@ using UnityEngine;
 using static EnumGeneral;
 
 [Serializable]
-public class Gemme
+public class Gem
 {
 
     #region Data
@@ -16,7 +16,7 @@ public class Gemme
 
     // Shape of the gem (2D boolean array)
     [SerializeField]
-    public FormeBool forme = new(new bool[,]
+    public FormBool forme = new(new bool[,]
    {
         { false, false, true },
         { true, true, true },
@@ -24,19 +24,19 @@ public class Gemme
    }, 3, 3);
 
     // Name of the gem's color
-    [SerializeField] public string GemmeColorsName;
+    [SerializeField] public string GemColorsName;
 
     // Level of the gem
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities
-        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon;
 
         // List of boat types with quantities
         [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
 
         // List of net types with quantities
-        [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+        [SerializeField] public List<TypeQuantite<TypeNet>> typeNet;
     #endregion
 
 
@@ -52,7 +52,7 @@ public class Gemme
     {
         if (typeof(TEnum) == typeof(TypeWeapon))
         {
-            return typeArme as List<TypeQuantite<TEnum>>;
+            return typeWeapon as List<TypeQuantite<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeBoat))
         {
@@ -60,7 +60,7 @@ public class Gemme
         }
         else if (typeof(TEnum) == typeof(TypeNet))
         {
-            return typeFilet as List<TypeQuantite<TEnum>>;
+            return typeNet as List<TypeQuantite<TEnum>>;
         }
         else
         {

@@ -38,13 +38,13 @@ public class GBNeditor : UnityEditor.Editor
 
         switch (socleType)
         {
-            case EnumGeneral.TypeOfSocle.Arme:
+            case EnumGeneral.TypeOfSocle.Weapon:
                 ShowListProperties(typeArmeProp, typeof(TypeWeapon));
                 break;
             case EnumGeneral.TypeOfSocle.Bateau:
                 ShowListProperties(typeBateauProp, typeof(TypeBoat));
                 break;
-            case EnumGeneral.TypeOfSocle.Filet:
+            case EnumGeneral.TypeOfSocle.Net:
                 ShowListProperties(typeFiletProp, typeof(TypeNet));
                 break;
         }

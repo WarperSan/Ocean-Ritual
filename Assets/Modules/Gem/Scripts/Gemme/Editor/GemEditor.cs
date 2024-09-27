@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(FormeBool))]
-public class GemmeEditor : PropertyDrawer
+[CustomPropertyDrawer(typeof(FormBool))]
+public class GemEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public   class GeneratorGemme: MonoBehaviour
+public   class GeneratorGem: MonoBehaviour
     
 {
 
@@ -20,14 +20,14 @@ public   class GeneratorGemme: MonoBehaviour
     // Singleton instance
 
     static bool dataLoad = false;
-    static string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
-    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
+    static string GemmePath = "Gem/AllGemme"; // Path to the gemme prefabs
+    static string SampleGemmePath = "Gem/SampleGemme"; // Path to the sample gemme prefab
     static string GemmeName = "Red"; // Default gemme name
     static float Spacebetween = 1f; // Space between gemmes
     static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gemme prefabs
     static private GameObject SampleGemme; // Sample gemme prefab
     static int lvlTest = 3; // Test level
-    static int Hauteurgemme = 1; // Height of the gemme
+    static int height = 1; // Height of the gemme
 
     // Start is called before the first frame update
     #endregion
@@ -83,7 +83,7 @@ public   class GeneratorGemme: MonoBehaviour
         }
         else
         {
-            Debug.LogError("Script Gemme Not instanciate");
+            Debug.LogError("Script Gem Not instanciate");
         }
 
         return null;
@@ -148,7 +148,7 @@ public   class GeneratorGemme: MonoBehaviour
         return colors.GetValue(randomIndex).ToString();
     }
     // Function to generate the shape of the gemme based on the level
-    private static FormeBool GenerateForme(int LVL)
+    private static FormBool GenerateForme(int LVL)
     {
         int size = Mathf.CeilToInt(Mathf.Sqrt(LVL));
         if (size % 2 == 0)
@@ -189,11 +189,11 @@ public   class GeneratorGemme: MonoBehaviour
             trueCount++;
         }
 
-        return new FormeBool(forme, size, size);
+        return new FormBool(forme, size, size);
     }
 
     // Function to create a gemme object in the scene
-    public static GameObject? CreatGemmeObject(Gemme GemmeScript, Transform Conteneur)
+    public static GameObject? CreatGemmeObject(Gem GemmeScript, Transform Conteneur)
     {
         if (!dataLoad)
         {
@@ -205,7 +205,7 @@ public   class GeneratorGemme: MonoBehaviour
         GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
     
         if (instantiatedGemme != null)
-            instantiatedGemme.GetComponent<GemmeComponant>().GemmeScript = GemmeScript;
+            instantiatedGemme.GetComponent<GemComponant>().GemScript = GemmeScript;
         if (CreateMaterialGemme(instantiatedGemme))
             return instantiatedGemme;
         else
@@ -223,22 +223,22 @@ public   class GeneratorGemme: MonoBehaviour
             dataLoad = true;
         }
 
-        GemmeComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemmeComponant>();
-        Gemme gemmeScript = scriptGemmeComponant.GemmeScript;
+        GemComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemComponant>();
+        Gem gemmeScript = scriptGemmeComponant.GemScript;
 
-        if (gemmeScript == null || !DictionaryGemme.ContainsKey(gemmeScript.GemmeColorsName))
+        if (gemmeScript == null || !DictionaryGemme.ContainsKey(gemmeScript.GemColorsName))
         {
-            Debug.LogError("Gemme script is null or Gemme color not found in dictionary.");
+            Debug.LogError("Gem script is null or Gem color not found in dictionary.");
             return false;
         }
 
-        GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemmeColorsName];
-        FormeBool forme = gemmeScript.forme;
+        GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemColorsName];
+        FormBool forme = gemmeScript.forme;
         bool[,] boolArray = forme.GetForme();
 
         float space = SocleGenerator.Instance.spaceBetweenCube;
 
-        // 1. Calcul de la taille totale du tableau
+        // 1. Calcul de la taille totale du Grid
         float totalWidth = forme.width * space;
         float totalHeight = forme.height * space;
 
@@ -259,7 +259,7 @@ public   class GeneratorGemme: MonoBehaviour
                 if (boolArray[i, j])
                 {
                     // Positionner chaque cube par rapport au centre de la Shape
-                    Vector3 localPosition = new Vector3((i - centreY) * space, Hauteurgemme, (j - centreX) * space);
+                    Vector3 localPosition = new Vector3((i - centreY) * space, height, (j - centreX) * space);
                     GameObject gemmeCube = Instantiate(prefabToInstantiate, instantiatedGemme.transform);
                     gemmeCube.transform.localPosition = localPosition;
                     gemmeCube.transform.localScale += new Vector3(space - 2, 0, space - 2);

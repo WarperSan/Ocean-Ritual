@@ -9,9 +9,9 @@ static public class EnumGeneral
      // Définir un dictionnaire pour associer TypeOfSocle à une énumération spécifique
     public static Dictionary<TypeOfSocle, Type> TypeDeSocleToEnum = new()
     {
-        { TypeOfSocle.Arme, typeof(TypeWeapon) },
+        { TypeOfSocle.Weapon, typeof(TypeWeapon) },
         { TypeOfSocle.Bateau, typeof(TypeBoat) },
-        { TypeOfSocle.Filet, typeof(TypeNet) }
+        { TypeOfSocle.Net, typeof(TypeNet) }
     };
 
     // Méthode pour obtenir l'énumération associée à un TypeOfSocle
@@ -29,9 +29,9 @@ static public class EnumGeneral
     }
     public enum TypeOfSocle
     {
-        Arme,
+        Weapon,
         Bateau,
-        Filet
+        Net
     }
 
     // Énumération pour les types d'armes
@@ -109,13 +109,13 @@ public class TypeQuantite<TEnum>
 
 
 [Serializable]
-public class FormeBool
+public class FormBool
 {
     public int width;
     public int height;
     public List<bool> flatForme;
 
-    public FormeBool(bool[,] forme, int width, int height)
+    public FormBool(bool[,] forme, int width, int height)
     {
         this.width = width;
         this.height = height;
@@ -151,28 +151,25 @@ public class FormeBool
 
         if (angle == 90)
         {
-            RotateForme90(); // Rotate 90° clockwise
+            RotateForm90(); // Rotate 90° clockwise
         }
         else if (angle == 180)
         {
-            RotateForme90();
-             RotateForme90(); // Rotate twice for 180°
+            RotateForm90();
+             RotateForm90(); // Rotate twice for 180°
         }
         else if (angle == -90 || angle == 270)
         {
-            RotateForme90();
-            RotateForme90();
-            RotateForme90(); // Rotate three times for -90° (270° clockwise)
+            RotateForm90();
+            RotateForm90();
+            RotateForm90(); // Rotate three times for -90° (270° clockwise)
         }
 
         return rotatedForme;
     }
 
-    private void RotateMinus90(bool[,] forme)
-    {
-        
-    }
-    private void RotateForme90()
+
+    private void RotateForm90()
     {
         int size = (int)Mathf.Round(Mathf.Sqrt(flatForme.Count));
         List<bool> rotated = new List<bool>(new bool[size * size]);
@@ -192,10 +189,7 @@ public class FormeBool
         flatForme = rotated;
     }
 
-    private void Rotate180(bool[,] forme)
-    {
-       
-    }
+  
 }
 
 

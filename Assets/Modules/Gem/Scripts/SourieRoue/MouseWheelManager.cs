@@ -114,20 +114,20 @@ public class MouseWheelManager : MonoBehaviour
     }
     void rotate()
     {
-        GemmeComponant gemme = objetMemory.GetComponent<GemmeComponant>();
+        GemComponant gemme = objetMemory.GetComponent<GemComponant>();
 
 
-        gemme.GemmeScript.forme.Rotate(gemme.GemmeScript.forme.GetForme(), 90);
+        gemme.GemScript.forme.Rotate(gemme.GemScript.forme.GetForme(), 90);
         objetMemory.transform.Rotate(Vector3.up, 90f);
     }
     void PlaceGemme()
     {
-        GemmeComponant gemme = objetMemory.GetComponent<GemmeComponant>();
+        GemComponant gemme = objetMemory.GetComponent<GemComponant>();
 
         GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
 
-        EmplacementSocle coordone = objectTouch.GetComponentInParent<EmplacementSocle>();
-        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemmeScript.forme.GetForme(), gemme.GemmeScript, ShapeBoolMain))
+        LocationSocle coordone = objectTouch.GetComponentInParent<LocationSocle>();
+        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemScript.forme.GetForme(), gemme.GemScript, ShapeBoolMain))
         {
             MoveObject(objetMemory.transform, true);
             notSelectObject();
@@ -153,7 +153,7 @@ public class MouseWheelManager : MonoBehaviour
             if (parent != null)
             {
                 Debug.Log(parent.gameObject);
-                GemmeComponant scriptGemme = parent.gameObject.GetComponent<GemmeComponant>();
+                GemComponant scriptGemme = parent.gameObject.GetComponent<GemComponant>();
                 // Vérifier si l'objet détecté est un CubeGemme (CG) ou un CubeVide (CV)
                 if (scriptGemme != null) // C'est un CG
                 {
@@ -175,7 +175,7 @@ public class MouseWheelManager : MonoBehaviour
                     LayerChange(objetMemory, 0); // Changer temporairement le layer
                     if (ShapeBoolMain == null)
                     {
-                        ShapeBoolMain = scriptGemme.GemmeScript.forme.GetForme();
+                        ShapeBoolMain = scriptGemme.GemScript.forme.GetForme();
                     }
                 }
                 else // C'est un CV

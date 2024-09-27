@@ -71,7 +71,7 @@ public class SocleGenerator : MonoBehaviour
             {
                 Vector3 position = new Vector3(i * spaceBetweenCube, 0, j * spaceBetweenCube);
                 GameObject instance = Instantiate(voidPrefab, Conteneur.transform);
-                EmplacementSocle scritpGemme = instance.GetComponent<EmplacementSocle>();
+                LocationSocle scritpGemme = instance.GetComponent<LocationSocle>();
                 if (scritpGemme != null)
                 {
                     scritpGemme.x = i;

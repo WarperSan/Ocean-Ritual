@@ -74,7 +74,7 @@ public class GBNSaveLoad: MonoBehaviour
 //            ListPowerGemmeObjectData = new List<PowerGemmeObjectData>()
 //        };
       
-//        foreach (PowerGemmeObject powerGemmeObject in gbn.PowerGemmeObjectListe)
+//        foreach (PowerGemObject powerGemmeObject in gbn.PowerGemmeObjectListe)
 //        {
             
 //            gbnData.ListPowerGemmeObjectData.Add(ConvertToPowerGemmeObjectData(powerGemmeObject));
@@ -83,11 +83,11 @@ public class GBNSaveLoad: MonoBehaviour
 //        return gbnData;
 //    }
 //    /// <summary>
-//    ///  convert PowerGemmeObject to PowerGemmeObjectData
+//    ///  convert PowerGemObject to PowerGemmeObjectData
 //    /// </summary>
 //    /// <param name="powerGemmeObject"></param>
 //    /// <returns></returns>
-//    private PowerGemmeObjectData ConvertToPowerGemmeObjectData(PowerGemmeObject powerGemmeObject)
+//    private PowerGemmeObjectData ConvertToPowerGemmeObjectData(PowerGemObject powerGemmeObject)
 //    {
 //        var powerGemmeObjectData = new PowerGemmeObjectData
 //        {
@@ -108,14 +108,14 @@ public class GBNSaveLoad: MonoBehaviour
 //    /// </summary>
 //    /// <param name="gemme"></param>
 //    /// <returns></returns>
-//    private GemmeData ConvertToGemmeData(Gemme gemme)
+//    private GemmeData ConvertToGemmeData(Gem gemme)
 //    {
 //        return new GemmeData
 //        {
 //            PositionX = gemme.PositionX,
 //            PositionZ = gemme.PositionZ,
 //            Shape = gemme.Shape,
-//            GemmeColorsName = gemme.GemmeColorsName,
+//            GemColorsName = gemme.GemColorsName,
 //            LVL = gemme.LVL,
 //            typeWeapon = gemme.typeWeapon,
 //            typeBoat = gemme.typeBoat,
@@ -133,7 +133,7 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            width = gridGemme.width,
 //            height = gridGemme.height,
-//            tableau = gridGemme.tableau
+//            Grid = gridGemme.Grid
 //        };
 //    }
 //    #endregion
@@ -153,7 +153,7 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            width = gridData.width,
 //            height = gridData.height,
-//            tableau =gridData.tableau
+//            Grid =gridData.Grid
 //        };
 //    }
 
@@ -181,16 +181,16 @@ public class GBNSaveLoad: MonoBehaviour
 //        return gbn;
 //    }
 //    /// <summary>
-//    /// Convert PowerGemmeObjectData to PowerGemmeObject
+//    /// Convert PowerGemmeObjectData to PowerGemObject
 //    /// </summary>
 //    /// <param name="powerGemmeObjectData"></param>
 //    /// <returns></returns>
-//    private PowerGemmeObject ConvertFromPowerGemmeObjectData(PowerGemmeObjectData powerGemmeObjectData)
+//    private PowerGemObject ConvertFromPowerGemmeObjectData(PowerGemmeObjectData powerGemmeObjectData)
 //    {
-//        var powerGemmeObject = new PowerGemmeObject
+//        var powerGemmeObject = new PowerGemObject
 //        {
 //            GridGemme = ConvertFromGridData(powerGemmeObjectData.GridGemme),
-//            GemmeList = new List<Gemme>()
+//            GemmeList = new List<Gem>()
 //        };
 
 //        foreach (var gemmeData in powerGemmeObjectData.ListGemmeData)
@@ -201,18 +201,18 @@ public class GBNSaveLoad: MonoBehaviour
 //        return powerGemmeObject;
 //    }
 //    /// <summary>
-//    /// Convert GemmeData to Gemme
+//    /// Convert GemmeData to Gem
 //    /// </summary>
 //    /// <param name="gemmeData"></param>
 //    /// <returns></returns>
-//    private Gemme ConvertFromGemmeData(GemmeData gemmeData)
+//    private Gem ConvertFromGemmeData(GemmeData gemmeData)
 //    {
-//        return new Gemme
+//        return new Gem
 //        {
 //            PositionX = gemmeData.PositionX,
 //            PositionZ = gemmeData.PositionZ,
 //            Shape = gemmeData.Shape,
-//            GemmeColorsName = gemmeData.GemmeColorsName,
+//            GemColorsName = gemmeData.GemColorsName,
 //            LVL = gemmeData.LVL,
 //            typeWeapon = gemmeData.typeWeapon,
 //            typeBoat = gemmeData.typeBoat,

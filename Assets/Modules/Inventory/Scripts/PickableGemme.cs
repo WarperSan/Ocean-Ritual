@@ -14,7 +14,7 @@ public class PickableGemme : MonoBehaviour, IInteractable
 
     public void OnClick()
     {
-        TheGemme= GeneratorGemme.GenerateRandomGemme(lvlOfGemme);
+        TheGemme= GeneratorGem.GenerateRandomGemme(lvlOfGemme);
         TheGemme.sprite= sprite;
         Inventory.Instance.AddItem(TheGemme);
     }

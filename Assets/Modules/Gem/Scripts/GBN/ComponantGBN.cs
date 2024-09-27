@@ -11,7 +11,7 @@ public class ComponantGBN : MonoBehaviour
 
     public void GenereSocle()
     {
-        foreach (ComponantPowerGemmeObject socle in GBNScript.SocleListe)
+        foreach (ComponantPowerGemObject socle in GBNScript.SocleListe)
         {
             socle.Generateinitiate();
         }
