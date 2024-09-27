@@ -12,14 +12,14 @@ public class PowerGemObject
      public GameObject GemContainer;
 
 
-    public List<GemComponant> GemComponantList = new();
+    public List<Gemcomponent> GemcomponentList = new();
     [SerializeField] public List<Gem> GemmeList = new();
     #endregion
 
     public void GetGemToScriptList()
     {
         GemmeList.Clear();
-        foreach (GemComponant item in GemComponantList)
+        foreach (Gemcomponent item in GemcomponentList)
         {
             GemmeList.Add(item.GemScript);
         }
@@ -29,11 +29,11 @@ public class PowerGemObject
     #region Gemme Placement
  //   int AddSpace = 1;
     // Places gems in the grid and sets their position
-    public void PlaceGem(List<GemComponant> ListGem)
+    public void PlaceGem(List<Gemcomponent> ListGem)
     {
-        foreach (GemComponant Gemmes in ListGem)
+        foreach (Gemcomponent Gemmes in ListGem)
         {
-            if(GridGemme.PlaceObject(Gemmes.GemScript.PositionX, Gemmes.GemScript.PositionZ, Gemmes.GemScript.forme.GetForme()))
+            if(GridGemme.PlaceObject(Gemmes.GemScript.PositionX, Gemmes.GemScript.PositionZ, Gemmes.GemScript.form.GetForme()))
             {
                
                 GameObject theGemme = GeneratorGem.CreatGemmeObject(Gemmes.GemScript, GemContainer.transform);

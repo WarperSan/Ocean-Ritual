@@ -114,20 +114,20 @@ public class MouseWheelManager : MonoBehaviour
     }
     void rotate()
     {
-        GemComponant gemme = objetMemory.GetComponent<GemComponant>();
+        Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
 
 
-        gemme.GemScript.forme.Rotate(gemme.GemScript.forme.GetForme(), 90);
+        gem.GemScript.form.Rotate(gem.GemScript.form.GetForme(), 90);
         objetMemory.transform.Rotate(Vector3.up, 90f);
     }
     void PlaceGemme()
     {
-        GemComponant gemme = objetMemory.GetComponent<GemComponant>();
+        Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
 
         GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
 
         LocationSocle coordone = objectTouch.GetComponentInParent<LocationSocle>();
-        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gemme.GemScript.forme.GetForme(), gemme.GemScript, ShapeBoolMain))
+        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gem.GemScript.form.GetForme(), gem.GemScript, ShapeBoolMain))
         {
             MoveObject(objetMemory.transform, true);
             notSelectObject();
@@ -153,7 +153,7 @@ public class MouseWheelManager : MonoBehaviour
             if (parent != null)
             {
             
-                GemComponant scriptGemme = parent.gameObject.GetComponent<GemComponant>();
+                Gemcomponent scriptGemme = parent.gameObject.GetComponent<Gemcomponent>();
                 // Vérifier si l'objet détecté est un CubeGemme (CG) ou un CubeVide (CV)
                 if (scriptGemme != null) // C'est un CG
                 {
@@ -175,7 +175,7 @@ public class MouseWheelManager : MonoBehaviour
                     LayerChange(objetMemory, 0); // Changer temporairement le layer
                     if (ShapeBoolMain == null)
                     {
-                        ShapeBoolMain = scriptGemme.GemScript.forme.GetForme();
+                        ShapeBoolMain = scriptGemme.GemScript.form.GetForme();
                     }
                 }
                 else // C'est un CV

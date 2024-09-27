@@ -33,10 +33,10 @@ public class GemmeGrid : MonoBehaviour
     #region Object Placement
 
     //Checks if an object can be placed at the given coordinates
-    public bool CanPlaceObject(int x, int y, bool[,] forme)
+    public bool CanPlaceObject(int x, int y, bool[,] form)
     {
-        int width = forme.GetLength(0);
-        int height = forme.GetLength(1);
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
         // Assuming width and height are always odd
         int centerX = width / 2;
@@ -49,7 +49,7 @@ public class GemmeGrid : MonoBehaviour
                 int gridX = x + (i - centerX);
                 int gridY = y + (j - centerY);
 
-                if (forme[i, j] && (gridX < 0 || gridY < 0 || gridX >= this.width || gridY >= this.height || this.Grid[gridX, gridY]))
+                if (form[i, j] && (gridX < 0 || gridY < 0 || gridX >= this.width || gridY >= this.height || this.Grid[gridX, gridY]))
                 {
                     return false;
                 }
@@ -59,12 +59,12 @@ public class GemmeGrid : MonoBehaviour
     }
 
     // Places an object at the given coordinates if possible
-    public bool PlaceObject(int x, int y, bool[,] forme)
+    public bool PlaceObject(int x, int y, bool[,] form)
     {
-        if (CanPlaceObject(x, y, forme))
+        if (CanPlaceObject(x, y, form))
         {
-            int largeurForme = forme.GetLength(0);
-            int height = forme.GetLength(1);
+            int largeurForme = form.GetLength(0);
+            int height = form.GetLength(1);
 
                 int centerX = largeurForme / 2;
                 int centerY = height / 2;
@@ -73,7 +73,7 @@ public class GemmeGrid : MonoBehaviour
             {
                 for (int j = 0; j < height; j++)
                 {
-                    if (forme[i, j])
+                    if (form[i, j])
                     {
                         int gridX = x + (i - centerX);
                         int gridY = y + (j - centerY);
@@ -85,11 +85,11 @@ public class GemmeGrid : MonoBehaviour
         }
         return false;
     }
-    private void RemoveObject(int x, int y, bool[,] forme)
+    private void RemoveObject(int x, int y, bool[,] form)
     {
         
-        int width = forme.GetLength(0);
-        int height = forme.GetLength(1);
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
         int centerX = width / 2;
         int centerY = height / 2;
@@ -98,7 +98,7 @@ public class GemmeGrid : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (forme[i, j])
+                if (form[i, j])
                 {
                     int gridX = x + (i - centerX);
                     int gridY = y + (j - centerY);
@@ -109,10 +109,10 @@ public class GemmeGrid : MonoBehaviour
     }
 
     // Updates the grid with the new object placement
-    private void UpdateGrid(int x, int y, bool[,] forme)
+    private void UpdateGrid(int x, int y, bool[,] form)
     {
-        int width = forme.GetLength(0);
-        int height = forme.GetLength(1);
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
         int centerX = width / 2;
         int centerY = height / 2;
@@ -121,7 +121,7 @@ public class GemmeGrid : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (forme[i, j])
+                if (form[i, j])
                 {
                     int gridX = x + (i - centerX);
                     int gridY = y + (j - centerY);
@@ -133,16 +133,16 @@ public class GemmeGrid : MonoBehaviour
         }
     }
     // Attempts to place an object on the grid and updates the grid accordingly
-    public bool TryPlaceObjectOnGrid(int x, int y, bool[,] forme, Gem gemmeToPlace, bool[,] formBoolPrincipal)
+    public bool TryPlaceObjectOnGrid(int x, int y, bool[,] form, Gem gemmeToPlace, bool[,] formBoolPrincipal)
     {
-        // Find the previous position of the gemme and remove it
+        // Find the previous position of the gem and remove it
         RemoveObject(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
 
-        if (CanPlaceObject(x, y, forme))
+        if (CanPlaceObject(x, y, form))
         {
-            UpdateGrid(x, y, forme);
+            UpdateGrid(x, y, form);
 
-            // Update the gemme's position
+            // Update the gem's position
             gemmeToPlace.PositionX = x;
             gemmeToPlace.PositionZ = y;
 
@@ -150,7 +150,7 @@ public class GemmeGrid : MonoBehaviour
         }
         else
         {
-            // Re-add the old gemme if placement fails
+            // Re-add the old gem if placement fails
             UpdateGrid(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
             return false;
         }

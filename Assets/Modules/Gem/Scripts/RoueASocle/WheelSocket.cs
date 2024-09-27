@@ -31,14 +31,14 @@ public class WheelSocket : MonoBehaviour
         {
             if (dejaTourner)
             {
-                StartRotationGauche();
+                StartRotationLeft();
                 dejaTourner = false;
             }
         }
 
         if (isRotating)
         {
-            RotateRoue();
+            RotateWheel();
         }
 
         if (isTicActive)
@@ -47,7 +47,7 @@ public class WheelSocket : MonoBehaviour
         }
     }
 
-    void StartRotationGauche()
+    void StartRotationLeft()
     {
         isRotating = true;
        
@@ -56,7 +56,7 @@ public class WheelSocket : MonoBehaviour
         targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
     }
 
-    void StartRotationDroite()
+    void StartRotationRight()
     {
         isRotating = true;
  
@@ -65,7 +65,7 @@ public class WheelSocket : MonoBehaviour
         targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);
     }
 
-    void RotateRoue()
+    void RotateWheel()
     {
         rotationTimeElapsed += Time.deltaTime;
         float t = rotationTimeElapsed / rotationDuration;
@@ -76,11 +76,11 @@ public class WheelSocket : MonoBehaviour
         {
             isRotating = false;
             transform.rotation = targetRotation;
-            StartTicDeRoue();
+            StartTicWheel();
         }
     }
 
-    void StartTicDeRoue()
+    void StartTicWheel()
     {
         isTicActive = true;
         ticTimeElapsed = 0f;

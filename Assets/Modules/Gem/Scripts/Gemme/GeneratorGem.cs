@@ -20,20 +20,20 @@ public   class GeneratorGem: MonoBehaviour
     // Singleton instance
 
     static bool dataLoad = false;
-    static string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
-    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
-   // static string GemmeName = "Red"; // Default gemme name
+    static string GemmePath = "Gemme/AllGemme"; // Path to the gem prefabs
+    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gem prefab
+   // static string GemmeName = "Red"; // Default gem name
     //static float Spacebetween = 1f; // Space between gemmes
-    static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gemme prefabs
-    static private GameObject SampleGemme; // Sample gemme prefab
+    static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gem prefabs
+    static private GameObject SampleGemme; // Sample gem prefab
     //static int lvlTest = 3; // Test level
-    static int height = 1; // Height of the gemme
+    static int height = 1; // Height of the gem
 
     // Start is called before the first frame update
     #endregion
 
     #region Load Data
-    // Function to load gemme data from resources
+    // Function to load gem data from resources
     public static void LoadGemmeData()
     {
         DictionaryGemme = DictionaryGenerator.DictionaryGameObjectGenerator(GemmePath);
@@ -49,7 +49,7 @@ public   class GeneratorGem: MonoBehaviour
 
     #region Gemme Creation
 
-    // Function to create a random gemme
+    // Function to create a random gem
     //public static void CreatGemmeRandomFunction(int lvlTests, string GemmeNames, Transform Conteneur)
     //{
     //    if (!dataLoad)
@@ -62,7 +62,7 @@ public   class GeneratorGem: MonoBehaviour
 
    
 
-    // Function to generate a random gemme
+    // Function to generate a random gem
     public static GemmeData GenerateRandomGemme(int LVL)
     {
 
@@ -147,7 +147,7 @@ public   class GeneratorGem: MonoBehaviour
         // Retourner le name de la couleur sélectionnée aléatoirement
         return colors.GetValue(randomIndex).ToString();
     }
-    // Function to generate the shape of the gemme based on the level
+    // Function to generate the shape of the gem based on the level
     private static FormBool GenerateForme(int LVL)
     {
         int size = Mathf.CeilToInt(Mathf.Sqrt(LVL));
@@ -161,7 +161,7 @@ public   class GeneratorGem: MonoBehaviour
             size += 2;
         }
 
-        bool[,] forme = new bool[size, size];
+        bool[,] form = new bool[size, size];
         int trueCount = 0;
         List<(int, int)> positions = new List<(int, int)>();
 
@@ -185,14 +185,14 @@ public   class GeneratorGem: MonoBehaviour
         for (int i = 0; i < LVL; i++)
         {
             var pos = positions[i];
-            forme[pos.Item1, pos.Item2] = true;
+            form[pos.Item1, pos.Item2] = true;
             trueCount++;
         }
 
-        return new FormBool(forme, size, size);
+        return new FormBool(form, size, size);
     }
 
-    // Function to create a gemme object in the scene
+    // Function to create a gem object in the scene
     public static GameObject? CreatGemmeObject(Gem GemmeScript, Transform Conteneur)
     {
         if (!dataLoad)
@@ -205,7 +205,7 @@ public   class GeneratorGem: MonoBehaviour
         GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
     
         if (instantiatedGemme != null)
-            instantiatedGemme.GetComponent<GemComponant>().GemScript = GemmeScript;
+            instantiatedGemme.GetComponent<Gemcomponent>().GemScript = GemmeScript;
         if (CreateMaterialGemme(instantiatedGemme))
             return instantiatedGemme;
         else
@@ -214,7 +214,7 @@ public   class GeneratorGem: MonoBehaviour
 
 
 
-    // Function to create the material for the gemme object
+    // Function to create the material for the gem object
     public static bool CreateMaterialGemme(GameObject instantiatedGemme)
     {
         if (!dataLoad)
@@ -223,8 +223,8 @@ public   class GeneratorGem: MonoBehaviour
             dataLoad = true;
         }
 
-        GemComponant scriptGemmeComponant = instantiatedGemme.GetComponent<GemComponant>();
-        Gem gemmeScript = scriptGemmeComponant.GemScript;
+        Gemcomponent scriptGemmecomponent = instantiatedGemme.GetComponent<Gemcomponent>();
+        Gem gemmeScript = scriptGemmecomponent.GemScript;
 
         if (gemmeScript == null || !DictionaryGemme.ContainsKey(gemmeScript.GemColorsName))
         {
@@ -233,14 +233,14 @@ public   class GeneratorGem: MonoBehaviour
         }
 
         GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemColorsName];
-        FormBool forme = gemmeScript.forme;
-        bool[,] boolArray = forme.GetForme();
+        FormBool form = gemmeScript.form;
+        bool[,] boolArray = form.GetForme();
 
         float space = SocleGenerator.Instance.spaceBetweenCube;
 
         // 1. Calcul de la taille totale du Grid
-        float totalWidth = forme.width * space;
-        float totalHeight = forme.height * space;
+        float totalWidth = form.width * space;
+        float totalHeight = form.height * space;
 
         // 2. Calcul de l'offset pour centrer instantiatedGemme
         Vector3 positionOffset = new Vector3(gemmeScript.PositionX * space  , 0, gemmeScript.PositionZ * space );
@@ -249,12 +249,12 @@ public   class GeneratorGem: MonoBehaviour
         instantiatedGemme.transform.localPosition = positionOffset;
       
         // Calcul du centre de la Shape
-        int centreX = Mathf.FloorToInt(forme.width / 2.0f);
-        int centreY = Mathf.FloorToInt(forme.height / 2.0f);
+        int centreX = Mathf.FloorToInt(form.width / 2.0f);
+        int centreY = Mathf.FloorToInt(form.height / 2.0f);
 
-        for (int i = 0; i < forme.height; i++)
+        for (int i = 0; i < form.height; i++)
         {
-            for (int j = 0; j < forme.width; j++)
+            for (int j = 0; j < form.width; j++)
             {
                 if (boolArray[i, j])
                 {

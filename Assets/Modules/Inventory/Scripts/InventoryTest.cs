@@ -17,7 +17,7 @@ public class InventoryTest : MonoBehaviour
     [SerializeField] int index2;
     [SerializeField] int indexDrop;
     [SerializeField] FishData Fish;
-    [SerializeField] GemmeData gemme;
+    [SerializeField] GemmeData gem;
     [SerializeField] TypeOfSort TypeSort;
 
     // Start is called before the first frame update
@@ -52,11 +52,11 @@ public class InventoryTest : MonoBehaviour
             // Crée une nouvelle instance de GemmeData
             GemmeData NewGemme = new GemmeData()
             {
-                GemmeColorsName = gemme.GemmeColorsName,
-                LVL = gemme.LVL,
+                GemmeColorsName = gem.GemmeColorsName,
+                LVL = gem.LVL,
                 quantity = 1,
                 quantityMax = 1,
-                sprite = gemme.sprite,
+                sprite = gem.sprite,
             };
 
             Inventory.Instance.AddItem(NewGemme); // Utilise la nouvelle instance

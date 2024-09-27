@@ -5,7 +5,7 @@ using static EnumGeneral;
 
 public interface Equipment 
 {
-   ComponantGBN ComposnantGBN { get; }
+   componentGBN componentGBN { get; }
    
 
     public void UpdateStat();

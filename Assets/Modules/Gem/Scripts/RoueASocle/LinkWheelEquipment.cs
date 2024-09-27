@@ -5,7 +5,7 @@ using UnityEngine;
 public class LinkWheelEquipment : MonoBehaviour
 {
 
-    [SerializeField] ComponantGBN equipment;
+    [SerializeField] componentGBN equipment;
     [SerializeField] List<GameObject> PlacementPoint;
     [SerializeField] float SizeBase = 1;
     [SerializeField] float rotation = 0;
@@ -29,11 +29,11 @@ public class LinkWheelEquipment : MonoBehaviour
 
     public void PlaceStand()
     {
-        List<ComponantPowerGemObject> listStand = equipment.GBNScript.SocleListe;
+        List<componentPowerGemObject> listStand = equipment.GBNScript.SocleListe;
         List<GameObject> PlacementpointBase = new List<GameObject>();
         equipment.GenerationSocle();
        
-        foreach (ComponantPowerGemObject socle in listStand)
+        foreach (componentPowerGemObject socle in listStand)
         {
             PlacementpointBase.Add(socle.gameObject);
             PlacementpointBase[^1].transform.position = PlacementPoint[ PlacementpointBase.Count-1].transform.position;

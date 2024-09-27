@@ -9,7 +9,7 @@ using UnityEngine;
 public class GBNSaveLoad: MonoBehaviour
 {
 //    [SerializeField] private ListeGBNData dataGBN = new();
-//    [SerializeField] private List<ComponantGBN> ListGBN = new();
+//    [SerializeField] private List<GBNComponent> ListGBN = new();
 
 //    #region Save and Load
 //    /// <summary>
@@ -21,13 +21,13 @@ public class GBNSaveLoad: MonoBehaviour
 //        dataGBN = data.gbnData;
 
 //        // Convert dataGBN to ListGBN
-//        ListGBN = new List<ComponantGBN>();
+//        ListGBN = new List<GBNComponent>();
 //        foreach (GBNData gbnData in dataGBN.ListdataGBN)
 //        {
-//            GameObject obj = new GameObject("ComponantGBN");
-//            ComponantGBN componantGBN = obj.AddComponent<ComponantGBN>();
-//            componantGBN.GBNScript = ConvertFromGBNData(gbnData);
-//            ListGBN.Add(componantGBN);
+//            GameObject obj = new GameObject("GBNComponent");
+//            GBNComponent GBNComponent = obj.AddComponent<GBNComponent>();
+//            GBNComponent.GBNScript = ConvertFromGBNData(gbnData);
+//            ListGBN.Add(GBNComponent);
 //        }
 //    }
 
@@ -41,9 +41,9 @@ public class GBNSaveLoad: MonoBehaviour
 //        //// Convert ListGBN to dataGBN
 //        //dataGBN.ListdataGBN = new List<GBNData>();
 //        //Debug.Log(" il y a " + ListGBN.Count + " object dans la Lastion ListGbN");
-//        //foreach (ComponantGBN componantGBN in ListGBN)
+//        //foreach (GBNComponent GBNComponent in ListGBN)
 //        //{
-//        //    dataGBN.ListdataGBN.Add(ConvertToGBNData(componantGBN.GBNScript));
+//        //    dataGBN.ListdataGBN.Add(ConvertToGBNData(GBNComponent.GBNScript));
 //        //}
 //        //data.test = 3;
 //        //data.gbnData = dataGBN;
@@ -94,38 +94,38 @@ public class GBNSaveLoad: MonoBehaviour
 //            GridGemme = ConvertToGridData(powerGemmeObject.GridGemme),
 //            ListGemmeData = new List<GemmeData>()
 //        };
-//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gemme");
+//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gem");
 
-//        foreach (var gemme in powerGemmeObject.GemmeList)
+//        foreach (var gem in powerGemmeObject.GemmeList)
 //        {
-//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gemme));
+//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gem));
 //        }
 
 //        return powerGemmeObjectData;
 //    }
 //    /// <summary>
-//    ///  convert gemme to gemme data
+//    ///  convert gem to gem data
 //    /// </summary>
-//    /// <param name="gemme"></param>
+//    /// <param name="gem"></param>
 //    /// <returns></returns>
-//    private GemmeData ConvertToGemmeData(Gem gemme)
+//    private GemmeData ConvertToGemmeData(Gem gem)
 //    {
 //        return new GemmeData
 //        {
-//            PositionX = gemme.PositionX,
-//            PositionZ = gemme.PositionZ,
-//            Shape = gemme.Shape,
-//            GemColorsName = gemme.GemColorsName,
-//            LVL = gemme.LVL,
-//            typeWeapon = gemme.typeWeapon,
-//            typeBoat = gemme.typeBoat,
-//            typeNet = gemme.typeNet
+//            PositionX = gem.PositionX,
+//            PositionZ = gem.PositionZ,
+//            Shape = gem.Shape,
+//            GemColorsName = gem.GemColorsName,
+//            LVL = gem.LVL,
+//            typeWeapon = gem.typeWeapon,
+//            typeBoat = gem.typeBoat,
+//            typeNet = gem.typeNet
 //        };
 //    }
 //    /// <summary>
 //    ///  convert GemmeGrid to Grid data
 //    /// </summary>
-//    /// <param name="gemme"></param>
+//    /// <param name="gem"></param>
 //    /// <returns></returns>
 //    private GridtData ConvertToGridData(GemmeGrid gridGemme)
 //    {

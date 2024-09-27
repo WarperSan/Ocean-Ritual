@@ -15,7 +15,7 @@ using static EnumGeneral;
         [SerializeField] public List<TypeQuantite<TypeNet>> typeNet = new();
 
 
-    [SerializeField]  public List<ComponantPowerGemObject> SocleListe = new();
+    [SerializeField]  public List<componentPowerGemObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
     [SerializeField] public List<PowerGemObject> PowerGemObjectListe = new();
@@ -112,7 +112,7 @@ using static EnumGeneral;
         public void GetSocleToScriptList()
         {
             PowerGemObjectListe.Clear();
-            foreach (ComponantPowerGemObject item in SocleListe)
+            foreach (componentPowerGemObject item in SocleListe)
             {
             
                 PowerGemObjectListe.Add(item.PowerGemObjectScript);
@@ -129,11 +129,11 @@ using static EnumGeneral;
     /// </summary>
     public void StatCalculator()
         {
-            foreach (ComponantPowerGemObject socle in SocleListe)
+            foreach (componentPowerGemObject socle in SocleListe)
             {
-                foreach (GemComponant gemme in socle.PowerGemObjectScript.GemComponantList)
+                foreach (Gemcomponent gem in socle.PowerGemObjectScript.GemcomponentList)
                 {
-                    Gem theGemmeScript = gemme.GemScript;
+                    Gem theGemmeScript = gem.GemScript;
 
                     switch (typeSocle)
                     {
@@ -151,7 +151,7 @@ using static EnumGeneral;
             }
         }
     /// <summary>
-    /// add the stat form the gemme to the good list of stat
+    /// add the stat form the gem to the good list of stat
     /// </summary>
     /// <typeparam name="TEnum"></typeparam>
     /// <param name="theGemmeScript"></param>

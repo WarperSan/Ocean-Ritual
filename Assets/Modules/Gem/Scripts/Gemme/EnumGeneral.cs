@@ -115,7 +115,7 @@ public class FormBool
     public int height;
     public List<bool> flatForme;
 
-    public FormBool(bool[,] forme, int width, int height)
+    public FormBool(bool[,] form, int width, int height)
     {
         this.width = width;
         this.height = height;
@@ -124,27 +124,27 @@ public class FormBool
         {
             for (int i = 0; i < width; i++)
             {
-                flatForme.Add(forme[i, j]);
+                flatForme.Add(form[i, j]);
             }
         }
     }
 
     public bool[,] GetForme()
     {
-        bool[,] forme = new bool[width, height];
+        bool[,] form = new bool[width, height];
         for (int j = 0; j < height; j++)
         {
             for (int i = 0; i < width; i++)
             {
                 int flatIndex = (height - 1 - j) * width + i; // Reverse rows, but keep columns order
-                forme[i, j] = flatForme[flatIndex];
+                form[i, j] = flatForme[flatIndex];
             }
         }
-        return forme;
+        return form;
     }
-    public bool[,] Rotate(bool[,] forme, int angle)
+    public bool[,] Rotate(bool[,] form, int angle)
     {
-        bool[,] rotatedForme = forme;
+        bool[,] rotatedForme = form;
 
         // Normalize the angle to one of the expected values (90, 180, -90)
         angle = (angle % 360 + 360) % 360;

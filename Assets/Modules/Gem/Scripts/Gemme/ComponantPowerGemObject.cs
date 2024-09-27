@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComponantPowerGemObject : MonoBehaviour
+public class componentPowerGemObject : MonoBehaviour
 {
     [SerializeField] public PowerGemObject PowerGemObjectScript = new();
     
@@ -12,7 +12,7 @@ public class ComponantPowerGemObject : MonoBehaviour
         PowerGemObjectScript.GridGemme.InitializeTab();
       
         SocleGenerator.Instance.GenerateSocle(gameObject, PowerGemObjectScript.SocleContainer);
-        PowerGemObjectScript.PlaceGem(PowerGemObjectScript.GemComponantList);
+        PowerGemObjectScript.PlaceGem(PowerGemObjectScript.GemcomponentList);
     }
   
 

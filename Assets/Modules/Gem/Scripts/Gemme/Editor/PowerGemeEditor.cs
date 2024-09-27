@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ComponantPowerGemObject))]
+[CustomEditor(typeof(componentPowerGemObject))]
 [CanEditMultipleObjects]
 public class PowerGemmeEditor : UnityEditor.Editor
 {
@@ -14,7 +14,7 @@ public class PowerGemmeEditor : UnityEditor.Editor
     {
         powerGemObjectProp = serializedObject.FindProperty("PowerGemObjectScript");
         gridScript = powerGemObjectProp.FindPropertyRelative("GridGemme");
-        typeGemProp = powerGemObjectProp.FindPropertyRelative("GemComponantList");
+        typeGemProp = powerGemObjectProp.FindPropertyRelative("GemcomponentList");
         SocleContainer = powerGemObjectProp.FindPropertyRelative("SocleContainer");
         GemContainer = powerGemObjectProp.FindPropertyRelative("GemContainer");
     }

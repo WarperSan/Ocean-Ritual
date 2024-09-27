@@ -16,7 +16,7 @@ public class Gem
 
     // Shape of the gem (2D boolean array)
     [SerializeField]
-    public FormBool forme = new(new bool[,]
+    public FormBool form = new(new bool[,]
    {
         { false, false, true },
         { true, true, true },

@@ -7,7 +7,7 @@ using static EnumGeneral;
 
 public class LanceFlameControleur : Arme ,Equipment
 {
-    [SerializeField] ComponantGBN ComponantGBN;
+    [SerializeField] componentGBN GBNComponent;
     [SerializeField] ParticuleControleur ParticuleControleurs;
     [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
     [SerializeField] TypeQuantite<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
@@ -42,9 +42,9 @@ public class LanceFlameControleur : Arme ,Equipment
     [SerializeField] private bool isOverheated = false;
 
     [SerializeField] int AmmoInClip;
-    public ComponantGBN ComposnantGBN
+    public componentGBN componentGBN
     {
-        get { return ComponantGBN; }
+        get { return GBNComponent; }
     }
 
     private bool faireStat = true;
@@ -61,7 +61,7 @@ public class LanceFlameControleur : Arme ,Equipment
         if (faireStat)
         {
             faireStat = false;
-            ComponantGBN.GBNScript.GetStat();
+            componentGBN.GBNScript.GetStat();
             UpdateStat();
         }
         // Remplace les statistiques de base par les statistiques boost�es
@@ -330,7 +330,7 @@ public class LanceFlameControleur : Arme ,Equipment
         };
 
         // Mise � jour des statistiques avec les boosts
-        ComponantGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
+        componentGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
     }
     #endregion
 
