@@ -87,7 +87,7 @@ public class GemmeGrid : MonoBehaviour
     }
     private void RemoveObject(int x, int y, bool[,] forme)
     {
-        Debug.Log(forme);
+        
         int width = forme.GetLength(0);
         int height = forme.GetLength(1);
 

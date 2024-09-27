@@ -152,7 +152,7 @@ public class MouseWheelManager : MonoBehaviour
             // Vérifier si le parent existe
             if (parent != null)
             {
-                Debug.Log(parent.gameObject);
+            
                 GemComponant scriptGemme = parent.gameObject.GetComponent<GemComponant>();
                 // Vérifier si l'objet détecté est un CubeGemme (CG) ou un CubeVide (CV)
                 if (scriptGemme != null) // C'est un CG
@@ -165,7 +165,7 @@ public class MouseWheelManager : MonoBehaviour
                     }
 
                     // Si aucun CG n'est en mémoire, on mémorise le CG
-                    Debug.Log("CubeGemme détecté.");
+                  
                     MoveObject(parent);
                     objetMemory = parent.gameObject; // On garde le CG en mémoire
 
@@ -221,12 +221,20 @@ public class MouseWheelManager : MonoBehaviour
 
     GameObject DetectGemmeRC()
     {
+        // Vérifie si le jeu est en cours d'exécution et si la fenêtre du jeu est focalisée
+        if (!Application.isPlaying || !Application.isFocused)
+        {
+            // Ne fait rien si le jeu n'est pas en mode "Play" ou si la fenêtre n'a pas le focus
+            return null;
+        }
+
+        // Si le jeu est en cours d'exécution et la fenêtre est focalisée, exécute le raycast
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 9, layerSocle))
         {
-            //  Debug.Log("Objet détecté : " + hit.collider.gameObject.name);
+            // Debug.Log("Objet détecté : " + hit.collider.gameObject.name);
             return hit.collider.gameObject;
         }
 
@@ -255,7 +263,7 @@ public class MouseWheelManager : MonoBehaviour
             if (parent != null)
             {
 
-                Debug.Log(parent.parent.gameObject.name);
+               
                 return parent.parent; // Remonte au 3em parent
 
             }

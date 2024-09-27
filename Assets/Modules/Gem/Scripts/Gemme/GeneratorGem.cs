@@ -20,8 +20,8 @@ public   class GeneratorGem: MonoBehaviour
     // Singleton instance
 
     static bool dataLoad = false;
-    static string GemmePath = "Gem/AllGemme"; // Path to the gemme prefabs
-    static string SampleGemmePath = "Gem/SampleGemme"; // Path to the sample gemme prefab
+    static string GemmePath = "Gemme/AllGemme"; // Path to the gemme prefabs
+    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gemme prefab
     static string GemmeName = "Red"; // Default gemme name
     static float Spacebetween = 1f; // Space between gemmes
     static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gemme prefabs
@@ -200,8 +200,8 @@ public   class GeneratorGem: MonoBehaviour
             LoadGemmeData();
             dataLoad = true;
         }
-       
 
+        
         GameObject instantiatedGemme = Instantiate(SampleGemme, Conteneur);
     
         if (instantiatedGemme != null)
