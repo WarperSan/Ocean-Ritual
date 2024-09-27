@@ -74,11 +74,11 @@ public   class GeneratorGem: MonoBehaviour
             gemmeScript.quantityMax = 1;
             gemmeScript.quantity = 1;
             gemmeScript.Shape = GenerateForme(LVL);
-            gemmeScript.GemmeColorsName = GeneratsRandomlColors();
+            gemmeScript.GemmeColorsName = GeneratesRandomlColors();
             gemmeScript.LVL = LVL;
-            gemmeScript.typeWeapon = GeneratsRandomlvlStat<TypeWeapon>(LVL);
-            gemmeScript.typeBoat = GeneratsRandomlvlStat<TypeBoat>(LVL);
-            gemmeScript.typeNet = GeneratsRandomlvlStat<TypeNet>(LVL);
+            gemmeScript.typeWeapon = GeneratesRandomlvlStat<TypeWeapon>(LVL);
+            gemmeScript.typeBoat = GeneratesRandomlvlStat<TypeBoat>(LVL);
+            gemmeScript.typeNet = GeneratesRandomlvlStat<TypeNet>(LVL);
             return gemmeScript;
         }
         else
@@ -116,7 +116,7 @@ public   class GeneratorGem: MonoBehaviour
 
 
     // Méthode générique qui génère une liste de TypeQuantite<T> où chaque quantité est égale au niveau LVL
-    public static List<TypeQuantite<T>> GeneratsRandomlvlStat<T>(int LVL) where T : Enum
+    public static List<TypeQuantite<T>> GeneratesRandomlvlStat<T>(int LVL) where T : Enum
     {
         // Obtenir tous les types disponibles dans l'énumération T
         T[] enumValues = (T[])Enum.GetValues(typeof(T));
@@ -133,7 +133,7 @@ public   class GeneratorGem: MonoBehaviour
 
         return resultList;
     }
-    public static string GeneratsRandomlColors()
+    public static string GeneratesRandomlColors()
     {
         // Récupérer tous les noms de l'énumération ColorsName
         Array colors = Enum.GetValues(typeof(EnumGeneral.ColorsName));
