@@ -23,7 +23,7 @@ public class InventoryTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InventoryPlayer.InitiateList();
+        Inventory.Instance.InitiateList();
     }
 
     // Update is called once per frame

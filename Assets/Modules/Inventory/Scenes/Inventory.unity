@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028386, g: 0.22571427, b: 0.3069231, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1046,8 +1046,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
         type: 3}
+      propertyPath: Quantity
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
       propertyPath: Quantiter
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
+        type: 3}
+      propertyPath: MaxQuantity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8627631826905871371, guid: 948ef7d1577fd27428f119cad6a68925,
         type: 3}
@@ -1083,35 +1093,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0394b45887f90f349b8704eb70d2de18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventaireJoueur: {fileID: 2146102321}
-  ajouterPoisson: 1
-  ajouterGemme: 1
+  InventoryPlayer: {fileID: 0}
+  AddFish: 0
+  AddGemme: 0
   clearInventaire: 0
-  faireLeTrie: 0
+  Sort: 0
   SwapPlace: 0
   drop: 0
   index1: 0
   index2: 0
   indexDrop: 0
-  poisson:
-    quantiterMax: 5
-    quantiter: 3
-    sprite: {fileID: 21300000, guid: 5d41a23a38054125aba35cc771c2cdf9, type: 3}
-    nom: PoissonA
+  Fish:
+    quantityMax: 1
+    quantity: 1
+    sprite: {fileID: 0}
+    name: 
   gemme:
-    quantiterMax: 1
-    quantiter: 1
+    quantityMax: 1
+    quantity: 1
     sprite: {fileID: 21300000, guid: 58f03ac6adad3cc92973289c1260047b, type: 3}
-    forme:
-      width: 3
-      height: 3
-      flatForme: 000000000101000000
+    Shape:
+      width: 0
+      height: 0
+      flatForme: 
     GemmeColorsName: Red
     LVL: 2
-    typeArme: []
+    typeWeapon: []
     typeBoat: []
-    typeFilet: []
-  typeDeTri: 0
+    typeNet: []
+  TypeSort: 0
 --- !u!1 &2044951128
 GameObject:
   m_ObjectHideFlags: 0
