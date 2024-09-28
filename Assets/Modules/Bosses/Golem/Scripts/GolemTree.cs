@@ -2,17 +2,26 @@ using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Generic;
 using BehaviourModule.Nodes.Controls;
 using UnityEngine;
+using BehaviourModule.Interfaces;
 
 namespace BossesModule.Golem
 {
-    public class GolemTree : BehaviourModule.Trees.Tree
+    public class GolemTree : MonoBehaviour, IVisualizable
     {
         public const string CURRENT_TARGET = "currentTarget";
         public const string WALK_SPEED = "walkSpeed";
 
         public Transform target;
 
-        protected override Node SetUpTree()
+        #region IVisualizable
+
+        private Node root;
+
+        /// <inheritdoc/>
+        public Node GetRoot() => this.root;
+
+        /// <inheritdoc/>
+        public void RebuildRoot()
         {
             Selector _root = new();
             _root += this.AttackSequence();
@@ -24,8 +33,10 @@ namespace BossesModule.Golem
             _root.SetData(CURRENT_TARGET, this.target);
             _root.SetData(WALK_SPEED, 0.01f);
 
-            return _root.Alias("Root");
+            this.root = _root.Alias("Root");
         }
+
+        #endregion
 
         #region Animation
 

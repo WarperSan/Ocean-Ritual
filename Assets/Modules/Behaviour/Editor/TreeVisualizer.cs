@@ -331,7 +331,7 @@ namespace BehaviourModule
             GUI.Box(scrollViewRect, GUIContent.none, this.visualizerStyle);
 
             Vector3 viewSize = scrollViewRect.size;
-            
+
             if (hasTree)
             {
                 Vector3 max = this.GetNodePosition(this.maxPos.x + 1, this.maxPos.y);
@@ -353,7 +353,8 @@ namespace BehaviourModule
             }
             else
             {
-                GUI.Label(new Rect(0, 0, viewSize.x, viewSize.y), "No Tree Selected", new GUIStyle {
+                GUI.Label(new Rect(0, 0, viewSize.x, viewSize.y), "No Tree Selected", new GUIStyle
+                {
                     alignment = TextAnchor.MiddleCenter,
                     normal = {
                         textColor = new Color(1f, 0.4f, 0.7f)
@@ -415,7 +416,7 @@ namespace BehaviourModule
                 if (GUILayout.Button(new GUIContent("Scan", "Fetches all the trees in the scene"), GUILayout.Width(50)))
                 {
                     GameObject cur = null;
-                    
+
                     if (this.treeSelected >= 0 && this.treeSelected < this.trees.Count)
                         cur = this.trees[this.treeSelected];
 

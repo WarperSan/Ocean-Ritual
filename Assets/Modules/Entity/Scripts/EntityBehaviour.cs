@@ -12,23 +12,19 @@ namespace EntityModule.Entities
         /// <inheritdoc/>
         protected override void OnStart()
         {
-            IVisualizable tree = this.GetComponent<IVisualizable>();
-            tree.RebuildRoot();
-            this.root = tree.GetRoot();
+            this.tree = this.GetComponent<IVisualizable>();
+            this.tree.RebuildRoot();
+            this.root = this.tree.GetRoot();
         }
 
         #endregion
 
         #region Behaviour Tree
 
+        protected IVisualizable tree;
         private Node root;
 
-        private void UpdateTree() => root.Evaluate();
-
-        private void Update()
-        {
-            UpdateTree();
-        }
+        protected NodeState UpdateTree() => this.root.Evaluate();
 
         #endregion
     }

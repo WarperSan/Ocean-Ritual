@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5838229556993288334}
-  - component: {fileID: 3773428167905213670}
-  - component: {fileID: 1850349415732496496}
   - component: {fileID: 8086793061012176659}
+  - component: {fileID: 4568037727517857886}
+  - component: {fileID: 3773428167905213670}
   m_Layer: 27
   m_Name: Golem
   m_TagString: Untagged
@@ -36,38 +36,6 @@ Transform:
   - {fileID: 2786984579280829034}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3773428167905213670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 785430545167892359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25cddebabd85526889b3d9dbd1007c5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  animator: {fileID: 4813287952486263047}
-  throwMinRange: 1
-  throwMaxRange: 100
-  walkMinRange: 10
-  walkMaxRange: 30
---- !u!114 &1850349415732496496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 785430545167892359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58553562cccab4b09a589255505bc569, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 3680330288253458844}
-  maxHealth: 100
 --- !u!65 &8086793061012176659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,6 +57,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 13, y: 13, z: 6}
   m_Center: {x: 0, y: 6, z: 1}
+--- !u!114 &4568037727517857886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785430545167892359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8dc7f38c836c994ca569a764e13bc26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeath: 100
+  healthBar: {fileID: 3680330288253458844}
+--- !u!114 &3773428167905213670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785430545167892359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cddebabd85526889b3d9dbd1007c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  animator: {fileID: 4813287952486263047}
+  throwMinRange: 1
+  throwMaxRange: 100
+  walkMinRange: 10
+  walkMaxRange: 30
 --- !u!1 &4014056988218088202
 GameObject:
   m_ObjectHideFlags: 0
