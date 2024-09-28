@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static DhafinFawwaz.AnimationUILib.Sequence;
 using static EnumGeneral;
 
 public class EquipmentTest : MonoBehaviour,Equipment
@@ -79,9 +80,16 @@ public class EquipmentTest : MonoBehaviour,Equipment
 
         return new UpgradeNameData(roundedValue, statToUpgrade.Type.ToString());
     }
-
+   
     public void UpgradeEquipment()
     {
+        ReloadSpeed.Quantite = AfterUpgradPreviewStat(ReloadSpeed).quantity;
+        Attack.Quantite = AfterUpgradPreviewStat(Attack).quantity;
+        BulletSpeed.Quantite = AfterUpgradPreviewStat(BulletSpeed).quantity;
+        BulletSize.Quantite = AfterUpgradPreviewStat(BulletSize).quantity;
+        FireRate.Quantite = AfterUpgradPreviewStat(FireRate).quantity;
+        AmmoCapacity.Quantite = AfterUpgradPreviewStat(AmmoCapacity).quantity;
+        Range.Quantite = AfterUpgradPreviewStat(Range).quantity;
         LvlOfEquipment++;
     }
 
