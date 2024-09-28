@@ -113,7 +113,20 @@ namespace EntityModule
 
         #endregion
 
+        #region MonoBehaviour
+
         /// <inheritdoc/>
-        private void Start() => this.ResetHealth();
+        private void Start()
+        {
+            this.ResetHealth();
+            this.OnStart();
+        }
+
+        /// <summary>
+        /// Called when this entity starts
+        /// </summary>
+        protected virtual void OnStart() { }
+
+        #endregion
     }
 }
