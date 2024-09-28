@@ -1,4 +1,4 @@
-namespace BehaviourModule.Nodes.Operators
+namespace BehaviourModule.Nodes.Controls
 {
     /// <summary>
     /// Node that evaluates all children until one fails.

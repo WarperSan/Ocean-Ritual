@@ -6,7 +6,7 @@ namespace BehaviourModule.Nodes.Generic
     /// <summary>
     /// Node that succeeds when the target is between two given distances
     /// </summary>
-    public class DistanceInBetween : DistanceNode
+    public sealed class DistanceInBetween : DistanceNode
     {
         private readonly float minDistance;
         private readonly float maxDistance;

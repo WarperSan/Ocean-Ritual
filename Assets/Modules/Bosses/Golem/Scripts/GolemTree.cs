@@ -1,6 +1,6 @@
 using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Generic;
-using BehaviourModule.Nodes.Operators;
+using BehaviourModule.Nodes.Controls;
 using UnityEngine;
 
 namespace BossesModule.Golem

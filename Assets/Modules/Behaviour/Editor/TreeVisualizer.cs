@@ -1,3 +1,4 @@
+using BehaviourModule.Interfaces;
 using BehaviourModule.Nodes;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace BehaviourModule
 
         private bool useTypeName;
         private bool recalculateOnHide = true;
+        private bool allowAutomaticHide = true;
 
         private bool useSelection = true;
         private List<GameObject> trees = new();
@@ -37,7 +39,7 @@ namespace BehaviourModule
 
         #region Current Tree
 
-        private Tree currentTree;
+        private IVisualizable currentTree;
         private CalculationNode root;
 
         private void CheckForNew(GameObject target)
@@ -50,22 +52,22 @@ namespace BehaviourModule
             }
 
             // If no tree, skip
-            if (!target.TryGetComponent(out Tree tree))
+            if (!target.TryGetComponent(out IVisualizable tree))
                 return;
 
             // If same tree, skip
-            if (this.currentTree?.root is not null && tree == this.currentTree)
+            if (this.currentTree?.GetRoot() is not null && tree == this.currentTree)
                 return;
 
             this.currentTree = tree;
 
             // Create if not created
-            if (this.currentTree.root is null)
-                this.currentTree.RefreshTree();
+            if (this.currentTree.GetRoot() is null)
+                this.currentTree.RebuildRoot();
 
             // Set up tree
-            Node rootNode = this.currentTree.root;
-            this.root = CalculationNode.Create(rootNode);
+            Node rootNode = this.currentTree.GetRoot();
+            this.root = CalculationNode.Create(rootNode, this.allowAutomaticHide);
             this.BuildFromRoot();
         }
 
@@ -158,7 +160,7 @@ namespace BehaviourModule
         // ReSharper disable once MemberCanBeMadeStatic.Local
         private Vector3 GetNodePosition(float x, float y) => new Vector3()
         {
-            x = (x - this.root.x) * (NODE_WIDTH + NODE_MARGIN),
+            x = (x * (NODE_WIDTH + NODE_MARGIN)) + NODE_MARGIN,
             y = (y * (NODE_HEIGHT + NODE_MARGIN)) + NODE_MARGIN
         } + this.posOffset;
 
@@ -183,7 +185,6 @@ namespace BehaviourModule
         private GUIStyle visualizerStyle;
         private Vector2 visualizerScrollPos;
 
-        // ReSharper disable once InvertIf
         /// <summary>
         /// Initializes the styles for the editor
         /// </summary>
@@ -192,7 +193,7 @@ namespace BehaviourModule
             this.nodeStyle = new GUIStyle(GUI.skin.box)
             {
                 normal = { textColor = Color.white },
-                alignment = TextAnchor.MiddleCenter
+                alignment = TextAnchor.MiddleCenter,
             };
 
             this.visualizerStyle = new GUIStyle(GUI.skin.box)
@@ -264,17 +265,17 @@ namespace BehaviourModule
             // Draw self
             this.DrawSelf(parent);
 
-            // Display recursively
-            if (!parent.hideChildren)
-            {
-                foreach (CalculationNode child in parent.children)
-                {
-                    // Draw arrow from parent to child
-                    this.DrawArrowBetweenNodes(parent, child);
+            if (parent.hideChildren)
+                return;
 
-                    // Draw children
-                    this.DrawWithChildren(child);
-                }
+            // Display recursively
+            foreach (CalculationNode child in parent.children)
+            {
+                // Draw arrow from parent to child
+                this.DrawArrowBetweenNodes(parent, child);
+
+                // Draw children
+                this.DrawWithChildren(child);
             }
         }
 
@@ -333,9 +334,9 @@ namespace BehaviourModule
             
             if (hasTree)
             {
-                Vector3 max = this.GetNodePosition(this.maxPos.x, this.maxPos.y);
+                Vector3 max = this.GetNodePosition(this.maxPos.x + 1, this.maxPos.y);
                 Vector3 min = this.GetNodePosition(this.minPos.x, this.minPos.y);
-                min.y += NODE_MARGIN * 2;
+                min.y = Mathf.Abs(min.y) + NODE_MARGIN * 2;
 
                 viewSize = max + min;
             }
@@ -348,7 +349,6 @@ namespace BehaviourModule
 
             if (hasTree)
             {
-                this.posOffset.x = (this.position.width / 2f) - (NODE_WIDTH / 2f);
                 this.DrawWithChildren(this.root);
             }
             else
@@ -385,6 +385,11 @@ namespace BehaviourModule
                 "Makes the line between nodes square to ease the reading"
             ));
 
+            this.allowAutomaticHide = GUILayout.Toggle(this.allowAutomaticHide, new GUIContent(
+                "Allow Automatic Hide",
+                "Allows nodes to automatically hide themselves when the tree is first loaded"
+            ));
+
             GUILayout.Space(5f);
             GUILayout.Label(new GUIContent(
                 "Compute",
@@ -414,9 +419,11 @@ namespace BehaviourModule
                     if (this.treeSelected >= 0 && this.treeSelected < this.trees.Count)
                         cur = this.trees[this.treeSelected];
 
-                    this.trees = FindObjectsByType<Tree>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID).Select(t => t.gameObject).ToList();
+                    this.trees = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID)
+                        .Where(t => t is IVisualizable)
+                        .Select(t => t.gameObject)
+                        .ToList();
                     this.treeSelected = this.trees.FindIndex(c => c == cur);
-
                 }
 
                 GUILayout.EndHorizontal();

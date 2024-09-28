@@ -1,4 +1,3 @@
-using ExtensionsModule;
 using UnityEngine;
 
 namespace BehaviourModule.Nodes.Abstract
@@ -37,7 +36,7 @@ namespace BehaviourModule.Nodes.Abstract
                 return NodeState.SUCCESS;
 
             // Get distance
-            float distance = this.self.Distance(_target);
+            float distance = Vector3.Distance(this.self.position, _target.position);
 
             // If close enough from target
             return this.GetState(distance);

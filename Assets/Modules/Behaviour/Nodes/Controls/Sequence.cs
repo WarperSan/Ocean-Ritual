@@ -1,4 +1,4 @@
-namespace BehaviourModule.Nodes.Operators
+namespace BehaviourModule.Nodes.Controls
 {
     /// <summary>
     /// Node that only succeed when all of its children succeed. (AND)
