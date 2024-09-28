@@ -14,7 +14,7 @@ public class BalleLF : Projectile
     [Header("Properties")]
     [SerializeField] private float speed = 10f;
     [SerializeField] private float range = 50;
-
+    
     /// <summary>
     /// Sets the properties for this projectile
     /// </summary>

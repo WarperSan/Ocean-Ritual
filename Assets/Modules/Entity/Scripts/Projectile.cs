@@ -17,7 +17,7 @@ namespace EntityModule
         OPPONENTS = ENEMY | BOSS // Enemies and Bosses
     }
 
-    public abstract class Projectile : MonoBehaviour
+    public abstract class Projectile : Entity
     {
         /// <inheritdoc/>
         private void Awake()
