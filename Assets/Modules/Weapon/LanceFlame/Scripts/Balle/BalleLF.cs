@@ -84,15 +84,11 @@ public class BalleLF : Projectile
         this.distanceTravel = 0;
     }
 
-    #endregion
-
-    #region MonoBehaviour
-
     /// <inheritdoc/>
-    private void Update()
+    protected override void OnUpdate(float elapsed)
     {
         if (this.isGrowing)
-            this.Grow(Time.deltaTime);
+            this.Grow(elapsed);
     }
 
     #endregion

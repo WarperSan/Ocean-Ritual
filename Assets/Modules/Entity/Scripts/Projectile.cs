@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 namespace EntityModule
@@ -172,10 +173,13 @@ namespace EntityModule
         #region MonoBehaviour
 
         /// <inheritdoc/>
-        private void FixedUpdate()
+        private void Update()
         {
             this.OnMove(Time.deltaTime);
+            this.OnUpdate(Time.deltaTime);
         }
+
+        protected virtual void OnUpdate(float elapsed) { }
 
         #endregion
     }

@@ -136,7 +136,7 @@ namespace WeaponModule
         #region Reload
 
         protected uint remainingBullets;
-        private float ExtraTimeBullet = 0; // ???
+        private float reloadTimer = 0;
 
         /// <summary>
         /// Updates the reload of this weapon
@@ -152,20 +152,17 @@ namespace WeaponModule
                 return;
             }
 
+            // Ajoute le temps �coul� depuis la derni�re mise � jour au temps exc�dentaire
+            reloadTimer += elapsed;
+
             // Calcule le temps n�cessaire pour recharger une balle
             float timeToReloadOneBullet = 1f / this.GetReloadSpeed(); // secondes par balle
 
-            // Ajoute le temps �coul� depuis la derni�re mise � jour au temps exc�dentaire
-            ExtraTimeBullet += elapsed;
-
-            // Calcule le nombre de balles � recharger bas� sur le temps �coul�
-            int bulletsToReload = Mathf.FloorToInt(ExtraTimeBullet / timeToReloadOneBullet);
-
-            // Ajoute les balles en respectant la capacit� maximale
-            this.remainingBullets = (uint)Mathf.Clamp(this.remainingBullets + bulletsToReload, 0, clipSize);
-
-            // Conserve le reste du temps exc�dentaire apr�s avoir recharg� les balles
-            ExtraTimeBullet %= timeToReloadOneBullet;
+            while (reloadTimer >= timeToReloadOneBullet)
+            {
+                reloadTimer -= timeToReloadOneBullet;
+                this.remainingBullets = (uint)Mathf.Max(0, this.remainingBullets + 1);
+            }
 
             this.OnReload();
 
@@ -198,9 +195,9 @@ namespace WeaponModule
         protected virtual uint GetClipSize() => 0;
 
         /// <summary>
-        /// Fetches the reload speed of this weapon
+        /// Fetches how many bullet this weapon reloads per second
         /// </summary>
-        protected virtual float GetReloadSpeed() => 0; // Vitesse de recharge en pourcentage par seconde
+        protected virtual float GetReloadSpeed() => 0;
 
         #endregion
 
