@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public class EquipmentTest : Equipment
+public class EquipmentTest : MonoBehaviour,Equipment
 {
     [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
     [SerializeField] TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
@@ -15,90 +16,82 @@ public class EquipmentTest : Equipment
     public componentGBN componentGBN => throw new System.NotImplementedException();
 
     [SerializeField]
-    private int forgePercentage; 
+    private int forgePercentage;
 
-    // Propriété de l'interface
     public int ForgePercentage
     {
-        get => forgePercentage; 
-        set => forgePercentage = value; 
+        get => forgePercentage;
+        set => forgePercentage = value;
     }
-    [SerializeField]
-    private int lvlOfEquipment; 
 
-    // Propriété de l'interface
+    [SerializeField]
+    private int lvlOfEquipment;
+
     public int LvlOfEquipment
     {
-        get => lvlOfEquipment; 
+        get => lvlOfEquipment;
         set => lvlOfEquipment = value;
     }
+
     [SerializeField]
     private int costToUpgrade;
 
-    // Propriété de l'interface
     public int CostToUpgrade
     {
         get => costToUpgrade;
         set => costToUpgrade = value;
     }
-    public (List<TypeQuantity<TypeWeapon>> baseStats, List<TypeQuantity<TypeWeapon>> previewStats, int upgradeCost) GetStatToUpgradeAndCost()
 
+    public UpgradeStats GetStatToUpgradeAndCost()
     {
-        // Cr�ation de la liste des statistiques de base
-        List<TypeQuantity<TypeWeapon>> baseStats = new List<TypeQuantity<TypeWeapon>>
-        {
-            ReloadSpeed,
-            Attack,
-            BulletSpeed,
-            BulletSize,
-            FireRate,
-            AmmoCapacity,
-            Range
-        };
+        // Crée des listes pour les statistiques de base et d'aperçu
+        List<UpgradeNameData> baseStats = new List<UpgradeNameData>
+    {
+        new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
+        new ((int)Attack.Quantite, Attack.Type.ToString()),
+        new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
+        new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
+        new ((int)FireRate.Quantite, FireRate.Type.ToString()),
+        new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
+        new ((int)Range.Quantite, Range.Type.ToString())
+    };
 
-        // Cr�ation de la liste des statistiques boost�es
-        List<TypeQuantity<TypeWeapon>> PreviewStat = new List<TypeQuantity<TypeWeapon>>
-        {
-            AfterUpgradPreviewStat(ReloadSpeed),
-            AfterUpgradPreviewStat(Attack),
-            AfterUpgradPreviewStat(BulletSpeed),
-            AfterUpgradPreviewStat(BulletSize),
-            AfterUpgradPreviewStat(FireRate),
-            AfterUpgradPreviewStat(AmmoCapacity),
-            AfterUpgradPreviewStat(Range)
-        };
-        return (baseStats, PreviewStat, GetCostForUpgrade());
-    }
-    public TypeQuantity<TypeWeapon> AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade)
-    {
-        // Appliquer le pourcentage de forgeage
-        float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f); // Calculer la nouvelle valeur
-        int roundedValue = Mathf.CeilToInt(newValue); // Arrondir à l'entier supérieur
 
-        // Retourner un nouveau TypeQuantity avec la valeur mise à jour
-        return new TypeQuantity<TypeWeapon>(statToUpgrade.Type, roundedValue);
-    }
-    public void UpdateStat()
+        List<UpgradeNameData> previewStats = new List<UpgradeNameData>
     {
-     // equipement with gem 
+        AfterUpgradPreviewStat(ReloadSpeed),
+        AfterUpgradPreviewStat(Attack),
+        AfterUpgradPreviewStat(BulletSpeed),
+        AfterUpgradPreviewStat(BulletSize),
+        AfterUpgradPreviewStat(FireRate),
+        AfterUpgradPreviewStat(AmmoCapacity),
+        AfterUpgradPreviewStat(Range)
+    };
+
+        return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade());
     }
+
+    // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData
+    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade)
+    {
+        float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f);
+        int roundedValue = Mathf.CeilToInt(newValue);
+
+        return new UpgradeNameData(roundedValue, statToUpgrade.Type.ToString());
+    }
+
     public void UpgradeEquipment()
     {
-        // Améliorer les statistiques de base
-        ReloadSpeed = AfterUpgradPreviewStat(ReloadSpeed);
-        Attack = AfterUpgradPreviewStat(Attack);
-        BulletSpeed = AfterUpgradPreviewStat(BulletSpeed);
-        BulletSize = AfterUpgradPreviewStat(BulletSize);
-        FireRate = AfterUpgradPreviewStat(FireRate);
-        AmmoCapacity = AfterUpgradPreviewStat(AmmoCapacity);
-        Range = AfterUpgradPreviewStat(Range);
-
-        // Incrémenter le niveau de l'équipement
         LvlOfEquipment++;
     }
+
     public int GetCostForUpgrade()
     {
         return LvlOfEquipment * costToUpgrade;
     }
-    //
+
+    public void UpdateStat() => throw new System.NotImplementedException();
+   
+    public TypeQuantity<Enum> AfterUpgradPreviewStat(TypeQuantity<Enum> statToUpgrade) => throw new NotImplementedException();
 }
+
