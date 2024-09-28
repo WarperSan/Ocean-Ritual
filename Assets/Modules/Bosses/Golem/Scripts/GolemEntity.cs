@@ -32,7 +32,10 @@ namespace BossesModule.Golem
         private Slider healthBar;
 
         /// <inheritdoc/>
-        protected override void OnPostAttack() => this.healthBar.value = this.Health;
+        protected override void OnPostAttack() 
+        {
+            this.healthBar.value = this.Health;
+        }
 
         #endregion
 
@@ -41,6 +44,7 @@ namespace BossesModule.Golem
         /// <inheritdoc/>
         protected override void OnDeath(float overDamage)
         {
+            this.healthBar.value = 0;
             QuestManager.SomeoneDeath(this.name);
         }
 
