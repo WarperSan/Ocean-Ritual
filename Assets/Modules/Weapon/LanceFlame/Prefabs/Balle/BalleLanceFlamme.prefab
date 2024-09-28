@@ -47,18 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 1543644773566997243}
-  vitesse: 10
-  disparaitApresHit: 0
-  grossissement: 1
-  valeurGrossissement: 1
-  directionForward: 1
-  rotation: 0
-  rotationTodo: 0
-  disparaitHitObstacle: 0
-  coupCritique: 0
-  effetSpecial: 1
+  speed: 2
   range: 50
-  lanceFlameScript: {fileID: 0}
+  isGrowing: 1
+  growingSpeed: 0.5
+  growingTarget: {fileID: 5244068968213592308}
 --- !u!54 &6342903696701145300
 Rigidbody:
   m_ObjectHideFlags: 0

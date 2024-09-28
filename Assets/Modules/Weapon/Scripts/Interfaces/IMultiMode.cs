@@ -18,9 +18,10 @@ namespace WeaponModule
         public void SetMode(Enum mode);
     }
 
-    /// <summary>
-    /// Generic wrapper for <see cref="IMultiMode"/>
-    /// </summary>
+    /// <inheritdoc cref="IMultiMode"/>
+    /// <remarks>
+    /// This is a generic wrapper for <see cref="IMultiMode"/>
+    /// </remarks>
     public interface IMultiMode<T> : IMultiMode where T : Enum
     {
         /// <inheritdoc cref="IMultiMode.NextMode"/>

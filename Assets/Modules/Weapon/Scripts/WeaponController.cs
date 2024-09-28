@@ -9,11 +9,6 @@ namespace WeaponModule
 {
     public abstract class WeaponController : Controller, IFirable
     {
-        public abstract float GetDamage();// donne a la balle le nombre de d�gat qu'elle fait
-        public abstract void Reload();//rechargement
-
-        public abstract void SetBulletProriety(GameObject balle);// g�re les stat de la balle
-
         #region Shorthands
 
         private IOverheatable _overheatable = null;
@@ -27,9 +22,35 @@ namespace WeaponModule
         #region Shoot
 
         /// <summary>
-        /// Called when this weapon shoots
+        /// Triggers this weapon to shoot a bullet
         /// </summary>
-        public virtual void Shoot() { }
+        public void Shoot()
+        {
+            GameObject prefab = this.GetBullet();
+
+            // If no prefab set, skip
+            if (prefab == null)
+                return;
+
+            GameObject bullet = this.CreateBullet(prefab);
+
+            // If error occurred, skip
+            if (bullet == null)
+                return;
+
+            this.OnShoot(bullet);
+
+            // Consume one bullet
+            this.remainingBullets = Math.Max(0, this.remainingBullets - 1);
+
+            if (this.remainingBullets == 0)
+                this.OnReloadStart();
+        }
+
+        /// <summary>
+        /// Called when this weapon shot a bullet
+        /// </summary>
+        protected virtual void OnShoot(GameObject bullet) { }
 
         /// <summary>
         /// Determines if this weapon can currently shoot
@@ -51,10 +72,39 @@ namespace WeaponModule
         [SerializeField, Tooltip("Determines the object pool for this weapon")]
         protected ObjectPool localObjectPool = null;
 
+        [SerializeField, Tooltip("Determines the prefab to use for the bullet")]
+        private GameObject bulletPrefab;
+
+        /// <summary>
+        /// Creates a bullet of the given prefab
+        /// </summary>
+        private GameObject CreateBullet(GameObject prefab)
+        {
+            // If no prefab set, skip
+            if (prefab == null)
+                return null;
+
+            GameObject bullet = this.FetchBulletInstance(prefab.name);
+
+            // If error occurred, skip
+            if (bullet == null)
+                return null;
+
+            // Set up projectile
+            if (bullet.TryGetComponent(out Projectile projectile))
+            {
+                projectile.ResetSelf();
+                projectile.Attribute(this.GetAttack());
+                this.SetupProjectile(projectile);
+            }
+
+            return bullet;
+        }
+
         /// <summary>
         /// Fetches a bullet from the given prefab
         /// </summary>
-        protected GameObject GetBullet(string prefabName)
+        private GameObject FetchBulletInstance(string prefabName)
         {
             // Try to fetch from local
             GameObject bullet = localObjectPool == null ? null : localObjectPool.Get(prefabName);
@@ -65,6 +115,92 @@ namespace WeaponModule
 
             return bullet;
         }
+
+        /// <summary>
+        /// Fetches the attack value for the new projectile
+        /// </summary>
+        protected virtual Attack GetAttack() => null;
+
+        /// <summary>
+        /// Called when a new projectile is created from this weapon
+        /// </summary>
+        protected virtual void SetupProjectile(Projectile projectile) { }
+
+        /// <summary>
+        /// Fetches the prefab to use for this shot
+        /// </summary>
+        protected virtual GameObject GetBullet() => this.bulletPrefab;
+
+        #endregion
+
+        #region Reload
+
+        protected uint remainingBullets;
+        private float ExtraTimeBullet = 0; // ???
+
+        /// <summary>
+        /// Updates the reload of this weapon
+        /// </summary>
+        protected void Reload(float elapsed)
+        {
+            uint clipSize = this.GetClipSize();
+
+            // If already full, skip
+            if (this.remainingBullets >= clipSize)
+            {
+                this.remainingBullets = clipSize;
+                return;
+            }
+
+            // Calcule le temps n�cessaire pour recharger une balle
+            float timeToReloadOneBullet = 1f / this.GetReloadSpeed(); // secondes par balle
+
+            // Ajoute le temps �coul� depuis la derni�re mise � jour au temps exc�dentaire
+            ExtraTimeBullet += elapsed;
+
+            // Calcule le nombre de balles � recharger bas� sur le temps �coul�
+            int bulletsToReload = Mathf.FloorToInt(ExtraTimeBullet / timeToReloadOneBullet);
+
+            // Ajoute les balles en respectant la capacit� maximale
+            this.remainingBullets = (uint)Mathf.Clamp(this.remainingBullets + bulletsToReload, 0, clipSize);
+
+            // Conserve le reste du temps exc�dentaire apr�s avoir recharg� les balles
+            ExtraTimeBullet %= timeToReloadOneBullet;
+
+            this.OnReload();
+
+            // Si les munitions sont compl�tement recharg�es, on d�sactive la surchauffe
+            if (this.remainingBullets >= clipSize)
+            {
+                this.remainingBullets = clipSize;
+                this.OnReloadCompleted();
+            }
+        }
+
+        /// <summary>
+        /// Called when this weapon emptied its clip and needs to reload manually
+        /// </summary>
+        protected virtual void OnReloadStart() { }
+
+        /// <summary>
+        /// Called after this weapon reloaded
+        /// </summary>
+        protected virtual void OnReload() { }
+
+        /// <summary>
+        /// Called when this weapon finished to reload completely
+        /// </summary>
+        protected virtual void OnReloadCompleted() { }
+
+        /// <summary>
+        /// Fetches the number of bullets this weapon can shoot before needing to reload
+        /// </summary>
+        protected virtual uint GetClipSize() => 0;
+
+        /// <summary>
+        /// Fetches the reload speed of this weapon
+        /// </summary>
+        protected virtual float GetReloadSpeed() => 0; // Vitesse de recharge en pourcentage par seconde
 
         #endregion
 
@@ -89,7 +225,7 @@ namespace WeaponModule
             // If overheated
             if (this.IsOverheated())
             {
-                this.Reload();
+                this.Reload(elapsed);
                 return;
             }
 
@@ -103,7 +239,7 @@ namespace WeaponModule
             // If not firing, reload
             if (!this.isFiring)
             {
-                this.Reload();
+                this.Reload(elapsed);
                 return;
             }
 

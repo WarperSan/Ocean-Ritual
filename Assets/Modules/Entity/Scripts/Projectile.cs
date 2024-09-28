@@ -41,7 +41,7 @@ namespace EntityModule
 
         #region Attack
 
-        private Attack attack;
+        private Attack attack = null;
 
         /// <summary>
         /// Attributes an attack to this projectile
@@ -116,6 +116,13 @@ namespace EntityModule
 
         private void HitEntity(Entity entity)
         {
+            // If attack invalid, skip
+            if (this.attack == null)
+            {
+                Debug.LogWarning($"No attack was attributed when '{this.name}' hit the entity '{entity.name}'.");
+                return;
+            }
+
             this.OnPreApply(entity, this.attack);
             entity.UseAttack(this.attack);
             this.OnPostApply(entity, this.attack);
@@ -130,6 +137,45 @@ namespace EntityModule
         /// Called after this projectile applied its attack to the entity
         /// </summary>
         protected virtual void OnPostApply(Entity entity, Attack attack) { }
+
+        #endregion
+
+        #region Movement
+
+        /// <summary>
+        /// Called to move this projectile
+        /// </summary>
+        protected virtual void OnMove(float elapsed) { }
+
+        #endregion
+
+        #region Reset
+
+        /// <summary>
+        /// Resets this projectile
+        /// </summary>
+        public void ResetSelf()
+        {
+            // Clear values
+            this.attack = null;
+
+            this.OnReset();
+        }
+
+        /// <summary>
+        /// Called when this projectile gets reset
+        /// </summary>
+        protected virtual void OnReset() {}
+
+        #endregion
+
+        #region MonoBehaviour
+
+        /// <inheritdoc/>
+        private void FixedUpdate()
+        {
+            this.OnMove(Time.deltaTime);
+        }
 
         #endregion
     }
