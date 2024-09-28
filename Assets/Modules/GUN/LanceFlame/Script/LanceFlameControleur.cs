@@ -47,6 +47,10 @@ public class LanceFlameControleur : Arme ,Equipment
         get { return GBNComponent; }
     }
 
+    public int CostToUpgrade { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int ForgePercentage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int LvlOfEquipment { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     private bool faireStat = true;
 
 
@@ -349,4 +353,10 @@ public class LanceFlameControleur : Arme ,Equipment
         ControllerManager.SwitchTo(this);
     
     }
+
+    public void UpgradeEquipment() => throw new System.NotImplementedException();
+    public void GetUpgradeStat() => throw new System.NotImplementedException();
+    public int GetCostForUpgrade() => throw new System.NotImplementedException();
+    public (List<TypeQuantity<TypeWeapon>> baseStats, List<TypeQuantity<TypeWeapon>> previewStats, int upgradeCost) GetStatToUpgradeAndCost() => throw new System.NotImplementedException();
+    public TypeQuantity<TypeWeapon> AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade) => throw new System.NotImplementedException();
 }

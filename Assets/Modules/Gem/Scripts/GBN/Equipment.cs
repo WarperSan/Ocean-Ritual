@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public interface Equipment 
+public interface Equipment :Forgeable
 {
    componentGBN componentGBN { get; }
    
