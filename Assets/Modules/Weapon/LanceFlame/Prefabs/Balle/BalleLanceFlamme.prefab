@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7253273537143018039}
   - component: {fileID: 6883320924880998033}
   - component: {fileID: 6342903696701145300}
+  - component: {fileID: 7656350558745620861}
   m_Layer: 24
   m_Name: BalleLanceFlamme
   m_TagString: Untagged
@@ -46,9 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d7afa3ee25cb44992a144317725844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxHeath: 0
   _collider: {fileID: 1543644773566997243}
+  allConditionMet: 1
   speed: 2
-  range: 50
   isGrowing: 1
   growingSpeed: 0.5
   growingTarget: {fileID: 5244068968213592308}
@@ -79,6 +81,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7656350558745620861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631054407567438953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2854933ce07c2f2a2f819eec2171b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5914866118146816626
 GameObject:
   m_ObjectHideFlags: 0

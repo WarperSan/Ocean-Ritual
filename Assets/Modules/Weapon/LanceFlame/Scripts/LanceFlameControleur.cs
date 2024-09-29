@@ -1,4 +1,5 @@
 using EntityModule;
+using EntityModule.Conditions;
 using System.Collections.Generic;
 using UnityEngine;
 using WeaponModule;
@@ -91,6 +92,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         if (projectile is not BalleLF balleLF)
             return;
 
+        // Set properties
         balleLF.SetProperties(
             this.GetBulletSpeed(),
             this.GetRange()

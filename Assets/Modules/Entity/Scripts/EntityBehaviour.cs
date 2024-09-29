@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace EntityModule.Entities
 {
+    /// <summary>
+    /// Class that represents an entity that has a behaviour tree
+    /// </summary>
     [RequireComponent(typeof(IVisualizable))]
     public abstract class EntityBehaviour : Entity
     {

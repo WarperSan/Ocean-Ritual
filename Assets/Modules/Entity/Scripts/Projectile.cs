@@ -1,5 +1,5 @@
+using EntityModule.Conditions;
 using System;
-using System.Net.Http.Headers;
 using UnityEngine;
 
 namespace EntityModule
@@ -17,29 +17,11 @@ namespace EntityModule
         OPPONENTS = ENEMY | BOSS // Enemies and Bosses
     }
 
+    /// <summary>
+    /// Class that represents a projectile
+    /// </summary>
     public abstract class Projectile : Entity
     {
-        /// <inheritdoc/>
-        private void Awake()
-        {
-#if UNITY_EDITOR
-            if (!_collider.isTrigger)
-            {
-                _collider.isTrigger = true;
-                Debug.LogWarning($"The projectile '{this.name}' has a collider that is not trigger. Please fix the collider.");
-            }
-#endif
-
-            if (BOSS_LAYER == -1)
-                BOSS_LAYER = LayerMask.NameToLayer("Boss");
-
-            if (ENEMY_LAYER == -1)
-                ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
-
-            if (PLAYER_LAYER == -1)
-                PLAYER_LAYER = LayerMask.NameToLayer("Player");
-        }
-
         #region Attack
 
         private Attack attack = null;
@@ -150,6 +132,34 @@ namespace EntityModule
 
         #endregion
 
+        #region Conditions
+
+        [Header("Conditions")]
+        [SerializeField, Tooltip("Determines if all the conditions must be met in order to keep this projectile alive")]
+        private bool mustMeetAllConditions = true;
+
+        private ProjectileCondition[] conditions;
+
+        /// <summary>
+        /// Evaluates all the conditions for this projectile
+        /// </summary>
+        /// <param name="elapsed">Time since last call</param>
+        /// <returns>Should the projectile stay alive?</returns>
+        private bool EvaluateConditions(float elapsed)
+        {
+            foreach (ProjectileCondition item in conditions)
+            {
+                bool result = item.UpdateCondition(elapsed);
+
+                if (!result && this.mustMeetAllConditions)
+                    return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Reset
 
         /// <summary>
@@ -160,23 +170,63 @@ namespace EntityModule
             // Clear values
             this.attack = null;
 
+            foreach (ProjectileCondition item in this.conditions)
+                item.ResetCondition();
+
             this.OnReset();
         }
 
         /// <summary>
         /// Called when this projectile gets reset
         /// </summary>
-        protected virtual void OnReset() {}
+        protected virtual void OnReset() { }
+
+        #endregion
+
+        #region Entity
+
+        /// <inheritdoc/>
+        public override bool TakeDamage => false;
+
+        /// <inheritdoc/>
+        protected override void OnDeath(float overDamage) => this.gameObject.SetActive(false);
 
         #endregion
 
         #region MonoBehaviour
 
         /// <inheritdoc/>
+        private void Awake()
+        {
+#if UNITY_EDITOR
+            if (!_collider.isTrigger)
+            {
+                _collider.isTrigger = true;
+                Debug.LogWarning($"The projectile '{this.name}' has a collider that is not trigger. Please fix the collider.");
+            }
+#endif
+
+            if (BOSS_LAYER == -1)
+                BOSS_LAYER = LayerMask.NameToLayer("Boss");
+
+            if (ENEMY_LAYER == -1)
+                ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
+
+            if (PLAYER_LAYER == -1)
+                PLAYER_LAYER = LayerMask.NameToLayer("Player");
+
+            conditions = this.GetComponents<ProjectileCondition>();
+        }
+
+        /// <inheritdoc/>
         private void Update()
         {
             this.OnMove(Time.deltaTime);
             this.OnUpdate(Time.deltaTime);
+
+            // Kill projectile if necessary
+            if (!this.EvaluateConditions(Time.deltaTime))
+                this.Death();
         }
 
         protected virtual void OnUpdate(float elapsed) { }
