@@ -26,7 +26,7 @@ public class GBNData
 //public class PowerGemmeObjectData
 //{
 //    [SerializeField] public GridtData GridGemme;
-//    [SerializeField] public List<GemmeData> ListGemmeData;
+//    [SerializeField] public List<GemData> ListGemmeData;
 
 //}
 //[System.Serializable]
@@ -38,7 +38,7 @@ public class GBNData
 
 //}
 //[System.Serializable]
-//public class GemmeData
+//public class GemData
 //{
 //    #region Data
 //    // X coordinate of the gem's position

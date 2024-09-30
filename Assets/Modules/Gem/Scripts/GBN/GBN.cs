@@ -166,7 +166,8 @@ using static EnumGeneral;
                 {
                     if (stat.Type.Equals(gemmeStat.Type))
                     {
-                        stat.Quantite += gemmeStat.Quantite;
+                    stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
+                   // stat.Quantite += gemmeStat.Quantite;
                     }
                 }
             }

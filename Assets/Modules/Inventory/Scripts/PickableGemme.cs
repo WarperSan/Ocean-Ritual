@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PickableGemme : MonoBehaviour, IInteractable
 {
-    [SerializeField] GemmeData TheGemme;
+    [SerializeField] GemData TheGemme;
     [SerializeField] int lvlOfGemme;
     [SerializeField] Sprite sprite;
 

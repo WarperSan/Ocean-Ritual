@@ -4,7 +4,7 @@ using UnityEngine;
 using static EnumGeneral;
 
 [System.Serializable]
-public class GemmeData : ItemData
+public class GemData : ItemData
 {
     #region Data
 

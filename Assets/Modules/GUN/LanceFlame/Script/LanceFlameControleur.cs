@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public class LanceFlameControleur : Arme ,Equipment
+public class LanceFlameControleur : Arme 
 {
     [SerializeField] componentGBN GBNComponent;
     [SerializeField] ParticuleControleur ParticuleControleurs;

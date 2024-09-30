@@ -92,7 +92,7 @@ public class GBNSaveLoad: MonoBehaviour
 //        var powerGemmeObjectData = new PowerGemmeObjectData
 //        {
 //            GridGemme = ConvertToGridData(powerGemmeObject.GridGemme),
-//            ListGemmeData = new List<GemmeData>()
+//            ListGemmeData = new List<GemData>()
 //        };
 //        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gem");
 
@@ -108,9 +108,9 @@ public class GBNSaveLoad: MonoBehaviour
 //    /// </summary>
 //    /// <param name="gem"></param>
 //    /// <returns></returns>
-//    private GemmeData ConvertToGemmeData(Gem gem)
+//    private GemData ConvertToGemmeData(Gem gem)
 //    {
-//        return new GemmeData
+//        return new GemData
 //        {
 //            PositionX = gem.PositionX,
 //            PositionZ = gem.PositionZ,
@@ -201,11 +201,11 @@ public class GBNSaveLoad: MonoBehaviour
 //        return powerGemmeObject;
 //    }
 //    /// <summary>
-//    /// Convert GemmeData to Gem
+//    /// Convert GemData to Gem
 //    /// </summary>
 //    /// <param name="gemmeData"></param>
 //    /// <returns></returns>
-//    private Gem ConvertFromGemmeData(GemmeData gemmeData)
+//    private Gem ConvertFromGemmeData(GemData gemmeData)
 //    {
 //        return new Gem
 //        {

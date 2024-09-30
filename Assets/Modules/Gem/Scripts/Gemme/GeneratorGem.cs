@@ -63,11 +63,11 @@ public   class GeneratorGem: MonoBehaviour
    
 
     // Function to generate a random gem
-    public static GemmeData GenerateRandomGemme(int LVL)
+    public static GemData GenerateRandomGemme(int LVL)
     {
 
 
-        GemmeData gemmeScript = new GemmeData();
+        GemData gemmeScript = new GemData();
 
         if (gemmeScript != null)
         {
@@ -80,6 +80,49 @@ public   class GeneratorGem: MonoBehaviour
             gemmeScript.typeBoat = GeneratesRandomlvlStat<TypeBoat>(LVL);
             gemmeScript.typeNet = GeneratesRandomlvlStat<TypeNet>(LVL);
             return gemmeScript;
+        }
+        else
+        {
+            Debug.LogError("Script Gem Not instanciate");
+        }
+
+        return null;
+    }
+
+    //si on appele cela inclu que a gemme est fusionné
+    public static GemData GenerateRandomGemme(int LVL, GemData gemHeritage )
+    {
+
+
+        GemData gemmeScript = new GemData();
+
+        if (gemmeScript != null)
+        {
+            if(LVL> gemHeritage.LVL)
+            {
+                gemmeScript.quantityMax = 1;
+                gemmeScript.quantity = 1;
+                gemmeScript.Shape = GenerateForme(gemHeritage.Shape);
+                gemmeScript.GemColorsName = gemHeritage.GemColorsName;
+                gemmeScript.LVL = LVL;
+                gemmeScript.typeWeapon = GeneratesRandomlvlStat<TypeWeapon>(LVL);
+                gemmeScript.typeBoat = GeneratesRandomlvlStat<TypeBoat>(LVL);
+                gemmeScript.typeNet = GeneratesRandomlvlStat<TypeNet>(LVL);
+                return gemmeScript;
+            }
+            else
+            {
+                gemmeScript.quantityMax = 1;
+                gemmeScript.quantity = 1;
+                gemmeScript.Shape =gemHeritage.Shape;
+                gemmeScript.GemColorsName = gemHeritage.GemColorsName;
+                gemmeScript.LVL = LVL;
+                gemmeScript.typeWeapon = GeneratesRandomlvlStat<TypeWeapon>(LVL);
+                gemmeScript.typeBoat = GeneratesRandomlvlStat<TypeBoat>(LVL);
+                gemmeScript.typeNet = GeneratesRandomlvlStat<TypeNet>(LVL);
+                return gemmeScript;
+            }
+           
         }
         else
         {
@@ -191,6 +234,99 @@ public   class GeneratorGem: MonoBehaviour
 
         return new FormBool(form, size, size);
     }
+    private static FormBool GenerateForme(FormBool gemForm)
+    {
+        // Extraction des données de la forme existante
+        List<bool> existingFormFlat = gemForm.flatForme;
+        int rows = gemForm.height;
+        int cols = gemForm.width;
+        int trueCount = 0;
+
+        // Compter les cases 'true' et vérifier si des espaces 'false' sont disponibles
+        List<int> falsePositions = new List<int>();
+        for (int i = 0; i < existingFormFlat.Count; i++)
+        {
+            if (existingFormFlat[i])
+            {
+                trueCount++;
+            }
+            else
+            {
+                falsePositions.Add(i);
+            }
+        }
+
+     
+       
+
+        // Si l'on a de l'espace disponible, activer une case aléatoire qui est actuellement 'false'
+        if (falsePositions.Count > 0)
+        {
+            System.Random rand = new System.Random();
+            int randomIndex = falsePositions[rand.Next(falsePositions.Count)];
+            existingFormFlat[randomIndex] = true;
+        }
+        else
+        {
+            // Si plus d'espace, agrandir la forme
+            int newSize = Mathf.CeilToInt(Mathf.Sqrt(trueCount));
+            if (newSize % 2 == 0)
+            {
+                newSize += 1;
+            }
+
+            while ((newSize * newSize - trueCount) < 4)
+            {
+                newSize += 2;
+            }
+
+            // Créer une nouvelle grille de la nouvelle taille
+            List<bool> newForm = new List<bool>(newSize * newSize);
+            for (int i = 0; i < newSize * newSize; i++)
+            {
+                newForm.Add(false);
+            }
+
+            // Copier l'ancienne forme centrée dans la nouvelle liste
+            int rowOffset = (newSize - rows) / 2;
+            int colOffset = (newSize - cols) / 2;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    newForm[(i + rowOffset) * newSize + (j + colOffset)] = existingFormFlat[i * cols + j];
+                }
+            }
+
+
+          
+
+            // Ajouter un 'true' à une position aléatoire dans la nouvelle forme agrandie
+            List<int> newPositions = new List<int>();
+            for (int i = 0; i < newForm.Count; i++)
+            {
+                if (!newForm[i])
+                {
+                    newPositions.Add(i);
+                }
+            }
+
+            System.Random rand = new System.Random();
+            int randomNewPosIndex = newPositions[rand.Next(newPositions.Count)];
+            newForm[randomNewPosIndex] = true;
+
+            return new FormBool(newForm, newSize, newSize);
+        }
+
+        // Si l'on a activé un index aléatoire, renvoyer la forme modifiée
+        return new FormBool(existingFormFlat, cols, rows);
+    }
+
+    
+
+   
+
 
     // Function to create a gem object in the scene
     public static GameObject? CreatGemmeObject(Gem GemmeScript, Transform Conteneur)

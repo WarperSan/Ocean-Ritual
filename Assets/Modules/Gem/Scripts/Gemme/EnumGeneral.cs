@@ -106,6 +106,49 @@ public class TypeQuantity<TEnum>
     }
 }
 
+[System.Serializable]
+public class UpgradeNameData
+{
+    public int quantity;
+    public string name;
+
+    // Constructeur par défaut
+    public UpgradeNameData()
+    {
+        // Valeurs par défaut si nécessaire
+        quantity = 0;
+        name = string.Empty;
+    }
+
+    public UpgradeNameData(int quantity, string name)
+    {
+        this.quantity = quantity;
+        this.name = name;
+    }
+}
+
+[System.Serializable]
+public class UpgradeStats
+{
+    public List<UpgradeNameData> baseStats = new List<UpgradeNameData>();
+    public List<UpgradeNameData> previewStats = new List<UpgradeNameData>();
+    public int upgradeCost;
+
+    // Constructeur par défaut
+    public UpgradeStats()
+    {
+        // Valeurs par défaut si nécessaire
+        upgradeCost = 0;
+    }
+
+    public UpgradeStats(List<UpgradeNameData> baseStats, List<UpgradeNameData> previewStats, int upgradeCost)
+    {
+        this.baseStats = baseStats;
+        this.previewStats = previewStats;
+        this.upgradeCost = upgradeCost;
+    }
+}
+
 
 
 [Serializable]
@@ -128,7 +171,14 @@ public class FormBool
             }
         }
     }
-
+    
+    public FormBool(List<bool> form, int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+        this.flatForme = form;
+        
+    }
     public bool[,] GetForme()
     {
         bool[,] form = new bool[width, height];
