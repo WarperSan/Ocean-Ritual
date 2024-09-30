@@ -44,8 +44,8 @@ GameObject:
   - component: {fileID: 971989373477986791}
   - component: {fileID: 4763981646447090192}
   - component: {fileID: -2153662293481357411}
-  - component: {fileID: -322210281699956}
   - component: {fileID: 5132084006407066696}
+  - component: {fileID: 2139587502568311199}
   m_Layer: 27
   m_Name: LavaProjectile
   m_TagString: Untagged
@@ -138,19 +138,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-322210281699956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4697403124996686971}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e51e367bfd647b2af91e103747296aee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 10
 --- !u!114 &5132084006407066696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +153,19 @@ MonoBehaviour:
   MaxHeath: 0
   _collider: {fileID: 4763981646447090192}
   mustMeetAllConditions: 1
+--- !u!114 &2139587502568311199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697403124996686971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9909df1197d5426be9a2eba7d25275fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 10
 --- !u!1001 &690439472273983925
 PrefabInstance:
   m_ObjectHideFlags: 0

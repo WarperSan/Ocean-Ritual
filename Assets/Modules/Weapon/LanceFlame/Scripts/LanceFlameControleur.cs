@@ -99,7 +99,6 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         );
 
         this.PlaceBullet(balleLF);
-        balleLF.gameObject.SetActive(true);
 
         timeSinceLastShot = 0f; // R�initialise le temps depuis le dernier tir
         this.UpdateOverheatIndicator();

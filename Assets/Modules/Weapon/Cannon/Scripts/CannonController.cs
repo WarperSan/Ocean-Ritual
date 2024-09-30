@@ -1,14 +1,16 @@
+using ControllerModule.Controllers;
 using ControllerModule.Controllers.Interfaces;
-using ProjectilesModule.Interfaces;
+using EntityModule;
+using EntityModule.Conditions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ControllerModule.Controllers
+namespace WeaponModule.Weapons.Cannon
 {
     /// <summary>
     /// Controller that manages how the cannon behaves
     /// </summary>
-    public class CannonController : Controller, IMovable, IFirable
+    public class CannonController : WeaponController, IMovable
     {
         #region Rotation
 
@@ -64,35 +66,31 @@ namespace ControllerModule.Controllers
         [SerializeField]
         private AudioSource shootAudio;
 
-        /// <summary>
-        /// Shoots a shot
-        /// </summary>
-        private void Shoot(float forcePercent)
+        /// <inheritdoc/>
+        protected override GameObject GetBullet() => this.ball;
+
+        /// <inheritdoc/>
+        protected override void SetupProjectile(Projectile projectile)
         {
-            GameObject projectile = Instantiate(this.ball);
-
-            if (projectile == null)
-                return;
-
             // Place projectile
             projectile.transform.position = this.origin.position;
             projectile.transform.up = this.origin.forward;
 
-            if (projectile.TryGetComponent(out IDespawnable despawnable))
+            // Set thrust
+            if (projectile is BeachBall beachBall)
             {
-                despawnable.ResetSelf();
+                beachBall.splashForce = this.thrustAmount;
             }
+        }
 
-            if (projectile.TryGetComponent(out Rigidbody rb))
+        /// <inheritdoc/>
+        protected override void OnShoot(GameObject bullet)
+        {
+            // Apply initial velocity
+            if (bullet.TryGetComponent(out Rigidbody rb))
             {
-                // Apply initial velocity
                 rb.velocity = Vector3.zero;
-                rb.AddForce(projectile.transform.up * ((this.strength * forcePercent) + this.baseStrength));
-            }
-
-            if (projectile.TryGetComponent(out ProjectilesModule.BeachBall beachBall))
-            {
-                beachBall.force = forcePercent;
+                rb.AddForce(bullet.transform.up * ((this.strength * this.thrustAmount) + this.baseStrength));
             }
 
             if (this.shootParticles != null)
@@ -101,6 +99,13 @@ namespace ControllerModule.Controllers
             if (this.shootAudio != null)
                 this.shootAudio.Play();
         }
+
+        protected override Attack GetAttack() => new()
+        {
+            Damage = this.thrustAmount * 10,
+            Type = AttackType.NORMAL,
+            TargetType = ProjectileTarget.OPPONENTS
+        };
 
         #endregion
 
@@ -174,6 +179,31 @@ namespace ControllerModule.Controllers
 
         #endregion
 
+        #region IMovable
+
+        /// <inheritdoc/>
+        public void OnMove(Vector2 direction) => this.direction = direction;
+
+        #endregion
+
+        #region WeaponController
+
+        /// <inheritdoc/>
+        protected override void OnFirePressed() => this.StartThrust();
+
+        /// <inheritdoc/>
+        protected override void OnFireReleased()
+        {
+            if (this.releaseForShoot)
+                this.Shoot();
+            this.EndThrust();
+        }
+
+        /// <inheritdoc/>
+        public override bool CanShoot() => false;
+
+        #endregion
+
         #region Controller
 
         /// <inheritdoc/>
@@ -203,32 +233,12 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
         {
+            base.OnUpdate(elapsed);
+
             if (this.direction.magnitude != 0)
                 this.UpdateRotation(new Vector3(-this.direction.y, this.direction.x, 0));
 
             this.UpdateThrust(elapsed);
-        }
-
-        #endregion
-
-        #region IMovable
-
-        /// <inheritdoc/>
-        public void OnMove(Vector2 direction) => this.direction = direction;
-
-        #endregion
-
-        #region IFirable
-
-        /// <inheritdoc/>
-        public void OnFireStart() => this.StartThrust();
-
-        /// <inheritdoc/>
-        public void OnFireEnd()
-        {
-            if (this.releaseForShoot)
-                this.Shoot(this.thrustAmount);
-            this.EndThrust();
         }
 
         #endregion

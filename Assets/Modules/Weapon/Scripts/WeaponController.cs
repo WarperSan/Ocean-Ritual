@@ -38,6 +38,7 @@ namespace WeaponModule
             if (bullet == null)
                 return;
 
+            bullet.SetActive(true);
             this.OnShoot(bullet);
 
             // Consume one bullet
@@ -55,7 +56,9 @@ namespace WeaponModule
         /// <summary>
         /// Determines if this weapon can currently shoot
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// This only applies when the weapon uses a cooldown system. If the weapon shoots by itself, it won't be checked
+        /// </remarks>
         public virtual bool CanShoot() => true;
 
         #endregion
@@ -254,10 +257,24 @@ namespace WeaponModule
         private bool isFiring = false;
 
         /// <inheritdoc/>
-        public void OnFireStart() => this.isFiring = true;
+        public void OnFireStart()
+        {
+            this.isFiring = true;
+            this.OnFirePressed();
+        }
+
+        /// <inheritdoc cref="IFirable.OnFireStart"/>
+        protected virtual void OnFirePressed() { }
 
         /// <inheritdoc/>
-        public void OnFireEnd() => this.isFiring = false;
+        public void OnFireEnd()
+        {
+            this.isFiring = false;
+            this.OnFireReleased();
+        }
+
+        /// <inheritdoc cref="IFirable.OnFireEnd"/>
+        protected virtual void OnFireReleased() { }
 
         #endregion
     }

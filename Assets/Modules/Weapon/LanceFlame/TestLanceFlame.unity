@@ -1272,56 +1272,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353554586}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1381806187
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1381806189}
-  - component: {fileID: 1381806190}
-  m_Layer: 0
-  m_Name: LanceFlamme-ObjectPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1381806189
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381806187}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.821378, y: -4.278757, z: 3.3659334}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1381806190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381806187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 512921bc42b394e528323a2a244bc787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Settings:
-  - Prefab: {fileID: 3631054407567438953, guid: 530e0400bdda67e439bd8e8926f0cab2,
-      type: 3}
-    amount: 40
-    spawned: 0
-    parent: {fileID: 0}
 --- !u!1 &1391283070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,11 +2318,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7741740439737647047, guid: a079bcfd18aa48ceeaf816dda2232cda,
-        type: 3}
-      propertyPath: localObjectPool
-      value: 
-      objectReference: {fileID: 1381806190}
     - target: {fileID: 9146765463371912087, guid: a079bcfd18aa48ceeaf816dda2232cda,
         type: 3}
       propertyPath: m_Name
@@ -2390,7 +2335,6 @@ SceneRoots:
   - {fileID: 2019348514}
   - {fileID: 554296507}
   - {fileID: 7272353882245965040}
-  - {fileID: 1381806189}
   - {fileID: 1482479603}
   - {fileID: 738192962}
   - {fileID: 1668501488}

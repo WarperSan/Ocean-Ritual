@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &815982621380490600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895954925046964269}
+  - component: {fileID: 1700812856826372351}
+  - component: {fileID: 7067914925334551270}
+  m_Layer: 6
+  m_Name: ObjectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &895954925046964269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815982621380490600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3516832782396747141}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1700812856826372351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815982621380490600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a0080d3e170c5eea6919881d7f32ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7067914925334551270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815982621380490600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 512921bc42b394e528323a2a244bc787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Settings:
+  - Prefab: {fileID: 3631054407567438953, guid: 530e0400bdda67e439bd8e8926f0cab2,
+      type: 3}
+    amount: 10
+    spawned: 0
+    parent: {fileID: 0}
 --- !u!1 &1276416411583595876
 GameObject:
   m_ObjectHideFlags: 0
@@ -5830,6 +5893,7 @@ Transform:
   - {fileID: 1327231542080472972}
   - {fileID: 8285301587132623739}
   - {fileID: 7269331819159210379}
+  - {fileID: 895954925046964269}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6444292761957604878
@@ -5866,7 +5930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookController: {fileID: 5637973371736314817}
   disableIfOut: 0
-  localObjectPool: {fileID: 0}
+  localObjectPool: {fileID: 7067914925334551270}
   bulletPrefab: {fileID: 3631054407567438953, guid: 530e0400bdda67e439bd8e8926f0cab2,
     type: 3}
   isOverheated: 0

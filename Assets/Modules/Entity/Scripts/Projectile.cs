@@ -229,6 +229,9 @@ namespace EntityModule
                 this.Death();
         }
 
+        /// <summary>
+        /// Called when this projectile gets updated
+        /// </summary>
         protected virtual void OnUpdate(float elapsed) { }
 
         #endregion
