@@ -20,7 +20,7 @@ public class TestGenerateGem : MonoBehaviour
         if (test)
         {
             test = false;
-            int lvl = GemHelperBlacksmith.fusionGemTab(lvlGem1, lvlGem2);
+            int lvl = GemHelper.fusionGemTab(lvlGem1, lvlGem2);
             lvlGem1 = lvl;
             lvlGem2 = lvl+1;
             GemData = GeneratorGem.GenerateRandomGemme(lvl, GemData);

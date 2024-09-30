@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using static EnumGeneral;
 
-public static class GemHelperBlacksmith
+public static class GemHelper
 {
     public static int modifiedSpotCost = 5;
     public static int missingSpotCost = 10;
@@ -75,6 +76,46 @@ public static class GemHelperBlacksmith
             Debug.LogWarning("Index hors limites. Impossible de modifier la liste.");
         }
     }
+    public static GemData ConvertGemToGemData(Gem gem)
+    {
+        // Création d'un nouvel objet GemData
+        GemData gemData = new GemData
+        {
+            // Copie des propriétés de Gem vers GemData
+           
+            Shape = gem.form,  
+            GemColorsName = gem.GemColorsName,
+            LVL = gem.LVL,
 
+            // Copie des listes des types et quantités
+            typeWeapon = new List<TypeQuantity<TypeWeapon>>(gem.typeWeapon),
+            typeBoat = new List<TypeQuantity<TypeBoat>>(gem.typeBoat),
+            typeNet = new List<TypeQuantity<TypeNet>>(gem.typeNet)
+        };
+
+        return gemData;
+    }
+    
+        public static Gem ConvertGemDataToGem(GemData gemData)
+        {
+            // Création d'un nouvel objet Gem
+            Gem gem = new Gem
+            {
+                // Copie des propriétés de GemData vers Gem
+                PositionX = 0,
+                PositionZ = 0,
+                form = gemData.Shape,  
+                GemColorsName = gemData.GemColorsName,
+                LVL = gemData.LVL,
+
+                // Copie des listes des types et quantités
+                typeWeapon = new List<TypeQuantity<TypeWeapon>>(gemData.typeWeapon),
+                typeBoat = new List<TypeQuantity<TypeBoat>>(gemData.typeBoat),
+                typeNet = new List<TypeQuantity<TypeNet>>(gemData.typeNet)
+            };
+
+            return gem;
+        }
+    
 
 }
