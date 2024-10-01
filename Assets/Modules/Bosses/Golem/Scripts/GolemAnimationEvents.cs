@@ -1,3 +1,4 @@
+using EntityModule;
 using UnityEngine;
 
 namespace BossesModule.Golem
@@ -31,15 +32,27 @@ namespace BossesModule.Golem
                 return;
 
             // var obj = ObjectPools.ObjectPool.GetObject(this.throwProjectile);
-            GameObject obj = GetProjectile(this.throwProjectile);
+            GameObject obj = this.tree.throwPool.Get(this.throwProjectile.name);
 
             if (obj == null)
                 return;
 
+            obj.SetActive(true);
             obj.transform.position = this.throwSource.position;
 
             if (obj.TryGetComponent(out Rigidbody rb))
                 rb.velocity = GetLaunch(obj, this.throwTarget.position, 10);
+
+            if (obj.TryGetComponent(out Projectile projectile))
+            {
+                projectile.ResetSelf();
+                projectile.Attribute(new Attack()
+                {
+                    Damage = 20,
+                    Type = AttackType.FIRE,
+                    TargetType = ProjectileTarget.ALL
+                });
+            }
         }
 
         public void ThrowEnded() => this.tree.ThrowEnded();

@@ -3,6 +3,7 @@ using BehaviourModule.Nodes.Generic;
 using BehaviourModule.Nodes.Controls;
 using UnityEngine;
 using BehaviourModule.Interfaces;
+using EntityModule;
 
 namespace BossesModule.Golem
 {
@@ -112,6 +113,8 @@ namespace BossesModule.Golem
         private AnimationNode throwAnim;
         public float throwMinRange;
         public float throwMaxRange;
+
+        public ObjectPool throwPool;
 
         private Node ThrowSequence()
         {

@@ -11,7 +11,6 @@ namespace SkyModule
         private float offset;
         public float factor;
 
-
         // Update is called once per frame
         void Update()
         {
