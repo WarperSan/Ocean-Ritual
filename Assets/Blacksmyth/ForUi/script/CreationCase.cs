@@ -1,17 +1,41 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+
 public class CreationCase : MonoBehaviour
 {
+    // Instance statique du singleton
+    private static CreationCase instance;
+
     string casePath = "BlacksmithUi/Ui";
     [SerializeField] GameObject column;  // Le parent qui contient les lignes (row)
     Dictionary<string, GameObject> data;  // Dictionnaire contenant les prefabs chargés
     [SerializeField] Gemcomponent Gem;
+
+    // Propriété pour accéder à l'instance
+    public static CreationCase Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                // Cherche l'instance dans la scène
+                instance = FindObjectOfType<CreationCase>();
+
+                // Si aucune instance n'existe, créer un nouvel objet
+                if (instance == null)
+                {
+                    GameObject singletonObject = new GameObject(typeof(CreationCase).Name);
+                    instance = singletonObject.AddComponent<CreationCase>();
+                }
+            }
+            return instance;
+        }
+    }
+
     private void Start()
     {
-        CreateUi(Gem.GemScript.form.GetForme());
+       // CreateUi(Gem.GemScript.form.GetForme());
     }
 
     // Méthode pour récupérer les ressources via le dictionnaire
@@ -19,7 +43,6 @@ public class CreationCase : MonoBehaviour
     {
         // Récupérer les objets GameObject à partir du dictionnaire
         data = DictionaryGenerator.DictionaryGameObjectGenerator(casePath);
-  
     }
 
     public void CreateUi(bool[,] grid)
@@ -41,8 +64,14 @@ public class CreationCase : MonoBehaviour
         GameObject rowPrefab = data["Row"];
         GameObject casePrefab = data["CaseBool"];
 
+        // Taille maximale de la colonne (ajustez si nécessaire)
+        float maxColumnWidth = 500f;
+        float maxColumnHeight = 500f;
+
         // Calculer l'échelle dynamique en fonction de la taille du tableau
-        float scalingFactor = 50f; // Taille fixe pour chaque case, ajustez si nécessaire
+        float scalingFactorX = maxColumnWidth / grid.GetLength(1);
+        float scalingFactorY = maxColumnHeight / grid.GetLength(0);
+        float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY); // Choisir le plus petit facteur d'échelle pour garder le ratio
 
         // Effacer les lignes précédentes
         foreach (Transform child in column.transform)
@@ -105,5 +134,4 @@ public class CreationCase : MonoBehaviour
 
         Debug.Log(sb.ToString()); // Afficher le résultat dans la console
     }
-
 }
