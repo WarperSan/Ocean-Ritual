@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour
 
     private void OnEnable()
     {
-        Inventory.Instance.UpdateItemListeUI();
+        Inventory.Instance.UpdateItemListeUI(this);
     }
 
     public void UpdateUI(List<ItemData> itemList)

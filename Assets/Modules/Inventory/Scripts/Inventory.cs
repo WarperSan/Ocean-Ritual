@@ -337,7 +337,7 @@ public class Inventory : MonoBehaviour
         Debug.Log(ItemList.Count);
 
         ////
-        UpdateItemListeUI();
+        UpdateItemListeUI(inventoryUI);
     }
 
     public List<ItemData> GetInventaire()
@@ -346,10 +346,10 @@ public class Inventory : MonoBehaviour
         return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
     }
 
-    public void UpdateItemListeUI()
+    public void UpdateItemListeUI(InventoryUI ui)
     {
-     //  CleanSlot();
-        inventoryUI.UpdateUI(ItemList);
+        //  CleanSlot();
+        ui.UpdateUI(ItemList);
     }
 
     public void SortItem(TypeOfSort SortType)
@@ -387,7 +387,7 @@ public class Inventory : MonoBehaviour
                 break;
         }
         UpdateListeComplementary();
-        UpdateItemListeUI();
+        UpdateItemListeUI(inventoryUI);
     }
 
     public void SortName()
