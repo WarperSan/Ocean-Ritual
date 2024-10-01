@@ -14,12 +14,7 @@ public class ChangeColorBasedOnBool : MonoBehaviour
 
     void Update()
     {
-        // Vous pouvez appeler UpdateColor() à chaque changement de "isActive" selon vos besoins
-        if (Input.GetKeyDown(KeyCode.Space)) // Exemple : Change le booléen avec la barre d'espace
-        {
-            isActive = !isActive;
-            UpdateColor();
-        }
+      
     }
 
     public void UpdateColor()
@@ -32,5 +27,10 @@ public class ChangeColorBasedOnBool : MonoBehaviour
         {
             image.color = inactiveColor; // Sinon, couleur grise
         }
+    }
+    public void SwapState()
+    {
+        isActive = !isActive;
+        UpdateColor();
     }
 }

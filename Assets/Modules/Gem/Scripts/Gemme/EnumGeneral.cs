@@ -255,10 +255,11 @@ public static class DictionaryGenerator
 
         // Load all GameObjects from the specified path
         GameObject[] TabRessourceObject = Resources.LoadAll<GameObject>(Path);
-
+     
         // Iterate through each loaded GameObject
         foreach (GameObject obj in TabRessourceObject)
         {
+            Debug.Log(obj);
             // Check if the dictionary does not already contain this name
             if (!Dictionary.ContainsKey(obj.name))
             {
