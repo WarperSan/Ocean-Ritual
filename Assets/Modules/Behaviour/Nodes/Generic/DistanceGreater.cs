@@ -6,7 +6,7 @@ namespace BehaviourModule.Nodes.Generic
     /// <summary>
     /// Node that succeeds when the target is at the given distance or more
     /// </summary>
-    public class DistanceGreater : DistanceNode
+    public sealed class DistanceGreater : DistanceNode
     {
         private readonly float _distance;
 

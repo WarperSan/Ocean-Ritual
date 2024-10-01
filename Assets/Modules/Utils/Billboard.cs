@@ -4,6 +4,8 @@ namespace UtilsModule
 {
     public class Billboard : MonoBehaviour
     {
+        public Vector3 modifier = Vector3.one;
+
         void LateUpdate()
         {
             Camera main = Camera.main;
@@ -13,7 +15,8 @@ namespace UtilsModule
 
             Vector3 target = main.transform.position;
             target.y = this.transform.position.y;
-            this.transform.LookAt(target);
+
+            this.transform.forward = Vector3.Scale(target - this.transform.position, this.modifier);
         }
     }
 }

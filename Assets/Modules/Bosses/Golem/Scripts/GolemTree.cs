@@ -1,18 +1,27 @@
 using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Generic;
-using BehaviourModule.Nodes.Operators;
+using BehaviourModule.Nodes.Controls;
 using UnityEngine;
+using BehaviourModule.Interfaces;
 
 namespace BossesModule.Golem
 {
-    public class GolemTree : BehaviourModule.Trees.Tree
+    public class GolemTree : MonoBehaviour, IVisualizable
     {
         public const string CURRENT_TARGET = "currentTarget";
         public const string WALK_SPEED = "walkSpeed";
 
         public Transform target;
 
-        protected override Node SetUpTree()
+        #region IVisualizable
+
+        private Node root;
+
+        /// <inheritdoc/>
+        public Node GetRoot() => this.root;
+
+        /// <inheritdoc/>
+        public void RebuildRoot()
         {
             Selector _root = new();
             _root += this.AttackSequence();
@@ -22,16 +31,23 @@ namespace BossesModule.Golem
             );
 
             _root.SetData(CURRENT_TARGET, this.target);
-            _root.SetData(WALK_SPEED, 0.01f);
+            _root.SetData(WALK_SPEED, 1f);
 
-            return _root.Alias("Root");
+            this.golemAnimationEvents.throwTarget = this.target;
+
+            this.root = _root.Alias("Root");
         }
+
+        #endregion
 
         #region Animation
 
         [Header("Animation")]
         [SerializeField]
         private Animator animator;
+
+        [SerializeField]
+        private GolemAnimationEvents golemAnimationEvents;
 
         #endregion
 
@@ -50,17 +66,15 @@ namespace BossesModule.Golem
         private Node AttackSequence()
         {
             Sequence attackSequence = new();
-            Selector attackList = new();
 
             attackSequence += this.AttackCooldown();
             attackSequence += this.CancelWalk();
-            attackList += this.ThrowSequence();
 
             //attackSequence += this.RageThrow();
             //attackSequence += this.Throw(CURRENT_TARGET, this.throwMinRange, this.throwMaxRange);
             //attackSequence += new CallbackNode(n => SetAttack(this.animator, GolemAttackFlags.None), NodeState.FAILURE);
 
-            attackSequence += attackList.Alias("Attacks");
+            attackSequence += this.ThrowSequence();
 
             Sequence attackReset = new();
             attackReset += this.SetAttackCooldown();
@@ -94,6 +108,7 @@ namespace BossesModule.Golem
 
         #region Throw
 
+        [Header("Throw")]
         private AnimationNode throwAnim;
         public float throwMinRange;
         public float throwMaxRange;
@@ -113,33 +128,6 @@ namespace BossesModule.Golem
         {
             this.throwAnim.OnEnded();
             this.SetAttack(GolemAttackFlags.None);
-        }
-
-        #endregion
-
-        #region Rage Throw
-
-        [Header("Rage Throw")]
-        private AnimationNode rageThrowAnim;
-
-        private Node RageThrow()
-        {
-            this.rageThrowAnim = new AnimationNode(() =>
-            {
-
-                //  => SetAttack(a, GolemAttackFlags.RageThrow)
-            });
-
-            Selector rageThrowSequence = new();
-            rageThrowSequence += this.rageThrowAnim;
-            rageThrowSequence += this.CancelWalk();
-
-            return rageThrowSequence.Alias("Rage Throw Sequence");
-        }
-
-        public void RageThrowEnded()
-        {
-
         }
 
         #endregion
@@ -179,6 +167,7 @@ namespace BossesModule.Golem
 
         #region Walk
 
+        [Header("Walk")]
         public float walkMinRange;
         public float walkMaxRange;
 
@@ -208,7 +197,7 @@ namespace BossesModule.Golem
             // Move self towards target
             float speed = n.GetData<float>(WALK_SPEED);
             Vector3 direction = (target.position - this.transform.position).normalized;
-            this.transform.Translate(direction * speed, Space.World);
+            this.transform.Translate(direction * speed * Time.deltaTime, Space.World);
             this.SetWalking(true);
 
             return NodeState.RUNNING;

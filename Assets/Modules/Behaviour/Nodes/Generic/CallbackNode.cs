@@ -9,19 +9,31 @@ namespace BehaviourModule.Nodes.Generic
 
         #region Constructor
 
-        public CallbackNode(System.Action<Node> callback, NodeState state) : this(n => {
+        public CallbackNode(System.Action<Node> callback, NodeState state) : this(n =>
+        {
             callback?.Invoke(n);
             return state;
-        }) {}
-        
+        }) => this.SetMethodName(callback.Method);
+
+        public CallbackNode(System.Func<NodeState> callback) : this(n => callback?.Invoke() ?? NodeState.FAILURE) 
+            => this.SetMethodName(callback.Method);
+
         public CallbackNode(System.Func<Node, NodeState> callback)
         {
             this.CallBack = callback;
+            this.SetMethodName(this.CallBack.Method);
         }
 
-        public CallbackNode(System.Func<NodeState> callback)
+        #endregion
+
+        #region Method Name
+
+        private string MethodName;
+
+        private void SetMethodName(System.Reflection.MethodInfo methodInfo)
         {
-            this.CallBack = n => callback?.Invoke() ?? NodeState.FAILURE;
+            string name = methodInfo.Name;
+            this.MethodName = name.StartsWith('<') ? "Lambda" : name + "()";
         }
 
         #endregion
@@ -32,12 +44,7 @@ namespace BehaviourModule.Nodes.Generic
         protected override NodeState OnEvaluate() => this.CallBack(this);
 
         /// <inheritdoc/>
-        public override string GetText()
-        {
-            string name = this.CallBack.Method.Name;
-
-            return name.StartsWith('<') ? "Lambda" : name + "()";
-        }
+        public override string GetText() => this.MethodName;
 
         #endregion
     }

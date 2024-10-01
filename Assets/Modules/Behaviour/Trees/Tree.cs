@@ -1,3 +1,4 @@
+using BehaviourModule.Interfaces;
 using BehaviourModule.Nodes;
 using UnityEngine;
 
@@ -7,16 +8,11 @@ namespace BehaviourModule.Trees
     /// List of nodes to create a behaviour
     /// </summary>
     // Notion from here: https://www.youtube.com/watch?v=aR6wt5BlE-E
-    public abstract class Tree : MonoBehaviour
+    public abstract class Tree : MonoBehaviour, IVisualizable
     {
         #region Tree
 
-        public Node root;
-
-        /// <summary>
-        /// Replaces the current tree with a new one
-        /// </summary>
-        public void RefreshTree() => this.root = this.SetUpTree();
+        private Node root;
 
         /// <summary>
         /// Called when this tree is being created
@@ -29,7 +25,7 @@ namespace BehaviourModule.Trees
         #region MonoBehaviour
 
         /// <inheritdoc cref="Start" />
-        private void Start() => this.RefreshTree();
+        private void Start() => this.RebuildRoot();
 
         /// <inheritdoc cref="Update" />
         private void Update()
@@ -46,6 +42,16 @@ namespace BehaviourModule.Trees
             this.root.Reset();
             this.root.Evaluate();
         }
+
+        #endregion
+
+        #region IVisualizable
+
+        /// <inheritdoc/>
+        public Node GetRoot() => this.root;
+
+        /// <inheritdoc/>
+        public void RebuildRoot() => this.root = this.SetUpTree();
 
         #endregion
     }

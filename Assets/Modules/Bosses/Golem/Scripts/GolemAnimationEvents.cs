@@ -1,4 +1,3 @@
-using ProjectilesModule.Interfaces;
 using UnityEngine;
 
 namespace BossesModule.Golem
@@ -47,44 +46,6 @@ namespace BossesModule.Golem
 
         #endregion
 
-        #region Rage Throw
-
-        [Header("Rage Throw")]
-        [SerializeField]
-        private GameObject[] rageThrowProjectiles;
-
-        [SerializeField]
-        private Transform[] rageThrowSources;
-
-        public void ExecuteRageThrow()
-        {
-            // If source is invalid, skip
-            if (this.rageThrowSources.Length == 0)
-                return;
-
-            // var obj = ObjectPools.ObjectPool.GetObject(this.rageThrowProjectiles[Random.Range(0, this.rageThrowProjectiles.Length)]);
-
-            // // If projectile invalid, skip
-            // if (obj == null)
-            //     return;
-
-            // obj.transform.position = this.rageThrowSources[Random.Range(0, this.rageThrowProjectiles.Length)].position;
-
-            // if (obj.TryGetComponent(out Projectiles.Projectile projectile) && obj.TryGetComponent(out Rigidbody rb))
-            // {
-            //     var angle = Random.Range(0, 360) * Mathf.Deg2Rad;
-            //     var distance = Random.Range(10, 50);
-            //     rb.velocity = projectile.GetLaunch(this.transform.position + (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * distance), Random.Range(10, 50));
-            //     var pos = Random.Range(0, 25) == 0
-            //         ? this.throwTarget.position
-            //         : this.transform.position + (new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * distance);
-
-            //     rb.velocity = projectile.GetLaunch(pos, Random.Range(10, 50));
-            // }
-        }
-
-        #endregion
-
         #region Spawn
 
         public void SetSpawning()
@@ -109,7 +70,16 @@ namespace BossesModule.Golem
             GameObject newProjectile = Instantiate(prefab);
             newProjectile.SetActive(true);
 
-            newProjectile.GetComponent<IDespawnable>()?.ResetSelf();
+            if (newProjectile.TryGetComponent(out LavaProjectile lavaProjectile))
+            {
+                lavaProjectile.ResetSelf();
+                lavaProjectile.Attribute(new EntityModule.Attack()
+                {
+                    Damage = 10,
+                    Type = EntityModule.AttackType.FIRE,
+                    TargetType = EntityModule.ProjectileTarget.PLAYER
+                });
+            }
 
             return newProjectile;
         }

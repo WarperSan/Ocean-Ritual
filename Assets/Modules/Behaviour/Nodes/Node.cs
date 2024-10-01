@@ -1,5 +1,5 @@
 using BehaviourModule.Nodes.Generic;
-using BehaviourModule.Nodes.Operators;
+using BehaviourModule.Nodes.Controls;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,17 +26,22 @@ namespace BehaviourModule.Nodes
         /// <summary>
         /// Stores the given value at the given key
         /// </summary>
-        public void SetData(string key, object value, bool inRoot = false)
+        public void SetData(string key, object value, uint levels = 0)
         {
-            // If set in root and has parent
-            if (inRoot && this.parent != null)
+            Node node = this;
+
+            while (levels > 0)
             {
-                this.parent.SetData(key, value, true);
+                // If root reached, skip
+                if (node.parent == null)
+                    break;
+
+                node = node.parent;
+                levels--;
             }
-            else
-            {
-                this.dataContext[key] = value;
-            }
+
+            // Set value inside current
+            node.dataContext[key] = value;
         }
 
         /// <summary>
@@ -63,25 +68,31 @@ namespace BehaviourModule.Nodes
             return default;
         }
 
-        // ReSharper disable once ConvertIfStatementToReturnStatement
         /// <summary>
         /// Removes the data associated with the given key
         /// </summary>
         /// <returns>The key was found</returns>
         public bool ClearData(string key)
         {
-            // If node has key, remove
-            if (this.dataContext.ContainsKey(key))
+            Node node = this;
+
+            while (node != null)
             {
-                this.dataContext.Remove(key);
-                return true;
+                // If has key, remove
+                if (this.dataContext.ContainsKey(key))
+                {
+                    this.dataContext.Remove(key);
+                    return true;
+                }
+
+                // If root reached, exit
+                if (node.parent == null)
+                    break;
+
+                node = node.parent;
             }
 
-            // Search in parent
-            if (this.parent == null)
-                return false;
-
-            return this.parent.ClearData(key);
+            return false;
         }
 
         #endregion
@@ -123,6 +134,7 @@ namespace BehaviourModule.Nodes
         private string _alias = null;
 
         public string GetAlias() => this._alias;
+        public virtual bool IsAutomaticallyHidden() => false;
 
         /// <summary>
         /// Shorthand to set the alias of this node
@@ -199,8 +211,8 @@ namespace BehaviourModule.Nodes
         /// <typeparam name="T">Type of the data</typeparam>
         /// <returns>Exits with <see cref="NodeState.SUCCESS"/> if the key exists, otherwise exits with <see cref="NodeState.FAILURE"></returns>
         public static Node Exists<T>(string key) => new CallbackNode(
-            n => n.GetData<T>(key) != null 
-            ? NodeState.SUCCESS 
+            n => n.GetData<T>(key) != null
+            ? NodeState.SUCCESS
             : NodeState.FAILURE
         ).Alias($"Check for '{key}'");
 
@@ -209,8 +221,8 @@ namespace BehaviourModule.Nodes
         /// </summary>
         /// <returns>Exits with <see cref="NodeState.SUCCESS"/> 50% of the time, otherwise exits with <see cref="NodeState.FAILURE"></returns>
         public static Node RandomBool() => new CallbackNode(
-            n => UnityEngine.Random.Range(0, 2) == 0 
-            ? NodeState.SUCCESS 
+            n => UnityEngine.Random.Range(0, 2) == 0
+            ? NodeState.SUCCESS
             : NodeState.FAILURE
         ).Alias("Random 50%");
 
