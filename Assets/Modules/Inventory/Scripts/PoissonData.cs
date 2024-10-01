@@ -1,3 +1,4 @@
+using FishingModule;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,4 +9,17 @@ using UnityEngine;
 public class PoissonData : ItemData
 {
    public string nom;
+
+   public PoissonData()
+   {
+
+   }
+
+   public PoissonData(FishSO fish, uint quantiter)
+   {
+      this.nom = fish.name;
+      this.quantiter = (int) quantiter;
+      this.quantiterMax = 10;
+      this.sprite = fish.Icon;
+   }
 }

@@ -33,16 +33,10 @@ namespace ControllerModule.Controllers
         /// <param name="controller">Controller to switch to</param>
         public static void SwitchTo(Controller controller)
         {
-            
             // If exists, switch out current
             if (ActiveController != null)
-            {
-                Debug.Log(ActiveController.tag);
-                
                 ActiveController.SwitchOut();
-            }
                 
-
             // Cancel if given not found
             if (controller == null)
                 return;

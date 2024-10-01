@@ -33,7 +33,7 @@ namespace ControllerModule.Controllers
                 item.velocity = Vector3.zero;
                 item.MovePosition(item.position + movement);
             }
-            
+
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace ControllerModule.Controllers
                 if (item == null)
                     continue;
                 item.velocity = Vector3.zero;
-                
+
                 item.MoveRotation(item.rotation * rotationItem);
             }
         }
@@ -60,11 +60,6 @@ namespace ControllerModule.Controllers
         private float turningSpeed = 1;
         private Vector2 direction;
 
-
-        
-
-
-
         /// <summary>
         /// Updates the rotation of the boat
         /// </summary>
@@ -75,9 +70,9 @@ namespace ControllerModule.Controllers
             if (this.direction.x == 0)
                 return;
 
-            var eulerAngleVelocity =new Vector3();
+            var eulerAngleVelocity = new Vector3();
 
-            //Désigne le sense de la rotation et la vitesse de rotation 
+            //Dï¿½signe le sense de la rotation et la vitesse de rotation 
             if (this.direction.x > 0)
             {
                 eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
@@ -89,10 +84,10 @@ namespace ControllerModule.Controllers
 
             // Rotation avec transform
             float amount = this.direction.x * this.turningSpeed;
-            
+
 
             // Rotation RB
-            var deltaRotation = Quaternion.Euler(eulerAngleVelocity*  Time.fixedDeltaTime);
+            var deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.fixedDeltaTime);
             _rb.MoveRotation(_rb.rotation * deltaRotation);
 
             //this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
@@ -105,7 +100,7 @@ namespace ControllerModule.Controllers
         [Header("Move")]
         [SerializeField, Min(0), Tooltip("Determines how fast the boat walks")]
         private float movementSpeed = 20;
-        
+
         [SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up")]
         private float movementAcceleration = 0.01f;
 
@@ -120,9 +115,13 @@ namespace ControllerModule.Controllers
 
         //For player movememnt correction
         private Vector3 movement;
-        public Vector3 MovementBoat { get{
+        public Vector3 MovementBoat
+        {
+            get
+            {
                 return movement;
-            } }
+            }
+        }
 
         /// <summary>
         /// Updates the movement of the boat
@@ -130,29 +129,29 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
-            
+
             float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
 
             // Lerp the current speed to the wanted speed
             this.currentSpeed = this.currentSpeed < speed
                 ? Mathf.Clamp(this.currentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.currentSpeed - this.movementDeceleration, speed, float.MaxValue);
-            
-            
+
+
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
             this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
-            
+
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
             movement = diff;
 
-            
+
             _rb.MovePosition(newPosition);
-            
+
             // Update Aboard
             //this.UpdateAboardPosition(diff);
         }
@@ -162,7 +161,7 @@ namespace ControllerModule.Controllers
         }
 
         public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
-       
+
         /// <summary>
         /// Gets the speed multiplier depending of the direction of the movement
         /// </summary>
@@ -190,7 +189,7 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-        
+
 
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
@@ -199,14 +198,14 @@ namespace ControllerModule.Controllers
             if (this.IsEnabled)
             {
                 //this.UpdateWheel(elapsed);
-                
+
             }
         }
 
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
-            
+
             this.UpdateMove(elapsed);
             this.UpdateTurn(elapsed);
 
@@ -233,35 +232,33 @@ namespace ControllerModule.Controllers
 
         #region MonoBehaviour
         [SerializeField]
-        
+
         /// <inheritdoc/>
-        private void OnTriggerEnter(Collider other) 
+        private void OnTriggerEnter(Collider other)
         {
-            
+            if (!other.CompareTag("Player"))
+                return;
+
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
                 this.aboardRbs.Add(rb);
-                
                 return;
             }
-            
-            
         }
 
         /// <inheritdoc/>
         private void OnTriggerExit(Collider other)
         {
-            
+            if (!other.CompareTag("Player"))
+                return;
+
             if (other.gameObject.TryGetComponent(out Rigidbody rb))
             {
                 other.transform.SetParent(null);
                 this.aboardRbs.Remove(rb);
                 return;
             }
-            
-
-            
         }
 
         #endregion

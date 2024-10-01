@@ -38,6 +38,7 @@ public class Inventaire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.InitiateListe();
         //AjouterPoissonsDeTest();
         //AjouterGemmesDeTest();
         //UpdateSousListe();

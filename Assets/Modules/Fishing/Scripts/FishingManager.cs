@@ -20,8 +20,8 @@ namespace FishingModule
 
             Dictionary<FishSO, float> fishes = Territory.Fishes(territories);
 
-            foreach (KeyValuePair<FishSO, float> item in fishes)
-                Debug.Log(item.Key.name + ": " + item.Value + "%");
+            //foreach (KeyValuePair<FishSO, float> item in fishes)
+            //    Debug.Log(item.Key.name + ": " + item.Value + "%");
 
             this.StartBuoy(Territory.Fishes(territories));
         }
@@ -30,13 +30,11 @@ namespace FishingModule
         {
             bool isCollected = this._buoy != null && this._buoy.isCollected;
 
+            // <Success>
             if (isCollected)
             {
-                // <Success>
-                Debug.Log("Player has succeed the fishing!");
-                Dictionary<FishSO, uint> fishes = this._buoy.GetFishCaught();
-                foreach (KeyValuePair<FishSO, uint> item in fishes)
-                    Debug.Log($"You caught x{item.Value} '{item.Key.DisplayName}'!");
+                foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
+                    Inventaire.Instance.AddItem(new PoissonData(fish.Key, fish.Value));
             }
             else
             {

@@ -15,7 +15,7 @@ namespace FishingModule
         public FishingManager manager;
 
         #region Target
-        
+
         private Transform target;
         private Vector3 startPosition;
 
@@ -77,7 +77,7 @@ namespace FishingModule
         #region MonoBehaviour
 
         /// <inheritdoc/>
-        private void Awake()
+        private void Start()
         {
             this.Buoy = this.GetComponent<FishingBuoy>();
             this.startPosition = this.Buoy.transform.position;
