@@ -1091,7 +1091,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8488282162877148584}
   m_HandleRect: {fileID: 4582932343254741439}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1323,6 +1323,7 @@ GameObject:
   - component: {fileID: 6283901322987064102}
   - component: {fileID: 1452363097933179278}
   - component: {fileID: 9021505828091235812}
+  - component: {fileID: 1659414572847645314}
   - component: {fileID: 2686079411821519203}
   - component: {fileID: 4604739862316055215}
   m_Layer: 30
@@ -1393,6 +1394,20 @@ MonoBehaviour:
   questsInProgress: []
   QuestComplet: []
   contentTransform: {fileID: 3590938369365116673}
+--- !u!114 &1659414572847645314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6119720136535215692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34454ec78ed780f4e86d196cfede7951, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeath: 100
+  boat: {fileID: 0}
 --- !u!54 &2686079411821519203
 Rigidbody:
   m_ObjectHideFlags: 0
