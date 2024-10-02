@@ -41,6 +41,7 @@ public class Inventory : MonoBehaviour
         //AddFishTest();
         //AddTestGemme();
         //UpdateListeComplementary();
+        InitiateList();
     }
 
     void AddTestGemme()

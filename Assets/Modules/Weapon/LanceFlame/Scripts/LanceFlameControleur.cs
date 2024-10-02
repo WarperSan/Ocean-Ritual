@@ -43,7 +43,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         SetCursorLock(true);
         Cursor.visible = false;
     }
-
+    
     /// <inheritdoc/>
     protected override void OnSwitchOut()
     {
