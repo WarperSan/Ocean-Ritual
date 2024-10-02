@@ -55,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   X: 0
   Y: 0
+  scriptChangeColor: {fileID: 8074921061065328958}
 --- !u!114 &6757909000328628454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +87,7 @@ MonoBehaviour:
   image: {fileID: 4772336855680820437}
   activeColor: {r: 0, g: 1, b: 0, a: 1}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  start: 1
 --- !u!222 &7663395929121869149
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -164,13 +166,13 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 4772336855680820437}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8074921061065328958}
-        m_TargetAssemblyTypeName: ChangeColorBasedOnBool, Assembly-CSharp
-        m_MethodName: SwapState
+      - m_Target: {fileID: 8705585598344351709}
+        m_TargetAssemblyTypeName: Position, Assembly-CSharp
+        m_MethodName: GivePosition
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

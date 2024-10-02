@@ -9,7 +9,7 @@ public class ChangeColorBasedOnBool : MonoBehaviour
     // Couleurs pour le booléen true et false
     public Color activeColor = Color.green;
     public Color inactiveColor = Color.gray;
-
+    public bool start = true;
    
 
     void Update()
@@ -30,7 +30,13 @@ public class ChangeColorBasedOnBool : MonoBehaviour
     }
     public void SwapState()
     {
-        isActive = !isActive;
-        UpdateColor();
+        if (TestGemme.Instance.canAddNewCase|| start|| isActive)
+        {
+            start = false;
+            isActive = !isActive;
+            UpdateColor();
+        }
+        
     }
+
 }

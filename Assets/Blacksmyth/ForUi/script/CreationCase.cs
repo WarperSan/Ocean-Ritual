@@ -53,69 +53,64 @@ public class CreationCase : MonoBehaviour
         }
         ShowTab(grid);
 
-        // Vérifier que le dictionnaire contient bien les prefabs requis
         if (!data.ContainsKey("Row") || !data.ContainsKey("CaseBool"))
         {
             Debug.LogError("Row ou CaseBool manquant dans le dictionnaire !");
             return;
         }
 
-        // Récupérer les prefabs depuis le dictionnaire
         GameObject rowPrefab = data["Row"];
         GameObject casePrefab = data["CaseBool"];
 
-        // Taille maximale de la colonne (ajustez si nécessaire)
         float maxColumnWidth = 500f;
         float maxColumnHeight = 500f;
 
-        // Calculer l'échelle dynamique en fonction de la taille du tableau
         float scalingFactorX = maxColumnWidth / grid.GetLength(1);
         float scalingFactorY = maxColumnHeight / grid.GetLength(0);
-        float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY); // Choisir le plus petit facteur d'échelle pour garder le ratio
+        float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY);
 
-        // Effacer les lignes précédentes
         foreach (Transform child in column.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // Ajuster la taille de la colonne
         RectTransform columnRect = column.GetComponent<RectTransform>();
         columnRect.sizeDelta = new Vector2(
             grid.GetLength(1) * scalingFactor,
             grid.GetLength(0) * scalingFactor
         );
 
-        // Parcourir les lignes en bas en haut
         for (int i = 0; i < grid.GetLength(0); i++) // Parcours normal des lignes
         {
-            // Instancier une ligne (row) et ajuster sa taille
             GameObject rowInstance = Instantiate(rowPrefab, column.transform);
             RectTransform rowRect = rowInstance.GetComponent<RectTransform>();
             rowRect.sizeDelta = new Vector2(grid.GetLength(1) * scalingFactor, scalingFactor);
-            rowRect.anchoredPosition = new Vector2(0, i * scalingFactor); // Positionner la ligne
+            rowRect.anchoredPosition = new Vector2(0, i * scalingFactor);
 
-            // Parcourir les colonnes
-            for (int j = 0; j < grid.GetLength(1); j++) // Parcours normal des colonnes
+            for (int j = 0; j < grid.GetLength(1); j++) // Parcours des colonnes
             {
-                // Instancier une case et ajuster sa taille
                 GameObject caseInstance = Instantiate(casePrefab, rowInstance.transform);
                 RectTransform caseRect = caseInstance.GetComponent<RectTransform>();
                 caseRect.sizeDelta = new Vector2(scalingFactor, scalingFactor);
-                caseRect.anchoredPosition = new Vector2(j * scalingFactor, 0); // Positionner la case
+                caseRect.anchoredPosition = new Vector2(j * scalingFactor, 0);
+
+                // Récupérer le script Position et assigner X et Y
+                Position posScript = caseInstance.GetComponent<Position>();
+                if (posScript != null)
+                {
+                    posScript.SetPoition(j, i);  // Ici, on attribue les coordonnées de la case
+                }
 
                 // Récupérer le script pour changer l'état de la case
                 ChangeColorBasedOnBool CasScript = caseInstance.GetComponent<ChangeColorBasedOnBool>();
 
-                // Changer la couleur ou l'état de la case selon la valeur dans le tableau
-                if (grid[j, grid.GetLength(0) - 1 - i])  // Utiliser j pour la colonne et (height - 1 - i) pour l'affichage
+                if (grid[j, grid.GetLength(0) - 1 - i])
                 {
-                    CasScript.SwapState();  // Appeler la méthode pour modifier l'état ou la couleur
+                    CasScript.SwapState();
                 }
             }
         }
 
-        // Centrer le tableau dans le parent (optionnel si tout est déjà positionné correctement)
         columnRect.anchoredPosition = Vector2.zero;
     }
 
