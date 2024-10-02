@@ -11,7 +11,7 @@ public static class GemHelper
     public static int modifiedSpotCost = 5;
     public static int missingSpotCost = 10;
 
-    public static (int cost, int modifiedSpot, int missingSpot) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm, int lvlGem)
+    public static (int cost, int modifiedSpot, int missingSpot,bool CasseOnlytrue) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm, int lvlGem)
     {
         // Vérification si la liste modifiée est plus grande que l'originale
         if (modifiedForm.Count > formOriginal.Count)
@@ -53,11 +53,12 @@ public static class GemHelper
         {
             throw new ArgumentException("Le nombre de 'true' dans la liste modifiée ne peut pas être supérieur à celui de la liste originale.");
         }
+        bool CasseOnlytrue = modifiedTrueCount == 1 || originalTrueCount == 1;
         missingSpot = missingSpot - modifiedSpot;
         // Calcul du coût total
         int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * missingSpotCost ));
 
-        return (totalCost, modifiedSpot, missingSpot);
+        return (totalCost, modifiedSpot, missingSpot, CasseOnlytrue);
     }
 
     //ex
