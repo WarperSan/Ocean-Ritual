@@ -16,17 +16,26 @@ public class Position : MonoBehaviour
     {
         if (TestBlackSmith.Instance.canAddNewCase)
         {
-            Debug.Log("passe 1");
-            scriptChangeColor.SwapState();
-            TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+           if (!TestBlackSmith.Instance.CasseOnlytrue)
+            {
+                scriptChangeColor.SwapState();
+                TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+            }
+          else if(!scriptChangeColor.isActive)
+            {
+                scriptChangeColor.SwapState();
+                TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+            }
            
         }
         else if (!TestBlackSmith.Instance.canAddNewCase && scriptChangeColor.isActive)
         {
-            Debug.Log("passe 2");
-            scriptChangeColor.SwapState();
-            TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
-           
+            if (!TestBlackSmith.Instance.CasseOnlytrue)
+            {
+
+                scriptChangeColor.SwapState();
+                TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+            }
         }
     }
 }

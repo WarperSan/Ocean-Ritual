@@ -14,6 +14,7 @@ public class TestBlackSmith : MonoBehaviour
     [SerializeField] TextMeshProUGUI MissingCase;
     [SerializeField] TextMeshProUGUI ModifiedCase;
     [SerializeField] public bool canAddNewCase;
+   public  bool CasseOnlytrue;
     // Propriété pour accéder à l'instance
     public static TestBlackSmith Instance
     {
@@ -85,16 +86,16 @@ public class TestBlackSmith : MonoBehaviour
         }
 
         // Obtenir les informations à partir des listes de formes
-        (int totalCost, int modifiedSpot, int missingSpot) = GemHelper.GetInformationAboutForm(
+        (int totalCost, int modifiedSpot, int missingSpot,bool CasseOnlytrue) = GemHelper.GetInformationAboutForm(
             GemData.Shape.flatForme,
             TemporaryGemData.Shape.flatForme,
             GemData.LVL
         );
-
+        this.CasseOnlytrue = CasseOnlytrue;
         // Mise à jour des textes avec les nouvelles valeurs, tout en sauvegardant les textes originaux
         cost.text = originalTexts[0] + " " + totalCost.ToString();             // Ajoute la valeur originale avec la nouvelle valeur du coût
         MissingCase.text = originalTexts[1] + " " + missingSpot.ToString();    // Ajoute la valeur originale avec le nombre de cases manquantes
-        ModifiedCase.text = originalTexts[2] + " " + modifiedSpot.ToString();  // Ajoute la valeur originale avec le nombre de cases modifiées
+        ModifiedCase.text = originalTexts[2] + " " + modifiedSpot.ToString();  // Ajoute        nale avec le nombre de cases modifiées
 
         // Si aucune case n'est manquante, on désactive la possibilité d'ajouter de nouvelles cases
         canAddNewCase = missingSpot > 0;
