@@ -14,7 +14,7 @@ public class EquipmentTest : MonoBehaviour,Equipment
     [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
     [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
     [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
-    public ComponentGBN componentGBN => throw new System.NotImplementedException();
+    public componentGBN componentGBN => throw new System.NotImplementedException();
 
     [SerializeField]
     private int forgePercentage;

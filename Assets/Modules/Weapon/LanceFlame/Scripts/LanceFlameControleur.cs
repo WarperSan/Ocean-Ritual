@@ -15,7 +15,7 @@ public enum LanceFlameModes
     ICE
 };
 
-public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable, IMultiMode<LanceFlameModes>
+public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes>
 {
     #region Controller
 
@@ -234,7 +234,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private ComponentGBN ComponantGBN;
+    [SerializeField] private componentGBN ComponantGBN;
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
@@ -251,7 +251,13 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
 
-    public ComponentGBN ComposnantGBN => ComponantGBN;
+    public componentGBN ComposnantGBN => ComponantGBN;
+
+    public componentGBN componentGBN => throw new System.NotImplementedException();
+
+    public int CostToUpgrade { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int ForgePercentage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int LvlOfEquipment { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     /// <inheritdoc/>
     public void UpdateStat()
@@ -324,6 +330,11 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
 
         bullet.transform.SetPositionAndRotation(position, rotation);
     }
+
+    public void UpgradeEquipment() => throw new System.NotImplementedException();
+    public int GetCostForUpgrade() => throw new System.NotImplementedException();
+    public UpgradeStats GetStatToUpgradeAndCost() => throw new System.NotImplementedException();
+    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade) => throw new System.NotImplementedException();
 
     #endregion
 
