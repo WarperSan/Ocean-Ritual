@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using static EnumGeneral;
 
-[CustomEditor(typeof(ComponentGBN))]
+[CustomEditor(typeof(componentGBN))]
 [CanEditMultipleObjects]
 public class GBNeditor : UnityEditor.Editor
 {
@@ -115,7 +115,7 @@ public class GBNeditor : UnityEditor.Editor
 
     private void ResetLists()
     {
-        var componentGBN = (ComponentGBN)target;
+        var componentGBN = (componentGBN)target;
         componentGBN.GBNScript.ResetLists();
     }
 }

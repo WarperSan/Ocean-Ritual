@@ -459,7 +459,7 @@ public class Inventory : MonoBehaviour
                                              .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les fish par name
-        Dictionary<string, (int quantiteTotale, int quantityMax)> fusionPoissons = new Dictionary<string, (int, int)>();
+        Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
 
         foreach (var poisson in fish)
         {
@@ -482,7 +482,7 @@ public class Inventory : MonoBehaviour
         {
             string nomPoisson = entry.Key;
             int quantiteTotale = entry.Value.quantiteTotale;
-            int quantityMax = entry.Value.quantityMax;
+            int quantiterMax = entry.Value.quantiterMax;
 
             // On répartit les fish en respectant la quantité maximale propre à chaque fish
             while (quantiteTotale > 0)
@@ -490,8 +490,8 @@ public class Inventory : MonoBehaviour
                 FishData nouveauPoisson = new FishData
                 {
                     name = nomPoisson,
-                    quantity = Math.Min(quantityMax, quantiteTotale), // Utilisation de la valeur quantityMax propre à ce fish
-                    quantityMax = quantityMax
+                    quantity = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantityMax propre à ce fish
+                    quantityMax = quantiterMax
                 };
                 poissonsFusionnes.Add(nouveauPoisson);
                 quantiteTotale -= nouveauPoisson.quantity;

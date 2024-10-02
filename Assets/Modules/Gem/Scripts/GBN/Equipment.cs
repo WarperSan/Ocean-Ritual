@@ -8,7 +8,7 @@ using static EnumGeneral;
 
 public interface Equipment : Forgeable
 {
-   ComponentGBN componentGBN { get; }
+   componentGBN componentGBN { get; }
    
 
     public void UpdateStat();

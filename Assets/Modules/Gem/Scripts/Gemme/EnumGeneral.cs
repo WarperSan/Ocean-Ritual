@@ -94,8 +94,6 @@ static public class EnumGeneral
 }
 //
 [System.Serializable]
-//TypeQuantity
-
 public class TypeQuantity<TEnum>
 {
     public TEnum Type;
@@ -152,7 +150,7 @@ public class UpgradeStats
 }
 
 
-//FormBool
+
 [Serializable]
 public class FormBool
 {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComponentGBN : MonoBehaviour
+public class componentGBN : MonoBehaviour
 {
     [SerializeField] public GBN GBNScript = new();
     // Start is called before the first frame update

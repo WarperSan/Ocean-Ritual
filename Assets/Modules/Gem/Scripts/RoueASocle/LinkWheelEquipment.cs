@@ -5,7 +5,7 @@ using UnityEngine;
 public class LinkWheelEquipment : MonoBehaviour
 {
 
-    [SerializeField] ComponentGBN equipment;
+    [SerializeField] componentGBN equipment;
     [SerializeField] List<GameObject> PlacementPoint;
     [SerializeField] float SizeBase = 1;
     [SerializeField] float rotation = 0;
