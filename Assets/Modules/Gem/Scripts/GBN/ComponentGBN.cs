@@ -2,25 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComponantGBN : MonoBehaviour
+public class ComponentGBN : MonoBehaviour
 {
     [SerializeField] public GBN GBNScript = new();
     // Start is called before the first frame update
 
 
 
-    public void GenereSocle()
+    public void GenerationSocle()
     {
-        foreach (ComponantPowerGemmeObject socle in GBNScript.SocleListe)
+        foreach (componentPowerGemObject socle in GBNScript.SocleListe)
         {
             socle.Generateinitiate();
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
+  
     
 }

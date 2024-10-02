@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GemmeGrid : MonoBehaviour
@@ -8,7 +6,7 @@ public class GemmeGrid : MonoBehaviour
 
     [SerializeField] public int width;
     [SerializeField] public int height;
-    [SerializeField] public bool[,] tableau;
+    [SerializeField] public bool[,] Grid;
 
     #endregion
 
@@ -24,10 +22,10 @@ public class GemmeGrid : MonoBehaviour
 
     #region Initialization
 
-    // Initializes the tableau with the specified width and height
+    // Initializes the Grid with the specified width and height
     public void InitializeTab()
     {
-        tableau = new bool[width, height];
+        Grid = new bool[width, height];
     }
 
     #endregion
@@ -35,23 +33,23 @@ public class GemmeGrid : MonoBehaviour
     #region Object Placement
 
     //Checks if an object can be placed at the given coordinates
-    public bool CanPlaceObject(int x, int y, bool[,] forme)
+    public bool CanPlaceObject(int x, int y, bool[,] form)
     {
-        int largeurForme = forme.GetLength(0);
-        int hauteurForme = forme.GetLength(1);
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
-        // Assuming largeurForme and hauteurForme are always odd
-        int centreX = largeurForme / 2;
-        int centreY = hauteurForme / 2;
+        // Assuming width and height are always odd
+        int centerX = width / 2;
+        int centerY = height / 2;
 
-        for (int i = 0; i < largeurForme; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < hauteurForme; j++)
+            for (int j = 0; j < height; j++)
             {
-                int gridX = x + (i - centreX);
-                int gridY = y + (j - centreY);
+                int gridX = x + (i - centerX);
+                int gridY = y + (j - centerY);
 
-                if (forme[i, j] && (gridX < 0 || gridY < 0 || gridX >= width || gridY >= height || tableau[gridX, gridY]))
+                if (form[i, j] && (gridX < 0 || gridY < 0 || gridX >= this.width || gridY >= this.height || this.Grid[gridX, gridY]))
                 {
                     return false;
                 }
@@ -61,25 +59,25 @@ public class GemmeGrid : MonoBehaviour
     }
 
     // Places an object at the given coordinates if possible
-    public bool PlaceObject(int x, int y, bool[,] forme)
+    public bool PlaceObject(int x, int y, bool[,] form)
     {
-        if (CanPlaceObject(x, y, forme))
+        if (CanPlaceObject(x, y, form))
         {
-            int largeurForme = forme.GetLength(0);
-            int hauteurForme = forme.GetLength(1);
+            int largeurForme = form.GetLength(0);
+            int height = form.GetLength(1);
 
-                int centreX = largeurForme / 2;
-                int centreY = hauteurForme / 2;
+                int centerX = largeurForme / 2;
+                int centerY = height / 2;
 
             for (int i = 0; i < largeurForme; i++)
             {
-                for (int j = 0; j < hauteurForme; j++)
+                for (int j = 0; j < height; j++)
                 {
-                    if (forme[i, j])
+                    if (form[i, j])
                     {
-                        int gridX = x + (i - centreX);
-                        int gridY = y + (j - centreY);
-                        tableau[gridX, gridY] = true;
+                        int gridX = x + (i - centerX);
+                        int gridY = y + (j - centerY);
+                        Grid[gridX, gridY] = true;
                     }
                 }
             }
@@ -87,64 +85,64 @@ public class GemmeGrid : MonoBehaviour
         }
         return false;
     }
-    private void RemoveObject(int x, int y, bool[,] forme)
+    private void RemoveObject(int x, int y, bool[,] form)
     {
-        Debug.Log(forme);
-        int largeurForme = forme.GetLength(0);
-        int hauteurForme = forme.GetLength(1);
+        
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
-        int centreX = largeurForme / 2;
-        int centreY = hauteurForme / 2;
+        int centerX = width / 2;
+        int centerY = height / 2;
 
-        for (int i = 0; i < largeurForme; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < hauteurForme; j++)
+            for (int j = 0; j < height; j++)
             {
-                if (forme[i, j])
+                if (form[i, j])
                 {
-                    int gridX = x + (i - centreX);
-                    int gridY = y + (j - centreY);
-                    tableau[gridX, gridY] = false;
+                    int gridX = x + (i - centerX);
+                    int gridY = y + (j - centerY);
+                    Grid[gridX, gridY] = false;
                 }
             }
         }
     }
 
     // Updates the grid with the new object placement
-    private void UpdateGrid(int x, int y, bool[,] forme)
+    private void UpdateGrid(int x, int y, bool[,] form)
     {
-        int largeurForme = forme.GetLength(0);
-        int hauteurForme = forme.GetLength(1);
+        int width = form.GetLength(0);
+        int height = form.GetLength(1);
 
-        int centreX = largeurForme / 2;
-        int centreY = hauteurForme / 2;
+        int centerX = width / 2;
+        int centerY = height / 2;
 
-        for (int i = 0; i < largeurForme; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < hauteurForme; j++)
+            for (int j = 0; j < height; j++)
             {
-                if (forme[i, j])
+                if (form[i, j])
                 {
-                    int gridX = x + (i - centreX);
-                    int gridY = y + (j - centreY);
+                    int gridX = x + (i - centerX);
+                    int gridY = y + (j - centerY);
                   
                   
-                    tableau[gridX, gridY] = true;
+                    Grid[gridX, gridY] = true;
                 }
             }
         }
     }
     // Attempts to place an object on the grid and updates the grid accordingly
-    public bool TryPlaceObjectOnGrid(int x, int y, bool[,] forme, Gemme gemmeToPlace, bool[,] formBoolPrincipal)
+    public bool TryPlaceObjectOnGrid(int x, int y, bool[,] form, Gem gemmeToPlace, bool[,] formBoolPrincipal)
     {
-        // Find the previous position of the gemme and remove it
+        // Find the previous position of the gem and remove it
         RemoveObject(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
 
-        if (CanPlaceObject(x, y, forme))
+        if (CanPlaceObject(x, y, form))
         {
-            UpdateGrid(x, y, forme);
+            UpdateGrid(x, y, form);
 
-            // Update the gemme's position
+            // Update the gem's position
             gemmeToPlace.PositionX = x;
             gemmeToPlace.PositionZ = y;
 
@@ -152,7 +150,7 @@ public class GemmeGrid : MonoBehaviour
         }
         else
         {
-            // Re-add the old gemme if placement fails
+            // Re-add the old gem if placement fails
             UpdateGrid(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
             return false;
         }

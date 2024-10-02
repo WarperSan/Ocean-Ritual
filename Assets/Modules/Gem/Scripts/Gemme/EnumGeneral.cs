@@ -9,9 +9,9 @@ static public class EnumGeneral
      // Définir un dictionnaire pour associer TypeOfSocle à une énumération spécifique
     public static Dictionary<TypeOfSocle, Type> TypeDeSocleToEnum = new()
     {
-        { TypeOfSocle.Arme, typeof(TypeWeapon) },
+        { TypeOfSocle.Weapon, typeof(TypeWeapon) },
         { TypeOfSocle.Bateau, typeof(TypeBoat) },
-        { TypeOfSocle.Filet, typeof(TypeNet) }
+        { TypeOfSocle.Net, typeof(TypeNet) }
     };
 
     // Méthode pour obtenir l'énumération associée à un TypeOfSocle
@@ -29,9 +29,9 @@ static public class EnumGeneral
     }
     public enum TypeOfSocle
     {
-        Arme,
+        Weapon,
         Bateau,
-        Filet
+        Net
     }
 
     // Énumération pour les types d'armes
@@ -94,6 +94,8 @@ static public class EnumGeneral
 }
 //
 [System.Serializable]
+//TypeQuantite
+
 public class TypeQuantite<TEnum>
 {
     public TEnum Type;
@@ -106,16 +108,59 @@ public class TypeQuantite<TEnum>
     }
 }
 
+[System.Serializable]
+public class UpgradeNameData
+{
+    public int quantity;
+    public string name;
+
+    // Constructeur par défaut
+    public UpgradeNameData()
+    {
+        // Valeurs par défaut si nécessaire
+        quantity = 0;
+        name = string.Empty;
+    }
+
+    public UpgradeNameData(int quantity, string name)
+    {
+        this.quantity = quantity;
+        this.name = name;
+    }
+}
+
+[System.Serializable]
+public class UpgradeStats
+{
+    public List<UpgradeNameData> baseStats = new List<UpgradeNameData>();
+    public List<UpgradeNameData> previewStats = new List<UpgradeNameData>();
+    public int upgradeCost;
+
+    // Constructeur par défaut
+    public UpgradeStats()
+    {
+        // Valeurs par défaut si nécessaire
+        upgradeCost = 0;
+    }
+
+    public UpgradeStats(List<UpgradeNameData> baseStats, List<UpgradeNameData> previewStats, int upgradeCost)
+    {
+        this.baseStats = baseStats;
+        this.previewStats = previewStats;
+        this.upgradeCost = upgradeCost;
+    }
+}
 
 
+//FormBool
 [Serializable]
-public class FormeBool
+public class FormBool
 {
     public int width;
     public int height;
     public List<bool> flatForme;
 
-    public FormeBool(bool[,] forme, int width, int height)
+    public FormBool(bool[,] form, int width, int height)
     {
         this.width = width;
         this.height = height;
@@ -124,55 +169,59 @@ public class FormeBool
         {
             for (int i = 0; i < width; i++)
             {
-                flatForme.Add(forme[i, j]);
+                flatForme.Add(form[i, j]);
             }
         }
     }
-
+    
+    public FormBool(List<bool> form, int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+        this.flatForme = form;
+        
+    }
     public bool[,] GetForme()
     {
-        bool[,] forme = new bool[width, height];
+        bool[,] form = new bool[width, height];
         for (int j = 0; j < height; j++)
         {
             for (int i = 0; i < width; i++)
             {
                 int flatIndex = (height - 1 - j) * width + i; // Reverse rows, but keep columns order
-                forme[i, j] = flatForme[flatIndex];
+                form[i, j] = flatForme[flatIndex];
             }
         }
-        return forme;
+        return form;
     }
-    public bool[,] Rotate(bool[,] forme, int angle)
+    public bool[,] Rotate(bool[,] form, int angle)
     {
-        bool[,] rotatedForme = forme;
+        bool[,] rotatedForme = form;
 
         // Normalize the angle to one of the expected values (90, 180, -90)
         angle = (angle % 360 + 360) % 360;
 
         if (angle == 90)
         {
-            RotateForme90(); // Rotate 90° clockwise
+            RotateForm90(); // Rotate 90° clockwise
         }
         else if (angle == 180)
         {
-            RotateForme90();
-             RotateForme90(); // Rotate twice for 180°
+            RotateForm90();
+             RotateForm90(); // Rotate twice for 180°
         }
         else if (angle == -90 || angle == 270)
         {
-            RotateForme90();
-            RotateForme90();
-            RotateForme90(); // Rotate three times for -90° (270° clockwise)
+            RotateForm90();
+            RotateForm90();
+            RotateForm90(); // Rotate three times for -90° (270° clockwise)
         }
 
         return rotatedForme;
     }
 
-    private void RotateMinus90(bool[,] forme)
-    {
-        
-    }
-    private void RotateForme90()
+
+    private void RotateForm90()
     {
         int size = (int)Mathf.Round(Mathf.Sqrt(flatForme.Count));
         List<bool> rotated = new List<bool>(new bool[size * size]);
@@ -192,10 +241,7 @@ public class FormeBool
         flatForme = rotated;
     }
 
-    private void Rotate180(bool[,] forme)
-    {
-       
-    }
+  
 }
 
 
@@ -211,10 +257,11 @@ public static class DictionaryGenerator
 
         // Load all GameObjects from the specified path
         GameObject[] TabRessourceObject = Resources.LoadAll<GameObject>(Path);
-
+     
         // Iterate through each loaded GameObject
         foreach (GameObject obj in TabRessourceObject)
         {
+            
             // Check if the dictionary does not already contain this name
             if (!Dictionary.ContainsKey(obj.name))
             {

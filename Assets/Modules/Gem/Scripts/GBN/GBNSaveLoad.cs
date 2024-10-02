@@ -9,7 +9,7 @@ using UnityEngine;
 public class GBNSaveLoad: MonoBehaviour
 {
 //    [SerializeField] private ListeGBNData dataGBN = new();
-//    [SerializeField] private List<ComponantGBN> ListGBN = new();
+//    [SerializeField] private List<GBNComponent> ListGBN = new();
 
 //    #region Save and Load
 //    /// <summary>
@@ -21,13 +21,13 @@ public class GBNSaveLoad: MonoBehaviour
 //        dataGBN = data.gbnData;
 
 //        // Convert dataGBN to ListGBN
-//        ListGBN = new List<ComponantGBN>();
+//        ListGBN = new List<GBNComponent>();
 //        foreach (GBNData gbnData in dataGBN.ListdataGBN)
 //        {
-//            GameObject obj = new GameObject("ComponantGBN");
-//            ComponantGBN componantGBN = obj.AddComponent<ComponantGBN>();
-//            componantGBN.GBNScript = ConvertFromGBNData(gbnData);
-//            ListGBN.Add(componantGBN);
+//            GameObject obj = new GameObject("GBNComponent");
+//            GBNComponent GBNComponent = obj.AddComponent<GBNComponent>();
+//            GBNComponent.GBNScript = ConvertFromGBNData(gbnData);
+//            ListGBN.Add(GBNComponent);
 //        }
 //    }
 
@@ -41,9 +41,9 @@ public class GBNSaveLoad: MonoBehaviour
 //        //// Convert ListGBN to dataGBN
 //        //dataGBN.ListdataGBN = new List<GBNData>();
 //        //Debug.Log(" il y a " + ListGBN.Count + " object dans la Lastion ListGbN");
-//        //foreach (ComponantGBN componantGBN in ListGBN)
+//        //foreach (GBNComponent GBNComponent in ListGBN)
 //        //{
-//        //    dataGBN.ListdataGBN.Add(ConvertToGBNData(componantGBN.GBNScript));
+//        //    dataGBN.ListdataGBN.Add(ConvertToGBNData(GBNComponent.GBNScript));
 //        //}
 //        //data.test = 3;
 //        //data.gbnData = dataGBN;
@@ -68,13 +68,13 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            Name = gbn.Name,
 //            typeOfSocle = gbn.typeSocle,
-//            typeArme = gbn.typeArme,
+//            typeWeapon = gbn.typeWeapon,
 //            typeBoat = gbn.typeBoat,
-//            typeFilet = gbn.typeFilet,
+//            typeNet = gbn.typeNet,
 //            ListPowerGemmeObjectData = new List<PowerGemmeObjectData>()
 //        };
       
-//        foreach (PowerGemmeObject powerGemmeObject in gbn.PowerGemmeObjectListe)
+//        foreach (PowerGemObject powerGemmeObject in gbn.PowerGemObjectListe)
 //        {
             
 //            gbnData.ListPowerGemmeObjectData.Add(ConvertToPowerGemmeObjectData(powerGemmeObject));
@@ -83,49 +83,49 @@ public class GBNSaveLoad: MonoBehaviour
 //        return gbnData;
 //    }
 //    /// <summary>
-//    ///  convert PowerGemmeObject to PowerGemmeObjectData
+//    ///  convert PowerGemObject to PowerGemmeObjectData
 //    /// </summary>
 //    /// <param name="powerGemmeObject"></param>
 //    /// <returns></returns>
-//    private PowerGemmeObjectData ConvertToPowerGemmeObjectData(PowerGemmeObject powerGemmeObject)
+//    private PowerGemmeObjectData ConvertToPowerGemmeObjectData(PowerGemObject powerGemmeObject)
 //    {
 //        var powerGemmeObjectData = new PowerGemmeObjectData
 //        {
 //            GridGemme = ConvertToGridData(powerGemmeObject.GridGemme),
-//            ListGemmeData = new List<GemmeData>()
+//            ListGemmeData = new List<GemData>()
 //        };
-//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gemme");
+//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gem");
 
-//        foreach (var gemme in powerGemmeObject.GemmeList)
+//        foreach (var gem in powerGemmeObject.GemmeList)
 //        {
-//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gemme));
+//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gem));
 //        }
 
 //        return powerGemmeObjectData;
 //    }
 //    /// <summary>
-//    ///  convert gemme to gemme data
+//    ///  convert gem to gem data
 //    /// </summary>
-//    /// <param name="gemme"></param>
+//    /// <param name="gem"></param>
 //    /// <returns></returns>
-//    private GemmeData ConvertToGemmeData(Gemme gemme)
+//    private GemData ConvertToGemmeData(Gem gem)
 //    {
-//        return new GemmeData
+//        return new GemData
 //        {
-//            PositionX = gemme.PositionX,
-//            PositionZ = gemme.PositionZ,
-//            forme = gemme.forme,
-//            GemmeColorsName = gemme.GemmeColorsName,
-//            LVL = gemme.LVL,
-//            typeArme = gemme.typeArme,
-//            typeBoat = gemme.typeBoat,
-//            typeFilet = gemme.typeFilet
+//            PositionX = gem.PositionX,
+//            PositionZ = gem.PositionZ,
+//            Shape = gem.Shape,
+//            GemColorsName = gem.GemColorsName,
+//            LVL = gem.LVL,
+//            typeWeapon = gem.typeWeapon,
+//            typeBoat = gem.typeBoat,
+//            typeNet = gem.typeNet
 //        };
 //    }
 //    /// <summary>
 //    ///  convert GemmeGrid to Grid data
 //    /// </summary>
-//    /// <param name="gemme"></param>
+//    /// <param name="gem"></param>
 //    /// <returns></returns>
 //    private GridtData ConvertToGridData(GemmeGrid gridGemme)
 //    {
@@ -133,7 +133,7 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            width = gridGemme.width,
 //            height = gridGemme.height,
-//            tableau = gridGemme.tableau
+//            Grid = gridGemme.Grid
 //        };
 //    }
 //    #endregion
@@ -153,7 +153,7 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            width = gridData.width,
 //            height = gridData.height,
-//            tableau =gridData.tableau
+//            Grid =gridData.Grid
 //        };
 //    }
 
@@ -168,29 +168,29 @@ public class GBNSaveLoad: MonoBehaviour
 //        {
 //            Name = gbnData.Name,
 //            typeSocle = gbnData.typeOfSocle,
-//            typeArme = gbnData.typeArme,
+//            typeWeapon = gbnData.typeWeapon,
 //            typeBoat = gbnData.typeBoat,
-//            typeFilet = gbnData.typeFilet
+//            typeNet = gbnData.typeNet
 //        };
 
 //        foreach (var powerGemmeObjectData in gbnData.ListPowerGemmeObjectData)
 //        {
-//            gbn.PowerGemmeObjectListe.Add(ConvertFromPowerGemmeObjectData(powerGemmeObjectData));
+//            gbn.PowerGemObjectListe.Add(ConvertFromPowerGemmeObjectData(powerGemmeObjectData));
 //        }
 
 //        return gbn;
 //    }
 //    /// <summary>
-//    /// Convert PowerGemmeObjectData to PowerGemmeObject
+//    /// Convert PowerGemmeObjectData to PowerGemObject
 //    /// </summary>
 //    /// <param name="powerGemmeObjectData"></param>
 //    /// <returns></returns>
-//    private PowerGemmeObject ConvertFromPowerGemmeObjectData(PowerGemmeObjectData powerGemmeObjectData)
+//    private PowerGemObject ConvertFromPowerGemmeObjectData(PowerGemmeObjectData powerGemmeObjectData)
 //    {
-//        var powerGemmeObject = new PowerGemmeObject
+//        var powerGemmeObject = new PowerGemObject
 //        {
 //            GridGemme = ConvertFromGridData(powerGemmeObjectData.GridGemme),
-//            GemmeList = new List<Gemme>()
+//            GemmeList = new List<Gem>()
 //        };
 
 //        foreach (var gemmeData in powerGemmeObjectData.ListGemmeData)
@@ -201,22 +201,22 @@ public class GBNSaveLoad: MonoBehaviour
 //        return powerGemmeObject;
 //    }
 //    /// <summary>
-//    /// Convert GemmeData to Gemme
+//    /// Convert GemData to Gem
 //    /// </summary>
 //    /// <param name="gemmeData"></param>
 //    /// <returns></returns>
-//    private Gemme ConvertFromGemmeData(GemmeData gemmeData)
+//    private Gem ConvertFromGemmeData(GemData gemmeData)
 //    {
-//        return new Gemme
+//        return new Gem
 //        {
 //            PositionX = gemmeData.PositionX,
 //            PositionZ = gemmeData.PositionZ,
-//            forme = gemmeData.forme,
-//            GemmeColorsName = gemmeData.GemmeColorsName,
+//            Shape = gemmeData.Shape,
+//            GemColorsName = gemmeData.GemColorsName,
 //            LVL = gemmeData.LVL,
-//            typeArme = gemmeData.typeArme,
+//            typeWeapon = gemmeData.typeWeapon,
 //            typeBoat = gemmeData.typeBoat,
-//            typeFilet = gemmeData.typeFilet
+//            typeNet = gemmeData.typeNet
 //        };
 //    }
 //    #endregion

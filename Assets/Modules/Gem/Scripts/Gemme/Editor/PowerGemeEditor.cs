@@ -1,22 +1,22 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ComponantPowerGemmeObject))]
+[CustomEditor(typeof(componentPowerGemObject))]
 [CanEditMultipleObjects]
 public class PowerGemmeEditor : UnityEditor.Editor
 {
-    private SerializedProperty powerGemmeObjectProp;
-    private SerializedProperty typeGemmeProp;
-    private SerializedProperty SocleConteneur;
-    private SerializedProperty GemmeConteneur;
+    private SerializedProperty powerGemObjectProp;
+    private SerializedProperty typeGemProp;
+    private SerializedProperty SocleContainer;
+    private SerializedProperty GemContainer;
     private SerializedProperty gridScript;
     void OnEnable()
     {
-        powerGemmeObjectProp = serializedObject.FindProperty("PowerGemmeObjectScript");
-        gridScript = powerGemmeObjectProp.FindPropertyRelative("GridGemme");
-        typeGemmeProp = powerGemmeObjectProp.FindPropertyRelative("GemmeComponantList");
-        SocleConteneur = powerGemmeObjectProp.FindPropertyRelative("SocleConteneur");
-        GemmeConteneur = powerGemmeObjectProp.FindPropertyRelative("GemmeConteneur");
+        powerGemObjectProp = serializedObject.FindProperty("PowerGemObjectScript");
+        gridScript = powerGemObjectProp.FindPropertyRelative("GridGemme");
+        typeGemProp = powerGemObjectProp.FindPropertyRelative("GemcomponentList");
+        SocleContainer = powerGemObjectProp.FindPropertyRelative("SocleContainer");
+        GemContainer = powerGemObjectProp.FindPropertyRelative("GemContainer");
     }
 
     public override void OnInspectorGUI()
@@ -24,9 +24,9 @@ public class PowerGemmeEditor : UnityEditor.Editor
        
         serializedObject.Update();
         ShowSingleProperty(gridScript, "GridScript");
-        ShowSingleProperty(SocleConteneur, "Socle Conteneur");
-        ShowSingleProperty(GemmeConteneur, "Gemme Conteneur");
-        ShowGameObjectListProperties(typeGemmeProp);
+        ShowSingleProperty(SocleContainer, "Socle Conteneur");
+        ShowSingleProperty(GemContainer, "Gem Conteneur");
+        ShowGameObjectListProperties(typeGemProp);
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -36,9 +36,9 @@ public class PowerGemmeEditor : UnityEditor.Editor
         if (listProperty == null)
             return;
 
-        EditorGUILayout.LabelField("Gemme List", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Gem List", EditorStyles.boldLabel);
 
-        if (GUILayout.Button("Add Gemme"))
+        if (GUILayout.Button("Add Gem"))
         {
             listProperty.InsertArrayElementAtIndex(listProperty.arraySize);
         }

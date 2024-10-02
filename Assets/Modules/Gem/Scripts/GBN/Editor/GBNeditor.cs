@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using static EnumGeneral;
 
-[CustomEditor(typeof(ComponantGBN))]
+[CustomEditor(typeof(ComponentGBN))]
 [CanEditMultipleObjects]
 public class GBNeditor : UnityEditor.Editor
 {
@@ -21,9 +21,9 @@ public class GBNeditor : UnityEditor.Editor
         GBNProp = serializedObject.FindProperty("GBNScript");
         NameProp = GBNProp.FindPropertyRelative("Name");
         typeDeSocleProp = GBNProp.FindPropertyRelative("typeSocle");
-        typeArmeProp = GBNProp.FindPropertyRelative("typeArme");
+        typeArmeProp = GBNProp.FindPropertyRelative("typeWeapon");
         typeBateauProp = GBNProp.FindPropertyRelative("typeBoat");
-        typeFiletProp = GBNProp.FindPropertyRelative("typeFilet");
+        typeFiletProp = GBNProp.FindPropertyRelative("typeNet");
         SocleListProp = GBNProp.FindPropertyRelative("SocleListe");
     }
     //
@@ -38,13 +38,13 @@ public class GBNeditor : UnityEditor.Editor
 
         switch (socleType)
         {
-            case EnumGeneral.TypeOfSocle.Arme:
+            case EnumGeneral.TypeOfSocle.Weapon:
                 ShowListProperties(typeArmeProp, typeof(TypeWeapon));
                 break;
             case EnumGeneral.TypeOfSocle.Bateau:
                 ShowListProperties(typeBateauProp, typeof(TypeBoat));
                 break;
-            case EnumGeneral.TypeOfSocle.Filet:
+            case EnumGeneral.TypeOfSocle.Net:
                 ShowListProperties(typeFiletProp, typeof(TypeNet));
                 break;
         }
@@ -115,7 +115,7 @@ public class GBNeditor : UnityEditor.Editor
 
     private void ResetLists()
     {
-        var componentGBN = (ComponantGBN)target;
+        var componentGBN = (ComponentGBN)target;
         componentGBN.GBNScript.ResetLists();
     }
 }

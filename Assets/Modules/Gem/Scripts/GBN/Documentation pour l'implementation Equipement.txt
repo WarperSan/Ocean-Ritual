@@ -10,16 +10,16 @@ si vous devez ajouter une stat vous devez celement ajouter un nom significatif  
 
    ensuite prenez exemple sur le code si dessou  
 
-vous ajouter une ligne ex  [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f); qui contien votre enum apres TypeQuantite et la stat spécifique pour quand vous faite le new.
+vous ajouter une ligne ex  [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f); qui contien votre enum apres TypeQuantity et la stat spécifique pour quand vous faite le new.
 
 vous faite pareille pour la stat booster 
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
 
 
 
-ensuite implémenter ComponantGBN de l'interface Equipement vous mettez le GBN qui lui est associer.
+ensuite implémenter componentGBN de l'interface Equipement vous mettez le GBN qui lui est associer.
 
-ensuite vous faite 2 liste séparé avec  chacun des stat de basse et stat boster  dans UpdateStat  puis vous les passé  à ComponantGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
+ensuite vous faite 2 liste séparé avec  chacun des stat de basse et stat boster  dans UpdateStat  puis vous les passé  à componentGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
 
 
 VOILA  petit tuto fini
@@ -33,23 +33,23 @@ using UnityEngine;
 using static EnumGeneral;
 public class LanceFlame : MonoBehaviour, Equipement
 {
-    [SerializeField] ComponantGBN ComponantGBN;
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> Attack = new (TypeWeapon.attack, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSpeed = new (TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSize = new (TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRate = new (TypeWeapon.fireRate, 1f);
+    [SerializeField] componentGBN componentGBN;
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> Attack = new (TypeWeapon.attack, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSpeed = new (TypeWeapon.bulletspeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSize = new (TypeWeapon.bulletSize, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> FireRate = new (TypeWeapon.fireRate, 1f);
 
 
 
-    [SerializeField] TypeQuantite<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> AttackWithBoost = new(TypeWeapon.attack, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSpeedWithBoost = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> BulletSizeWithBoost = new (TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantite<TypeWeapon> FireRateWithBoost = new(TypeWeapon.fireRate, 1f);
-    public ComponantGBN ComposnantGBN
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeedWithBoost = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> AttackWithBoost = new(TypeWeapon.attack, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSpeedWithBoost = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSizeWithBoost = new (TypeWeapon.bulletSize, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> FireRateWithBoost = new(TypeWeapon.fireRate, 1f);
+    public componentGBN ComposnantGBN
     {
-        get { return ComponantGBN; }
+        get { return componentGBN; }
     }
 
 
@@ -58,7 +58,7 @@ public class LanceFlame : MonoBehaviour, Equipement
     public void UpdateStat()
     {
         // Création de la liste des statistiques de base
-        List<TypeQuantite<TypeWeapon>> baseStats = new List<TypeQuantite<TypeWeapon>>
+        List<TypeQuantity<TypeWeapon>> baseStats = new List<TypeQuantity<TypeWeapon>>
         {
             ReloadSpeed,
             Attack,
@@ -68,7 +68,7 @@ public class LanceFlame : MonoBehaviour, Equipement
         };
 
         // Création de la liste des statistiques boostées
-        List<TypeQuantite<TypeWeapon>> boostedStats = new List<TypeQuantite<TypeWeapon>>
+        List<TypeQuantity<TypeWeapon>> boostedStats = new List<TypeQuantity<TypeWeapon>>
         {
             ReloadSpeedWithBoost,
             AttackWithBoost,
@@ -78,7 +78,7 @@ public class LanceFlame : MonoBehaviour, Equipement
         };
 
         // Mise à jour des statistiques avec les boosts
-        ComponantGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
+        componentGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
     }
 
 
@@ -93,7 +93,7 @@ public class LanceFlame : MonoBehaviour, Equipement
         if (faireStat)
         {
             faireStat = false;
-            ComponantGBN.GBNScript.GetStat();
+            componentGBN.GBNScript.GetStat();
             UpdateStat();
         }
     }

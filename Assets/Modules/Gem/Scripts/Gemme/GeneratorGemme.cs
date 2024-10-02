@@ -148,7 +148,7 @@ public   class GeneratorGemme: MonoBehaviour
         return colors.GetValue(randomIndex).ToString();
     }
     // Function to generate the shape of the gemme based on the level
-    private static FormeBool GenerateForme(int LVL)
+    private static FormBool GenerateForme(int LVL)
     {
         int size = Mathf.CeilToInt(Mathf.Sqrt(LVL));
         if (size % 2 == 0)
@@ -189,7 +189,7 @@ public   class GeneratorGemme: MonoBehaviour
             trueCount++;
         }
 
-        return new FormeBool(forme, size, size);
+        return new FormBool(forme, size, size);
     }
 
     // Function to create a gemme object in the scene
@@ -233,7 +233,7 @@ public   class GeneratorGemme: MonoBehaviour
         }
 
         GameObject prefabToInstantiate = DictionaryGemme[gemmeScript.GemmeColorsName];
-        FormeBool forme = gemmeScript.forme;
+        FormBool forme = gemmeScript.forme;
         bool[,] boolArray = forme.GetForme();
 
         float space = SocleGenerator.Instance.spaceBetweenCube;

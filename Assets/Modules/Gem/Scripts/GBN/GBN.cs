@@ -10,15 +10,15 @@ using static EnumGeneral;
     {
         [SerializeField] public string Name;
         [SerializeField] public TypeOfSocle typeSocle;
-        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme = new();
+        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon = new();
         [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
-        [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet = new();
+        [SerializeField] public List<TypeQuantite<TypeNet>> typeNet = new();
 
 
-    [SerializeField]  public List<ComponantPowerGemmeObject> SocleListe = new();
+    [SerializeField]  public List<componentPowerGemObject> SocleListe = new();
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
-    [SerializeField] public List<PowerGemmeObject> PowerGemmeObjectListe = new();
+    [SerializeField] public List<PowerGemObject> PowerGemObjectListe = new();
 
     public void GetStat()
     {
@@ -30,7 +30,7 @@ using static EnumGeneral;
     {
         if (typeof(TEnum) == typeof(TypeWeapon))
         {
-            return typeArme as List<TypeQuantite<TEnum>>;
+            return typeWeapon as List<TypeQuantite<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeBoat))
         {
@@ -38,7 +38,7 @@ using static EnumGeneral;
         }
         else if (typeof(TEnum) == typeof(TypeNet))
         {
-            return typeFilet as List<TypeQuantite<TEnum>>;
+            return typeNet as List<TypeQuantite<TEnum>>;
         }
         else
         {
@@ -79,7 +79,7 @@ using static EnumGeneral;
         {
             foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
             {
-                typeArme.Add(new TypeQuantite<TypeWeapon>(arme, 0));
+                typeWeapon.Add(new TypeQuantite<TypeWeapon>(arme, 0));
             }
 
             foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
@@ -89,7 +89,7 @@ using static EnumGeneral;
 
             foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
             {
-                typeFilet.Add(new TypeQuantite<TypeNet>(filet, 0));
+                typeNet.Add(new TypeQuantite<TypeNet>(filet, 0));
             }
         }
     /// <summary>
@@ -98,24 +98,24 @@ using static EnumGeneral;
         // Clears and reinitializes the lists
         public void ResetLists()
         {
-            typeArme.Clear();
+            typeWeapon.Clear();
             typeBoat.Clear();
-            typeFilet.Clear();
+            typeNet.Clear();
             InitializeLists();
         }
 
         #endregion
 
     /// <summary>
-    /// only convert the SocleListe To PowerGemmeObjectListe for the test
+    /// only convert the SocleListe To PowerGemObjectListe for the test
     /// </summary>
         public void GetSocleToScriptList()
         {
-            PowerGemmeObjectListe.Clear();
-            foreach (ComponantPowerGemmeObject item in SocleListe)
+            PowerGemObjectListe.Clear();
+            foreach (componentPowerGemObject item in SocleListe)
             {
             
-                PowerGemmeObjectListe.Add(item.PowerGemmeObjectScript);
+                PowerGemObjectListe.Add(item.PowerGemObjectScript);
             }
         
         }
@@ -129,34 +129,34 @@ using static EnumGeneral;
     /// </summary>
     public void StatCalculator()
         {
-            foreach (ComponantPowerGemmeObject socle in SocleListe)
+            foreach (componentPowerGemObject socle in SocleListe)
             {
-                foreach (GemmeComponant gemme in socle.PowerGemmeObjectScript.GemmeComponantList)
+                foreach (Gemcomponent gem in socle.PowerGemObjectScript.GemcomponentList)
                 {
-                    Gemme theGemmeScript = gemme.GemmeScript;
+                    Gem theGemmeScript = gem.GemScript;
 
                     switch (typeSocle)
                     {
-                        case TypeOfSocle.Arme:
-                            UpdateStatsFromGemmeList<TypeWeapon>(theGemmeScript, typeArme);
+                        case TypeOfSocle.Weapon:
+                            UpdateStatsFromGemmeList<TypeWeapon>(theGemmeScript, typeWeapon);
                             break;
                         case TypeOfSocle.Bateau:
                             UpdateStatsFromGemmeList<TypeBoat>(theGemmeScript, typeBoat);
                             break;
-                        case TypeOfSocle.Filet:
-                            UpdateStatsFromGemmeList<TypeNet>(theGemmeScript, typeFilet);
+                        case TypeOfSocle.Net:
+                            UpdateStatsFromGemmeList<TypeNet>(theGemmeScript, typeNet);
                             break;
                     }
                 }
             }
         }
     /// <summary>
-    /// add the stat form the gemme to the good list of stat
+    /// add the stat form the gem to the good list of stat
     /// </summary>
     /// <typeparam name="TEnum"></typeparam>
     /// <param name="theGemmeScript"></param>
     /// <param name="list"></param>
-        private void UpdateStatsFromGemmeList<TEnum>(Gemme theGemmeScript, List<TypeQuantite<TEnum>> list)
+        private void UpdateStatsFromGemmeList<TEnum>(Gem theGemmeScript, List<TypeQuantite<TEnum>> list)
         {
             List<TypeQuantite<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
 
@@ -166,7 +166,8 @@ using static EnumGeneral;
                 {
                     if (stat.Type.Equals(gemmeStat.Type))
                     {
-                        stat.Quantite += gemmeStat.Quantite;
+                    stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
+                   // stat.Quantite += gemmeStat.Quantite;
                     }
                 }
             }

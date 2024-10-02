@@ -234,7 +234,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private ComponantGBN ComponantGBN;
+    [SerializeField] private ComponentGBN ComponantGBN;
     [SerializeField] private TypeQuantite<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
     [SerializeField] private TypeQuantite<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
     [SerializeField] private TypeQuantite<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
@@ -251,7 +251,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
     [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
 
-    public ComponantGBN ComposnantGBN => ComponantGBN;
+    public ComponentGBN ComposnantGBN => ComponantGBN;
 
     /// <inheritdoc/>
     public void UpdateStat()

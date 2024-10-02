@@ -5,7 +5,7 @@ using UnityEngine;
 public class LienRoueEquipement : MonoBehaviour
 {
 
-    [SerializeField] ComponantGBN equipement;
+    [SerializeField] ComponentGBN equipement;
     [SerializeField] List<GameObject> PointDePlacement;
     [SerializeField] float GrosseurSocle = 1;
     [SerializeField] float rotation = 0;

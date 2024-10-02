@@ -13,7 +13,7 @@ public class GestionTableauEditor : UnityEditor.Editor
         gemmeGrid.width = EditorGUILayout.IntField("Width", gemmeGrid.width);
         gemmeGrid.height = EditorGUILayout.IntField("Height", gemmeGrid.height);
 
-        if (gemmeGrid.tableau == null || gemmeGrid.tableau.GetLength(0) != gemmeGrid.width || gemmeGrid.tableau.GetLength(1) != gemmeGrid.height)
+        if (gemmeGrid.Grid == null || gemmeGrid.Grid.GetLength(0) != gemmeGrid.width || gemmeGrid.Grid.GetLength(1) != gemmeGrid.height)
         {
             gemmeGrid.InitializeTab();
         }
@@ -23,10 +23,10 @@ public class GestionTableauEditor : UnityEditor.Editor
             EditorGUILayout.BeginHorizontal();
             for (int i = 0; i < gemmeGrid.width; i++)
             {
-                bool newValue = EditorGUILayout.Toggle(gemmeGrid.tableau[i, gemmeGrid.height - 1 - j]); // Access inverted row
-                if (newValue != gemmeGrid.tableau[i, gemmeGrid.height - 1 - j])
+                bool newValue = EditorGUILayout.Toggle(gemmeGrid.Grid[i, gemmeGrid.height - 1 - j]); // Access inverted row
+                if (newValue != gemmeGrid.Grid[i, gemmeGrid.height - 1 - j])
                 {
-                    gemmeGrid.tableau[i, gemmeGrid.height - 1 - j] = newValue;
+                    gemmeGrid.Grid[i, gemmeGrid.height - 1 - j] = newValue;
                 }
             }
             EditorGUILayout.EndHorizontal();

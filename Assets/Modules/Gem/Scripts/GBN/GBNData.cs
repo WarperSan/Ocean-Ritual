@@ -15,9 +15,9 @@ public class GBNData
 {
     //[SerializeField] public string Name;
     //[SerializeField] public TypeOfSocle typeOfSocle;
-    //[SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme = new();
+    //[SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon = new();
     //[SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
-    //[SerializeField] public List<TypeQuantite<TypeNet>> typeFilet = new();
+    //[SerializeField] public List<TypeQuantite<TypeNet>> typeNet = new();
     //[SerializeField] public List<PowerGemmeObjectData> ListPowerGemmeObjectData;
     //
 }
@@ -26,7 +26,7 @@ public class GBNData
 //public class PowerGemmeObjectData
 //{
 //    [SerializeField] public GridtData GridGemme;
-//    [SerializeField] public List<GemmeData> ListGemmeData;
+//    [SerializeField] public List<GemData> ListGemmeData;
 
 //}
 //[System.Serializable]
@@ -34,11 +34,11 @@ public class GBNData
 //{
 //    [SerializeField] public int width;
 //    [SerializeField] public int height;
-//    [SerializeField] public bool[,] tableau;
+//    [SerializeField] public bool[,] Grid;
 
 //}
 //[System.Serializable]
-//public class GemmeData
+//public class GemData
 //{
 //    #region Data
 //    // X coordinate of the gem's position
@@ -49,22 +49,22 @@ public class GBNData
 
 //    // Shape of the gem (2D boolean array)
 //    [SerializeField]
-//    public FormeBool? forme;
+//    public FormBool? Shape;
 
 //    // Name of the gem's color
-//    [SerializeField] public string GemmeColorsName;
+//    [SerializeField] public string GemColorsName;
 
 //    // Level of the gem
 //    [SerializeField] public int LVL = 0;
 
 //    // List of weapon types with quantities
-//    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+//    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon;
 
 //    // List of boat types with quantities
 //    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
 
 //    // List of net types with quantities
-//    [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+//    [SerializeField] public List<TypeQuantite<TypeNet>> typeNet;
 //    #endregion
 
 

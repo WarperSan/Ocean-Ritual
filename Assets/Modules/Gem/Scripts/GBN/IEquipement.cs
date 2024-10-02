@@ -1,6 +1,6 @@
 public interface IEquipement
 {
-    ComponantGBN ComposnantGBN { get; }
+    ComponentGBN ComposnantGBN { get; }
 
     public void UpdateStat();
 }
