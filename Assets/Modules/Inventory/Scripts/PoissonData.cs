@@ -15,11 +15,11 @@ public class PoissonData : ItemData
 
    }
 
-   public PoissonData(FishSO fish, uint quantiter)
+   public PoissonData(FishSO fish, uint quantity)
    {
       this.nom = fish.name;
-      this.quantiter = (int) quantiter;
-      this.quantiterMax = 10;
+      this.quantity = (int) quantity;
+      this.quantityMax = 10;
       this.sprite = fish.Icon;
    }
 }

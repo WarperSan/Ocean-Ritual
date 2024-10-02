@@ -158,20 +158,20 @@ public   class GeneratorGem: MonoBehaviour
 
 
 
-    // Méthode générique qui génère une liste de TypeQuantite<T> où chaque quantité est égale au niveau LVL
-    public static List<TypeQuantite<T>> GeneratesRandomlvlStat<T>(int LVL) where T : Enum
+    // Méthode générique qui génère une liste de TypeQuantity<T> où chaque quantité est égale au niveau LVL
+    public static List<TypeQuantity<T>> GeneratesRandomlvlStat<T>(int LVL) where T : Enum
     {
         // Obtenir tous les types disponibles dans l'énumération T
         T[] enumValues = (T[])Enum.GetValues(typeof(T));
 
         // Créer une liste pour stocker les résultats
-        List<TypeQuantite<T>> resultList = new List<TypeQuantite<T>>();
+        List<TypeQuantity<T>> resultList = new List<TypeQuantity<T>>();
 
         // Boucle pour ajouter chaque type avec la quantité LVL
         foreach (T enumValue in enumValues)
         {
             // Ajouter la paire (type, quantité) dans la liste, avec la quantité égale à LVL
-            resultList.Add(new TypeQuantite<T>(enumValue, GenerateStats( LVL)));
+            resultList.Add(new TypeQuantity<T>(enumValue, GenerateStats( LVL)));
         }
 
         return resultList;

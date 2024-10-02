@@ -235,21 +235,21 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
 
     [Header("IEquipement")]
     [SerializeField] private ComponentGBN ComponantGBN;
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BASE_RANGE = new(TypeWeapon.Range, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Range, 1f);
 
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.attack, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] private TypeQuantite<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.attack, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.fireRate, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
 
     public ComponentGBN ComposnantGBN => ComponantGBN;
 
@@ -257,7 +257,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
     public void UpdateStat()
     {
         // Cr�ation de la liste des statistiques de base
-        var baseStats = new List<TypeQuantite<TypeWeapon>>
+        var baseStats = new List<TypeQuantity<TypeWeapon>>
         {
             BASE_RELOAD_SPEED,
             BASE_ATTACK,
@@ -269,7 +269,7 @@ public class LanceFlameControleur : WeaponController, IEquipement, IOverheatable
         };
 
         // Cr�ation de la liste des statistiques boost�es
-        var boostedStats = new List<TypeQuantite<TypeWeapon>>
+        var boostedStats = new List<TypeQuantity<TypeWeapon>>
         {
             BOOSTED_RELOAD_SPEED,
             BOOSTED_ATTACK,

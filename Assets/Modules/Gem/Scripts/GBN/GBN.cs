@@ -10,9 +10,9 @@ using static EnumGeneral;
     {
         [SerializeField] public string Name;
         [SerializeField] public TypeOfSocle typeSocle;
-        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeWeapon = new();
-        [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat = new();
-        [SerializeField] public List<TypeQuantite<TypeNet>> typeNet = new();
+        [SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon = new();
+        [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat = new();
+        [SerializeField] public List<TypeQuantity<TypeNet>> typeNet = new();
 
 
     [SerializeField]  public List<componentPowerGemObject> SocleListe = new();
@@ -26,19 +26,19 @@ using static EnumGeneral;
        StatCalculator();
        GetSocleToScriptList();
     }
-    private List<TypeQuantite<TEnum>> GetListForEnum<TEnum>()
+    private List<TypeQuantity<TEnum>> GetListForEnum<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeWeapon))
         {
-            return typeWeapon as List<TypeQuantite<TEnum>>;
+            return typeWeapon as List<TypeQuantity<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeBoat))
         {
-            return typeBoat as List<TypeQuantite<TEnum>>;
+            return typeBoat as List<TypeQuantity<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeNet))
         {
-            return typeNet as List<TypeQuantite<TEnum>>;
+            return typeNet as List<TypeQuantity<TEnum>>;
         }
         else
         {
@@ -47,9 +47,9 @@ using static EnumGeneral;
         }
     }
 
-    public void UpdateStatsWithBoost<TEnum>(List<TypeQuantite<TEnum>> baseStats, List<TypeQuantite<TEnum>> boostedStats)
+    public void UpdateStatsWithBoost<TEnum>(List<TypeQuantity<TEnum>> baseStats, List<TypeQuantity<TEnum>> boostedStats)
     {
-        List<TypeQuantite<TEnum>> correspondingList = GetListForEnum<TEnum>();
+        List<TypeQuantity<TEnum>> correspondingList = GetListForEnum<TEnum>();
 
         if (correspondingList == null)
         {
@@ -79,17 +79,17 @@ using static EnumGeneral;
         {
             foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
             {
-                typeWeapon.Add(new TypeQuantite<TypeWeapon>(arme, 0));
+                typeWeapon.Add(new TypeQuantity<TypeWeapon>(arme, 0));
             }
 
             foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
             {
-                typeBoat.Add(new TypeQuantite<TypeBoat>(boat, 0));
+                typeBoat.Add(new TypeQuantity<TypeBoat>(boat, 0));
             }
 
             foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
             {
-                typeNet.Add(new TypeQuantite<TypeNet>(filet, 0));
+                typeNet.Add(new TypeQuantity<TypeNet>(filet, 0));
             }
         }
     /// <summary>
@@ -156,13 +156,13 @@ using static EnumGeneral;
     /// <typeparam name="TEnum"></typeparam>
     /// <param name="theGemmeScript"></param>
     /// <param name="list"></param>
-        private void UpdateStatsFromGemmeList<TEnum>(Gem theGemmeScript, List<TypeQuantite<TEnum>> list)
+        private void UpdateStatsFromGemmeList<TEnum>(Gem theGemmeScript, List<TypeQuantity<TEnum>> list)
         {
-            List<TypeQuantite<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
+            List<TypeQuantity<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
 
-            foreach (TypeQuantite<TEnum> gemmeStat in gemmeList)
+            foreach (TypeQuantity<TEnum> gemmeStat in gemmeList)
             {
-                foreach (TypeQuantite<TEnum> stat in list)
+                foreach (TypeQuantity<TEnum> stat in list)
                 {
                     if (stat.Type.Equals(gemmeStat.Type))
                     {

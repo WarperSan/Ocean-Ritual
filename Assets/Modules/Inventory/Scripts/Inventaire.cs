@@ -67,8 +67,8 @@ public class Inventaire : MonoBehaviour
             PoissonData poissonA = new PoissonData
             {
                 nom = "Poisson A",
-                quantiterMax = 5,
-                quantiter = 5 // Quantité égale à la quantité maximale
+                quantityMax = 5,
+                quantity = 5 // Quantité égale à la quantité maximale
             };
             ItemList.Add(poissonA);
         }
@@ -79,8 +79,8 @@ public class Inventaire : MonoBehaviour
             PoissonData poissonB = new PoissonData
             {
                 nom = "Poisson B",
-                quantiterMax = 8,
-                quantiter = 8 // Quantité égale à la quantité maximale
+                quantityMax = 8,
+                quantity = 8 // Quantité égale à la quantité maximale
             };
             ItemList.Add(poissonB);
         }
@@ -91,8 +91,8 @@ public class Inventaire : MonoBehaviour
             PoissonData poissonC = new PoissonData
             {
                 nom = "Poisson C",
-                quantiterMax = 10,
-                quantiter = 10 // Quantité égale à la quantité maximale
+                quantityMax = 10,
+                quantity = 10 // Quantité égale à la quantité maximale
             };
             ItemList.Add(poissonC);
         }
@@ -146,7 +146,7 @@ public class Inventaire : MonoBehaviour
                 if (item is PoissonData poisson && ItemList[i] is PoissonData poissonInList)
                 {
                     // Vérifie que le nom est identique et que la quantité max n'est pas atteinte
-                    if (poissonInList.nom == poisson.nom && poissonInList.quantiter < poissonInList.quantiterMax)
+                    if (poissonInList.nom == poisson.nom && poissonInList.quantity < poissonInList.quantityMax)
                     {
                         ListeIndexItemIdentique.Add(i);
                     }
@@ -250,7 +250,7 @@ public class Inventaire : MonoBehaviour
         var (ListeIndexItemIdentique, ListeIndexDisponible) = ItemExistantDansListe(item);
 
         //// Calcul du nombre d'éléments déjà présents dans l'inventaire
-        //int nombreItemsTotal = ItemList.Sum(item => item?.quantiter ?? 0);
+        //int nombreItemsTotal = ItemList.Sum(item => item?.quantity ?? 0);
 
         //// Vérifier si l'inventaire est plein
         //if (nombreItemsTotal >= nombreDePlaceInventaire)
@@ -259,45 +259,45 @@ public class Inventaire : MonoBehaviour
         //    return;
         //}
 
-        int quantiteRestante = item.quantiter;
+        int quantityestante = item.quantity;
 
         // 1. Ajoute aux emplacements d'objets identiques si possible
         foreach (int index in ListeIndexItemIdentique)
         {
             var itemInList = ItemList[index];
-            int placeDisponible = itemInList.quantiterMax - itemInList.quantiter;
+            int placeDisponible = itemInList.quantityMax - itemInList.quantity;
 
-            if (quantiteRestante <= placeDisponible)
+            if (quantityestante <= placeDisponible)
             {
-                itemInList.quantiter += quantiteRestante;
-                quantiteRestante = 0;
+                itemInList.quantity += quantityestante;
+                quantityestante = 0;
                 break;
             }
             else
             {
-                itemInList.quantiter = itemInList.quantiterMax;
-                quantiteRestante -= placeDisponible;
+                itemInList.quantity = itemInList.quantityMax;
+                quantityestante -= placeDisponible;
             }
         }
 
         // 2. Si la quantité restante > 0, ajoute dans les emplacements disponibles
         foreach (int index in ListeIndexDisponible)
         {
-            if (quantiteRestante == 0)
+            if (quantityestante == 0)
             {
                 break;
             }
 
             ItemList[index] = item;
-            if (quantiteRestante <= item.quantiterMax)
+            if (quantityestante <= item.quantityMax)
             {
-                ItemList[index].quantiter = quantiteRestante;
-                quantiteRestante = 0;
+                ItemList[index].quantity = quantityestante;
+                quantityestante = 0;
             }
             else
             {
-                ItemList[index].quantiter = item.quantiterMax;
-                quantiteRestante -= item.quantiterMax;
+                ItemList[index].quantity = item.quantityMax;
+                quantityestante -= item.quantityMax;
             }
         }
         
@@ -305,22 +305,22 @@ public class Inventaire : MonoBehaviour
         //int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
         //int iterationCount = 0;   // Compteur d'itérations
 
-        //while (quantiteRestante > 0)
+        //while (quantityestante > 0)
         //{
         //    Debug.Log("passe dans le while");
         //    AjoutEmplacement();
         //    int dernierIndex = ItemList.Count - 1;
         //    ItemList[dernierIndex] = item;
 
-        //    if (quantiteRestante <= item.quantiterMax)
+        //    if (quantityestante <= item.quantityMax)
         //    {
-        //        ItemList[dernierIndex].quantiter = quantiteRestante;
-        //        quantiteRestante = 0;
+        //        ItemList[dernierIndex].quantity = quantityestante;
+        //        quantityestante = 0;
         //    }
         //    else
         //    {
-        //        ItemList[dernierIndex].quantiter = item.quantiterMax;
-        //        quantiteRestante -= item.quantiterMax;
+        //        ItemList[dernierIndex].quantity = item.quantityMax;
+        //        quantityestante -= item.quantityMax;
         //    }
 
         //    // Incrémentation du compteur d'itérations
@@ -368,7 +368,7 @@ public class Inventaire : MonoBehaviour
                 break;
 
             case TypeOfSort.Quantite:
-                TrierQuantiter();
+                Trierquantity();
                 Console.WriteLine("Tri par quantité de poisson");
                 break;
 
@@ -439,10 +439,10 @@ public class Inventaire : MonoBehaviour
         Debug.Log("Liste triée par type (poissons puis gemmes).");
     }
 
-    public void TrierQuantiter()
+    public void Trierquantity()
     {
         // Trier les objets par quantité (qu'ils soient des poissons ou des gemmes)
-        ItemList = ItemList.OrderByDescending(item => item.quantiter).ToList();
+        ItemList = ItemList.OrderByDescending(item => item.quantity).ToList();
 
         Debug.Log("Liste triée par quantité.");
     }
@@ -471,23 +471,23 @@ public class Inventaire : MonoBehaviour
 
         // On filtre les poissons avec quantité > 0
         List<PoissonData> poissons = ItemList.OfType<PoissonData>()
-                                             .Where(poisson => poisson.quantiter > 0)
+                                             .Where(poisson => poisson.quantity > 0)
                                              .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les poissons par nom
-        Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
+        Dictionary<string, (int quantiteTotale, int quantityMax)> fusionPoissons = new Dictionary<string, (int, int)>();
 
         foreach (var poisson in poissons)
         {
             if (!fusionPoissons.ContainsKey(poisson.nom))
             {
-                // On stocke la quantité totale et le quantiterMax
-                fusionPoissons[poisson.nom] = (poisson.quantiter, poisson.quantiterMax);
+                // On stocke la quantité totale et le quantityMax
+                fusionPoissons[poisson.nom] = (poisson.quantity, poisson.quantityMax);
             }
             else
             {
                 // On ajoute la quantité au total déjà enregistré
-                fusionPoissons[poisson.nom] = (fusionPoissons[poisson.nom].quantiteTotale + poisson.quantiter, poisson.quantiterMax);
+                fusionPoissons[poisson.nom] = (fusionPoissons[poisson.nom].quantiteTotale + poisson.quantity, poisson.quantityMax);
             }
         }
 
@@ -498,7 +498,7 @@ public class Inventaire : MonoBehaviour
         {
             string nomPoisson = entry.Key;
             int quantiteTotale = entry.Value.quantiteTotale;
-            int quantiterMax = entry.Value.quantiterMax;
+            int quantityMax = entry.Value.quantityMax;
 
             // On répartit les poissons en respectant la quantité maximale propre à chaque poisson
             while (quantiteTotale > 0)
@@ -506,11 +506,11 @@ public class Inventaire : MonoBehaviour
                 PoissonData nouveauPoisson = new PoissonData
                 {
                     nom = nomPoisson,
-                    quantiter = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantiterMax propre à ce poisson
-                    quantiterMax = quantiterMax
+                    quantity = Math.Min(quantityMax, quantiteTotale), // Utilisation de la valeur quantityMax propre à ce poisson
+                    quantityMax = quantityMax
                 };
                 poissonsFusionnes.Add(nouveauPoisson);
-                quantiteTotale -= nouveauPoisson.quantiter;
+                quantiteTotale -= nouveauPoisson.quantity;
             }
         }
 

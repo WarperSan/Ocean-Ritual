@@ -98,9 +98,9 @@ public static class GemHelper
             LVL = gem.LVL,
 
             // Copie des listes des types et quantités
-            typeWeapon = new List<TypeQuantite<TypeWeapon>>(gem.typeWeapon),
-            typeBoat = new List<TypeQuantite<TypeBoat>>(gem.typeBoat),
-            typeNet = new List<TypeQuantite<TypeNet>>(gem.typeNet)
+            typeWeapon = new List<TypeQuantity<TypeWeapon>>(gem.typeWeapon),
+            typeBoat = new List<TypeQuantity<TypeBoat>>(gem.typeBoat),
+            typeNet = new List<TypeQuantity<TypeNet>>(gem.typeNet)
         };
 
         return gemData;
@@ -119,9 +119,9 @@ public static class GemHelper
                 LVL = gemData.LVL,
 
                 // Copie des listes des types et quantités
-                typeWeapon = new List<TypeQuantite<TypeWeapon>>(gemData.typeWeapon),
-                typeBoat = new List<TypeQuantite<TypeBoat>>(gemData.typeBoat),
-                typeNet = new List<TypeQuantite<TypeNet>>(gemData.typeNet)
+                typeWeapon = new List<TypeQuantity<TypeWeapon>>(gemData.typeWeapon),
+                typeBoat = new List<TypeQuantity<TypeBoat>>(gemData.typeBoat),
+                typeNet = new List<TypeQuantity<TypeNet>>(gemData.typeNet)
             };
 
             return gem;

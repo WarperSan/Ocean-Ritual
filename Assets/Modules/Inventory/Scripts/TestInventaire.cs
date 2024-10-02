@@ -37,8 +37,8 @@ public class TestInventaire : MonoBehaviour
             PoissonData nouveauPoisson = new PoissonData()
             {
                 nom = poisson.nom,
-                quantiter = poisson.quantiter,
-                quantiterMax = poisson.quantiterMax,
+                quantity = poisson.quantity,
+                quantityMax = poisson.quantityMax,
                 sprite = poisson.sprite,
             };
 
@@ -54,8 +54,8 @@ public class TestInventaire : MonoBehaviour
             {
                 GemmeColorsName = gemme.GemmeColorsName,
                 LVL = gemme.LVL,
-                quantiter = 1,
-                quantiterMax = 1,
+                quantity = 1,
+                quantityMax = 1,
                 sprite = gemme.sprite,
             };
 

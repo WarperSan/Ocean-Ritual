@@ -31,8 +31,8 @@ public class InventoryUI : MonoBehaviour
             {
                 ItemData item = itemList[i];
                 sprite = this.GetSpriteFromItem(item);
-                quantity = (uint)item.quantiter;
-                maxStack = (uint)item.quantiterMax;
+                quantity = (uint)item.quantity;
+                maxStack = (uint)item.quantityMax;
             }
 
             this.CreateSlot(sprite, quantity, maxStack);

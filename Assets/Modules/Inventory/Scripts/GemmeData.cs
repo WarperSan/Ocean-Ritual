@@ -20,13 +20,13 @@ public class GemmeData : ItemData
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities
-    [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+    [SerializeField] public List<TypeQuantity<TypeWeapon>> typeArme;
 
     // List of boat types with quantities
-    [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+    [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat;
 
     // List of net types with quantities
-    [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+    [SerializeField] public List<TypeQuantity<TypeNet>> typeFilet;
     #endregion
 
 }

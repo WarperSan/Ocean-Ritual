@@ -29,11 +29,11 @@ public class LienRoueEquipement : MonoBehaviour
 
     public void PlaceSocle()
     {
-        List<ComponantPowerGemmeObject> listSocle = equipement.GBNScript.SocleListe;
+        List<componentPowerGemObject> listSocle = equipement.GBNScript.SocleListe;
         List<GameObject> pointDePlacementSocle = new List<GameObject>();
         equipement.GenereSocle();
        
-        foreach (ComponantPowerGemmeObject socle in listSocle)
+        foreach (componentPowerGemObject socle in listSocle)
         {
             pointDePlacementSocle.Add(socle.gameObject);
             pointDePlacementSocle[^1].transform.position = PointDePlacement[ pointDePlacementSocle.Count-1].transform.position;

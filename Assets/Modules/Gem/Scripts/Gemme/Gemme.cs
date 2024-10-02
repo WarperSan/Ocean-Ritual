@@ -30,13 +30,13 @@ public class Gemme
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities
-        [SerializeField] public List<TypeQuantite<TypeWeapon>> typeArme;
+        [SerializeField] public List<TypeQuantity<TypeWeapon>> typeArme;
 
         // List of boat types with quantities
-        [SerializeField] public List<TypeQuantite<TypeBoat>> typeBoat;
+        [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat;
 
         // List of net types with quantities
-        [SerializeField] public List<TypeQuantite<TypeNet>> typeFilet;
+        [SerializeField] public List<TypeQuantity<TypeNet>> typeFilet;
     #endregion
 
 
@@ -48,19 +48,19 @@ public class Gemme
     
     // Method to get a list of types with quantities based on the generic type TEnum
 
-    public List<TypeQuantite<TEnum>> GetListType<TEnum>()
+    public List<TypeQuantity<TEnum>> GetListType<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeWeapon))
         {
-            return typeArme as List<TypeQuantite<TEnum>>;
+            return typeArme as List<TypeQuantity<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeBoat))
         {
-            return typeBoat as List<TypeQuantite<TEnum>>;
+            return typeBoat as List<TypeQuantity<TEnum>>;
         }
         else if (typeof(TEnum) == typeof(TypeNet))
         {
-            return typeFilet as List<TypeQuantite<TEnum>>;
+            return typeFilet as List<TypeQuantity<TEnum>>;
         }
         else
         {

@@ -94,14 +94,14 @@ static public class EnumGeneral
 }
 //
 [System.Serializable]
-//TypeQuantite
+//TypeQuantity
 
-public class TypeQuantite<TEnum>
+public class TypeQuantity<TEnum>
 {
     public TEnum Type;
     public float Quantite;
 
-    public TypeQuantite(TEnum type, float quantite)
+    public TypeQuantity(TEnum type, float quantite)
     {
         Type = type;
         Quantite = quantite;
