@@ -1,10 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-public class TestGemme : MonoBehaviour
+public class TestBlackSmith : MonoBehaviour
 {
     // Instance statique du singleton
-    private static TestGemme instance;
+    private static TestBlackSmith instance;
 
     [SerializeField] Gemcomponent Gem;
     [SerializeField] GemData TemporaryGemData;
@@ -15,20 +15,20 @@ public class TestGemme : MonoBehaviour
     [SerializeField] TextMeshProUGUI ModifiedCase;
     [SerializeField] public bool canAddNewCase;
     // Propriété pour accéder à l'instance
-    public static TestGemme Instance
+    public static TestBlackSmith Instance
     {
         get
         {
             if (instance == null)
             {
                 // Cherche l'instance dans la scène
-                instance = FindObjectOfType<TestGemme>();
+                instance = FindObjectOfType<TestBlackSmith>();
 
                 // Si aucune instance n'existe, créer un nouvel objet
                 if (instance == null)
                 {
-                    GameObject singletonObject = new GameObject(typeof(TestGemme).Name);
-                    instance = singletonObject.AddComponent<TestGemme>();
+                    GameObject singletonObject = new GameObject(typeof(TestBlackSmith).Name);
+                    instance = singletonObject.AddComponent<TestBlackSmith>();
                 }
             }
             return instance;

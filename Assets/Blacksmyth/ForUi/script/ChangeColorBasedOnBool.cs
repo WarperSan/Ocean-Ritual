@@ -30,7 +30,7 @@ public class ChangeColorBasedOnBool : MonoBehaviour
     }
     public void SwapState()
     {
-        if (TestGemme.Instance.canAddNewCase|| start|| isActive)
+        if (TestBlackSmith.Instance.canAddNewCase|| start|| isActive)
         {
             start = false;
             isActive = !isActive;

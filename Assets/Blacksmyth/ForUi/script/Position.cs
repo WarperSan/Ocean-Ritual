@@ -14,18 +14,18 @@ public class Position : MonoBehaviour
     }
     public void GivePosition()
     {
-        if (TestGemme.Instance.canAddNewCase)
+        if (TestBlackSmith.Instance.canAddNewCase)
         {
             Debug.Log("passe 1");
             scriptChangeColor.SwapState();
-            TestGemme.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+            TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
            
         }
-        else if (!TestGemme.Instance.canAddNewCase && scriptChangeColor.isActive)
+        else if (!TestBlackSmith.Instance.canAddNewCase && scriptChangeColor.isActive)
         {
             Debug.Log("passe 2");
             scriptChangeColor.SwapState();
-            TestGemme.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
+            TestBlackSmith.Instance.ChangeValueGemme(X, Y, scriptChangeColor.isActive);
            
         }
     }
