@@ -4,13 +4,14 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using static EnumGeneral;
+using UnityEditor;
 
 public static class GemHelper
 {
     public static int modifiedSpotCost = 5;
     public static int missingSpotCost = 10;
 
-    public static (int cost, int modifiedSpot, int missingSpot) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm,int lvlGem)
+    public static (int cost, int modifiedSpot, int missingSpot) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm, int lvlGem)
     {
         // Vérification si la liste modifiée est plus grande que l'originale
         if (modifiedForm.Count > formOriginal.Count)
@@ -27,13 +28,23 @@ public static class GemHelper
         // Comparaison des booléens dans chaque position des deux listes
         for (int i = 0; i < formOriginal.Count; i++)
         {
-            if (formOriginal[i]) originalTrueCount++;  // Compte les "true" dans l'original
-            if (i < modifiedForm.Count && modifiedForm[i]) modifiedTrueCount++;  // Compte les "true" dans le modifié
+            // Compte les "true" dans l'original
+            if (formOriginal[i]) originalTrueCount++;
 
-            // Si la valeur est différente entre l'original et le modifié
-            if (i < modifiedForm.Count && formOriginal[i] != modifiedForm[i])
+            // Compte les "true" dans le modifié uniquement si la case correspondante est aussi "true"
+            if (i < modifiedForm.Count && modifiedForm[i])
             {
-                modifiedSpot++;
+                modifiedTrueCount++;
+
+                // Si la valeur est différente entre l'original et le modifié
+                if (!formOriginal[i]) // Si l'original est false et le modifié est true
+                {
+                    modifiedSpot++;
+                }
+            }
+            else if (formOriginal[i]) // Si l'original est true et le modifié est false
+            {
+                missingSpot++;
             }
         }
 
@@ -42,16 +53,13 @@ public static class GemHelper
         {
             throw new ArgumentException("Le nombre de 'true' dans la liste modifiée ne peut pas être supérieur à celui de la liste originale.");
         }
-
-        // Calcul du nombre de spots manquants
-        missingSpot = originalTrueCount - modifiedTrueCount;
-
-        // Calcul du coût total  cout augment plus le niveau de la Gem est haut
-        int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * (1 + (lvlGem / 100f))));
-
+        missingSpot = missingSpot - modifiedSpot;
+        // Calcul du coût total
+        int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * missingSpotCost ));
 
         return (totalCost, modifiedSpot, missingSpot);
     }
+
     //ex
     //1-1 =2  
     //2-2 = 3 
@@ -61,7 +69,7 @@ public static class GemHelper
     {
         return (lvlLeftGem >= lvlRightGem) ? lvlLeftGem + (lvlLeftGem == lvlRightGem ? 1 : 0) : lvlLeftGem + 1;
     }
-    public static void ModifiedList(ref List<bool> ListBool, int Xposition, int YPosition, bool value, int height, int width)
+    public static void ModifiedList(ref List<bool> ListBool, int Xposition, int YPosition, bool value, int width)
     {
         // Calculer l'index dans la liste
         int index = YPosition * width + Xposition;
@@ -78,12 +86,13 @@ public static class GemHelper
     }
     public static GemData ConvertGemToGemData(Gem gem)
     {
+        List<bool> list = new List<bool>(gem.form.flatForme);
         // Création d'un nouvel objet GemData
         GemData gemData = new GemData
         {
             // Copie des propriétés de Gem vers GemData
            
-            Shape = gem.form,  
+            Shape = new FormBool(list, gem.form.width, gem.form.height), 
             GemColorsName = gem.GemColorsName,
             LVL = gem.LVL,
 

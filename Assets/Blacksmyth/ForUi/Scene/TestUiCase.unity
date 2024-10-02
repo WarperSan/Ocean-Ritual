@@ -209,8 +209,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -419,6 +419,10 @@ MonoBehaviour:
     typeWeapon: []
     typeBoat: []
     typeNet: []
+  cost: {fileID: 170213408}
+  MissingCase: {fileID: 603728036}
+  ModifiedCase: {fileID: 864065119}
+  canAddNewCase: 0
 --- !u!4 &487586949
 Transform:
   m_ObjectHideFlags: 0
@@ -665,8 +669,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -780,6 +784,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
+      propertyPath: GemScript.LVL
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+        type: 3}
       propertyPath: GemScript.form.width
       value: 5
       objectReference: {fileID: 0}
@@ -790,13 +799,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
+      propertyPath: GemScript.GemColorsName
+      value: Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+        type: 3}
       propertyPath: GemScript.form.flatForme.Array.size
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[0]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -806,7 +820,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[2]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -831,7 +845,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[7]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -851,17 +865,17 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[11]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[12]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[13]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -881,7 +895,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.form.flatForme.Array.data[17]
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -2849,8 +2863,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

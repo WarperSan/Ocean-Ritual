@@ -259,7 +259,7 @@ public static class DictionaryGenerator
         // Iterate through each loaded GameObject
         foreach (GameObject obj in TabRessourceObject)
         {
-            Debug.Log(obj);
+            
             // Check if the dictionary does not already contain this name
             if (!Dictionary.ContainsKey(obj.name))
             {
