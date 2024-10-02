@@ -966,7 +966,6 @@ GameObject:
   - component: {fileID: 4794637754594170749}
   - component: {fileID: 8456417778558459184}
   - component: {fileID: 757268014163511101}
-  - component: {fileID: 4221641107547282131}
   m_Layer: 5
   m_Name: InventoryMenu
   m_TagString: Untagged
@@ -1686,21 +1685,6 @@ MonoBehaviour:
   PlayOnStart: 0
   CurrentTime: 0
   IsPlayingInEditMode: 0
---- !u!114 &4221641107547282131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4366388570361195251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80b0d8e645a714e42968e1718ae8561b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poissons: []
-  gemmes: []
-  inventoryUI: {fileID: 8531048863070971605}
 --- !u!1 &5320349887002227344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,6 +2622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slot: {fileID: 9192869792413234619, guid: 5fa211296d6f42f42bf16d79146c9f2e, type: 3}
   parent: {fileID: 7278043022298045775}
+  playerGold: {fileID: 0}
 --- !u!1 &8249927748672425884
 GameObject:
   m_ObjectHideFlags: 0

@@ -5861,7 +5861,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3516832782396747141}
-  - component: {fileID: 6444292761957604878}
   - component: {fileID: 7741740439737647047}
   - component: {fileID: 4126512359761199848}
   - component: {fileID: 3329905032639191162}
@@ -5890,32 +5889,11 @@ Transform:
   - {fileID: 8908027884678325930}
   - {fileID: 7789281436688056258}
   - {fileID: 8882581130126040892}
-  - {fileID: 1327231542080472972}
   - {fileID: 8285301587132623739}
   - {fileID: 7269331819159210379}
   - {fileID: 895954925046964269}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6444292761957604878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9146765463371912087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a419ac03b0bd64b99de857158b9d20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feuPrefab: {fileID: 2384998566026366971, guid: fa95bf9aa7ae1e7438642b46d7d996bd,
-    type: 3}
-  glacePrefab: {fileID: 1893455508091481717, guid: 1d78c635af20b334bb541a399590683c,
-    type: 3}
-  FeuConteneur: {fileID: 8744112467145272955}
-  GlaceConteneur: {fileID: 8888501638068864451}
-  lanceFlameScript: {fileID: 7741740439737647047}
-  OverheatParticule: {fileID: 256896073084255128}
 --- !u!114 &7741740439737647047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5983,7 +5961,7 @@ MonoBehaviour:
     Type: 6
     Quantite: 1
   shootOrigin: {fileID: 7789281436688056258}
-  ParticuleControleurs: {fileID: 6444292761957604878}
+  ParticuleControleurs: {fileID: 0}
 --- !u!114 &4126512359761199848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5999,7 +5977,7 @@ MonoBehaviour:
   GBNScript:
     Name: 
     typeSocle: 0
-    typeArme:
+    typeWeapon:
     - Type: 0
       Quantite: 0
     - Type: 1
@@ -6015,10 +5993,10 @@ MonoBehaviour:
     - Type: 6
       Quantite: 0
     typeBoat: []
-    typeFilet: []
+    typeNet: []
     SocleListe:
-    - {fileID: 1197110396580753041}
-    PowerGemmeObjectListe: []
+    - {fileID: 0}
+    PowerGemObjectListe: []
 --- !u!65 &3329905032639191162
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6054,157 +6032,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controller: {fileID: 7741740439737647047}
   asset: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
---- !u!1001 &2872938727979499267
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3516832782396747141}
-    m_Modifications:
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[0].Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[1].Type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[2].Type
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[3].Type
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[4].Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[5].Type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[0].Quantite
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[1].Quantite
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[2].Quantite
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[3].Quantite
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[4].Quantite
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575237028652756550, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: GemmeScript.typeArme.Array.data[5].Quantite
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8977036308293963768, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-        type: 3}
-      propertyPath: m_Name
-      value: ConteneurSocle
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6, type: 3}
---- !u!114 &1197110396580753041 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3981823210960277906, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2872938727979499267}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f6fb6c882fcd2340aed1559875001d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1327231542080472972 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3870277094613760143, guid: 4a0f1b0c83a7f6e43badf2a5090cefe6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2872938727979499267}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7231642319789436933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6278,12 +6105,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5a9ed4b965bc064ca6d48f335b1e34d, type: 3}
---- !u!198 &256896073084255128 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7479170295699999645, guid: e5a9ed4b965bc064ca6d48f335b1e34d,
-    type: 3}
-  m_PrefabInstance: {fileID: 7231642319789436933}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4367845287717182746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6396871214622846239, guid: e5a9ed4b965bc064ca6d48f335b1e34d,

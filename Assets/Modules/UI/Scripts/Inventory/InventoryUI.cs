@@ -7,11 +7,11 @@ public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject slot;
     [SerializeField] Transform parent;
-    //[SerializeField] TextMeshProUGUI playerGold;
+    [SerializeField] TextMeshProUGUI playerGold;
 
     private void OnEnable()
     {
-        Inventaire.Instance.UpdateItemListeUI();
+        Inventory.Instance.UpdateItemListeUI(this);
     }
 
     public void UpdateUI(List<ItemData> itemList)
@@ -56,6 +56,6 @@ public class InventoryUI : MonoBehaviour
 
     public void SetPlayerGold(int gold = 9999)
     {
-        //playerGold.text = "$" + gold.ToString();
+        playerGold.text = "$" + gold.ToString();
     }
 }

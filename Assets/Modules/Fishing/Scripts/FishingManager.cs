@@ -6,6 +6,7 @@ namespace FishingModule
 {
     public class FishingManager : MonoBehaviour
     {
+        //
         public void StartFishing()
         {
             // If buoy exists, skip
@@ -33,8 +34,8 @@ namespace FishingModule
             // <Success>
             if (isCollected)
             {
-                foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
-                    Inventaire.Instance.AddItem(new PoissonData(fish.Key, fish.Value));
+              //  foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
+               //     Inventory.Instance.AddItem(new FishData(fish.Key, fish.Value));
             }
             else
             {
