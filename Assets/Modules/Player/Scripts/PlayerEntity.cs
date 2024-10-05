@@ -1,37 +1,43 @@
-using EntityModule;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace EntityModule
 {
     public class PlayerEntity : Entity
     {
-        protected override void OnPostAttack()
+        [SerializeField]
+        private Transform respawnPoint;
+
+        private void OnTriggerEnter(Collider other)
         {
-            //knockback?
+            if (other.CompareTag("Death"))
+                this.transform.position = respawnPoint.position + new Vector3(0, 2, 0);
         }
+
+        #region Entity
+
+        /// <inheritdoc/>
+        protected override void OnPostAttack(Projectile source)
+        {
+            Vector3 direction = this.transform.position - source.transform.position;
+            direction.y = 0;
+            direction.Normalize();
+            direction *= 500;
+            direction.y = 300;
+
+            //knockback?
+            this.GetComponent<Rigidbody>().AddForce(direction);
+        }
+
+        /// <inheritdoc/>
         protected override void OnDeath(float overDamage)
         {
             //tue le joueur
 
             //soit afficher un menu game over
-            //soit faire respawn le joueur direct après un certain temps
+            //soit faire respawn le joueur direct aprï¿½s un certain temps
         }
-        [SerializeField]
-        GameObject boat;
-         
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.tag == "Death")
-            {
-                Debug.Log("respawn");
-                this.transform.position = boat.transform.position + new Vector3(0,2,0);
-                
-            }
-        }
+        #endregion
     }
 }
 

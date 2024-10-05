@@ -1,3 +1,4 @@
+using EntityModule;
 using EntityModule.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ namespace BossesModule.Golem
         private Slider healthBar;
 
         /// <inheritdoc/>
-        protected override void OnPostAttack() 
+        protected override void OnPostAttack(Projectile source) 
         {
             this.healthBar.value = this.Health;
         }

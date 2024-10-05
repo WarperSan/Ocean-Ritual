@@ -107,7 +107,7 @@ namespace EntityModule
             }
 
             this.OnPreApply(entity, this.attack);
-            entity.UseAttack(this.attack);
+            entity.UseAttack(this.attack, this);
             this.OnPostApply(entity, this.attack);
         }
 
