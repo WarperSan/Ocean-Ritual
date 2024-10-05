@@ -7,9 +7,9 @@ namespace ControllerModule.Controllers
 {
     public class BoatController : Controller, IMovable
     {
-
         [SerializeField]
         private Rigidbody _rb;
+
         #region Aboard
 
         [Header("Aboard")]
@@ -17,8 +17,6 @@ namespace ControllerModule.Controllers
         private Transform aboardParent;
 
         private readonly List<Rigidbody> aboardRbs = new();
-        [SerializeField]
-        private CharacterController cc;
 
         /// <summary>
         /// Updates the position of all the items aboard
@@ -77,20 +75,14 @@ namespace ControllerModule.Controllers
             {
                 eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
             }
-            if (this.direction.x < 0)
+            else if (this.direction.x < 0)
             {
                 eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
             }
 
-            // Rotation avec transform
-            float amount = this.direction.x * this.turningSpeed;
-
-
             // Rotation RB
-            var deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.fixedDeltaTime);
+            var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
             _rb.MoveRotation(_rb.rotation * deltaRotation);
-
-            //this.UpdateAboardRotation(deltaRotation, amount * elapsed * Vector3.up);
         }
 
         #endregion
@@ -189,8 +181,6 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-
-
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
         {
@@ -205,10 +195,8 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
-
             this.UpdateMove(elapsed);
             this.UpdateTurn(elapsed);
-
         }
 
         /// <inheritdoc/>
@@ -216,7 +204,7 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(true);
-            movementDeceleration = movementDeceleration * 2;
+            movementDeceleration *= 2;
         }
 
         /// <inheritdoc/>
@@ -224,14 +212,13 @@ namespace ControllerModule.Controllers
         {
             // Update cursor
             SetCursorLock(false);
-            movementDeceleration = movementDeceleration / 2;
-            ShutdownBoatAcceleration();
+            movementDeceleration /= 2;
+            this.ShutdownBoatAcceleration();
         }
 
         #endregion
 
         #region MonoBehaviour
-        [SerializeField]
 
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
