@@ -11,7 +11,7 @@ public class GemData : ItemData
 
     // Shape of the gem (2D boolean array)
     [SerializeField]
-    public FormBool? Shape;
+    public FormBool Shape;
 
     // Name of the gem's color
     [SerializeField] public string GemColorsName;
