@@ -30,5 +30,12 @@ namespace EntityModule.Entities
         protected NodeState UpdateTree() => this.root.Evaluate();
 
         #endregion
+
+        #region MonoBehaviour
+
+        /// <inheritdoc/>
+        private void Update() => this.UpdateTree();
+
+        #endregion
     }
 }
