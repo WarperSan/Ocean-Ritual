@@ -56,6 +56,7 @@ namespace UIModule
             {
                 yield return openedMenu.Close();
                 openedMenus.Pop();
+                ControllerModule.Controllers.ControllerManager.BackTo();
             }
 
             // If different menu
@@ -63,6 +64,7 @@ namespace UIModule
             {
                 yield return menu.Open();
                 openedMenus.Push(menu);
+                ControllerModule.Controllers.ControllerManager.SwitchTo(menu);
             }
 
             // Consume your token

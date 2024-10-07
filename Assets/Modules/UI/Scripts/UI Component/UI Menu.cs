@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UIModule
+namespace UIModule 
 {
     /// <summary>
     /// Class that represents a menu
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIMenu : MonoBehaviour
+    public abstract class UIMenu : ControllerModule.Controllers.Controller
     {
         /// <summary>
         /// Called to open this menu
