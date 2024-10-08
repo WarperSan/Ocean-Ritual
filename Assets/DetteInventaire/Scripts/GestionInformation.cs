@@ -49,7 +49,15 @@ public class GestionInformation : MonoBehaviour
     {
 
     }
+    public void GetNewInformation(FishData Fish)
+    {
+        if (data == null)
+        {
+            GetResource();
+        }
 
+      
+    }
     public void GetNewInformationGem(GemData Gem)
     {
         if (data == null)
