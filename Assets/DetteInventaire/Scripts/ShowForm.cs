@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class ShowForm : MonoBehaviour
@@ -22,17 +23,19 @@ public class ShowForm : MonoBehaviour
         {
             GetResource();
         }
-       
 
-        if (!data.ContainsKey("Row") || !data.ContainsKey("CaseBool"))
+        ShowTab(grid);  // Affichage dans la console pour débogage, comme dans ShowTab
+
+        if (!data.ContainsKey("Row") || !data.ContainsKey("CaseHover"))
         {
-            Debug.LogError("Row ou CaseBool manquant dans le dictionnaire !");
+            Debug.LogError("Row ou CaseHover manquant dans le dictionnaire !");
             return;
         }
 
         GameObject rowPrefab = data["Row"];
-        GameObject casePrefab = data["CaseHover"];
+        GameObject casePrefab = data["CaseHover"]; // Utilisation de CaseHover pour correspondre à ShowTab
 
+        // Calcul du facteur d'échelle pour ajuster les dimensions des cases
         float maxColumnWidth = 200f;
         float maxColumnHeight = 200;
 
@@ -40,6 +43,7 @@ public class ShowForm : MonoBehaviour
         float scalingFactorY = maxColumnHeight / grid.GetLength(0);
         float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY);
 
+        // Suppression des éléments précédents
         foreach (Transform child in column.transform)
         {
             Destroy(child.gameObject);
@@ -51,12 +55,13 @@ public class ShowForm : MonoBehaviour
             grid.GetLength(0) * scalingFactor
         );
 
-        for (int i = 0; i < grid.GetLength(0); i++) // Parcours normal des lignes
+        // Inversion de l'ordre des lignes
+        for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverse les lignes comme dans ShowTab
         {
             GameObject rowInstance = Instantiate(rowPrefab, column.transform);
             RectTransform rowRect = rowInstance.GetComponent<RectTransform>();
             rowRect.sizeDelta = new Vector2(grid.GetLength(1) * scalingFactor, scalingFactor);
-            rowRect.anchoredPosition = new Vector2(0, i * scalingFactor);
+            rowRect.anchoredPosition = new Vector2(0, (grid.GetLength(0) - 1 - i) * scalingFactor); // Positionnement correct des lignes
 
             for (int j = 0; j < grid.GetLength(1); j++) // Parcours des colonnes
             {
@@ -69,19 +74,41 @@ public class ShowForm : MonoBehaviour
                 Position posScript = caseInstance.GetComponent<Position>();
                 if (posScript != null)
                 {
-                    posScript.SetPoition(j, i);  // Ici, on attribue les coordonnées de la case
+                    posScript.SetPoition(j, i);  // Assigner les coordonnées de la case
                 }
 
                 // Récupérer le script pour changer l'état de la case
                 ChangeColorBasedOnBool CasScript = caseInstance.GetComponent<ChangeColorBasedOnBool>();
 
-                if (grid[j, grid.GetLength(0) - 1 - i])
+                // Modifier l'état de la case en fonction de la valeur du tableau
+                if (grid[i, j])  // Utilisation de i et j pour indexer correctement les cases
                 {
-                    CasScript.SwapState();
+                    CasScript.SwapState(); // Si la case est true, on applique l'état (par exemple, [X])
+                }
+                else
+                {
+                    // Si la case est false, on peut laisser la case inchangée ou appliquer une autre logique
+                    // CasScript.SwapState(); // Vous pouvez également ajouter un comportement pour les cases false si nécessaire
                 }
             }
         }
 
         columnRect.anchoredPosition = Vector2.zero;
+    }
+
+    public void ShowTab(bool[,] grid)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverser l'ordre des lignes pour correspondre à l'affichage
+        {
+            for (int j = 0; j < grid.GetLength(1); j++)
+            {
+                sb.Append(grid[j, i] ? "[X]" : "[ ]"); // Utiliser [X] pour true et [ ] pour false
+            }
+            sb.AppendLine(); // Passer à la ligne suivante après chaque ligne du tableau
+        }
+
+        Debug.Log(sb.ToString()); // Afficher le résultat dans la console
     }
 }
