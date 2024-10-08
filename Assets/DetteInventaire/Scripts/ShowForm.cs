@@ -80,15 +80,10 @@ public class ShowForm : MonoBehaviour
                 // Récupérer le script pour changer l'état de la case
                 ChangeColorBasedOnBool CasScript = caseInstance.GetComponent<ChangeColorBasedOnBool>();
 
-                // Modifier l'état de la case en fonction de la valeur du tableau
-                if (grid[i, j])  // Utilisation de i et j pour indexer correctement les cases
+                // Inverser l'indexation des lignes et colonnes dans grid
+                if (grid[i, j])  // Utilisation correcte de i et j dans le tableau
                 {
                     CasScript.SwapState(); // Si la case est true, on applique l'état (par exemple, [X])
-                }
-                else
-                {
-                    // Si la case est false, on peut laisser la case inchangée ou appliquer une autre logique
-                    // CasScript.SwapState(); // Vous pouvez également ajouter un comportement pour les cases false si nécessaire
                 }
             }
         }

@@ -10,6 +10,7 @@ public class GestionInformation : MonoBehaviour
     public static GestionInformation Instance { get; private set; }
     public string path = "Inventory";
     [SerializeField] Image Photo;
+    [SerializeField] TextMeshProUGUI lvl;
     [SerializeField] ShowForm Form;
     [SerializeField] GameObject Gun;
     [SerializeField] GameObject Boat;
@@ -59,6 +60,7 @@ public class GestionInformation : MonoBehaviour
         Form.CreateUi(Gem.Shape.GetForme());
         Photo.sprite = Gem.sprite;
         ChangeInfoStat(Gem);
+        lvl.text = $"Level of the gem :  {Gem.LVL}";
     }
 
     // Affiche les informations de la gemme (stats) sur le UI
@@ -67,24 +69,24 @@ public class GestionInformation : MonoBehaviour
         // Ajouter les stats pour les armes
         if (Gem.typeWeapon != null && Gem.typeWeapon.Count > 0)
         {
-            PopulateStatUI(Gem.typeWeapon, Gun);
+            PopulateStatUI(Gem.typeWeapon, Gun, Gem.LVL);
         }
 
         // Ajouter les stats pour les bateaux
         if (Gem.typeBoat != null && Gem.typeBoat.Count > 0)
         {
-            PopulateStatUI(Gem.typeBoat, Boat);
+            PopulateStatUI(Gem.typeBoat, Boat, Gem.LVL);
         }
 
         // Ajouter les stats pour les filets
         if (Gem.typeNet != null && Gem.typeNet.Count > 0)
         {
-            PopulateStatUI(Gem.typeNet, Net);
+            PopulateStatUI(Gem.typeNet, Net, Gem.LVL);
         }
     }
 
     // Méthode générique pour remplir les UI en fonction des types (arme, bateau, filet)
-    private void PopulateStatUI<TEnum>(List<TypeQuantity<TEnum>> list, GameObject parent)
+    private void PopulateStatUI<TEnum>(List<TypeQuantity<TEnum>> list, GameObject parent, int lvl)
     {
         // Efface les enfants précédents s'il y en a
         foreach (Transform child in parent.transform)
@@ -118,9 +120,38 @@ public class GestionInformation : MonoBehaviour
                     {
                         // Définit le texte avec le nom de l'enum et la quantité
                         txt.text = $"{list[index].Type.ToString()} : {list[index].Quantite}";
+
+                        // Applique la couleur du texte basée sur le ratio
+                        txt.color = GetTextColorForRatio((float)list[index].Quantite / lvl);
                     }
                 }
             }
         }
     }
+
+    // Sous-fonction pour récupérer la couleur en fonction du ratio
+    private Color GetTextColorForRatio(float ratio)
+    {
+        if (ratio == 1)
+        {
+            return Color.white; // Blanc pour ratio = 1
+        }
+        else if (ratio == 2)
+        {
+            return Color.green; // Vert pour ratio = 2
+        }
+        else if (ratio == 3)
+        {
+            return new Color(0.7f, 0.4f, 0.7f); // Violet clair pour ratio = 3
+        }
+        else if (ratio == 4)
+        {
+            return new Color(1f, 0.647f, 0f); // Orange pour ratio = 4
+        }
+        else
+        {
+            return Color.white; // Par défaut, la couleur est blanche
+        }
+    }
+
 }
