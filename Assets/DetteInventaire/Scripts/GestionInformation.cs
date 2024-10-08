@@ -10,6 +10,11 @@ public class GestionInformation : MonoBehaviour
     public static GestionInformation Instance { get; private set; }
     public string path = "Inventory";
     [SerializeField] Image Photo;
+    [SerializeField] GameObject Gem;
+    [SerializeField] GameObject Fish;
+    [SerializeField] TextMeshProUGUI FishName;
+    [SerializeField] TextMeshProUGUI FishRarety;
+    [SerializeField] TextMeshProUGUI FishDescription;
     [SerializeField] TextMeshProUGUI lvl;
     [SerializeField] ShowForm Form;
     [SerializeField] GameObject Gun;
@@ -32,12 +37,8 @@ public class GestionInformation : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
+   
+  
     public void GetResource()
     {
         // Récupérer les objets GameObject à partir du dictionnaire
@@ -49,14 +50,16 @@ public class GestionInformation : MonoBehaviour
     {
 
     }
-    public void GetNewInformation(FishData Fish)
+    public void GetNewInformationFish(FishData Fish)
     {
         if (data == null)
         {
             GetResource();
         }
+        FishName.text = Fish.name;
+        FishRarety.text = Fish.rarety.ToString();
+        FishDescription.text = Fish.description;
 
-      
     }
     public void GetNewInformationGem(GemData Gem)
     {
