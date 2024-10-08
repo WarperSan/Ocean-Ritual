@@ -9,16 +9,7 @@ public class ShowForm : MonoBehaviour
     Dictionary<string, GameObject> data;  // Dictionnaire contenant les prefabs chargés
     [SerializeField] GemData Gem;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
     public void GetResource()
     {
         // Récupérer les objets GameObject à partir du dictionnaire
@@ -40,10 +31,10 @@ public class ShowForm : MonoBehaviour
         }
 
         GameObject rowPrefab = data["Row"];
-        GameObject casePrefab = data["CaseBool"];
+        GameObject casePrefab = data["CaseHover"];
 
-        float maxColumnWidth = 500f;
-        float maxColumnHeight = 500f;
+        float maxColumnWidth = 200f;
+        float maxColumnHeight = 200;
 
         float scalingFactorX = maxColumnWidth / grid.GetLength(1);
         float scalingFactorY = maxColumnHeight / grid.GetLength(0);

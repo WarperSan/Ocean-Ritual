@@ -5,6 +5,9 @@ using UnityEngine;
 public class MouseHoverManager : MonoBehaviour
 {
     [SerializeField] GemData Gem;
+    [SerializeField] FishData Fish;
+    [SerializeField] GestionInformation HoverItem;
+    [SerializeField] bool test  = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +17,11 @@ public class MouseHoverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (test)
+        {
+            test = !test;
+            GestionInformation.Instance.GetNewInformationGem(Gem);
+
+        }
     }
 }
