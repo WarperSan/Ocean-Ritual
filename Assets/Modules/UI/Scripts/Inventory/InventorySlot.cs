@@ -10,6 +10,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
+    public int slotIndex;
 
     private void Awake()
     {
@@ -22,8 +23,9 @@ public class InventorySlot : MonoBehaviour
     /// <summary>
     ///  Sets the inventory slot with the sprite and quantity of an item
     /// </summary>
-    public void SetSlot(Sprite sprite, uint qty = 1, bool isStackable = true)
+    public void SetSlot(int slotIndex, Sprite sprite, uint qty = 1, bool isStackable = true)
     {
+        this.slotIndex = slotIndex;
         if (sprite == null)
         {
             this.ClearSlot();
@@ -70,7 +72,6 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] DragAndDropHandler dragAndDropHandler;
     Transform originalParent;
-    int originalIndex;
     GameObject fillingChild;
     Transform canvasParent;
 
@@ -78,13 +79,12 @@ public class InventorySlot : MonoBehaviour
     {
         // Set up slot for drag
         originalParent = transform.parent;
-        originalIndex = transform.GetSiblingIndex();
         canvasGroup.blocksRaycasts = false;
 
         // Adds temporary ghost slot
         fillingChild = Instantiate(gameObject, transform.parent);
         fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
-        fillingChild.transform.SetSiblingIndex(originalIndex);
+        fillingChild.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
         transform.SetParent(canvasParent);
 
@@ -101,27 +101,25 @@ public class InventorySlot : MonoBehaviour
         // Check if hovering another slot
         if (firstTarget != null && firstTarget.TryGetComponent(out InventorySlot targetSlot))
         {
-            int targetIndex = targetSlot.transform.GetSiblingIndex();
-
-            Inventory.Instance.SwapPlace(originalIndex, targetIndex);
+            Inventory.Instance.SwapPlace(slotIndex, targetSlot.slotIndex);
 
             transform.SetParent(originalParent);
-            transform.SetSiblingIndex(targetIndex);
+            transform.SetSiblingIndex(targetSlot.slotIndex);
+            
+            targetSlot.transform.SetSiblingIndex(slotIndex);
 
-            targetSlot.transform.SetSiblingIndex(originalIndex);
-
-            originalIndex = targetIndex;
+            (slotIndex, targetSlot.slotIndex) = (targetSlot.slotIndex, slotIndex);
         }
         else
         {
             if (raycasts.Count == 0)
             {
-                Inventory.Instance.DropItem(originalIndex);
+                Inventory.Instance.DropItem(slotIndex);
                 this.ClearSlot();
             }
 
             transform.SetParent(originalParent);
-            transform.SetSiblingIndex(originalIndex);
+            transform.SetSiblingIndex(slotIndex);
         }
 
         if (fillingChild != null)

@@ -35,14 +35,14 @@ public class InventoryUI : MonoBehaviour
                 maxStack = (uint)item.quantityMax;
             }
 
-            this.CreateSlot(sprite, quantity, maxStack);
+            this.CreateSlot(i, sprite, quantity, maxStack);
         }
     }
 
-    private void CreateSlot(Sprite sprite, uint quantity, uint maxStack)
+    private void CreateSlot(int slotIndex, Sprite sprite, uint quantity, uint maxStack)
     {
         GameObject newSlot = Instantiate(slot, parent);
-        newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity, maxStack > 1);
+        newSlot.GetComponent<InventorySlot>().SetSlot(slotIndex, sprite, quantity, maxStack > 1);
     }
 
     private Sprite GetSpriteFromItem(ItemData item)
