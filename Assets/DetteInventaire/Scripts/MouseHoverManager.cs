@@ -19,6 +19,14 @@ public class MouseHoverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ActifInventorie.active)
+        {
+            //if ()
+            //{
+            //   Inventory.Instance.GetInventoryItem(itemIndex) ,
+            //}
+           
+        }
         if (testGem)
         {
             testGem = !testGem;
