@@ -4,14 +4,16 @@ using UnityEditor.VersionControl;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using FishingModule;
 
 public class GestionInformation : MonoBehaviour
 {
     public static GestionInformation Instance { get; private set; }
     public string path = "Inventory";
-    [SerializeField] Image Photo;
+    [SerializeField] Image PhotoGem;
     [SerializeField] GameObject Gem;
     [SerializeField] GameObject Fish;
+    [SerializeField] Image PhotoFish;
     [SerializeField] TextMeshProUGUI FishName;
     [SerializeField] TextMeshProUGUI FishRarety;
     [SerializeField] TextMeshProUGUI FishDescription;
@@ -52,6 +54,8 @@ public class GestionInformation : MonoBehaviour
     }
     public void GetNewInformationFish(FishData Fish)
     {
+        Gem.SetActive(false);
+       this.Fish.SetActive(true);
         if (data == null)
         {
             GetResource();
@@ -59,17 +63,20 @@ public class GestionInformation : MonoBehaviour
         FishName.text = Fish.name;
         FishRarety.text = Fish.rarety.ToString();
         FishDescription.text = Fish.description;
-
+        PhotoFish.sprite = Fish.sprite;
     }
     public void GetNewInformationGem(GemData Gem)
     {
+        this.Fish.SetActive(false);
+        this.Gem.SetActive(true);
+      
         if (data == null)
         {
             GetResource();
         }
 
         Form.CreateUi(Gem.Shape.GetForme());
-        Photo.sprite = Gem.sprite;
+        PhotoGem.sprite = Gem.sprite;
         ChangeInfoStat(Gem);
         lvl.text = $"Level of the gem :  {Gem.LVL}";
     }

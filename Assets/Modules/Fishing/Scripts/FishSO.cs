@@ -32,5 +32,6 @@ namespace FishingModule
 
             return $"<color={color}>{this.DisplayName}</color>";
         }
+       
     }
 }

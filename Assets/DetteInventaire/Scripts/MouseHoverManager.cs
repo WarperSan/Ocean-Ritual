@@ -7,7 +7,9 @@ public class MouseHoverManager : MonoBehaviour
     [SerializeField] GemData Gem;
     [SerializeField] FishData Fish;
     [SerializeField] GestionInformation HoverItem;
-    [SerializeField] bool test  = false;
+    [SerializeField] bool testGem = false;
+    [SerializeField] bool testfish = false;
+    [SerializeField] GameObject ActifInventorie;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,10 +19,16 @@ public class MouseHoverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (test)
+        if (testGem)
         {
-            test = !test;
+            testGem = !testGem;
             GestionInformation.Instance.GetNewInformationGem(Gem);
+
+        }
+        if (testfish)
+        {
+            testfish = !testfish;
+            GestionInformation.Instance.GetNewInformationFish(Fish);
 
         }
     }

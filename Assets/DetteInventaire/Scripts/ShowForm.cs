@@ -24,7 +24,7 @@ public class ShowForm : MonoBehaviour
             GetResource();
         }
 
-        ShowTab(grid);  // Affichage dans la console pour débogage, comme dans ShowTab
+       // ShowTab(grid);  // Affichage dans la console pour débogage, comme dans ShowTab
 
         if (!data.ContainsKey("Row") || !data.ContainsKey("CaseHover"))
         {
