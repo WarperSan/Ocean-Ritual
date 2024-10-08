@@ -19,7 +19,7 @@ public class NavBarManager : MonoBehaviour
     }
     public void SelectTab(Tab tab)
     {
-        Debug.Log("sdsds");
+ 
         if (currentTab == tab)
             return;
 
