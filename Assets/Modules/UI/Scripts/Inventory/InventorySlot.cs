@@ -12,10 +12,12 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
     public int slotIndex;
+
     public ItemData GetItem()
     {
-       return Inventory.Instance.GetItem(slotIndex);  
+        return Inventory.Instance.GetItem(slotIndex);
     }
+
     private void Awake()
     {
         dragAndDropHandler.OnDragStart += this.OnDragStart;
@@ -37,7 +39,7 @@ public class InventorySlot : MonoBehaviour
         }
 
         itemImage.sprite = sprite;
-        
+
         quantity.text = isStackable ? "x" + qty.ToString() : "";
         Color itemColor = itemImage.color;
         itemColor.a = 1f;
@@ -74,6 +76,7 @@ public class InventorySlot : MonoBehaviour
 
     [Header("Drag")]
     [SerializeField] CanvasGroup canvasGroup;
+
     [SerializeField] DragAndDropHandler dragAndDropHandler;
     Transform originalParent;
     GameObject fillingChild;
@@ -102,6 +105,15 @@ public class InventorySlot : MonoBehaviour
         if (raycasts.Count > 0)
             firstTarget = raycasts[0].gameObject;
 
+        // ***
+        if (firstTarget != null && firstTarget.TryGetComponent(out BlacksmithGemSlot targetGemSlot))
+        {
+            targetGemSlot.ReceiveGem((GemData)GetItem());
+        }
+        //else{
+
+        //}
+
         // Check if hovering another slot
         if (firstTarget != null && firstTarget.TryGetComponent(out InventorySlot targetSlot))
         {
@@ -109,7 +121,7 @@ public class InventorySlot : MonoBehaviour
 
             transform.SetParent(originalParent);
             transform.SetSiblingIndex(targetSlot.slotIndex);
-            
+
             targetSlot.transform.SetSiblingIndex(slotIndex);
 
             (slotIndex, targetSlot.slotIndex) = (targetSlot.slotIndex, slotIndex);
