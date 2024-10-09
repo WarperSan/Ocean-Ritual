@@ -18,7 +18,16 @@ public class InventoryManager : MonoBehaviour
             if (upDate)
             {
                 upDate = !upDate;
-
+                if (Item is FishData fish)
+                {
+                   
+                    GestionInformation.Instance.GetNewInformationFish(fish);
+                }
+                else if (Item is GemData gem)
+                {
+                    
+                    GestionInformation.Instance.GetNewInformationGem(gem);
+                }
             }
         }
     }
@@ -46,6 +55,7 @@ public class InventoryManager : MonoBehaviour
                     {
                         Item = slot.GetItem();
                         upDate = true;
+                        break;
                     }
                        
                                        
