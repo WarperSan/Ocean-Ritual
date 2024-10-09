@@ -1,43 +1,56 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
-public class MouseHoverManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] GemData Gem;
-    [SerializeField] FishData Fish;
-    [SerializeField] GestionInformation HoverItem;
-    [SerializeField] bool testGem = false;
-    [SerializeField] bool testfish = false;
-    [SerializeField] GameObject ActifInventorie;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject ActifInventorie;
+    [SerializeField] private ItemData Item;
+    private bool upDate = false;
 
-    // Update is called once per frame
     void Update()
     {
-        if (ActifInventorie.active)
+        // Si l'inventaire est actif, lancer un raycast à partir de la souris
+        if (ActifInventorie.activeSelf)
         {
-            //if ()
-            //{
-            //   Inventory.Instance.GetInventoryItem(itemIndex) ,
-            //}
-           
-        }
-        if (testGem)
-        {
-            testGem = !testGem;
-            GestionInformation.Instance.GetNewInformationGem(Gem);
+            RaycastToUI();
+            if (upDate)
+            {
+                upDate = !upDate;
 
+            }
         }
-        if (testfish)
-        {
-            testfish = !testfish;
-            GestionInformation.Instance.GetNewInformationFish(Fish);
+    }
 
+    void RaycastToUI()
+    {
+        // On ne lance un raycast que si la souris est sur un élément UI
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, results);
+
+            foreach (RaycastResult result in results)
+            {
+                // Tente de récupérer le composant InventorySlot sur l'objet touché
+                InventorySlot slot = result.gameObject.GetComponent<InventorySlot>();
+                if (slot != null)
+                {
+                    if(Item != slot.GetItem())
+                    {
+                        Item = slot.GetItem();
+                        upDate = true;
+                    }
+                       
+                                       
+                }
+            }
         }
     }
 }

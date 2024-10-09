@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,7 +12,10 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
     public int slotIndex;
-
+    public ItemData GetItem()
+    {
+       return Inventory.Instance.GetItem(slotIndex);  
+    }
     private void Awake()
     {
         dragAndDropHandler.OnDragStart += this.OnDragStart;
