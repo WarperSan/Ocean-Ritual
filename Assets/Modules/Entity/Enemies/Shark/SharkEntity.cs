@@ -6,7 +6,10 @@ namespace EntityModule.Enemies
     {
         #region EntityBehaviour
 
-        
+        protected override void OnStart()
+        {
+            base.OnStart();
+        }
 
         /// <inheritdoc/>
         private void Update()
