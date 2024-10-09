@@ -23,7 +23,7 @@ public class GestionInformation : MonoBehaviour
     [SerializeField] GameObject Boat;
     [SerializeField] GameObject Net;
     Dictionary<string, GameObject> data;
-
+    private RectTransform rectTransform;
     // Appelé avant le premier frame
     void Awake()
     {
@@ -37,10 +37,75 @@ public class GestionInformation : MonoBehaviour
         {
             Destroy(gameObject); // Si une instance existe déjà, on détruit ce nouvel objet
         }
+        rectTransform = GetComponent<RectTransform>();
     }
 
-   
-  
+    [SerializeField] float offsetHeight = 70;
+    [SerializeField] float offsetWidth = 150;
+    [SerializeField] float offsetHeightInverse = 300;
+    [SerializeField] float offsetWidthInverse = 720;
+    [SerializeField] float offsetHeightInverseFish = 300;
+    [SerializeField] float offsetWidthInverseFish = 200;
+    [SerializeField] float MousseLimitHeight = 250;
+    [SerializeField] float MousseLimiteWidth = 500;
+
+
+
+    public void InterfaceMovement(ItemData Item)
+    {
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        // Récupère la position actuelle de la souris dans l'écran (en pixels)
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Applique les décalages en hauteur et en largeur
+        mousePosition.x += offsetWidth;
+        mousePosition.y += offsetHeight;
+
+        // Vérifie si la position de la souris avec les offsets dépasse les limites définies
+        if (mousePosition.x + MousseLimiteWidth > Screen.width )
+        {
+            if((Item is not FishData))
+            {
+                // Si ça dépasse, applique l'offset inverse horizontalement
+                mousePosition.x -= offsetWidthInverse;
+              
+            }
+            else
+            {
+                mousePosition.x -= offsetHeightInverseFish;
+            }
+         
+        }
+
+        if (mousePosition.y + MousseLimitHeight > Screen.height )
+        {
+            if ((Item is not FishData))
+            {
+                // Si ça dépasse, applique l'offset inverse verticalement
+                mousePosition.y -= offsetHeightInverse;
+              
+
+            }
+            else
+            {
+                mousePosition.y -= offsetHeightInverseFish;
+            }
+                
+        }
+
+        // Met à jour la position de l'objet UI pour suivre la position de la souris
+        rectTransform.position = mousePosition;
+    }
+
+    public void closeRessource()
+    {
+        Gem.SetActive(false);
+        Fish.SetActive(false);
+    }
     public void GetResource()
     {
         // Récupérer les objets GameObject à partir du dictionnaire
@@ -55,7 +120,7 @@ public class GestionInformation : MonoBehaviour
     public void GetNewInformationFish(FishData Fish)
     {
         Gem.SetActive(false);
-       this.Fish.SetActive(true);
+        this.Fish.SetActive(true);
         if (data == null)
         {
             GetResource();
@@ -64,12 +129,13 @@ public class GestionInformation : MonoBehaviour
         FishRarety.text = Fish.rarety.ToString();
         FishDescription.text = Fish.description;
         PhotoFish.sprite = Fish.sprite;
+
     }
     public void GetNewInformationGem(GemData Gem)
     {
         this.Fish.SetActive(false);
         this.Gem.SetActive(true);
-      
+
         if (data == null)
         {
             GetResource();
@@ -79,6 +145,7 @@ public class GestionInformation : MonoBehaviour
         PhotoGem.sprite = Gem.sprite;
         ChangeInfoStat(Gem);
         lvl.text = $"Level of the gem :  {Gem.LVL}";
+
     }
 
     // Affiche les informations de la gemme (stats) sur le UI

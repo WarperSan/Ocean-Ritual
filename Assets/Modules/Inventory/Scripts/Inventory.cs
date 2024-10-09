@@ -335,7 +335,7 @@ public class Inventory : MonoBehaviour
         //}
 
         UpdateListeComplementary();
-        Debug.Log(ItemList.Count);
+        
 
         ////
         UpdateItemListeUI(inventoryUI);
