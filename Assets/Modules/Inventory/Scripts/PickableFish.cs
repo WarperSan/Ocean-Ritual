@@ -7,7 +7,7 @@ public class PickableFish : MonoBehaviour, IInteractable
     [SerializeField] int MaxQuantity;
     [SerializeField] int Quantity;
     [SerializeField] Sprite sprite;
-
+    [SerializeField] string Description;
     public InteractionAsset InteractionAsset => null;
 
     public void OnClick()
@@ -17,6 +17,7 @@ public class PickableFish : MonoBehaviour, IInteractable
         poison.quantity = Quantity;
         poison.quantityMax = MaxQuantity;
         poison.sprite = sprite;
+        poison.description= Description;
         Inventory.Instance.AddItem(poison);
     }
 }
