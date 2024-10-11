@@ -47,13 +47,36 @@ namespace EntityModule.Enemies
         #endregion
 
         #region Attack
-
+        private float attackCooldown;
+        public float attackMinRange;
+        public float attackMaxRange;
         private Node AttackSequence()
         {
             Sequence attackSequence = new();
+            
+            attackSequence += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
 
+            Sequence attack = new();
+            attack += this.AttackCooldown();
+
+            attackSequence += attack;
             return attackSequence.Alias("Attack Sequence");
         }
+
+        private Node AttackCooldown() => new CallbackNode(() =>
+        {
+            this.attackCooldown -= Time.deltaTime;
+
+            return this.attackCooldown > 0 ? NodeState.FAILURE : NodeState.SUCCESS;
+        }).Alias("Attack Cooldown");
+        private Node SetAttackCooldown() => new CallbackNode(() =>
+        {
+            this.attackCooldown = Random.Range(5, 10);
+
+            return NodeState.SUCCESS;
+        }).Alias("Reset Attack Cooldown");
+
+
         #endregion
 
         #region Movement
