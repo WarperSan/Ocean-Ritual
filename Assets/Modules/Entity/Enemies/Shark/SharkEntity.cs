@@ -1,4 +1,7 @@
 using EntityModule.Entities;
+using System;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace EntityModule.Enemies
 {
@@ -15,8 +18,10 @@ namespace EntityModule.Enemies
         private void Update()
         {
             this.UpdateTree();
+            
         }
 
+        
         #endregion
     }
 }

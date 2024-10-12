@@ -32,11 +32,11 @@ namespace EntityModule.Enemies
             // Rushes towards the player and attacks it
 
             Sequence _root = new();
-            //_root += this.AttackSequence();
-            _root += this.RotateSequence();
+            _root += this.AttackSequence();
+
             //_root += new Parallel(
-            //    this.RotateSequence(),
-            //    this.MovementSequence()
+            //      this.RotateSequence()
+            //      this.MovementSequence()
             //);
 
             _root.SetData(CURRENT_TARGET, this.target);
@@ -47,32 +47,73 @@ namespace EntityModule.Enemies
         #endregion
 
         #region Attack
-        private float attackCooldown;
+        private float attackCooldown =5;
         public float attackMinRange;
         public float attackMaxRange;
+        public Collider hitboxCollider;
+        public float attackDuration;
+        private float durationTimer = 0;
+
         private Node AttackSequence()
         {
             Sequence attackSequence = new();
             
-            attackSequence += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
-
             Sequence attack = new();
-            attack += this.AttackCooldown();
+            
+            attack += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
+            //attackSequence += this.AttackCooldown();
 
+
+            attack += this.DoAttack();
+            //faire l'attaque + animation
             attackSequence += attack;
+
+
+            Sequence attackReset = new();
+            //attackReset += this.SetAttackCooldown();
+            attackReset += this.ResetHitbox();
+            attackReset += this.AttackCooldown();
+            attackReset += this.SetAttackCooldown();
+            attackSequence += attackReset.Alias("Attack Reset");
+            //reset animation
+
             return attackSequence.Alias("Attack Sequence");
         }
+
+        private Node DoAttack() => new CallbackNode(() =>
+        {
+            if (!hitboxCollider.enabled)
+            {
+                hitboxCollider.enabled = true;
+            }
+            durationTimer += Time.deltaTime;
+            
+            if (durationTimer < attackDuration) 
+            {
+                return NodeState.RUNNING;
+            }
+            
+            return NodeState.SUCCESS;
+        }).Alias("Do Attack");
+
+        private Node ResetHitbox() => new CallbackNode(() =>
+        {
+            hitboxCollider.enabled= false;
+            
+            return NodeState.SUCCESS;
+        }).Alias("Reset Hitbox");
 
         private Node AttackCooldown() => new CallbackNode(() =>
         {
             this.attackCooldown -= Time.deltaTime;
 
-            return this.attackCooldown > 0 ? NodeState.FAILURE : NodeState.SUCCESS;
+            return this.attackCooldown > 0 ? NodeState.RUNNING : NodeState.SUCCESS;
         }).Alias("Attack Cooldown");
         private Node SetAttackCooldown() => new CallbackNode(() =>
         {
-            this.attackCooldown = Random.Range(5, 10);
-
+            this.attackCooldown = 5;
+            durationTimer = 0;
+            
             return NodeState.SUCCESS;
         }).Alias("Reset Attack Cooldown");
 
@@ -120,6 +161,22 @@ namespace EntityModule.Enemies
         }
         #endregion
 
+
+        private void OnDrawGizmos()
+        {
+            UnityEditor.Handles.color = Color.blue;
+            UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMinRange);
+            UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMaxRange);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            UnityEngine.Debug.Log("touched");
+            if (other.tag == "Player")
+            {
+                Debug.Log("Hit Player");
+            }
+        }
 
     }
 }
