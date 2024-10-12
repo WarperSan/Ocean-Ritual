@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FishingModule
+namespace FishingModule.UI
 {
     public class FishNewsManager : MonoBehaviour
     {

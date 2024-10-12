@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using UnityEngine;
 using static EnumGeneral;
 using System.Linq;
+using FishingModule;
 
 [System.Serializable]
 public class Inventory : MonoBehaviour
@@ -59,45 +58,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    void AddFishTest()
-    {
-        // Poisson A
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishA = new FishData
-            {
-                name = "Poisson A",
-                quantityMax = 5,
-                quantity = 5 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishA);
-        }
-
-        // Poisson B
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishB = new FishData
-            {
-                name = "Poisson B",
-                quantityMax = 8,
-                quantity = 8 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishB);
-        }
-
-        // Poisson C
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishC = new FishData
-            {
-                name = "Poisson C",
-                quantityMax = 10,
-                quantity = 10 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishC);
-        }
-    }
-
     public void UpdateListeComplementary()
     {
         poissons = ItemList.OfType<FishData>().ToList();
@@ -146,7 +106,7 @@ public class Inventory : MonoBehaviour
                 if (item is FishData poisson && ItemList[i] is FishData poissonInList)
                 {
                     // Vérifie que le name est identique et que la quantité max n'est pas atteinte
-                    if (poissonInList.name == poisson.name && poissonInList.quantity < poissonInList.quantityMax)
+                    if (poissonInList.fish == poisson.fish && poissonInList.quantity < poissonInList.quantityMax)
                     {
                         ListIndexItemSame.Add(i);
                     }
@@ -398,7 +358,7 @@ public class Inventory : MonoBehaviour
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
 
         // Trier les fish par name (supposant que FishData a un champ 'name')
-        fish = fish.OrderBy(p => p.name).ToList();
+        fish = fish.OrderBy(p => p.fish.DisplayName).ToList();
 
         // Réorganiser l'inventaire avec fish d'abord, puis les gem
         ItemList = new List<ItemData>();
@@ -460,19 +420,19 @@ public class Inventory : MonoBehaviour
                                              .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les fish par name
-        Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
+        Dictionary<FishSO, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<FishSO, (int, int)>();
 
         foreach (var poisson in fish)
         {
-            if (!fusionPoissons.ContainsKey(poisson.name))
+            if (!fusionPoissons.ContainsKey(poisson.fish))
             {
                 // On stocke la quantité totale et le quantityMax
-                fusionPoissons[poisson.name] = (poisson.quantity, poisson.quantityMax);
+                fusionPoissons[poisson.fish] = (poisson.quantity, poisson.quantityMax);
             }
             else
             {
                 // On ajoute la quantité au total déjà enregistré
-                fusionPoissons[poisson.name] = (fusionPoissons[poisson.name].quantiteTotale + poisson.quantity, poisson.quantityMax);
+                fusionPoissons[poisson.fish] = (fusionPoissons[poisson.fish].quantiteTotale + poisson.quantity, poisson.quantityMax);
             }
         }
 
@@ -481,19 +441,16 @@ public class Inventory : MonoBehaviour
 
         foreach (var entry in fusionPoissons)
         {
-            string nomPoisson = entry.Key;
             int quantiteTotale = entry.Value.quantiteTotale;
             int quantiterMax = entry.Value.quantiterMax;
 
             // On répartit les fish en respectant la quantité maximale propre à chaque fish
             while (quantiteTotale > 0)
             {
-                FishData nouveauPoisson = new FishData
-                {
-                    name = nomPoisson,
-                    quantity = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantityMax propre à ce fish
-                    quantityMax = quantiterMax
-                };
+                var nouveauPoisson = new FishData(
+                    entry.Key, 
+                    Math.Min(quantiterMax, quantiteTotale) // Utilisation de la valeur quantityMax propre à ce fish
+                );
                 poissonsFusionnes.Add(nouveauPoisson);
                 quantiteTotale -= nouveauPoisson.quantity;
             }
