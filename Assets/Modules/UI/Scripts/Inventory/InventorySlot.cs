@@ -36,6 +36,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         itemColor.a = 1f;
         this.itemImage.color = itemColor;
 
+        this.enabled = true;
         //this.dragAndDropHandler.enabled = true;
     }
 
@@ -49,6 +50,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.itemImage.color = itemColor;
         this.quantity.text = "";
 
+        this.enabled = false;
         //this.dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
@@ -72,6 +74,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     GameObject fillingChild;
     Transform canvasParent;
 
+    /// <inheritdoc/>
     public void OnDragStart()
     {
         // Set up slot for drag

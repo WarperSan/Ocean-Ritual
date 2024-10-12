@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,7 +10,16 @@ namespace UIModule.Interfaces
     public interface IDraggable : IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         public RectTransform Rect { get; }
+
+        /// <summary>
+        /// Called when this object starts to being dragged
+        /// </summary>
         public void OnDragStart();
+
+        /// <summary>
+        /// Called when this object stops being dragged
+        /// </summary>
+        /// <param name="receivable">Receiver of the drag or null if end on none</param>
         public void OnDragEnd(IDragReceivable receivable);
 
         #region IBeginDragHandler
