@@ -2,7 +2,7 @@ using DhafinFawwaz.AnimationUILib;
 using System.Collections;
 using UnityEngine;
 
-namespace UIModule
+namespace UIModule.Menus
 {
     /// <summary>
     /// Class that represents a menu that has an opening and/or a closing animation

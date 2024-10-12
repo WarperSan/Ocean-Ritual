@@ -1,10 +1,11 @@
+using ControllerModule.Controllers;
 using System.Collections;
 using System.Collections.Generic;
+using UIModule.Menus;
 using UnityEngine;
 
 namespace UIModule
 {
-
     [RequireComponent(typeof(Canvas))]
     public class UIManager : UtilsModule.Singleton<UIManager>
     {
@@ -16,6 +17,7 @@ namespace UIModule
         /// <inheritdoc/>
         protected override void OnAwake()
         {
+            // Register all menus
             UIMenu[] menus = FindObjectsByType<UIMenu>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (UIMenu item in menus)
@@ -26,18 +28,23 @@ namespace UIModule
 
         #region Toggle
 
-        private static Stack<UIMenu> openedMenus = new();
+        private static readonly Stack<UIMenu> openedMenus = new();
         private static readonly Queue<System.Guid> toggleHistory = new();
 
         public static void Toggle<T>() where T : UIMenu
         {
-            foreach (UIMenu menu in registeredMenus)
-            {
-                if (menu is not T)
-                    continue;
+            T menu = GetMenu<T>();
 
-                Instance.StartCoroutine(Instance.ToggleMenu(menu, System.Guid.NewGuid()));
+            // If not found, skip
+            if (menu == null)
+            {
+                Debug.LogError($"Tried to toggle a menu of type '{nameof(T)}', but no instance of this menu is registered.");
+                return;
             }
+
+            var token = System.Guid.NewGuid();
+
+            Instance.StartCoroutine(Instance.ToggleMenu(menu, token));
         }
 
         private IEnumerator ToggleMenu(UIMenu menu, System.Guid token)
@@ -56,7 +63,7 @@ namespace UIModule
             {
                 yield return openedMenu.Close();
                 openedMenus.Pop();
-                ControllerModule.Controllers.ControllerManager.BackTo();
+                ControllerManager.UnFreeze();
             }
 
             // If different menu
@@ -64,7 +71,7 @@ namespace UIModule
             {
                 yield return menu.Open();
                 openedMenus.Push(menu);
-                ControllerModule.Controllers.ControllerManager.SwitchTo(menu);
+                ControllerManager.Freeze();
             }
 
             // Consume your token
@@ -75,19 +82,32 @@ namespace UIModule
 
         #region Register
 
-        private static List<UIMenu> registeredMenus = new();
+        private static readonly HashSet<UIMenu> registeredMenus = new();
 
-        public static void Register(UIMenu menu)
+        /// <summary>
+        /// Finds the first instance of the given menu
+        /// </summary>
+        private static T GetMenu<T>() where T : UIMenu
         {
-            registeredMenus.Add(menu);
+            foreach (UIMenu menu in registeredMenus)
+            {
+                if (menu is T typedMenu)
+                    return typedMenu;
+            }
+
+            return null;
         }
 
-        public static void Unregister(UIMenu menu)
-        {
-            registeredMenus.Remove(menu);
-        }
+        /// <summary>
+        /// Registers the given menu, making it available to be interacted with
+        /// </summary>
+        public static void Register(UIMenu menu) => registeredMenus.Add(menu);
+
+        /// <summary>
+        /// Unergisters the given menu, making it unavailable to be interacted with
+        /// </summary>
+        public static void Unregister(UIMenu menu) => registeredMenus.Remove(menu);
 
         #endregion
     }
 }
-

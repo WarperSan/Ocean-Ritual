@@ -1,20 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UIModule 
+namespace UIModule.Menus
 {
     /// <summary>
     /// Class that represents a menu
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIMenu : ControllerModule.Controllers.Controller
+    public abstract class UIMenu : UIComponent
     {
         /// <summary>
         /// Called to open this menu
         /// </summary>
         public virtual IEnumerator Open()
         {
-            gameObject.SetActive(true);
+            this.gameObject.SetActive(true);
             yield return null;
         }
 
@@ -23,7 +23,7 @@ namespace UIModule
         /// </summary>
         public virtual IEnumerator Close()
         {
-            gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
             yield return null;
         }
 
