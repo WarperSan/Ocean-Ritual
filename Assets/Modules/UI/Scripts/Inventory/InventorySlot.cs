@@ -1,21 +1,17 @@
 using System.Collections.Generic;
 using TMPro;
+using UIModule.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IHoverable
 {
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
     public int slotIndex;
-
-    public ItemData GetItem()
-    {
-        return Inventory.Instance.GetItem(slotIndex);
-    }
 
     private void Awake()
     {
@@ -104,14 +100,10 @@ public class InventorySlot : MonoBehaviour
         if (raycasts.Count > 0)
             firstTarget = raycasts[0].gameObject;
 
-        // ***
-        if (firstTarget != null && firstTarget.TryGetComponent(out BlacksmithGemSlot targetGemSlot))
-        {
-            targetGemSlot.ReceiveGem((GemData)GetItem());
-        }
-        //else{
-
-        //}
+        // if (firstTarget != null && firstTarget.TryGetComponent(out BlacksmithGemSlot targetGemSlot))
+        // {
+        //     targetGemSlot.ReceiveGem((GemData)GetItem());
+        // }
 
         // Check if hovering another slot
         if (firstTarget != null && firstTarget.TryGetComponent(out InventorySlot targetSlot))
@@ -146,4 +138,11 @@ public class InventorySlot : MonoBehaviour
     }
 
     #endregion Drag
+
+    #region IHoverable
+
+    /// <inheritdoc/>
+    public ItemData GetData() => Inventory.Instance.GetItem(slotIndex);
+
+    #endregion
 }
