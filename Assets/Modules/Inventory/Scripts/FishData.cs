@@ -1,24 +1,15 @@
 using FishingModule;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 
 [System.Serializable]
-
 public class FishData : ItemData
 {
-   public string name;
-    public FishRarity rarety;
-    public string description;
+    public FishSO fish;
 
-    public FishData() { }
-    public FishData(FishSO fish, uint quantity) {
+    public FishData(FishSO fish, int quantity)
+    {
+        this.fish = fish;
         sprite = fish.Icon;
-        name = fish.GetColoredName();
-        rarety = fish.Rarity;
-        description=fish.description;
-   
-        this.quantity = (int)quantity;
+
+        this.quantity = quantity;
     }
 }

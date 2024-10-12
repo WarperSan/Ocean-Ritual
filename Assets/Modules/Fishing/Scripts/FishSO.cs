@@ -15,7 +15,7 @@ namespace FishingModule
         public FishRarity Rarity;
 
         [Tooltip("Description of this fish")]
-        public string  description;
+        public string Description;
 
         /// <returns>Colored name of this fish</returns>
         public string GetColoredName()
