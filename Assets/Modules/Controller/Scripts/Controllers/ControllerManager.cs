@@ -81,6 +81,7 @@ namespace ControllerModule.Controllers
             if (ActiveController != null)
             {
                 InputMaster.Instance -= ActiveController;
+                ActiveController.enabled = false;
             }
         }
 
@@ -92,6 +93,7 @@ namespace ControllerModule.Controllers
             if (ActiveController != null)
             {
                 InputMaster.Instance += ActiveController;
+                ActiveController.enabled = true;
             }
         }
     }

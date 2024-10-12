@@ -8,7 +8,7 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Controller that manages how the player behaves
     /// </summary>
-    
+
     public class PlayerController : Controller, IMovable, IFirable, IJumpable
     {
         #region Cursor 
@@ -87,7 +87,7 @@ namespace ControllerModule.Controllers
         //Used to move the character while on the boat
         [SerializeField]
         BoatController boatController;
-        
+
         private Rigidbody _rigidbody;
         private Vector3 direction;
 
@@ -107,11 +107,12 @@ namespace ControllerModule.Controllers
             {
                 this._rigidbody.velocity = Vector3.zero;
             }
+
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
-            
+
             // Move the character controller
             moveDir *= speed * elapsed;
             moveDir += this.transform.position;
@@ -136,17 +137,12 @@ namespace ControllerModule.Controllers
         [SerializeField, Tooltip("Radius of the check for the ground")]
         private float GroundCheckRadius = 0.2f;
 
-        private Vector3 velocity;
         private bool isGrounded;
 
-        /// <summary>
-        /// Updates the gravity of the player
-        /// </summary>
-        /// <param name="elapsed">Time passed since the last frame</param>
-        private void UpdateGravity(float elapsed)
+        private bool CheckGrounded()
         {
             if (this.Feet == null || this._rigidbody == null)
-                return;
+                return false;
 
             this.isGrounded = Physics.CheckSphere(
                 this.Feet.position,
@@ -155,32 +151,9 @@ namespace ControllerModule.Controllers
                 QueryTriggerInteraction.Ignore
             );
 
-            if (this.isGrounded && this.velocity.y < 0)
-                this.velocity.y = 0;
-            this.velocity += Physics.gravity * elapsed;
-
-            this._rigidbody.MovePosition(this.velocity*elapsed);
+            return this.isGrounded;
         }
 
-        private bool CheckGrounded()
-        {
-            if (this.Feet != null && this._rigidbody != null)
-            {
-                this.isGrounded = Physics.CheckSphere(
-                    this.Feet.position,
-                    this.GroundCheckRadius,
-                    this.GroundLayers,
-                    QueryTriggerInteraction.Ignore
-                );
-                
-
-                return isGrounded;
-            }
-            return false;
-
-            
-                
-        }
         #endregion
 
         #region Controller
@@ -199,8 +172,6 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
-            
-            //this.UpdateGravity(elapsed);
         }
 
         protected override void OnFixedUpdate(float elapsed)
@@ -212,26 +183,23 @@ namespace ControllerModule.Controllers
         protected override void OnSwitchIn()
         {
             this.gameObject.SetActive(true);
+
             // Update cursor
             this.SetCursor(true);
             SetCursorLock(true);
 
             // Reset direction
             this.direction = Vector2.zero;
-
-            
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
+            this.gameObject.SetActive(false);
 
-            //this._rigidbody.velocity = Vector3.zero;
-            //this._rigidbody.angularVelocity = Vector3.zero;
             // Update cursor
             this.SetCursor(false);
             SetCursorLock(false);
-            this.gameObject.SetActive(false);
         }
 
         #endregion
@@ -263,9 +231,8 @@ namespace ControllerModule.Controllers
             if (CheckGrounded())
             {
                 //Debug.Log("grounded");
-                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0),ForceMode.Impulse);
+                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
 
-                
             }
         }
         #endregion
