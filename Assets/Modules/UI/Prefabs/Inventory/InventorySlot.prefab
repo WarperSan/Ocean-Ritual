@@ -310,7 +310,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9029938569296968127}
   - component: {fileID: 7013681922693213215}
-  - component: {fileID: 3580928624770264082}
   - component: {fileID: 408852136690723247}
   - component: {fileID: 5570332918132707477}
   - component: {fileID: 4478082463820344903}
@@ -358,20 +357,9 @@ MonoBehaviour:
   itemImage: {fileID: 8545375185332787795}
   quantity: {fileID: 1677308305611937637}
   background: {fileID: 5171899712761991748}
+  slotIndex: 0
   canvasGroup: {fileID: 408852136690723247}
-  dragAndDropHandler: {fileID: 3580928624770264082}
---- !u!114 &3580928624770264082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9192869792413234619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7775f41bd9e9acd488a168b19c45a9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  dragAndDropHandler: {fileID: 0}
 --- !u!225 &408852136690723247
 CanvasGroup:
   m_ObjectHideFlags: 0

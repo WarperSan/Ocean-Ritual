@@ -1,24 +1,20 @@
 using System.Collections.Generic;
 using TMPro;
+using UIModule;
 using UIModule.Interfaces;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RectTransform))]
-public class InventorySlot : MonoBehaviour, IHoverable
+public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivable
 {
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
     public int slotIndex;
 
-    private void Awake()
+    private void Start()
     {
-        dragAndDropHandler.OnDragStart += this.OnDragStart;
-        dragAndDropHandler.OnDragEnd += this.OnDragEnd;
-
-        canvasParent = this.GetComponentInParent<Canvas>().transform;
+        this.canvasParent = this.GetComponentInParent<Canvas>().transform;
     }
 
     /// <summary>
@@ -33,14 +29,14 @@ public class InventorySlot : MonoBehaviour, IHoverable
             return;
         }
 
-        itemImage.sprite = sprite;
+        this.itemImage.sprite = sprite;
 
-        quantity.text = isStackable ? "x" + qty.ToString() : "";
-        Color itemColor = itemImage.color;
+        this.quantity.text = isStackable ? "x" + qty.ToString() : "";
+        Color itemColor = this.itemImage.color;
         itemColor.a = 1f;
-        itemImage.color = itemColor;
+        this.itemImage.color = itemColor;
 
-        dragAndDropHandler.enabled = true;
+        //this.dragAndDropHandler.enabled = true;
     }
 
     /// <summary>
@@ -48,12 +44,12 @@ public class InventorySlot : MonoBehaviour, IHoverable
     /// </summary>
     public void ClearSlot()
     {
-        Color itemColor = itemImage.color;
+        Color itemColor = this.itemImage.color;
         itemColor.a = 0f;
-        itemImage.color = itemColor;
-        quantity.text = "";
+        this.itemImage.color = itemColor;
+        this.quantity.text = "";
 
-        dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
+        //this.dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
     /// <summary>
@@ -62,9 +58,9 @@ public class InventorySlot : MonoBehaviour, IHoverable
     /// <param name="alpha">Value between 0 and 1</param>
     public void SetBackgroundAlpha(float alpha)
     {
-        Color bgColor = background.color;
+        Color bgColor = this.background.color;
         bgColor.a = Mathf.Clamp01(alpha);
-        background.color = bgColor;
+        this.background.color = bgColor;
     }
 
     #region Drag
@@ -72,67 +68,56 @@ public class InventorySlot : MonoBehaviour, IHoverable
     [Header("Drag")]
     [SerializeField] CanvasGroup canvasGroup;
 
-    [SerializeField] DragAndDropHandler dragAndDropHandler;
     Transform originalParent;
     GameObject fillingChild;
     Transform canvasParent;
 
-    private void OnDragStart()
+    public void OnDragStart()
     {
         // Set up slot for drag
-        originalParent = transform.parent;
-        canvasGroup.blocksRaycasts = false;
+        this.originalParent = this.transform.parent;
+        this.canvasGroup.blocksRaycasts = false;
 
         // Adds temporary ghost slot
-        fillingChild = Instantiate(gameObject, transform.parent);
-        fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
-        fillingChild.transform.SetSiblingIndex(transform.GetSiblingIndex());
+        this.fillingChild = Instantiate(this.gameObject, this.transform.parent);
+        this.fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
+        this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
 
-        transform.SetParent(canvasParent);
+        this.transform.SetParent(this.canvasParent);
 
         this.SetBackgroundAlpha(0f);
     }
 
-    private void OnDragEnd(List<RaycastResult> raycasts)
+    public void OnDragEnd(IDragReceivable receivable)
     {
-        GameObject firstTarget = null;
-
-        if (raycasts.Count > 0)
-            firstTarget = raycasts[0].gameObject;
-
-        // if (firstTarget != null && firstTarget.TryGetComponent(out BlacksmithGemSlot targetGemSlot))
-        // {
-        //     targetGemSlot.ReceiveGem((GemData)GetItem());
-        // }
-
-        // Check if hovering another slot
-        if (firstTarget != null && firstTarget.TryGetComponent(out InventorySlot targetSlot))
+        if (receivable != null)
         {
-            Inventory.Instance.SwapPlace(slotIndex, targetSlot.slotIndex);
+            // Check if hovering another slot
+            if (receivable.Rect.TryGetComponent(out InventorySlot targetSlot))
+            {
+                Inventory.Instance.SwapPlace(this.slotIndex, targetSlot.slotIndex);
 
-            transform.SetParent(originalParent);
-            transform.SetSiblingIndex(targetSlot.slotIndex);
+                this.transform.SetParent(this.originalParent);
+                this.transform.SetSiblingIndex(targetSlot.slotIndex);
 
-            targetSlot.transform.SetSiblingIndex(slotIndex);
+                targetSlot.transform.SetSiblingIndex(this.slotIndex);
 
-            (slotIndex, targetSlot.slotIndex) = (targetSlot.slotIndex, slotIndex);
+                (this.slotIndex, targetSlot.slotIndex) = (targetSlot.slotIndex, this.slotIndex);
+            }
         }
         else
         {
-            if (raycasts.Count == 0)
-            {
-                Inventory.Instance.DropItem(slotIndex);
-                this.ClearSlot();
-            }
+            Inventory.Instance.DropItem(this.slotIndex);
+            this.ClearSlot();
 
-            transform.SetParent(originalParent);
-            transform.SetSiblingIndex(slotIndex);
+            this.transform.SetParent(this.originalParent);
+            this.transform.SetSiblingIndex(this.slotIndex);
         }
 
-        if (fillingChild != null)
-            Destroy(fillingChild);
+        if (this.fillingChild != null)
+            Destroy(this.fillingChild);
 
-        canvasGroup.blocksRaycasts = true;
+        this.canvasGroup.blocksRaycasts = true;
 
         this.SetBackgroundAlpha(1f);
     }
@@ -142,7 +127,7 @@ public class InventorySlot : MonoBehaviour, IHoverable
     #region IHoverable
 
     /// <inheritdoc/>
-    public ItemData GetData() => Inventory.Instance.GetItem(slotIndex);
+    public ItemData GetData() => Inventory.Instance.GetItem(this.slotIndex);
 
     #endregion
 }
