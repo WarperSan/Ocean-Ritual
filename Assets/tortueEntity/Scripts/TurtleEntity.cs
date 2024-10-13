@@ -7,6 +7,16 @@ public class TurtleEntity :  EntityBehaviour
 {
     #region EntityBehaviour
 
+
+    public void CreateAttack()
+    {
+
+      
+    }
+
+
+
+
     protected override void OnStart()
     {
         base.OnStart();

@@ -14,10 +14,11 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 {
     public const string CURRENT_TARGET = "currentTarget";
     public const string AGENT = "agent";
+    public const string BOOLHITS = "hit";
     public const string WALK_SPEED = "walkSpeed";
     public Transform target;
     [SerializeField] NavMeshAgent agent;
-
+    Parallel _root = new();
     /// <inheritdoc/>
     private void Start() => this.RebuildRoot();
 
@@ -33,13 +34,6 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
     private Node SetUpTree()
     {
-
-        
-
-
-
-        Parallel _root = new();
-
 
         //section heal
         PeopleToHeals peopleToHeal = new ();
@@ -61,14 +55,14 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
 
         //3em embranchement section mouvement
-        Sequence sequence2 = new Sequence();
+      //  Sequence sequence2 = new Sequence();
       //  AnnimationMovement annimationMovement = new AnnimationMovement ();
         FollowTarget folowTarget = new FollowTarget ();
-        sequence2.Attach(new Node[] { folowTarget });
+      // sequence2.Attach(new Node[] { folowTarget });
 
 
         //jointure  embranchement 2 et 3 
-        Parallel2.Attach(new Node[] { sequence1, sequence2 });
+        Parallel2.Attach(new Node[] { sequence1, folowTarget });
 
 
         _root.Attach(folowTarget);
@@ -82,7 +76,11 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
     #endregion
 
-  
+  public void HitSomething()
+    {
+        Debug.Log("j'ai toucher quelque chose");
+        _root.SetData(BOOLHITS, true);
+    }
 
     
 

@@ -54,10 +54,11 @@ namespace TortueNode
     public class ProxiBoat : Node
     {
 
-
+        public const string CURRENT_TARGET = "currentTarget";
+      
         protected override NodeState OnEvaluate()
         {
-
+            Transform target = GetData<Transform>(CURRENT_TARGET);
 
             return NodeState.SUCCESS;
         }
@@ -166,11 +167,11 @@ namespace TortueNode
             // Vérifier si l'agent est arrivé à destination
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                Debug.Log("succe");
+              //  Debug.Log("succe");
                 return NodeState.SUCCESS; // Retourne succès si l'agent est arrivé
                 
             }
-            Debug.Log("en cour");
+           // Debug.Log("en cour");
             return NodeState.RUNNING; // Retourne en cours si l'agent est encore en mouvement
         }
 
