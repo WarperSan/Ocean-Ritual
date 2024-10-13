@@ -27,7 +27,7 @@ namespace BlacksmithModule
             this.gem = gem;
             this.Icon.sprite = gem.sprite;
             this.Icon.SetAlpha(1);
-
+            TestBlackSmith.Instance.SetData(gem );
             this.creationCase.CreateUi(this.gem.Shape.GetForme());
         }
 

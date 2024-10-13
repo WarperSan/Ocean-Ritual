@@ -176,7 +176,7 @@ public class FormBool
     {
         this.width = width;
         this.height = height;
-        this.flatForme = form;
+        this.flatForme = new List<bool> (form);
         
     }
     public bool[,] GetForme()

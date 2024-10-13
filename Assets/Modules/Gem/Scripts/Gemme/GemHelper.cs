@@ -13,6 +13,7 @@ public static class GemHelper
 
     public static (int cost, int modifiedSpot, int missingSpot,bool CasseOnlytrue) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm, int lvlGem)
     {
+      
         // Vérification si la liste modifiée est plus grande que l'originale
         if (modifiedForm.Count > formOriginal.Count)
         {
@@ -57,7 +58,7 @@ public static class GemHelper
         missingSpot = missingSpot - modifiedSpot;
         // Calcul du coût total
         int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * missingSpotCost ));
-
+        Debug.Log(missingSpot);
         return (totalCost, modifiedSpot, missingSpot, CasseOnlytrue);
     }
 
