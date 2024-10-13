@@ -1,4 +1,6 @@
 using BehaviourModule.Nodes;
+using BehaviourModule.Nodes.Controls;
+using BehaviourModule.Nodes.Generic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,9 +76,41 @@ namespace TortueNode
         public override string GetText() => "Cooldown";
 
     }
+    
+
+   public class ProxiBoat : Sequence
+    {
+
+        public const string NeedFolow = "needFolow";
+        DistanceSmaller DistanceSmaller;
+        public ProxiBoat(DistanceSmaller DistanceSmaller)
+        {
+            this.DistanceSmaller = DistanceSmaller;
+          
+           
+        }
+
+        protected override NodeState OnEvaluate()
+        {
+            NodeState State = DistanceSmaller.Evaluate();
+
+            if(State == NodeState.SUCCESS)
+            {
+                SetData(NeedFolow, false);
+            }
+            else
+            {
+                SetData(NeedFolow, true);
+            }
+
+            return State;
+        }
+       
 
 
+        public override string GetText() => "Cooldown";
 
+    }
     public class AnimationAttack : Node
     {
         float animationTime;
