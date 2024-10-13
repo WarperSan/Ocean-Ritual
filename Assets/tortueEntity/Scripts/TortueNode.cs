@@ -2,6 +2,7 @@ using BehaviourModule.Nodes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 
@@ -143,13 +144,34 @@ namespace TortueNode
 
     public class FollowTarget : Node
     {
-
+        public const string AGENT = "agent";
+        public const string CURRENT_TARGET = "currentTarget";
 
         protected override NodeState OnEvaluate()
         {
+            Transform target = GetData<Transform>(CURRENT_TARGET);
+            NavMeshAgent agent = GetData<NavMeshAgent>(AGENT);
+           
+            // Vérifier si la cible ou l'agent sont null
+            if (target == null || agent == null)
+            {
+                Debug.Log("echec");
+                return NodeState.FAILURE; // Retourne échec s'il n'y a pas de cible ou d'agent
+            }
 
-
-            return NodeState.SUCCESS;
+            // Définir la destination de l'agent sur la position de la cible
+            agent.SetDestination(target.position);
+          
+         
+            // Vérifier si l'agent est arrivé à destination
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                Debug.Log("succe");
+                return NodeState.SUCCESS; // Retourne succès si l'agent est arrivé
+                
+            }
+            Debug.Log("en cour");
+            return NodeState.RUNNING; // Retourne en cours si l'agent est encore en mouvement
         }
 
 

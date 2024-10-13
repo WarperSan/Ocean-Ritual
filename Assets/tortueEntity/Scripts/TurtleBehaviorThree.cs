@@ -13,6 +13,7 @@ using UnityEngine.AI;
 public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 {
     public const string CURRENT_TARGET = "currentTarget";
+    public const string AGENT = "agent";
     public const string WALK_SPEED = "walkSpeed";
     public Transform target;
     [SerializeField] NavMeshAgent agent;
@@ -44,11 +45,11 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         PeopleToHeals peopleToHeal = new ();
         Heals heals = new ();
         heals.Attach(peopleToHeal);
-        _root.Attach(heals);
+      //  _root.Attach(heals);
 
         //1er embranchement
-        Selector selector1 = new Selector();
-        _root.Attach(selector1);
+        Parallel Parallel2 = new Parallel();
+     //   _root.Attach(Parallel2);
 
        // 2em embranchement section attack
         Sequence sequence1 = new Sequence(); 
@@ -61,21 +62,21 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
         //3em embranchement section mouvement
         Sequence sequence2 = new Sequence();
-        AnnimationMovement annimationMovement = new AnnimationMovement ();
+      //  AnnimationMovement annimationMovement = new AnnimationMovement ();
         FollowTarget folowTarget = new FollowTarget ();
-        sequence2.Attach(new Node[] { folowTarget, annimationMovement });
+        sequence2.Attach(new Node[] { folowTarget });
 
 
         //jointure  embranchement 2 et 3 
-        selector1.Attach(new Node[] { sequence1, sequence2 });
+        Parallel2.Attach(new Node[] { sequence1, sequence2 });
 
 
-       
+        _root.Attach(folowTarget);
         //_root += this.RotateSequence();
-     
 
-       // _root.SetData(CURRENT_TARGET, this.target);
 
+         _root.SetData(CURRENT_TARGET, this.target);
+        _root.SetData(AGENT, this.agent);
         return _root;
     }
 
