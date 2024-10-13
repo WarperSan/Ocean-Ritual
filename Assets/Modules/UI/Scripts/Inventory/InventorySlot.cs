@@ -35,6 +35,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.itemImage.SetAlpha(1);
 
         this.enabled = true;
+        //this.dragAndDropHandler.enabled = true;
     }
 
     /// <summary>
@@ -42,13 +43,25 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     /// </summary>
     public void ClearSlot()
     {
-        this.itemImage.SetAlpha(0f);
+        this.itemImage.SetAlpha(0);
         this.quantity.text = "";
 
-        this.enabled = false; // If the slot is cleared, cannot be dragged
+        this.enabled = false;
+        //this.dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
-    #region Drag
+    /// <summary>
+    /// Sets the alpha of the background for this slot
+    /// </summary>
+    /// <param name="alpha">Value between 0 and 1</param>
+    public void SetBackgroundAlpha(float alpha)
+    {
+        Color bgColor = this.background.color;
+        bgColor.a = Mathf.Clamp01(alpha);
+        this.background.color = bgColor;
+    }
+
+    #region IDraggable
 
     [Header("Drag")]
     [SerializeField] CanvasGroup canvasGroup;
@@ -71,30 +84,37 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
 
         this.transform.SetParent(this.canvasParent);
 
-        this.background.SetAlpha(0f);
+        this.SetBackgroundAlpha(0f);
     }
 
     /// <inheritdoc/>
     public void OnDragEnd(IDragReceivable receivable, RectTransform target)
     {
+        // If ended on no receiver, return to original position
         if (receivable == null)
         {
+            // If ended on nothing, drop
             if (target == null)
             {
                 Inventory.Instance.DropItem(this.slotIndex);
                 this.ClearSlot();
             }
 
-            this.transform.SetParent(this.originalParent);
-            this.transform.SetSiblingIndex(this.slotIndex);
+            this.ReturnToPosition();
         }
 
+        // Destroy filling child
         if (this.fillingChild != null)
             Destroy(this.fillingChild);
 
         this.canvasGroup.blocksRaycasts = true;
+        this.SetBackgroundAlpha(1f);
+    }
 
-        this.background.SetAlpha(1f);
+    public void ReturnToPosition()
+    {
+        this.transform.SetParent(this.originalParent);
+        this.transform.SetSiblingIndex(this.slotIndex);
     }
 
     #endregion
@@ -102,20 +122,20 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     #region IDragReceivable
 
     /// <inheritdoc/>
-    public void OnDragReceive(InventorySlot draggable)
+    public void OnDragReceive(InventorySlot slot)
     {
-        Inventory.Instance.SwapPlace(this.slotIndex, draggable.slotIndex);
+        Inventory.Instance.SwapPlace(this.slotIndex, slot.slotIndex);
 
-        draggable.transform.SetParent(draggable.originalParent);
-        draggable.transform.SetSiblingIndex(this.slotIndex);
+        slot.transform.SetParent(slot.originalParent);
+        slot.transform.SetSiblingIndex(this.slotIndex);
 
-        this.transform.SetSiblingIndex(draggable.slotIndex);
+        this.transform.SetSiblingIndex(slot.slotIndex);
 
-        (draggable.slotIndex, this.slotIndex) = (this.slotIndex, draggable.slotIndex);
+        (this.slotIndex, slot.slotIndex) = (slot.slotIndex, this.slotIndex);
     }
 
     /// <inheritdoc/>
-    public void OnDragLeave(InventorySlot draggable) { }
+    public void OnDragLeave(InventorySlot slot) { }
 
     #endregion
 

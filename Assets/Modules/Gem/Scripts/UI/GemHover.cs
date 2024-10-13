@@ -98,7 +98,7 @@ namespace GemModule.UI
                         if (txt != null)
                         {
                             // D�finit le texte avec le nom de l'enum et la quantit�
-                            txt.text = $"{list[index].Type.ToString()} : {list[index].Quantite}";
+                            txt.text = $"{list[index].Type} : {list[index].Quantite}";
 
                             // Applique la couleur du texte bas�e sur le ratio
                             txt.color = this.GetTextColorForRatio((float)list[index].Quantite / lvl);

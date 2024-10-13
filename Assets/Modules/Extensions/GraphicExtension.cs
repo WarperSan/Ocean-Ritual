@@ -6,7 +6,7 @@ namespace ExtensionsModule
     public static class GraphicExtension
     {
         /// <summary>
-        /// Sets the alpha of this graphic
+        /// Sets the alpha value of this graphic
         /// </summary>
         public static void SetAlpha(this Graphic graphic, float alpha)
         {

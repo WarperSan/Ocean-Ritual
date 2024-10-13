@@ -15,17 +15,17 @@ public class TestBlackSmith : MonoBehaviour
     [SerializeField] TextMeshProUGUI ModifiedCase;
     [SerializeField] public bool canAddNewCase;
    public  bool CasseOnlytrue;
-    // Propriété pour accéder à l'instance
+    // Propriï¿½tï¿½ pour accï¿½der ï¿½ l'instance
     public static TestBlackSmith Instance
     {
         get
         {
             if (instance == null)
             {
-                // Cherche l'instance dans la scène
+                // Cherche l'instance dans la scï¿½ne
                 instance = FindObjectOfType<TestBlackSmith>();
 
-                // Si aucune instance n'existe, créer un nouvel objet
+                // Si aucune instance n'existe, crï¿½er un nouvel objet
                 if (instance == null)
                 {
                     GameObject singletonObject = new GameObject(typeof(TestBlackSmith).Name);
@@ -39,7 +39,7 @@ public class TestBlackSmith : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Assurez-vous que le singleton ne soit pas détruit lors du chargement d'une nouvelle scène
+        // Assurez-vous que le singleton ne soit pas dï¿½truit lors du chargement d'une nouvelle scï¿½ne
         DontDestroyOnLoad(gameObject);
     }
 
@@ -47,6 +47,12 @@ public class TestBlackSmith : MonoBehaviour
     {
         GemData = GemHelper.ConvertGemToGemData(Gem.GemScript);
         TemporaryGemData = GemHelper.ConvertGemToGemData(Gem.GemScript);
+    }
+
+    public void SetData(GemData gem)
+    {
+        GemData = gem;
+        TemporaryGemData = new(gem);
     }
 
     // Update is called once per frame
@@ -80,31 +86,31 @@ public class TestBlackSmith : MonoBehaviour
         {
             originalTexts = new string[3]; // Allocation du tableau
                                            // Sauvegarde des textes originaux avant modification
-            originalTexts[0] = cost.text;            // Texte original du coût
+            originalTexts[0] = cost.text;            // Texte original du coï¿½t
             originalTexts[1] = MissingCase.text;     // Texte original des cases manquantes
-            originalTexts[2] = ModifiedCase.text;    // Texte original des cases modifiées
+            originalTexts[2] = ModifiedCase.text;    // Texte original des cases modifiï¿½es
         }
 
-        // Obtenir les informations à partir des listes de formes
+        // Obtenir les informations ï¿½ partir des listes de formes
         (int totalCost, int modifiedSpot, int missingSpot,bool CasseOnlytrue) = GemHelper.GetInformationAboutForm(
             GemData.Shape.flatForme,
             TemporaryGemData.Shape.flatForme,
             GemData.LVL
         );
         this.CasseOnlytrue = CasseOnlytrue;
-        // Mise à jour des textes avec les nouvelles valeurs, tout en sauvegardant les textes originaux
-        cost.text = originalTexts[0] + " " + totalCost.ToString();             // Ajoute la valeur originale avec la nouvelle valeur du coût
+        // Mise ï¿½ jour des textes avec les nouvelles valeurs, tout en sauvegardant les textes originaux
+        cost.text = originalTexts[0] + " " + totalCost.ToString();             // Ajoute la valeur originale avec la nouvelle valeur du coï¿½t
         MissingCase.text = originalTexts[1] + " " + missingSpot.ToString();    // Ajoute la valeur originale avec le nombre de cases manquantes
-        ModifiedCase.text = originalTexts[2] + " " + modifiedSpot.ToString();  // Ajoute        nale avec le nombre de cases modifiées
+        ModifiedCase.text = originalTexts[2] + " " + modifiedSpot.ToString();  // Ajoute        nale avec le nombre de cases modifiï¿½es
 
-        // Si aucune case n'est manquante, on désactive la possibilité d'ajouter de nouvelles cases
+        // Si aucune case n'est manquante, on dï¿½sactive la possibilitï¿½ d'ajouter de nouvelles cases
         canAddNewCase = missingSpot > 0;
     }
 
 
     public void RestoreOriginalTexts()
     {
-        // Restaurer les textes originaux si nécessaire
+        // Restaurer les textes originaux si nï¿½cessaire
         cost.text = originalTexts[0];
         MissingCase.text = originalTexts[1];
         ModifiedCase.text = originalTexts[2];

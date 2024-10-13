@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -56,6 +55,8 @@ public class InventoryUI : MonoBehaviour
 
     public void SetPlayerGold(int gold = 9999)
     {
+        if (playerGold == null)
+            return;
         playerGold.text = "$" + gold.ToString();
     }
 }

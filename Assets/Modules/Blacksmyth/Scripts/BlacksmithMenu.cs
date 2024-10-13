@@ -5,6 +5,7 @@ namespace UIModule.Menus
 {
     public class BlacksmithMenu : AnimatedMenu
     {
+        /// <inheritdoc/>
         public override IEnumerator Open()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -13,6 +14,7 @@ namespace UIModule.Menus
             yield return base.Open();
         }
 
+        /// <inheritdoc/>
         public override IEnumerator Close()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -21,9 +23,6 @@ namespace UIModule.Menus
             yield return base.Close();
         }
 
-        public void CloseButton()
-        {
-            UIManager.Toggle<BlacksmithMenu>();
-        }
+        public void CloseButton() => UIManager.Toggle<BlacksmithMenu>();
     }
 }

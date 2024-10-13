@@ -29,4 +29,15 @@ public class GemData : ItemData
     [SerializeField] public List<TypeQuantity<TypeNet>> typeNet;
     #endregion
 
+    public GemData() { }
+    public GemData(GemData copy)
+    {
+        this.Shape = new FormBool(copy.Shape.flatForme, copy.Shape.width, copy.Shape.height);
+        this.GemColorsName = copy.GemColorsName;
+        this.LVL = copy.LVL;
+        this.typeWeapon = new(copy.typeWeapon);
+        this.typeBoat = new(copy.typeBoat);
+        this.typeNet = new(copy.typeNet);
+    }
+
 }
