@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+using ExtensionsModule;
 using TMPro;
 using UIModule;
 using UIModule.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivable
+public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivable<InventorySlot>
 {
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
@@ -32,12 +32,9 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.itemImage.sprite = sprite;
 
         this.quantity.text = isStackable ? "x" + qty.ToString() : "";
-        Color itemColor = this.itemImage.color;
-        itemColor.a = 1f;
-        this.itemImage.color = itemColor;
+        this.itemImage.SetAlpha(1);
 
         this.enabled = true;
-        //this.dragAndDropHandler.enabled = true;
     }
 
     /// <summary>
@@ -45,24 +42,10 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     /// </summary>
     public void ClearSlot()
     {
-        Color itemColor = this.itemImage.color;
-        itemColor.a = 0f;
-        this.itemImage.color = itemColor;
+        this.itemImage.SetAlpha(0f);
         this.quantity.text = "";
 
-        this.enabled = false;
-        //this.dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
-    }
-
-    /// <summary>
-    /// Sets the alpha of the background for this slot
-    /// </summary>
-    /// <param name="alpha">Value between 0 and 1</param>
-    public void SetBackgroundAlpha(float alpha)
-    {
-        Color bgColor = this.background.color;
-        bgColor.a = Mathf.Clamp01(alpha);
-        this.background.color = bgColor;
+        this.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
     #region Drag
@@ -88,30 +71,19 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
 
         this.transform.SetParent(this.canvasParent);
 
-        this.SetBackgroundAlpha(0f);
+        this.background.SetAlpha(0f);
     }
 
-    public void OnDragEnd(IDragReceivable receivable)
+    /// <inheritdoc/>
+    public void OnDragEnd(IDragReceivable receivable, RectTransform target)
     {
-        if (receivable != null)
+        if (receivable == null)
         {
-            // Check if hovering another slot
-            if (receivable.Rect.TryGetComponent(out InventorySlot targetSlot))
+            if (target == null)
             {
-                Inventory.Instance.SwapPlace(this.slotIndex, targetSlot.slotIndex);
-
-                this.transform.SetParent(this.originalParent);
-                this.transform.SetSiblingIndex(targetSlot.slotIndex);
-
-                targetSlot.transform.SetSiblingIndex(this.slotIndex);
-
-                (this.slotIndex, targetSlot.slotIndex) = (targetSlot.slotIndex, this.slotIndex);
+                Inventory.Instance.DropItem(this.slotIndex);
+                this.ClearSlot();
             }
-        }
-        else
-        {
-            Inventory.Instance.DropItem(this.slotIndex);
-            this.ClearSlot();
 
             this.transform.SetParent(this.originalParent);
             this.transform.SetSiblingIndex(this.slotIndex);
@@ -122,10 +94,30 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
 
         this.canvasGroup.blocksRaycasts = true;
 
-        this.SetBackgroundAlpha(1f);
+        this.background.SetAlpha(1f);
     }
 
-    #endregion Drag
+    #endregion
+
+    #region IDragReceivable
+
+    /// <inheritdoc/>
+    public void OnDragReceive(InventorySlot draggable)
+    {
+        Inventory.Instance.SwapPlace(this.slotIndex, draggable.slotIndex);
+
+        draggable.transform.SetParent(draggable.originalParent);
+        draggable.transform.SetSiblingIndex(this.slotIndex);
+
+        this.transform.SetSiblingIndex(draggable.slotIndex);
+
+        (draggable.slotIndex, this.slotIndex) = (this.slotIndex, draggable.slotIndex);
+    }
+
+    /// <inheritdoc/>
+    public void OnDragLeave(InventorySlot draggable) { }
+
+    #endregion
 
     #region IHoverable
 

@@ -20,7 +20,8 @@ namespace UIModule.Interfaces
         /// Called when this object stops being dragged
         /// </summary>
         /// <param name="receivable">Receiver of the drag or null if end on none</param>
-        public void OnDragEnd(IDragReceivable receivable);
+        /// <param name="target">First target to hit</param>
+        public void OnDragEnd(IDragReceivable receivable, RectTransform target);
 
         #region IBeginDragHandler
 
@@ -65,23 +66,30 @@ namespace UIModule.Interfaces
             // Raycast using the Graphics Raycaster and mouse click position
             EventSystem.current.RaycastAll(m_PointerEventData, results);
 
-            IDragReceivable firstTarget = null;
+            IDragReceivable firstReceiver = null;
+            RectTransform firstTarget = null;
 
-            foreach (RaycastResult item in results)
+            for (int i = 0; i < results.Count; i++)
             {
-                if (!item.gameObject.TryGetComponent(out IDragReceivable receivable))
+                GameObject target = results[i].gameObject;
+
+                if (firstTarget == null && target.TryGetComponent(out RectTransform rect))
+                    firstTarget = rect;
+
+                // If not a receiver, skip
+                if (!target.TryGetComponent(out IDragReceivable receivable))
                     continue;
 
-                firstTarget = receivable;
+                // If can't receive, skip
+                if (!receivable.CanReceive(this))
+                    continue;
+
+                firstReceiver = receivable;
                 break;
             }
 
-            if (firstTarget != null)
-            {
-
-            }
-
-            this.OnDragEnd(firstTarget);
+            firstReceiver?.OnDragReceive(this);
+            this.OnDragEnd(firstReceiver, firstTarget);
         }
 
         #endregion
