@@ -146,6 +146,16 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1995736977}
+    - target: {fileID: 3546670495933290001, guid: 26bcb97a30ce56b45923c3ec9d023123,
+        type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 1002687203}
+    - target: {fileID: 5429077989724082870, guid: 26bcb97a30ce56b45923c3ec9d023123,
+        type: 3}
+      propertyPath: turtleProjectile
+      value: 
+      objectReference: {fileID: 1002687207}
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -164,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 2.996046
       objectReference: {fileID: 0}
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
@@ -184,12 +194,12 @@ PrefabInstance:
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
         type: 3}
@@ -623,18 +633,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &965082964 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3546670495933290001, guid: 26bcb97a30ce56b45923c3ec9d023123,
-    type: 3}
-  m_PrefabInstance: {fileID: 257122001}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d538dacea151aa4685310cdb179967c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &965082965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7945927725862963447, guid: 26bcb97a30ce56b45923c3ec9d023123,
@@ -651,9 +649,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1002687204}
   - component: {fileID: 1002687206}
-  - component: {fileID: 1002687205}
+  - component: {fileID: 1002687207}
   m_Layer: 0
-  m_Name: HitBox
+  m_Name: TortueProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -668,25 +666,12 @@ Transform:
   m_GameObject: {fileID: 1002687203}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.103, y: 3.413, z: 0.171}
+  m_LocalPosition: {x: -0.103, y: 3.413, z: -0.016}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1221957563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1002687205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1002687203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d9d0b620f7ffc4590ad1a4abf2a759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Three: {fileID: 965082964}
 --- !u!65 &1002687206
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -708,6 +693,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1002687207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002687203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9dbdbf370df1114c848c54166bfe618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeath: 0
+  _collider: {fileID: 1002687206}
+  mustMeetAllConditions: 1
+  DPS: 30
 --- !u!1 &1221957561
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +757,7 @@ Transform:
   m_GameObject: {fileID: 1221957561}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.26, y: 0, z: -0.2}
+  m_LocalPosition: {x: -0.26, y: 0, z: -7.097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -777,7 +778,8 @@ GameObject:
   - component: {fileID: 1995736975}
   - component: {fileID: 1995736974}
   - component: {fileID: 1995736978}
-  m_Layer: 0
+  - component: {fileID: 1995736979}
+  m_Layer: 30
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,6 +899,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1995736979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995736973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1e191d0c7e7e4b99eea2de6fc9a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeath: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -58,15 +58,15 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         //  ProxiBoat proxiBoat = new ProxiBoat ();
         DistanceSmaller proxiBoat = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
         proxiBoat.Alias("ProxiBoat");
-        Cooldown coldown = new Cooldown ();
-        AnimationAttack animationAttack = new AnimationAttack ();
+        Cooldown coldown = new Cooldown (TimeBetwenneAttack);
+        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform);
         Attacks attack = new Attacks ();
-        sequence1.Attach(new Node[] { proxiBoat, coldown, animationAttack, attack });
-
+       // sequence1.Attach(new Node[] { proxiBoat, coldown, animationAttack, attack });
+        sequence1.Attach(new Node[] { animationAttack });
 
         //3em embranchement section mouvement
-      //  Sequence sequence2 = new Sequence();
-      //  AnnimationMovement annimationMovement = new AnnimationMovement ();
+        //  Sequence sequence2 = new Sequence();
+        //  AnnimationMovement annimationMovement = new AnnimationMovement ();
         FollowTarget folowTarget = new FollowTarget ();
       // sequence2.Attach(new Node[] { folowTarget });
 
@@ -75,7 +75,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         Parallel2.Attach(new Node[] { sequence1, folowTarget });
 
 
-        _root.Attach(folowTarget);
+        _root.Attach(Parallel2);
         //_root += this.RotateSequence();
 
 
