@@ -62,8 +62,8 @@ public class CreationCase : MonoBehaviour
         GameObject rowPrefab = data["Row"];
         GameObject casePrefab = data["CaseBool"];
 
-        float maxColumnWidth = 500f;
-        float maxColumnHeight = 500f;
+        float maxColumnWidth = 250;
+        float maxColumnHeight = 250;
 
         float scalingFactorX = maxColumnWidth / grid.GetLength(1);
         float scalingFactorY = maxColumnHeight / grid.GetLength(0);
