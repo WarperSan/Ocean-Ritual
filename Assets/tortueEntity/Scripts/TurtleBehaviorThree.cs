@@ -18,6 +18,14 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     public const string WALK_SPEED = "walkSpeed";
     public Transform target;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] GameObject projectile;
+    [SerializeField] float Distance = 10;
+    [SerializeField] float animationTime = 5;
+    [SerializeField] float animationVitesse = 5;
+
+    [SerializeField] float TimeBetwenneAttack = 10;
+ 
+
     Parallel _root = new();
     /// <inheritdoc/>
     private void Start() => this.RebuildRoot();
@@ -46,8 +54,10 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
      //   _root.Attach(Parallel2);
 
        // 2em embranchement section attack
-        Sequence sequence1 = new Sequence(); 
-        ProxiBoat proxiBoat = new ProxiBoat ();
+        Sequence sequence1 = new Sequence();
+        //  ProxiBoat proxiBoat = new ProxiBoat ();
+        DistanceSmaller proxiBoat = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
+        proxiBoat.Alias("ProxiBoat");
         Cooldown coldown = new Cooldown ();
         AnimationAttack animationAttack = new AnimationAttack ();
         Attacks attack = new Attacks ();

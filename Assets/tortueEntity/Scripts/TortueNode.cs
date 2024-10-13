@@ -51,28 +51,19 @@ namespace TortueNode
     }
 
 
-    public class ProxiBoat : Node
-    {
-
-        public const string CURRENT_TARGET = "currentTarget";
-      
-        protected override NodeState OnEvaluate()
-        {
-            Transform target = GetData<Transform>(CURRENT_TARGET);
-
-            return NodeState.SUCCESS;
-        }
-
-
-
-
-        public override string GetText() => "ProxiBoat";
-
-    }
+  
     public class Cooldown : Node
     {
 
+        float TimeBetwenneAttack;
+        float timelLapse;
+        public Cooldown(float TimeBetwenneAttack)
+        {
 
+            this.TimeBetwenneAttack = TimeBetwenneAttack;
+
+
+        }
         protected override NodeState OnEvaluate()
         {
 
@@ -91,8 +82,17 @@ namespace TortueNode
 
     public class AnimationAttack : Node
     {
+        float animationTime;
+        float animationVitesse;
+        float timelLapse;
+        
+        public AnimationAttack(float animationTime,float animationVitesse)
+        {
 
 
+            this.animationTime=animationTime;
+            this.animationVitesse=animationVitesse;
+        }
         protected override NodeState OnEvaluate()
         {
 
