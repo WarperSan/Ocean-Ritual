@@ -3,6 +3,7 @@ using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace EntityModule.Enemies
 {
@@ -11,6 +12,7 @@ namespace EntityModule.Enemies
         public const string CURRENT_TARGET = "currentTarget";
         public const string WALK_SPEED = "walkSpeed";
         public Transform target;
+        public NavMeshAgent agent;
 
         /// <inheritdoc/>
         private void Start() => this.RebuildRoot();
@@ -32,13 +34,13 @@ namespace EntityModule.Enemies
             // Rushes towards the player and attacks it
 
             Sequence _root = new();
-            _root += this.AttackSequence();
+            
+            _root += this.MovementSequence();
+            _root += new Parallel(
+                  this.AttackSequence()
+            );
 
-            //_root += new Parallel(
-            //      this.RotateSequence()
-            //      this.MovementSequence()
-            //);
-
+            _root.SetData(AGENT, this.agent);
             _root.SetData(CURRENT_TARGET, this.target);
 
             return _root;
@@ -125,9 +127,41 @@ namespace EntityModule.Enemies
         private Node MovementSequence()
         {
             Sequence movementSequence = new();
-
+            movementSequence += this.Move();
             return movementSequence.Alias("Movement Sequence");
         }
+
+
+        public const string AGENT = "agent";
+
+
+        private Node Move() => new CallbackNode(() =>
+        {
+            Transform target = root.GetData<Transform>(CURRENT_TARGET);
+            NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
+            Debug.Log(target.tag);
+            // Vérifier si la cible ou l'agent sont null
+            if (target == null || agent == null)
+            {
+                Debug.Log("echec");
+                return NodeState.FAILURE; // Retourne échec s'il n'y a pas de cible ou d'agent
+            }
+
+            // Définir la destination de l'agent sur la position de la cible
+            agent.SetDestination(target.position);
+
+
+            // Vérifier si l'agent est arrivé à destination
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                //  Debug.Log("succe");
+                return NodeState.SUCCESS; // Retourne succès si l'agent est arrivé
+
+            }
+            // Debug.Log("en cour");
+            return NodeState.SUCCESS; // Retourne en cours si l'agent est encore en mouvement
+        }).Alias("Movement");
+
         #endregion
 
         #region Rotation
