@@ -169,7 +169,7 @@ namespace BehaviourModule.Nodes
 
         #region Children
 
-        private readonly List<Node> children = new();
+        protected readonly List<Node> children = new();
 
         /// <summary>
         /// Attaches the given nodes to this node
@@ -183,7 +183,7 @@ namespace BehaviourModule.Nodes
                 this.children.Add(item);
             }
         }
-
+            
         #endregion
 
         #region IEnumerable

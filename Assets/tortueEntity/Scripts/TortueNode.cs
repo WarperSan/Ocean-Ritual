@@ -1,81 +1,144 @@
 using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
+using EntityModule;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static Unity.VisualScripting.Metadata;
 
 
 
 namespace TortueNode
 {
 
-
-    public  class  Heals : Node
+    public class Heals : Node
     {
+        private float RayonToHeal;
+        private float HealPower;
+        private Transform healerTransform; // Position à partir de laquelle on effectue la recherche
+        Heal heal = new Heal();
+        // Constructeur
+        public Heals(float RayonToHeal, float HealPower, Transform healerTransform)
+        {
+            this.RayonToHeal = RayonToHeal;
+            this.HealPower = HealPower;
+            this.healerTransform = healerTransform;
+            heal.Amount = HealPower;
 
+        }
 
+        // Méthode principale du node
         protected override NodeState OnEvaluate()
         {
-           
+            NodeState state;
+            List<Entity> entitiesToHeal = new();
+            // List<Entity> entitiesToHeal = FindPeopleToHeal();
+            foreach (Node node in children)
+            {
+                state = node.Evaluate();
+                if (state == NodeState.RUNNING)
+                {
+                    return state;
+                }
+            }
+            if (entitiesToHeal.Count > 0)
+            {
+
+                // Logique de soin
+                foreach (Entity entity in entitiesToHeal)
+                {
+
+                    entity.UseHeal(heal); // Par exemple, une méthode 'Heal' qui augmente la santé
+                }
+
+                return NodeState.SUCCESS;
+            }
 
             return NodeState.SUCCESS;
         }
 
+        // Méthode pour trouver les entités dans un rayon
+        private List<Entity> FindPeopleToHeal()
+        {
+            List<Entity> entitiesToHeal = new List<Entity>();
+
+            // Utilisation d'un LayerMask pour ne chercher que les ennemis
+            int enemyLayerMask = LayerMask.GetMask("Enemy");
+
+            // On vérifie que le healerTransform est bien initialisé avant d'appeler OverlapSphere
+            if (healerTransform == null)
+            {
+                Debug.LogError("Healer Transform is not assigned!");
+                return entitiesToHeal;
+            }
+
+            // Exécution de la détection dans un rayon avec filtrage par layer
+            Collider[] hitColliders = Physics.OverlapSphere(healerTransform.position, RayonToHeal);
+
+            // Parcours des objets détectés
+            foreach (Collider hitCollider in hitColliders)
+            {
+                Entity entity = hitCollider.GetComponent<Entity>();
+
+                // Vérification que l'entité n'est pas nulle et différente du casteur
+                if (entity != null && entity.gameObject != healerTransform.gameObject)
+                {
+                    entitiesToHeal.Add(entity);
+                }
+            }
+
+            return entitiesToHeal;
+        }
 
 
 
-        public override string GetText() => "Heal";
 
     }
 
 
 
 
-
-    public class PeopleToHeals : Node
-    {
-
-
-        protected override NodeState OnEvaluate()
-        {
-
-
-            return NodeState.SUCCESS;
-        }
-
-
-
-
-        public override string GetText() => "PeopleToHeal";
-
-    }
-
-
-  
     public class Cooldown : Node
     {
+        // Durée entre deux attaques
+        private float TimeBetwenneCooldown;
 
-        float TimeBetwenneAttack;
-        float timelLapse;
+        // Temps écoulé depuis la dernière attaque
+        private float timeLapse;
+
+        // Constructeur pour initialiser le temps entre deux attaques
         public Cooldown(float TimeBetwenneAttack)
         {
-            this.TimeBetwenneAttack = TimeBetwenneAttack;
+            this.TimeBetwenneCooldown = TimeBetwenneAttack;
+            this.timeLapse = 0f; // Initialiser le temps écoulé à zéro
         }
+
+        // Méthode appelée à chaque évaluation du nœud
         protected override NodeState OnEvaluate()
         {
+            // Incrémenter le temps écoulé depuis la dernière attaque
+            timeLapse += Time.deltaTime;
 
-
-            return NodeState.SUCCESS;
+            // Si le temps écoulé dépasse ou atteint le temps d'attente entre les attaques
+            if (timeLapse >= TimeBetwenneCooldown)
+            {
+                // Le cooldown est terminé, réinitialiser le temps écoulé et retourner le succès
+                timeLapse = 0f;
+                return NodeState.SUCCESS;
+            }
+            else
+            {
+                // Si le cooldown n'est pas encore terminé, retourne "RUNNING"
+                return NodeState.RUNNING;
+            }
         }
 
-
-
-
-        public override string GetText() => "Cooldown";
-
+        // Fonction pour afficher le texte du nœud (utile pour un éditeur de comportement, par exemple)
+        public override string GetText() => $"Cooldown ({timeLapse:F2}/{TimeBetwenneCooldown} sec)";
     }
+
 
 
     public class ProxiBoat : Sequence
@@ -102,15 +165,15 @@ namespace TortueNode
             // Vérifie si la distance à la cible est inférieure ou égale à la distance donnée
             if (IsClose())
             {
-                Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
+              //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
                
-                root.SetData(NeedFollow, false); // Arrêter le suivi si proche
+                SetData(NeedFollow, false); // Arrêter le suivi si proche
             }
             else
             {
-                Debug.Log("Cible éloignée. Continuer le suivi.");
+             //   Debug.Log("Cible éloignée. Continuer le suivi.");
                
-                root.SetData(NeedFollow, true); // Continuer le suivi si loin
+                SetData(NeedFollow, true); // Continuer le suivi si loin
             }
 
             return NodeState.SUCCESS;
@@ -128,7 +191,7 @@ namespace TortueNode
 
             // Calculer la distance entre 'self' (bateau) et 'target'
             float currentDistance = Vector3.Distance(self.position, target.position);
-            Debug.Log(currentDistance);
+           
             
             // Comparer avec la distance limite définie
             return currentDistance <= distance;
@@ -159,7 +222,7 @@ namespace TortueNode
 
         protected override NodeState OnEvaluate()
         {
-            bool needFolow = root.GetData<bool>(NeedFolow);
+            bool needFolow = GetData<bool>(NeedFolow);
             Debug.Log(needFolow);
             if (timeLapse < animationTime && !needFolow)
             {
@@ -203,12 +266,15 @@ namespace TortueNode
 
     public class Attacks : Node
     {
+        GameObject bulletToActivate;
 
-
+        public Attacks(GameObject bullet){
+           this.bulletToActivate = bullet;
+            }
         protected override NodeState OnEvaluate()
         {
 
-
+            bulletToActivate.gameObject.SetActive(true);
             return NodeState.SUCCESS;
         }
 
@@ -259,7 +325,7 @@ namespace TortueNode
             if (!needFolow)
             {
                 agent.ResetPath(); // Annule toute destination en cours
-                Debug.Log("Arrêt du suivi de la cible");
+               // Debug.Log("Arrêt du suivi de la cible");
                 return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppé
             }
             // Définir la destination de l'agent sur la position de la cible

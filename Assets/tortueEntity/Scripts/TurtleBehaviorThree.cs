@@ -23,9 +23,13 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     [SerializeField] float Distance = 3;
     [SerializeField] float animationTime = 5;
     [SerializeField] float animationVitesse = 5;
-
+    [SerializeField] float RayonToHeal = 10;
+    [SerializeField] float HealPower = 10;
     [SerializeField] float TimeBetwenneAttack = 10;
- 
+
+    [SerializeField] float cooldownHeal = 10;
+   
+
 
     Parallel _root = new();
     /// <inheritdoc/>
@@ -45,10 +49,10 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     {
 
         //section heal
-        PeopleToHeals peopleToHeal = new ();
-        Heals heals = new ();
-        heals.Attach(peopleToHeal);
-      //  _root.Attach(heals);
+        Cooldown coldownHeal = new Cooldown(cooldownHeal);
+        Heals heals = new (RayonToHeal, HealPower,transform);
+        heals.Attach(heals);
+        _root.Attach(heals);
 
         //1er embranchement
         Parallel Parallel2 = new Parallel();
@@ -60,11 +64,11 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
        // DistanceSmaller DistanceSmaller = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
       //  DistanceSmaller.Alias("ProxiBoat");
         ProxiBoat ProxiBoat = new ProxiBoat(this.transform, CURRENT_TARGET, Distance, _root);
-        Cooldown coldown = new Cooldown (TimeBetwenneAttack);
+        Cooldown coldownAttack = new Cooldown (TimeBetwenneAttack);
         AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform, _root);
-        Attacks attack = new Attacks ();
-        // sequence1.Attach(new Node[] { ProxiBoat, coldown, animationAttack, attack });
-        sequence1.Attach(new Node[] { ProxiBoat, animationAttack });
+        Attacks attack = new Attacks (projectile);
+        // sequence1.Attach(new Node[] { ProxiBoat, coldownAttack, animationAttack, attack });
+        sequence1.Attach(new Node[] { ProxiBoat, coldownAttack, animationAttack , attack });
 
         //3em embranchement section mouvement
         //  Sequence sequence2 = new Sequence();
