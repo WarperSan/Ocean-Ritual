@@ -6,8 +6,9 @@ namespace UIModule
     /// Class that defines all the UI components
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIComponent : MonoBehaviour
+    public abstract class UIComponent : MonoBehaviour, IElementable
     {
+        /// <inheritdoc/>
         public RectTransform Rect { get; private set; }
 
         private void Awake()

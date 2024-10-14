@@ -10,6 +10,6 @@ namespace BlacksmithModule
         public InteractionAsset InteractionAsset => null;
 
         /// <inheritdoc/>
-        public void OnClick() => UIManager.Toggle<BlacksmithMenu>();
+        public void OnClick() => UIManager.Open<BlacksmithMenu>();
     }
 }

@@ -1,3 +1,4 @@
+using ControllerModule.Controllers;
 using System.Collections;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace UIModule.Menus
     /// Class that represents a menu
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIMenu : UIComponent
+    public abstract class UIMenu : Controller, IElementable
     {
         /// <summary>
         /// Called to open this menu
@@ -32,6 +33,23 @@ namespace UIModule.Menus
         {
             UIManager.Unregister(this);
         }
+
+        #region IElementable
+
+        /// <inheritdoc/>
+        public RectTransform Rect { get; private set; }
+
+        #endregion
+
+        #region Controller
+
+        /// <inheritdoc/>
+        protected override void OnStart()
+        {
+            this.Rect = this.GetComponent<RectTransform>();
+        }
+
+        #endregion
     }
 }
 

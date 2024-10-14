@@ -136,15 +136,15 @@ namespace GemModule.UI
         #region HoverItem
 
         /// <inheritdoc/>
-        protected override void SetData(GemData data)
+        protected override void SetData(GemData gem)
         {
             if (data == null)
                 FetchData();
 
-            this.Icon.sprite = data.sprite;
-            this.Level.text = $"Level of the gem :  {data.LVL}";
-            this.ChangeInfoStat(data);
-            bool[,] grid = data.Shape.GetForme();
+            this.Icon.sprite = gem.sprite;
+            this.Level.text = $"Level of the gem :  {gem.LVL}";
+            this.ChangeInfoStat(gem);
+            bool[,] grid = gem.Shape.GetForme();
             this.Form.CreateUi(grid);
         }
 

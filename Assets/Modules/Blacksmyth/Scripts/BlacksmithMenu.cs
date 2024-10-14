@@ -23,6 +23,6 @@ namespace UIModule.Menus
             yield return base.Close();
         }
 
-        public void CloseButton() => UIManager.Toggle<BlacksmithMenu>();
+        public void CloseButton() => UIManager.Close<BlacksmithMenu>();
     }
 }

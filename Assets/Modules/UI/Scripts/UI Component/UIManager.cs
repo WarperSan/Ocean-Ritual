@@ -26,12 +26,92 @@ namespace UIModule
 
         #endregion
 
+        #region Open
+
+        /// <summary>
+        /// Opens the first instance of the menu of the given type
+        /// </summary>
+        public static void Open<T>() where T : UIMenu
+        {
+            T menu = GetMenu<T>();
+
+            // If not found, skip
+            if (menu == null)
+            {
+                Debug.LogError($"Tried to open a menu of type '{nameof(T)}', but no instance of this menu is registered.");
+                return;
+            }
+
+            Open(menu);
+        }
+
+        /// <summary>
+        /// Opens the given instance of the menu
+        /// </summary>
+        public static void Open(UIMenu menu)
+        {
+            // If already opened, skip
+            if (openedMenus.Contains(menu))
+            {
+                Debug.LogWarning($"Tried to open a menu of type '{menu.GetType().Name}', but an instance of this menu is already opened.");
+                return;
+            }
+
+            // Open
+            AddOperation(OperationType.OPEN, menu);
+        }
+
+        /// <summary>
+        /// Checks if the given menu is already opened
+        /// </summary>
+        public static bool IsOpened(UIMenu menu) => openedMenus.Contains(menu);
+
+        #endregion
+
+        #region Close
+
+        /// <summary>
+        /// Closes the first instance of the menu of the given type
+        /// </summary>
+        public static void Close<T>() where T : UIMenu
+        {
+            T menu = GetMenu<T>();
+
+            // If not found, skip
+            if (menu == null)
+            {
+                Debug.LogError($"Tried to close a menu of type '{nameof(T)}', but no instance of this menu is registered.");
+                return;
+            }
+
+            Close(menu);
+        }
+
+        /// <summary>
+        /// Closes the given instance of the menu
+        /// </summary>
+        public static void Close(UIMenu menu)
+        {
+            // If not opened, skip
+            if (!IsOpened(menu))
+            {
+                Debug.LogWarning($"Tried to close a menu of type '{menu.GetType().Name}', but no instance of this menu is opened.");
+                return;
+            }
+
+            // Close menu
+            AddOperation(OperationType.CLOSE, menu);
+        }
+
+        #endregion
+
         #region Toggle
 
-        private static readonly Stack<UIMenu> openedMenus = new();
-        private static readonly Queue<System.Guid> toggleHistory = new();
-
-        public static void Toggle<T>() where T : UIMenu
+        /// <summary>
+        /// Toggles the first instance of the menu of the given type
+        /// </summary>
+        /// <inheritdoc cref="Toggle(UIMenu, bool)"/>
+        public static void Toggle<T>(bool alwaysToggle = false) where T : UIMenu
         {
             T menu = GetMenu<T>();
 
@@ -42,40 +122,97 @@ namespace UIModule
                 return;
             }
 
-            var token = System.Guid.NewGuid();
-
-            Instance.StartCoroutine(Instance.ToggleMenu(menu, token));
+            Toggle(menu, alwaysToggle);
         }
 
-        private IEnumerator ToggleMenu(UIMenu menu, System.Guid token)
+        /// <summary>
+        /// Toggles the given instance of the menu
+        /// </summary>
+        /// <param name="alwaysToggle">Determines if the menu can be toggled even when it's not the current one</param>
+        public static void Toggle(UIMenu menu, bool alwaysToggle)
         {
-            // Add to the queue
-            toggleHistory.Enqueue(token);
+            UIMenu current = CurrentMenu;
 
-            // Wait for your turn
-            while (toggleHistory.TryPeek(out System.Guid nextToken) && nextToken != token)
-                yield return null;
+            // Allow only when the menu is the current one
+            if (!alwaysToggle && current != null && current != menu)
+                return;
 
-            openedMenus.TryPeek(out UIMenu openedMenu);
+            // Call the appropriate method
+            if (IsOpened(menu))
+                Close(menu);
+            else
+                Open(menu);
+        }
 
-            // If a menu is opened
-            if (openedMenu != null)
+        #endregion
+
+        #region Operation
+
+        private static readonly Stack<UIMenu> openedMenus = new();
+        private static UIMenu CurrentMenu => openedMenus.TryPeek(out UIMenu menu) ? menu : null;
+
+        private enum OperationType
+        {
+            OPEN = 0x01,
+            CLOSE = 0x10,
+        }
+
+        private static readonly Queue<(OperationType operation, UIMenu menu)> operationsInProcess = new();
+        private Coroutine currentProcess = null;
+
+        private static void AddOperation(OperationType operation, UIMenu menu)
+        {
+            operationsInProcess.Enqueue((operation, menu));
+
+            UIManager manager = Instance;
+
+            // If already processing, skip
+            if (manager.currentProcess != null)
+                return;
+
+            // Start processing
+            manager.currentProcess = manager.StartCoroutine(manager.ProcessOperations());
+        }
+
+        private IEnumerator ProcessOperations()
+        {
+            // Continue until no more operations
+            while (operationsInProcess.Count > 0)
             {
-                yield return openedMenu.Close();
-                openedMenus.Pop();
-                ControllerManager.UnFreeze();
+                (OperationType operation, UIMenu menu) = operationsInProcess.Dequeue();
+
+                switch (operation)
+                {
+                    // Open menu
+                    case OperationType.OPEN:
+                        yield return menu.Open();
+                        openedMenus.Push(menu);
+                        ControllerManager.SwitchTo(menu);
+                        break;
+                    // Close menu
+                    case OperationType.CLOSE:
+                        UIMenu cur;
+                        do
+                        {
+                            cur = CurrentMenu;
+
+                            // If reached end, skip
+                            if (cur == null)
+                                break;
+
+                            yield return cur.Close();
+                            openedMenus.Pop();
+                            ControllerManager.BackTo();
+                        } while (cur != menu);
+                        break;
+                    default:
+                        Debug.LogWarning($"The operation '{operation}' called by '{menu.name}' is not supported.");
+                        yield return null;
+                        break;
+                }
             }
 
-            // If different menu
-            if (openedMenu != menu)
-            {
-                yield return menu.Open();
-                openedMenus.Push(menu);
-                ControllerManager.Freeze();
-            }
-
-            // Consume your token
-            toggleHistory.Dequeue();
+            this.currentProcess = null;
         }
 
         #endregion

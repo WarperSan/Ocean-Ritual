@@ -72,29 +72,5 @@ namespace ControllerModule.Controllers
             Controller previous = stack.Skip(1).First();
             ReplaceCurrent(previous);
         }
-
-        /// <summary>
-        /// Freezes the current controller, making it unable to receive updates
-        /// </summary>
-        public static void Freeze()
-        {
-            if (ActiveController != null)
-            {
-                InputMaster.Instance -= ActiveController;
-                ActiveController.enabled = false;
-            }
-        }
-
-        /// <summary>
-        /// Unfreezes the current controller, making it able to receive updates
-        /// </summary>
-        public static void UnFreeze()
-        {
-            if (ActiveController != null)
-            {
-                InputMaster.Instance += ActiveController;
-                ActiveController.enabled = true;
-            }
-        }
     }
 }
