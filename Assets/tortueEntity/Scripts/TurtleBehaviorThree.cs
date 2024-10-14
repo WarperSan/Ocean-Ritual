@@ -20,7 +20,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     public Transform target;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] GameObject projectile;
-    [SerializeField] float Distance = 10;
+    [SerializeField] float Distance = 3;
     [SerializeField] float animationTime = 5;
     [SerializeField] float animationVitesse = 5;
 
@@ -57,11 +57,11 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
        // 2em embranchement section attack
         Sequence sequence1 = new Sequence();
         
-        DistanceSmaller DistanceSmaller = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
-        DistanceSmaller.Alias("ProxiBoat");
-        ProxiBoat ProxiBoat = new ProxiBoat(DistanceSmaller);
+       // DistanceSmaller DistanceSmaller = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
+      //  DistanceSmaller.Alias("ProxiBoat");
+        ProxiBoat ProxiBoat = new ProxiBoat(this.transform, CURRENT_TARGET, Distance, _root);
         Cooldown coldown = new Cooldown (TimeBetwenneAttack);
-        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform);
+        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform, _root);
         Attacks attack = new Attacks ();
         // sequence1.Attach(new Node[] { ProxiBoat, coldown, animationAttack, attack });
         sequence1.Attach(new Node[] { ProxiBoat, animationAttack });
@@ -82,7 +82,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
 
          _root.SetData(CURRENT_TARGET, this.target);
-        _root.SetData(NeedFolow,true);
+        _root.SetData(NeedFolow,false);
         _root.SetData(AGENT, this.agent);
         return _root;
     }

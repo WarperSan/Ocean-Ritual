@@ -76,51 +76,80 @@ namespace TortueNode
         public override string GetText() => "Cooldown";
 
     }
-    
 
-   public class ProxiBoat : Sequence
+
+    public class ProxiBoat : Sequence
     {
+        public const string NeedFollow = "needFollow";
+        DistanceSmaller DistanceSmaller; // Peut être une autre Node si vous en avez besoin
+        Node root;
+        Transform self;
+        string targets; // Nom ou clé des cibles
+        float distance; // Distance de proximité à vérifier
 
-        public const string NeedFolow = "needFolow";
-        DistanceSmaller DistanceSmaller;
-        public ProxiBoat(DistanceSmaller DistanceSmaller)
+        public ProxiBoat(Transform self, string target, float distance, Node root)
         {
-            this.DistanceSmaller = DistanceSmaller;
-          
-           
+            this.self = self;
+            this.distance = distance;
+            this.targets = target;
+            this.root = root;
         }
 
         protected override NodeState OnEvaluate()
         {
-            NodeState State = DistanceSmaller.Evaluate();
+          
 
-            if(State == NodeState.SUCCESS)
+            // Vérifie si la distance à la cible est inférieure ou égale à la distance donnée
+            if (IsClose())
             {
-                SetData(NeedFolow, false);
+                Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
+               
+                root.SetData(NeedFollow, false); // Arrêter le suivi si proche
             }
             else
             {
-                SetData(NeedFolow, true);
+                Debug.Log("Cible éloignée. Continuer le suivi.");
+               
+                root.SetData(NeedFollow, true); // Continuer le suivi si loin
             }
 
-            return State;
+            return NodeState.SUCCESS;
         }
-       
 
+        private bool IsClose()
+        {
+            Transform target = GetData<Transform>(targets); // Récupère la cible via la clé
 
-        public override string GetText() => "Cooldown";
+            if (target == null)
+            {
+                Debug.LogError("Cible introuvable!");
+                return false; // Si la cible est null, retourner faux
+            }
 
+            // Calculer la distance entre 'self' (bateau) et 'target'
+            float currentDistance = Vector3.Distance(self.position, target.position);
+            Debug.Log(currentDistance);
+            
+            // Comparer avec la distance limite définie
+            return currentDistance <= distance;
+        }
+
+        public override string GetText() => "ProxiBoat";
     }
+
     public class AnimationAttack : Node
     {
         float animationTime;
         float animationVitesse;
         float timeLapse;
+        bool needToReset =false;
+        Node root;
         Transform target;
         float initialYRotation;  // Pour sauvegarder la rotation de départ sur l'axe Y
-
-        public AnimationAttack(float animationTime, float animationVitesse, Transform target)
+        public const string NeedFolow = "needFolow";
+        public AnimationAttack(float animationTime, float animationVitesse, Transform target, Node root)
         {
+            this.root = root;
             this.animationTime = animationTime;
             this.animationVitesse = animationVitesse;
             this.target = target;
@@ -130,14 +159,22 @@ namespace TortueNode
 
         protected override NodeState OnEvaluate()
         {
-            if (timeLapse < animationTime)
+            bool needFolow = root.GetData<bool>(NeedFolow);
+            Debug.Log(needFolow);
+            if (timeLapse < animationTime && !needFolow)
             {
+                needToReset=true;
                 DoAnimation();
                 return NodeState.RUNNING; // L'animation est en cours
             }
             else
             {
-                ResetAnimation(); // Réinitialisation après l'animation
+                if (needToReset)
+                {
+                    needToReset = !needToReset;
+                    ResetAnimation(); // Réinitialisation après l'animation
+                }
+              
                 return NodeState.SUCCESS; // Animation terminée
             }
         }
@@ -157,7 +194,7 @@ namespace TortueNode
         public void ResetAnimation()
         {
             // Remet la rotation Y à zéro (ou à la rotation initiale)
-            target.rotation = Quaternion.Euler(0, initialYRotation, 0);
+            target.rotation = Quaternion.Euler(-90, initialYRotation, 0);
             timeLapse = 0f;
         }
 
