@@ -32,9 +32,11 @@ namespace TortueNode
         // Méthode principale du node
         protected override NodeState OnEvaluate()
         {
+           
             NodeState state;
-            List<Entity> entitiesToHeal = new();
-            // List<Entity> entitiesToHeal = FindPeopleToHeal();
+           
+            
+
             foreach (Node node in children)
             {
                 state = node.Evaluate();
@@ -43,6 +45,10 @@ namespace TortueNode
                     return state;
                 }
             }
+
+             List<Entity> entitiesToHeal = FindPeopleToHeal();
+
+          
             if (entitiesToHeal.Count > 0)
             {
 
@@ -168,15 +174,17 @@ namespace TortueNode
               //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
                
                 SetData(NeedFollow, false); // Arrêter le suivi si proche
+                return NodeState.SUCCESS;
             }
             else
             {
              //   Debug.Log("Cible éloignée. Continuer le suivi.");
                
                 SetData(NeedFollow, true); // Continuer le suivi si loin
+                return NodeState.RUNNING;
             }
 
-            return NodeState.SUCCESS;
+          
         }
 
         private bool IsClose()
@@ -205,29 +213,62 @@ namespace TortueNode
         float animationTime;
         float animationVitesse;
         float timeLapse;
-        bool needToReset =false;
+        bool needToReset = false;
         Node root;
-        Transform target;
-        float initialYRotation;  // Pour sauvegarder la rotation de départ sur l'axe Y
+        Transform target; // Rotation s'applique ici
+        Transform lunch;  // Le lancement s'applique ici
+        Vector3 initialPosition; // Sauvegarde de la position initiale
+        float initialYRotation;  // Sauvegarde de la rotation de départ sur l'axe Y
         public const string NeedFolow = "needFolow";
-        public AnimationAttack(float animationTime, float animationVitesse, Transform target, Node root)
+        bool startAnimation = false;
+        bool lunchAnimation = false;
+        bool returning = false; // Indique si l'objet est en phase de retour à sa position initiale
+
+        public AnimationAttack(float animationTime, float animationVitesse, Transform target, Transform lunch)
         {
             this.root = root;
             this.animationTime = animationTime;
             this.animationVitesse = animationVitesse;
             this.target = target;
             this.timeLapse = 0f;
-            this.initialYRotation = target.eulerAngles.y; // Sauvegarde de la rotation Y initiale
+            this.initialPosition = lunch.position;  // Sauvegarde de la position initiale pour lunch
+            this.initialYRotation = target.eulerAngles.y; // Sauvegarde de la rotation Y initiale pour target
+            this.lunch = lunch;
         }
 
         protected override NodeState OnEvaluate()
         {
-            bool needFolow = GetData<bool>(NeedFolow);
-            Debug.Log(needFolow);
-            if (timeLapse < animationTime && !needFolow)
+            NodeState state = children[0].Evaluate();
+
+            if (!startAnimation && state == NodeState.RUNNING)
             {
-                needToReset=true;
-                DoAnimation();
+                startAnimation = true;
+            }
+
+            if (startAnimation && state == NodeState.SUCCESS)
+            {
+                lunchAnimation = true;
+            }
+
+            if (startAnimation)
+            {
+                needToReset = true;
+                DoAnimation(); // Rotation sur target
+
+                if (lunchAnimation)
+                {
+                    DoLunchAnimation(); // Déplacement sur lunch
+
+                    if (!returning) // Si l'objet n'est pas encore revenu
+                    {
+                        return NodeState.RUNNING;
+                    }
+                    else
+                    {
+                        return NodeState.SUCCESS; // L'animation de retour est terminée
+                    }
+                }
+
                 return NodeState.RUNNING; // L'animation est en cours
             }
             else
@@ -237,28 +278,71 @@ namespace TortueNode
                     needToReset = !needToReset;
                     ResetAnimation(); // Réinitialisation après l'animation
                 }
-              
+
                 return NodeState.SUCCESS; // Animation terminée
             }
         }
 
+        // Rotation pendant le temps défini sur le target
         public void DoAnimation()
         {
-            // Rotation pendant le temps défini
             if (timeLapse < animationTime)
             {
                 // Calcul de l'angle de rotation actuel
-                float rotationAmount = animationVitesse * (timeLapse / animationTime) * 360f; // 360° sur z
-                target.rotation = Quaternion.Euler(-90, 0, initialYRotation + rotationAmount); // On fixe manuellement la rotation z
+                float rotationAmount = animationVitesse * (timeLapse / animationTime) * 360f; // 360° sur Z
+                target.rotation = Quaternion.Euler(-90, 0, initialYRotation + rotationAmount); // On fixe manuellement la rotation Z
                 timeLapse += Time.deltaTime;
             }
         }
 
+        // Déplacement en avant suivi d'un retour avec un effet de rebond sur le lunch
+        public void DoLunchAnimation()
+        {
+            if (!returning)
+            {
+                // Avance en ligne droite
+                float moveDistance = animationVitesse * Time.deltaTime;
+                lunch.position += lunch.forward * moveDistance;
+
+                // Vérifie si l'objet a atteint la fin de l'animation
+                if (timeLapse >= animationTime)
+                {
+                    returning = true; // Commence la phase de retour
+                    timeLapse = 0f; // Réinitialise le timer pour le retour
+                }
+            }
+            else
+            {
+                // Retour avec effet de rebond
+                float returnDistance = animationVitesse * Time.deltaTime;
+
+                // On calcule la position cible
+                Vector3 directionBack = initialPosition - lunch.position;
+                if (directionBack.magnitude > returnDistance)
+                {
+                    lunch.position += directionBack.normalized * returnDistance;
+                }
+                else
+                {
+                    lunch.position = initialPosition; // Remet à la position initiale
+                    returning = false; // Terminé
+                }
+            }
+        }
+
+        // Réinitialisation de l'animation
         public void ResetAnimation()
         {
-            // Remet la rotation Y à zéro (ou à la rotation initiale)
+            // Remet la rotation Y à zéro (ou à la rotation initiale) sur target
             target.rotation = Quaternion.Euler(-90, initialYRotation, 0);
+
+            // Remet la position initiale sur lunch
+            lunch.position = initialPosition;
+
             timeLapse = 0f;
+            returning = false; // Assure que l'objet n'est plus en phase de retour
+            startAnimation = false;
+            lunchAnimation = false;
         }
 
         public override string GetText() => "AnimationAttack";
@@ -267,15 +351,32 @@ namespace TortueNode
     public class Attacks : Node
     {
         GameObject bulletToActivate;
-
+        bool activateBullet = false;
         public Attacks(GameObject bullet){
            this.bulletToActivate = bullet;
             }
         protected override NodeState OnEvaluate()
         {
+            NodeState state = children[0].Evaluate();
+            if(state == NodeState.SUCCESS)
+            {
+                if (!activateBullet)
+                {
+                    activateBullet = true;
+                    bulletToActivate.gameObject.SetActive(true);
+                }
 
-            bulletToActivate.gameObject.SetActive(true);
-            return NodeState.SUCCESS;
+            }
+            else
+            {
+                activateBullet = false;
+            }
+          
+
+
+
+          
+            return state;
         }
 
 
@@ -309,11 +410,21 @@ namespace TortueNode
         public const string AGENT = "agent";
         public const string CURRENT_TARGET = "currentTarget";
         public const string NeedFolow = "needFolow";
+
         protected override NodeState OnEvaluate()
         {
             Transform target = GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = GetData<NavMeshAgent>(AGENT);
-            bool needFolow = GetData<bool>(NeedFolow);
+            NodeState state = children[0].Evaluate();
+
+            if (state == NodeState.SUCCESS)
+            {
+                agent.ResetPath(); // Annule toute destination en cours
+                return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppé
+            }
+
+            
+            
 
             // Vérifier si la cible ou l'agent sont null
             if (target == null || agent == null)
@@ -321,13 +432,9 @@ namespace TortueNode
                 Debug.Log("echec");
                 return NodeState.FAILURE; // Retourne échec s'il n'y a pas de cible ou d'agent
             }
-            // Si needFollow est false, arrêter le mouvement de l'agent
-            if (!needFolow)
-            {
-                agent.ResetPath(); // Annule toute destination en cours
-               // Debug.Log("Arrêt du suivi de la cible");
-                return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppé
-            }
+           
+               
+          
             // Définir la destination de l'agent sur la position de la cible
             agent.SetDestination(target.position);
           

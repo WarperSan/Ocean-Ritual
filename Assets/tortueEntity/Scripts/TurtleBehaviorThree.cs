@@ -28,7 +28,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     [SerializeField] float TimeBetwenneAttack = 10;
 
     [SerializeField] float cooldownHeal = 10;
-   
+    [SerializeField] GameObject lunch;
 
 
     Parallel _root = new();
@@ -51,7 +51,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         //section heal
         Cooldown coldownHeal = new Cooldown(cooldownHeal);
         Heals heals = new (RayonToHeal, HealPower,transform);
-        heals.Attach(heals);
+        heals.Attach(coldownHeal);
         _root.Attach(heals);
 
         //1er embranchement
@@ -61,20 +61,19 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
        // 2em embranchement section attack
         Sequence sequence1 = new Sequence();
         
-       // DistanceSmaller DistanceSmaller = new DistanceSmaller(transform, CURRENT_TARGET, Distance);
-      //  DistanceSmaller.Alias("ProxiBoat");
+   
         ProxiBoat ProxiBoat = new ProxiBoat(this.transform, CURRENT_TARGET, Distance, _root);
         Cooldown coldownAttack = new Cooldown (TimeBetwenneAttack);
-        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform, _root);
+        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform, lunch.transform   );
+        animationAttack.Attach(coldownAttack);
         Attacks attack = new Attacks (projectile);
-        // sequence1.Attach(new Node[] { ProxiBoat, coldownAttack, animationAttack, attack });
-        sequence1.Attach(new Node[] { ProxiBoat, coldownAttack, animationAttack , attack });
+        attack.Attach(animationAttack);
+        sequence1.Attach(new Node[] { ProxiBoat , attack });
 
         //3em embranchement section mouvement
-        //  Sequence sequence2 = new Sequence();
-        //  AnnimationMovement annimationMovement = new AnnimationMovement ();
+        
         FollowTarget folowTarget = new FollowTarget ();
-      // sequence2.Attach(new Node[] { folowTarget });
+        folowTarget.Attach(ProxiBoat);
 
 
         //jointure  embranchement 2 et 3 
@@ -86,7 +85,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
 
          _root.SetData(CURRENT_TARGET, this.target);
-        _root.SetData(NeedFolow,false);
+        _root.SetData(NeedFolow,true);
         _root.SetData(AGENT, this.agent);
         return _root;
     }
