@@ -17,6 +17,7 @@ namespace UIModule.Interfaces
         /// <summary>
         /// Called when this object receives a draggable
         /// </summary>
+        /// <returns>Cancels the call of <see cref="IDraggable.OnDragEnd(IDragReceivable, RectTransform)"/></returns>
         public void OnDragReceive(IDraggable draggable);
 
         /// <summary>

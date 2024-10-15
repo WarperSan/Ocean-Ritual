@@ -1,4 +1,5 @@
 using UnityEngine;
+using UIModule.Interfaces;
 
 namespace UIModule
 {

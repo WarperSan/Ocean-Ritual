@@ -58,7 +58,6 @@ public static class GemHelper
         missingSpot = missingSpot - modifiedSpot;
         // Calcul du coût total
         int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * missingSpotCost ));
-        Debug.Log(missingSpot);
         return (totalCost, modifiedSpot, missingSpot, CasseOnlytrue);
     }
 
