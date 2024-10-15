@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UIModule
+namespace UIModule.Interfaces
 {
     /// <summary>
     /// Defines what a custom UI element should have

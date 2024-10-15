@@ -1,6 +1,7 @@
 using ControllerModule.Controllers;
 using System.Collections;
 using UnityEngine;
+using UIModule.Interfaces;
 
 namespace UIModule.Menus
 {
