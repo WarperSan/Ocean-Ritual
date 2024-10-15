@@ -204,7 +204,7 @@ public class Inventory : MonoBehaviour
     }
     public void AddItem(ItemData item,int slot)
     {
-        if (ItemList[slot] != null)
+        if (ItemList[slot] == null)
         {
             ItemList[slot] = item;
          
