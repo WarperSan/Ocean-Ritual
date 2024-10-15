@@ -8,6 +8,7 @@ namespace UIModule.Menus
     {
         public InventoryUI inventoryUI;
         public BlacksmithGemSlot gemSlot;
+
         /// <inheritdoc/>
         public override IEnumerator Open()
         {
@@ -24,7 +25,7 @@ namespace UIModule.Menus
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             yield return base.Close();
-            gemSlot.ClearGem();
+            gemSlot.ClearGem(true);
         }
 
         public void CloseButton() => UIManager.Close<BlacksmithMenu>();

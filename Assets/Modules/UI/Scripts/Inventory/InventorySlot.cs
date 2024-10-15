@@ -103,6 +103,11 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
             this.ReturnToPosition();
         }
 
+        this.DragEnd();
+    }
+
+    public void DragEnd()
+    {
         // Destroy filling child
         if (this.fillingChild != null)
             Destroy(this.fillingChild);
