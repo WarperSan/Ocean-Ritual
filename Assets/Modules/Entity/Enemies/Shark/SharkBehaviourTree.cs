@@ -139,7 +139,7 @@ namespace EntityModule.Enemies
         {
             Transform target = root.GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
-            Debug.Log(target.tag);
+            
             // Vérifier si la cible ou l'agent sont null
             if (target == null || agent == null)
             {
@@ -203,14 +203,14 @@ namespace EntityModule.Enemies
             UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMaxRange);
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            UnityEngine.Debug.Log("touched");
-            if (other.tag == "Player")
-            {
-                Debug.Log("Hit Player");
-            }
-        }
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    UnityEngine.Debug.Log("touched");
+        //    if (other.tag == "Player")
+        //    {
+        //        Debug.Log("Hit Player");
+        //    }
+        //}
 
     }
 }

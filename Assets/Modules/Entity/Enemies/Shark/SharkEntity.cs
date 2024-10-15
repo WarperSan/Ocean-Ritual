@@ -21,7 +21,14 @@ namespace EntityModule.Enemies
             
         }
 
-        
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    UnityEngine.Debug.Log("touched");
+        //    if (other.tag == "Player")
+        //    {
+        //        UnityEngine.Debug.Log("Hit Player");
+        //    }
+        //}
         #endregion
     }
 }
