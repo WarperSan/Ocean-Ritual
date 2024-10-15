@@ -81,7 +81,7 @@ namespace TortueNode
             }
 
             // Exécution de la détection dans un rayon avec filtrage par layer
-            Collider[] hitColliders = Physics.OverlapSphere(healerTransform.position, RayonToHeal);
+            Collider[] hitColliders = Physics.OverlapSphere(healerTransform.position, RayonToHeal, enemyLayerMask);
 
             // Parcours des objets détectés
             foreach (Collider hitCollider in hitColliders)
@@ -212,28 +212,30 @@ namespace TortueNode
     {
         float animationTime;
         float animationVitesse;
+        float animationTimeLunch;
+        float floatanimationVitesseLunch;
         float timeLapse;
         bool needToReset = false;
-        Node root;
-        Transform target; // Rotation s'applique ici
-        Transform lunch;  // Le lancement s'applique ici
-        Vector3 initialPosition; // Sauvegarde de la position initiale
-        float initialYRotation;  // Sauvegarde de la rotation de départ sur l'axe Y
-        public const string NeedFolow = "needFolow";
         bool startAnimation = false;
         bool lunchAnimation = false;
-        bool returning = false; // Indique si l'objet est en phase de retour à sa position initiale
-
-        public AnimationAttack(float animationTime, float animationVitesse, Transform target, Transform lunch)
+        bool returning = false;
+        public const string CURRENT_TARGET = "currentTarget";
+        Transform target;   // Rotation
+        Transform lunch;    // Déplacement
+        Vector3 initialPosition; // Position initiale de lunch
+        float initialYRotation;  // Rotation Y initiale
+        float Distance;
+        float timeLapseRotation =0;
+        public AnimationAttack(float distance,float animationTime, float animationVitesse, float animationTimeLunch, float floatanimationVitesseLunch, Transform target, Transform lunch)
         {
-            this.root = root;
+            this.animationTimeLunch = animationTimeLunch;
+            this.floatanimationVitesseLunch = floatanimationVitesseLunch;
+            Distance = distance;
             this.animationTime = animationTime;
             this.animationVitesse = animationVitesse;
             this.target = target;
-            this.timeLapse = 0f;
-            this.initialPosition = lunch.position;  // Sauvegarde de la position initiale pour lunch
-            this.initialYRotation = target.eulerAngles.y; // Sauvegarde de la rotation Y initiale pour target
             this.lunch = lunch;
+            this.initialYRotation = target.eulerAngles.y; // Sauvegarde rotation Y initiale
         }
 
         protected override NodeState OnEvaluate()
@@ -247,106 +249,98 @@ namespace TortueNode
 
             if (startAnimation && state == NodeState.SUCCESS)
             {
+                if (!lunchAnimation)
+                {
+                    initialPosition = lunch.position; // Sauvegarde la position initiale
+                }
                 lunchAnimation = true;
             }
 
             if (startAnimation)
             {
-                needToReset = true;
-                DoAnimation(); // Rotation sur target
+                timeLapse += Time.deltaTime;
 
+                // Rotation sur target pendant l'animation
+                DoRotation();
+
+                // Animation du mouvement de lunch
                 if (lunchAnimation)
                 {
-                    DoLunchAnimation(); // Déplacement sur lunch
+                    DoLunchAnimation();
 
                     if (!returning) // Si l'objet n'est pas encore revenu
-                    {
                         return NodeState.RUNNING;
-                    }
-                    else
-                    {
-                        return NodeState.SUCCESS; // L'animation de retour est terminée
-                    }
+
+                    return NodeState.SUCCESS; // Fin de l'animation
                 }
 
                 return NodeState.RUNNING; // L'animation est en cours
             }
-            else
-            {
-                if (needToReset)
-                {
-                    needToReset = !needToReset;
-                    ResetAnimation(); // Réinitialisation après l'animation
-                }
 
-                return NodeState.SUCCESS; // Animation terminée
-            }
+           
+
+            return NodeState.SUCCESS; // Animation terminée
         }
 
-        // Rotation pendant le temps défini sur le target
-        public void DoAnimation()
+        // Rotation simple sur l'axe Y
+        public void DoRotation()
         {
-            if (timeLapse < animationTime)
-            {
-                // Calcul de l'angle de rotation actuel
-                float rotationAmount = animationVitesse * (timeLapse / animationTime) * 360f; // 360° sur Z
-                target.rotation = Quaternion.Euler(-90, 0, initialYRotation + rotationAmount); // On fixe manuellement la rotation Z
-                timeLapse += Time.deltaTime;
-            }
+            float rotationAmount = (timeLapse / animationTime) * 360f; // Calcul de la rotation en Z
+            target.rotation = Quaternion.Euler(-90, 0, initialYRotation + rotationAmount); // Applique la rotation
         }
 
-        // Déplacement en avant suivi d'un retour avec un effet de rebond sur le lunch
+        // Avance puis retour de lunch avec effet de rebond
         public void DoLunchAnimation()
         {
+            timeLapseRotation += Time.deltaTime;
+            float moveDistance = floatanimationVitesseLunch * Time.deltaTime;
+            Debug.Log(returning);
             if (!returning)
             {
-                // Avance en ligne droite
-                float moveDistance = animationVitesse * Time.deltaTime;
-                lunch.position += lunch.forward * moveDistance;
+                
+                lunch.position += lunch.forward * moveDistance; // Avance
 
-                // Vérifie si l'objet a atteint la fin de l'animation
-                if (timeLapse >= animationTime)
+                if (timeLapseRotation >= animationTimeLunch)
                 {
-                    returning = true; // Commence la phase de retour
-                    timeLapse = 0f; // Réinitialise le timer pour le retour
+                    returning = true;
+                    timeLapseRotation = 0f; // Réinitialise le timer pour le retour
+                    timeLapse = 0f;
                 }
             }
             else
             {
-                // Retour avec effet de rebond
-                float returnDistance = animationVitesse * Time.deltaTime;
-
-                // On calcule la position cible
+               
                 Vector3 directionBack = initialPosition - lunch.position;
-                if (directionBack.magnitude > returnDistance)
+                if (directionBack.magnitude > moveDistance)
                 {
-                    lunch.position += directionBack.normalized * returnDistance;
+                    lunch.position += directionBack.normalized * moveDistance; // Retourne
+                  
                 }
                 else
                 {
-                    lunch.position = initialPosition; // Remet à la position initiale
-                    returning = false; // Terminé
+                    lunch.position = initialPosition; // Retourne à la position initiale
+                    returning = false; // Fin du retour
+                      
+                    ResetAnimation();
                 }
             }
         }
 
-        // Réinitialisation de l'animation
+        // Réinitialisation après l'animation
         public void ResetAnimation()
         {
-            // Remet la rotation Y à zéro (ou à la rotation initiale) sur target
-            target.rotation = Quaternion.Euler(-90, initialYRotation, 0);
-
-            // Remet la position initiale sur lunch
-            lunch.position = initialPosition;
-
+         
+            target.rotation = Quaternion.Euler(-90, initialYRotation, 0); // Reset rotation Y
+            lunch.position = initialPosition; // Reset position
             timeLapse = 0f;
-            returning = false; // Assure que l'objet n'est plus en phase de retour
+            returning = false;
             startAnimation = false;
             lunchAnimation = false;
         }
 
         public override string GetText() => "AnimationAttack";
     }
+
 
     public class Attacks : Node
     {

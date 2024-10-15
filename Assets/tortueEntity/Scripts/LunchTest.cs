@@ -6,14 +6,15 @@ public class LunchTest : MonoBehaviour
 {
     [SerializeField]float animationVitesse;
     [SerializeField] float animationTime = 5;
+    [SerializeField] Transform lunch;
     bool returning = false;
     float timeLapse;
-    Transform lunch;
+    Transform aa;
     Vector3 initialPosition;
     // Start is called before the first frame update
     void Start()
     {
-        lunch = transform;
+        aa = transform;
         initialPosition = transform.position;
     }
 
@@ -29,7 +30,7 @@ public class LunchTest : MonoBehaviour
         {
             // Avance en ligne droite
             float moveDistance = animationVitesse * Time.deltaTime;
-            lunch.position += lunch.forward * moveDistance;
+            aa.position += aa.forward * moveDistance;
 
             // Vérifie si l'objet a atteint la fin de l'animation
             if (timeLapse >= animationTime)
@@ -44,16 +45,32 @@ public class LunchTest : MonoBehaviour
             float returnDistance = animationVitesse * Time.deltaTime;
 
             // On calcule la position cible
-            Vector3 directionBack = initialPosition - lunch.position;
+            Vector3 directionBack = initialPosition - aa.position;
             if (directionBack.magnitude > returnDistance)
             {
-                lunch.position += directionBack.normalized * returnDistance;
+                aa.position += directionBack.normalized * returnDistance;
             }
             else
             {
-                lunch.position = initialPosition; // Remet à la position initiale
+                aa.position = initialPosition; // Remet à la position initiale
                 returning = false; // Terminé
             }
         }
     }
+    // Ceci sera appelé dans l'éditeur Unity pour visualiser le raycast.
+    void OnDrawGizmos()
+    {
+        if (lunch != null)
+        {
+            // Couleur du rayon
+            Gizmos.color = Color.red;
+
+            // Dessine une ligne (rayon) depuis la position de lunch dans la direction de lunch.forward
+            Gizmos.DrawRay(lunch.position, lunch.forward * 5f);  // Le 5f représente la longueur du rayon
+
+            // Optionnel : Dessine une sphère à la fin du rayon pour mieux voir la direction
+            Gizmos.DrawSphere(lunch.position + lunch.forward * 5f, 0.1f);
+        }
+    }
+
 }

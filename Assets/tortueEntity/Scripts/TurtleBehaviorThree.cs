@@ -23,11 +23,15 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
     [SerializeField] float Distance = 3;
     [SerializeField] float animationTime = 5;
     [SerializeField] float animationVitesse = 5;
+    [SerializeField] float animationTimeLunch = 5;
+    [SerializeField] float animationVitesseLunch = 5;
     [SerializeField] float RayonToHeal = 10;
     [SerializeField] float HealPower = 10;
+    [SerializeField] float distanceDash = 5;
     [SerializeField] float TimeBetwenneAttack = 10;
-
+    [SerializeField] GameObject parent;
     [SerializeField] float cooldownHeal = 10;
+    
     [SerializeField] GameObject lunch;
 
 
@@ -62,9 +66,9 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         Sequence sequence1 = new Sequence();
         
    
-        ProxiBoat ProxiBoat = new ProxiBoat(this.transform, CURRENT_TARGET, Distance, _root);
+        ProxiBoat ProxiBoat = new ProxiBoat(parent.transform, CURRENT_TARGET, Distance, _root);
         Cooldown coldownAttack = new Cooldown (TimeBetwenneAttack);
-        AnimationAttack animationAttack = new AnimationAttack (animationTime, animationVitesse,transform, lunch.transform   );
+        AnimationAttack animationAttack = new AnimationAttack (distanceDash,animationTime, animationVitesse, animationTimeLunch, animationVitesseLunch, transform, lunch.transform   );
         animationAttack.Attach(coldownAttack);
         Attacks attack = new Attacks (projectile);
         attack.Attach(animationAttack);
