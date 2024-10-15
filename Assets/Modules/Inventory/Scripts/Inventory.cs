@@ -202,7 +202,15 @@ public class Inventory : MonoBehaviour
     {
         return ItemList[index];
     }
-
+    public bool AddItem(ItemData item,int slot)
+    {
+        if (ItemList[slot] != null)
+        {
+            ItemList[slot] = item;
+            return true;
+        }
+        return false;
+    }
     public void AddItem(ItemData item)
     {
         // Récupère les emplacements d'objets similaires et disponibles
