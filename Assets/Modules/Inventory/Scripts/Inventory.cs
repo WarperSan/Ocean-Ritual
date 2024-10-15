@@ -202,14 +202,18 @@ public class Inventory : MonoBehaviour
     {
         return ItemList[index];
     }
-    public bool AddItem(ItemData item,int slot)
+    public void AddItem(ItemData item,int slot)
     {
         if (ItemList[slot] != null)
         {
             ItemList[slot] = item;
-            return true;
+         
         }
-        return false;
+        else
+        {
+            AddItem(item);
+        }
+     
     }
     public void AddItem(ItemData item)
     {
