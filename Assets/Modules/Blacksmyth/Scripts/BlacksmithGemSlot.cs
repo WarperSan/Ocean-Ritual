@@ -9,144 +9,142 @@ namespace BlacksmithModule
 {
     public class BlacksmithGemSlot : UIComponent, IDragReceivable<InventorySlot>, IDraggable
     {
-        private GemData gem = null;
+        private GemData gem;
         private int slotIndex = -1;
 
-        [SerializeField]
-        private BlacksmithMenu menu;
+        [SerializeField] private BlacksmithMenu menu;
+        [SerializeField] private Image Icon;
+        [SerializeField] private Graphic background;
+        [SerializeField] private CreationCase creationCase;
+        [SerializeField] private CanvasGroup canvasGroup;
+
+        private Transform originalParent;
+        private GameObject fillingChild;
+        private Transform canvasParent;
 
         private void Start()
         {
-            this.canvasParent = this.GetComponentInParent<Canvas>().transform;
+            canvasParent = GetComponentInParent<Canvas>().transform;
         }
-
-        #region Fields
-
-        [Header("Fields")]
-        [SerializeField] Image Icon;
-        [SerializeField] Graphic background;
-
-        [SerializeField]
-        private CreationCase creationCase;
-
-        #endregion
 
         public void ReceiveGem(GemData gem)
         {
-            this.enabled = true;
             this.gem = gem;
-            this.Icon.sprite = gem.sprite;
-            this.Icon.SetAlpha(1);
+            Icon.sprite = gem.sprite;
+            Icon.SetAlpha(1);
             TestBlackSmith.Instance.SetData(gem);
-            this.creationCase.CreateUi(this.gem.Shape.GetForme());
+            creationCase.CreateUi(gem.Shape.GetForme());
+            enabled = true;
         }
 
         public void ClearGem(bool returnToInventory)
         {
             if (returnToInventory && gem != null)
             {
-                Inventory.Instance.AddItem(gem);
+                Inventory.Instance.AddItem(gem, slotIndex);
             }
-            this.Icon.SetAlpha(0);
-            this.enabled = false;
-            this.gem = null;
-            this.slotIndex = -1;
+            ResetGemSlot();
         }
 
-        /// <summary>
-        /// Sets the alpha of the background for this slot
-        /// </summary>
-        /// <param name="alpha">Value between 0 and 1</param>
+        private void ResetGemSlot()
+        {
+            Icon.SetAlpha(0);
+            enabled = false;
+            gem = null;
+            slotIndex = -1;
+        }
+
         public void SetBackgroundAlpha(float alpha)
         {
-            Color bgColor = this.background.color;
+            Color bgColor = background.color;
             bgColor.a = Mathf.Clamp01(alpha);
-            this.background.color = bgColor;
+            background.color = bgColor;
         }
 
         #region IDragReceivable
 
-        /// <inheritdoc/>
         public void OnDragReceive(InventorySlot slot)
         {
-            var gem = slot.GetData() as GemData;
-            Inventory.Instance.DropItem(slot.slotIndex);
-
-            if (this.slotIndex != -1)
-                Inventory.Instance.AddItem(this.gem);
-
-            this.ReceiveGem(gem);
-            this.slotIndex = slot.slotIndex;
-
-            menu.inventoryUI.UpdateSelf();
-            TestBlackSmith.Instance.UpdateUI();
-            slot.DragEnd();
-            Destroy(slot.gameObject);
+            if (slot.GetData() is GemData gem)
+            {
+                Inventory.Instance.DropItem(slot.slotIndex);
+                if (slotIndex != -1)
+                {
+                    Inventory.Instance.AddItem(this.gem, slot.slotIndex);
+                }
+                ReceiveGem(gem);
+                slotIndex = slot.slotIndex;
+                menu.inventoryUI.UpdateSelf();
+                TestBlackSmith.Instance.UpdateUI();
+                slot.DragEnd();
+                Destroy(slot.gameObject);
+            }
         }
 
-        /// <inheritdoc/>
         public void OnDragLeave(InventorySlot slot)
         {
             Debug.Log("LEAVE");
         }
 
-        /// <inheritdoc/>
         bool IDragReceivable<InventorySlot>.CanReceiveDraggable(InventorySlot slot) => slot.GetData() is GemData;
 
         #endregion
 
         #region IDraggable
-        [Header("Drag")]
-        [SerializeField] CanvasGroup canvasGroup;
 
-        Transform originalParent;
-        GameObject fillingChild;
-        Transform canvasParent;
         public void OnDragStart()
         {
-            // Set up slot for drag
-            this.originalParent = this.transform.parent;
-            this.canvasGroup.blocksRaycasts = false;
+            originalParent = transform.parent;
+            canvasGroup.blocksRaycasts = false;
 
-            // Adds temporary ghost slot
-            this.fillingChild = Instantiate(this.gameObject, this.transform.parent);
-            this.fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
-            this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+            fillingChild = Instantiate(gameObject, transform.parent);
+            var childCanvasGroup = fillingChild.GetComponent<CanvasGroup>();
+            if (childCanvasGroup != null)
+            {
+                childCanvasGroup.alpha = 0.3f;
+            }
+            fillingChild.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
-            this.transform.SetParent(this.canvasParent);
-
-            this.SetBackgroundAlpha(0f);
+            transform.SetParent(canvasParent);
+            SetBackgroundAlpha(0f);
         }
+
         public void OnDragEnd(IDragReceivable receivable, RectTransform target)
         {
             if (receivable == null)
             {
-                InventorySlot slot = null;
-
-                if (target != null)
-                    slot = target.GetComponent<InventorySlot>();
-
-                if (slot != null)
-                {
-                    Inventory.Instance.AddItem(this.gem);
-                    menu.inventoryUI.UpdateSelf();
-                    this.ClearGem(false);
-                }
-                this.ReturnToPosition();
+                HandleDragEndWithoutReceivable(target);
             }
 
-            // Destroy filling child
-            if (this.fillingChild != null)
-                Destroy(this.fillingChild);
-
-            this.canvasGroup.blocksRaycasts = true;
-            this.SetBackgroundAlpha(1f);
-
+            DestroyFillingChild();
+            canvasGroup.blocksRaycasts = true;
+            SetBackgroundAlpha(1f);
         }
+
+        private void HandleDragEndWithoutReceivable(RectTransform target)
+        {
+            var slot = target?.GetComponent<InventorySlot>();
+            if (slot != null)
+            {
+                Inventory.Instance.AddItem(gem, slot.slotIndex);
+                menu.inventoryUI.UpdateSelf();
+                ClearGem(false);
+            }
+            ReturnToPosition();
+        }
+
+        private void DestroyFillingChild()
+        {
+            if (fillingChild != null)
+            {
+                Destroy(fillingChild);
+            }
+        }
+
         public void ReturnToPosition()
         {
-            this.transform.SetParent(this.originalParent);
-            this.transform.SetSiblingIndex(this.slotIndex);
+            transform.SetParent(originalParent);
+            transform.SetSiblingIndex(slotIndex);
         }
 
         #endregion
