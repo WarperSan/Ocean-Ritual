@@ -31,7 +31,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
-    [SerializeField] InventoryUI inventoryUI;
     //bool InventaireOuvert = false;
 
     // Start is called before the first frame update
@@ -295,10 +294,6 @@ public class Inventory : MonoBehaviour
         //}
 
         UpdateListeComplementary();
-        
-
-        ////
-        UpdateItemListeUI(inventoryUI);
     }
 
     public List<ItemData> GetInventaire()
@@ -307,11 +302,7 @@ public class Inventory : MonoBehaviour
         return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
     }
 
-    public void UpdateItemListeUI(InventoryUI ui)
-    {
-        //  CleanSlot();
-        ui.UpdateUI(ItemList);
-    }
+    public void UpdateItemListeUI(InventoryUI ui) => ui.UpdateUI(ItemList);
 
     public void SortItem(TypeOfSort SortType)
     {
@@ -348,7 +339,6 @@ public class Inventory : MonoBehaviour
                 break;
         }
         UpdateListeComplementary();
-        UpdateItemListeUI(inventoryUI);
     }
 
     public void SortName()

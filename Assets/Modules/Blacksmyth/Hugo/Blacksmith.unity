@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028386, g: 0.22571427, b: 0.3069231, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -532,7 +532,7 @@ PrefabInstance:
     - target: {fileID: 2306004925693056130, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1070
+      value: 720
       objectReference: {fileID: 0}
     - target: {fileID: 2306004925693056130, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
@@ -542,7 +542,7 @@ PrefabInstance:
     - target: {fileID: 2306004925693056130, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 550
+      value: 375
       objectReference: {fileID: 0}
     - target: {fileID: 2306004925693056130, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
@@ -632,7 +632,7 @@ PrefabInstance:
     - target: {fileID: 5710523905415419000, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1100
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 5710523905415419000, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
@@ -677,7 +677,7 @@ PrefabInstance:
     - target: {fileID: 5710523905415419000, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 550
+      value: 375
       objectReference: {fileID: 0}
     - target: {fileID: 5710523905415419000, guid: e8d38bc0b08e24a4589acff8cfbbe181,
         type: 3}
@@ -750,6 +750,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 421026639}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &421026642 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6681550638717888852, guid: e8d38bc0b08e24a4589acff8cfbbe181,
+    type: 3}
+  m_PrefabInstance: {fileID: 421026639}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae8813a31ce8a24692af3940f338e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &451690412
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,8 +1443,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 40
-    m_Right: 40
+    m_Left: 20
+    m_Right: 20
     m_Top: 0
     m_Bottom: 40
   m_ChildAlignment: 1
@@ -2425,7 +2437,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 60
-    PropertyRectY: 25
+    PropertyRectY: 130
     SequenceType: 1
     EaseType: 1
     EasePower: 3
@@ -2504,7 +2516,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 180
-    PropertyRectY: 87
+    PropertyRectY: 192
     SequenceType: 0
     EaseType: 1
     EasePower: 3
@@ -2583,7 +2595,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 60
-    PropertyRectY: 270
+    PropertyRectY: 375
     SequenceType: 1
     EaseType: 1
     EasePower: 3
@@ -2662,7 +2674,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 80
-    PropertyRectY: 332
+    PropertyRectY: 437
     SequenceType: 3
     EaseType: 1
     EasePower: 3
@@ -2758,7 +2770,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 60
-    PropertyRectY: 25
+    PropertyRectY: 130
     SequenceType: 1
     EaseType: 1
     EasePower: 3
@@ -2837,7 +2849,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 80
-    PropertyRectY: 87
+    PropertyRectY: 192
     SequenceType: 3
     EaseType: 1
     EasePower: 3
@@ -2916,7 +2928,7 @@ MonoBehaviour:
     TriggerStart: 0
     TriggerEnd: 0
     PropertyRectHeight: 180
-    PropertyRectY: 169
+    PropertyRectY: 274
     SequenceType: 0
     EaseType: 1
     EasePower: 3
@@ -3021,6 +3033,8 @@ MonoBehaviour:
   disableIfOut: 1
   openAnimation: {fileID: 1484405500}
   closeAnimation: {fileID: 1484405499}
+  inventoryUI: {fileID: 421026642}
+  gemSlot: {fileID: 9192869792329635872}
 --- !u!1 &1519922900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3743,18 +3757,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2031778962 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7731504612477296054, guid: 6ecf83e74d67b1a49b99c37455a44b6d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1410998575}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ae8813a31ce8a24692af3940f338e96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2034482871 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6119720136535215692, guid: 7b655d86ce596bbb788ab4d59297500d,
@@ -3981,7 +3983,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poissons: []
   gemmes: []
-  inventoryUI: {fileID: 2031778962}
 --- !u!4 &2146102322
 Transform:
   m_ObjectHideFlags: 0
@@ -4897,8 +4898,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1845.583, y: -470}
-  m_SizeDelta: {x: 1100, y: 940}
+  m_AnchoredPosition: {x: 1567.4634, y: -470}
+  m_SizeDelta: {x: 950, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &2677342159802434274
 RectTransform:
@@ -4936,8 +4937,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 550, y: 0}
-  m_SizeDelta: {x: 1100, y: 100}
+  m_AnchoredPosition: {x: 375, y: 0}
+  m_SizeDelta: {x: 750, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2815769623939049178
 MonoBehaviour:
@@ -5695,7 +5696,7 @@ MonoBehaviour:
     typeBoat: []
     typeNet: []
   lvlOfGemme: 7
-  sprite: {fileID: 21300000, guid: 58f03ac6adad3cc92973289c1260047b, type: 3}
+  sprite: {fileID: 21300000, guid: cf2c2ce73a7df404691d8b239bf42db1, type: 3}
 --- !u!1 &5783283516518516559
 GameObject:
   m_ObjectHideFlags: 0
@@ -6593,8 +6594,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 705.583, y: -470}
-  m_SizeDelta: {x: 1100, y: 940}
+  m_AnchoredPosition: {x: 602.46344, y: -470}
+  m_SizeDelta: {x: 950, y: 940}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &9029938568425399691
 RectTransform:
@@ -6735,6 +6736,7 @@ GameObject:
   - component: {fileID: 9192869792329635874}
   - component: {fileID: 9192869792329635873}
   - component: {fileID: 9192869792329635875}
+  - component: {fileID: 9192869792329635876}
   m_Layer: 0
   m_Name: GemSlot
   m_TagString: Untagged
@@ -6754,21 +6756,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b9e13cbf94d56caa0e3d119f0bf0af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gem:
-    quantityMax: 1
-    quantity: 1
-    sprite: {fileID: 0}
-    Shape:
-      width: 0
-      height: 0
-      flatForme: 
-    GemColorsName: 
-    LVL: 0
-    typeWeapon: []
-    typeBoat: []
-    typeNet: []
+  menu: {fileID: 1484405502}
   Icon: {fileID: 8545375185283151863}
+  background: {fileID: 5171899712677101536}
+  slotIndex: 0
   creationCase: {fileID: 9192869792329635875}
+  canvasGroup: {fileID: 9192869792329635876}
 --- !u!114 &9192869792329635873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6821,6 +6814,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   column: {fileID: 2053931412}
   Gem: {fileID: 0}
+--- !u!225 &9192869792329635876
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192869792329635871}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9192869792909214530
 GameObject:
   m_ObjectHideFlags: 0

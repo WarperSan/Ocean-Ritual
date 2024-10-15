@@ -8,7 +8,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform parent;
     [SerializeField] TextMeshProUGUI playerGold;
 
-    private void OnEnable()
+    public void UpdateSelf()
     {
         Inventory.Instance.UpdateItemListeUI(this);
     }
@@ -51,7 +51,6 @@ public class InventoryUI : MonoBehaviour
 
         return item.sprite;
     }
-
 
     public void SetPlayerGold(int gold = 9999)
     {
