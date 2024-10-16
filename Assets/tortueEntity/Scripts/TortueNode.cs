@@ -15,6 +15,7 @@ namespace TortueNode
 
     public class Heals : Node
     {
+        
         private float RayonToHeal;
         private float HealPower;
         private Transform healerTransform; // Position à partir de laquelle on effectue la recherche
@@ -34,7 +35,7 @@ namespace TortueNode
         {
            
             NodeState state;
-           
+
             
 
             foreach (Node node in children)
@@ -110,20 +111,32 @@ namespace TortueNode
     {
         // Durée entre deux attaques
         private float TimeBetwenneCooldown;
-
+        public const string Reset = "Reset";
+        private bool impactReset = false;
         // Temps écoulé depuis la dernière attaque
         private float timeLapse;
 
         // Constructeur pour initialiser le temps entre deux attaques
-        public Cooldown(float TimeBetwenneAttack)
+        public Cooldown(float TimeBetwenneAttack, bool impactReset = false)
         {
+            
             this.TimeBetwenneCooldown = TimeBetwenneAttack;
             this.timeLapse = 0f; // Initialiser le temps écoulé à zéro
+            this.impactReset = impactReset;
         }
 
         // Méthode appelée à chaque évaluation du nœud
         protected override NodeState OnEvaluate()
         {
+            bool reset = false;
+            if (impactReset)
+            {
+                reset= GetData<bool>(Reset);
+                if (reset)
+                {
+                    timeLapse = 0;
+                }
+            }
             // Incrémenter le temps écoulé depuis la dernière attaque
             timeLapse += Time.deltaTime;
 
@@ -149,13 +162,13 @@ namespace TortueNode
 
     public class ProxiBoat : Sequence
     {
-        public const string NeedFollow = "needFollow";
+        public const string Reset = "Reset";
         DistanceSmaller DistanceSmaller; // Peut être une autre Node si vous en avez besoin
         Node root;
         Transform self;
         string targets; // Nom ou clé des cibles
         float distance; // Distance de proximité à vérifier
-
+        public const string NeedFolow = "needFolow";
         public ProxiBoat(Transform self, string target, float distance, Node root)
         {
             this.self = self;
@@ -166,21 +179,24 @@ namespace TortueNode
 
         protected override NodeState OnEvaluate()
         {
-          
+           
 
             // Vérifie si la distance à la cible est inférieure ou égale à la distance donnée
             if (IsClose())
             {
-              //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
-               
-                SetData(NeedFollow, false); // Arrêter le suivi si proche
+                //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
+                SetData(NeedFolow, false, 2);
+                // SetData(Reset, false); // Arrêter le suivi si proche
                 return NodeState.SUCCESS;
             }
             else
             {
              //   Debug.Log("Cible éloignée. Continuer le suivi.");
                
-                SetData(NeedFollow, true); // Continuer le suivi si loin
+                SetData(Reset, true,2); // Continuer le suivi si loin
+                SetData(NeedFolow, true, 2); // Continuer le suivi si loin
+               
+
                 return NodeState.RUNNING;
             }
 
@@ -215,7 +231,7 @@ namespace TortueNode
         float animationTimeLunch;
         float floatanimationVitesseLunch;
         float timeLapse;
-        bool needToReset = false;
+        
         bool startAnimation = false;
         bool lunchAnimation = false;
         bool returning = false;
@@ -226,6 +242,8 @@ namespace TortueNode
         float initialYRotation;  // Rotation Y initiale
         float Distance;
         float timeLapseRotation =0;
+        public const string Reset = "Reset";
+        bool start = false;
         public AnimationAttack(float distance,float animationTime, float animationVitesse, float animationTimeLunch, float floatanimationVitesseLunch, Transform target, Transform lunch)
         {
             this.animationTimeLunch = animationTimeLunch;
@@ -237,14 +255,22 @@ namespace TortueNode
             this.lunch = lunch;
             this.initialYRotation = target.eulerAngles.y; // Sauvegarde rotation Y initiale
         }
-
+        //
         protected override NodeState OnEvaluate()
         {
+          bool   reset = GetData<bool>(Reset);
+            Debug.Log(reset);
+            if (reset && start) { ResetAnimation();
+
+                Debug.Log("CCCCCCCCC");
+                SetData(Reset, false, 3);
+            }
             NodeState state = children[0].Evaluate();
 
             if (!startAnimation && state == NodeState.RUNNING)
             {
                 startAnimation = true;
+                start = true;
             }
 
             if (startAnimation && state == NodeState.SUCCESS)
@@ -294,7 +320,7 @@ namespace TortueNode
         {
             timeLapseRotation += Time.deltaTime;
             float moveDistance = floatanimationVitesseLunch * Time.deltaTime;
-            Debug.Log(returning);
+           
             if (!returning)
             {
                 
@@ -320,7 +346,8 @@ namespace TortueNode
                 {
                     lunch.position = initialPosition; // Retourne à la position initiale
                     returning = false; // Fin du retour
-                      
+
+                    Debug.Log("BBBBBBBBBBB");
                     ResetAnimation();
                 }
             }
@@ -329,7 +356,7 @@ namespace TortueNode
         // Réinitialisation après l'animation
         public void ResetAnimation()
         {
-         
+            Debug.Log("aAAAAAAAAAAA");
             target.rotation = Quaternion.Euler(-90, initialYRotation, 0); // Reset rotation Y
             lunch.position = initialPosition; // Reset position
             timeLapse = 0f;
@@ -344,6 +371,7 @@ namespace TortueNode
 
     public class Attacks : Node
     {
+        public const string BOOLHITS = "hit";
         GameObject bulletToActivate;
         bool activateBullet = false;
         public Attacks(GameObject bullet){
@@ -351,6 +379,7 @@ namespace TortueNode
             }
         protected override NodeState OnEvaluate()
         {
+           
             NodeState state = children[0].Evaluate();
             if(state == NodeState.SUCCESS)
             {
@@ -380,23 +409,7 @@ namespace TortueNode
 
     }
 
-    public class AnnimationMovement : Node
-    {
 
-
-        protected override NodeState OnEvaluate()
-        {
-
-
-            return NodeState.SUCCESS;
-        }
-
-
-
-
-        public override string GetText() => "AnnimationMovement";
-
-    }
 
 
     public class FollowTarget : Node
@@ -409,9 +422,10 @@ namespace TortueNode
         {
             Transform target = GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = GetData<NavMeshAgent>(AGENT);
-            NodeState state = children[0].Evaluate();
+            bool NeedFolows = GetData<bool>(NeedFolow);
+           
 
-            if (state == NodeState.SUCCESS)
+            if (!NeedFolows)
             {
                 agent.ResetPath(); // Annule toute destination en cours
                 return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppé

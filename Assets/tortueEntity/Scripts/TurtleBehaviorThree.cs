@@ -36,8 +36,8 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
 
     Parallel _root = new();
-    /// <inheritdoc/>
-    private void Start() => this.RebuildRoot();
+    
+  
 
     #region IVisualizable
 
@@ -67,7 +67,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         
    
         ProxiBoat ProxiBoat = new ProxiBoat(parent.transform, CURRENT_TARGET, Distance, _root);
-        Cooldown coldownAttack = new Cooldown (TimeBetwenneAttack);
+        Cooldown coldownAttack = new Cooldown (TimeBetwenneAttack,true);
         AnimationAttack animationAttack = new AnimationAttack (distanceDash,animationTime, animationVitesse, animationTimeLunch, animationVitesseLunch, transform, lunch.transform   );
         animationAttack.Attach(coldownAttack);
         Attacks attack = new Attacks (projectile);
@@ -77,7 +77,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         //3em embranchement section mouvement
         
         FollowTarget folowTarget = new FollowTarget ();
-        folowTarget.Attach(ProxiBoat);
+       // folowTarget.Attach(ProxiBoat);
 
 
         //jointure  embranchement 2 et 3 
@@ -87,20 +87,17 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         _root.Attach(Parallel2);
         //_root += this.RotateSequence();
 
-
-         _root.SetData(CURRENT_TARGET, this.target);
+        ProxiBoat.SetData(NeedFolow, false, 2);
+        _root.SetData(CURRENT_TARGET, this.target);
         _root.SetData(NeedFolow,true);
         _root.SetData(AGENT, this.agent);
+     
         return _root;
     }
 
     #endregion
 
-  public void HitSomething()
-    {
-        Debug.Log("j'ai toucher quelque chose");
-        _root.SetData(BOOLHITS, true);
-    }
+  
 
     
 
