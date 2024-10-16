@@ -4,9 +4,10 @@ using BehaviourModule.Nodes.Generic;
 using EntityModule;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
-using static Unity.VisualScripting.Metadata;
+
 
 
 
@@ -111,11 +112,12 @@ namespace TortueNode
     {
         // Durée entre deux attaques
         private float TimeBetwenneCooldown;
-        public const string Reset = "Reset";
+        
         private bool impactReset = false;
         // Temps écoulé depuis la dernière attaque
         private float timeLapse;
-
+        public const string NeedFolow = "needFolow";
+        public const string Reset = "Reset";
         // Constructeur pour initialiser le temps entre deux attaques
         public Cooldown(float TimeBetwenneAttack, bool impactReset = false)
         {
@@ -128,12 +130,18 @@ namespace TortueNode
         // Méthode appelée à chaque évaluation du nœud
         protected override NodeState OnEvaluate()
         {
+            bool NeedFolows = GetData<bool>(NeedFolow);
             bool reset = false;
             if (impactReset)
             {
+                if (NeedFolows)
+                {
+                    return NodeState.FAILURE;
+                }
                 reset= GetData<bool>(Reset);
                 if (reset)
                 {
+                    SetData(Reset, false, 3);
                     timeLapse = 0;
                 }
             }
@@ -185,7 +193,7 @@ namespace TortueNode
             if (IsClose())
             {
                 //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
-                SetData(NeedFolow, false, 2);
+                SetData(NeedFolow, false, 1);
                 // SetData(Reset, false); // Arrêter le suivi si proche
                 return NodeState.SUCCESS;
             }
@@ -193,8 +201,8 @@ namespace TortueNode
             {
              //   Debug.Log("Cible éloignée. Continuer le suivi.");
                
-                SetData(Reset, true,2); // Continuer le suivi si loin
-                SetData(NeedFolow, true, 2); // Continuer le suivi si loin
+                SetData(Reset, true,1); // Continuer le suivi si loin
+                SetData(NeedFolow, true, 1); // Continuer le suivi si loin
                
 
                 return NodeState.RUNNING;
@@ -205,7 +213,7 @@ namespace TortueNode
 
         private bool IsClose()
         {
-            Transform target = GetData<Transform>(targets); // Récupère la cible via la clé
+            Transform target = TargetGeneral.Instance.Target; // Récupère la cible via la clé
 
             if (target == null)
             {
@@ -255,18 +263,27 @@ namespace TortueNode
             this.lunch = lunch;
             this.initialYRotation = target.eulerAngles.y; // Sauvegarde rotation Y initiale
         }
-        //
+        /// <summary>
+        /// ///////////
+        /// </summary>
+        /// <returns></returns>
         protected override NodeState OnEvaluate()
         {
           bool   reset = GetData<bool>(Reset);
-            Debug.Log(reset);
-            if (reset && start) { ResetAnimation();
-
-                Debug.Log("CCCCCCCCC");
-                SetData(Reset, false, 3);
-            }
+           
+           
             NodeState state = children[0].Evaluate();
-
+            if(state == NodeState.FAILURE)
+            {
+                if (reset && start)
+                {
+                    ResetAnimation();
+                    start= false;
+                    Debug.Log("CCCCCCCCC");
+                    SetData(Reset, false, 2);
+                }
+                return state;
+            }
             if (!startAnimation && state == NodeState.RUNNING)
             {
                 startAnimation = true;
@@ -346,9 +363,9 @@ namespace TortueNode
                 {
                     lunch.position = initialPosition; // Retourne à la position initiale
                     returning = false; // Fin du retour
+                    lunchAnimation = false;
 
-                    Debug.Log("BBBBBBBBBBB");
-                    ResetAnimation();
+                    // ResetAnimation();
                 }
             }
         }
@@ -356,9 +373,9 @@ namespace TortueNode
         // Réinitialisation après l'animation
         public void ResetAnimation()
         {
-            Debug.Log("aAAAAAAAAAAA");
-            target.rotation = Quaternion.Euler(-90, initialYRotation, 0); // Reset rotation Y
-            lunch.position = initialPosition; // Reset position
+            Debug.Log("REset animation");
+            target.localRotation = Quaternion.Euler(-90, 0, 0); // Reset rotation Y
+            lunch.localPosition = new Vector3(0,0,0); // Reset position
             timeLapse = 0f;
             returning = false;
             startAnimation = false;
@@ -377,6 +394,7 @@ namespace TortueNode
         public Attacks(GameObject bullet){
            this.bulletToActivate = bullet;
             }
+        //
         protected override NodeState OnEvaluate()
         {
            
@@ -395,7 +413,10 @@ namespace TortueNode
                 activateBullet = false;
             }
           
-
+            if(state  == NodeState.FAILURE)
+            {
+                return NodeState.RUNNING;
+            }
 
 
           
@@ -420,7 +441,7 @@ namespace TortueNode
 
         protected override NodeState OnEvaluate()
         {
-            Transform target = GetData<Transform>(CURRENT_TARGET);
+            Transform target = TargetGeneral.Instance.Target;
             NavMeshAgent agent = GetData<NavMeshAgent>(AGENT);
             bool NeedFolows = GetData<bool>(NeedFolow);
            

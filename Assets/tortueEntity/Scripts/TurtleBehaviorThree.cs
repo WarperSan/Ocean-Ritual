@@ -63,7 +63,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
      //   _root.Attach(Parallel2);
 
        // 2em embranchement section attack
-        Sequence sequence1 = new Sequence();
+       // Sequence sequence1 = new Sequence();
         
    
         ProxiBoat ProxiBoat = new ProxiBoat(parent.transform, CURRENT_TARGET, Distance, _root);
@@ -72,7 +72,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         animationAttack.Attach(coldownAttack);
         Attacks attack = new Attacks (projectile);
         attack.Attach(animationAttack);
-        sequence1.Attach(new Node[] { ProxiBoat , attack });
+       
 
         //3em embranchement section mouvement
         
@@ -81,7 +81,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
 
 
         //jointure  embranchement 2 et 3 
-        Parallel2.Attach(new Node[] { sequence1, folowTarget });
+        Parallel2.Attach(new Node[] { ProxiBoat, attack, folowTarget });
 
 
         _root.Attach(Parallel2);
