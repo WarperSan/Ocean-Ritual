@@ -14,9 +14,6 @@ namespace EntityModule.Enemies
         public Transform target;
         public NavMeshAgent agent;
 
-        /// <inheritdoc/>
-        private void Start() => this.RebuildRoot();
-
         #region IVisualizable
 
         protected Node root;
@@ -25,9 +22,7 @@ namespace EntityModule.Enemies
         public Node GetRoot() => this.root;
 
         /// <inheritdoc/>
-        public void RebuildRoot() => this.root = this.SetUpTree();
-
-        private Node SetUpTree()
+        public void RebuildRoot()
         {
             // Attack when in range
             // Delay between strikes
@@ -43,7 +38,7 @@ namespace EntityModule.Enemies
             _root.SetData(AGENT, this.agent);
             _root.SetData(CURRENT_TARGET, this.target);
 
-            return _root;
+            this.root = _root;
         }
 
         #endregion
@@ -140,22 +135,22 @@ namespace EntityModule.Enemies
             Transform target = root.GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
             
-            // Vérifier si la cible ou l'agent sont null
+            // Vï¿½rifier si la cible ou l'agent sont null
             if (target == null || agent == null)
             {
                 Debug.Log("echec");
-                return NodeState.FAILURE; // Retourne échec s'il n'y a pas de cible ou d'agent
+                return NodeState.FAILURE; // Retourne ï¿½chec s'il n'y a pas de cible ou d'agent
             }
 
-            // Définir la destination de l'agent sur la position de la cible
+            // Dï¿½finir la destination de l'agent sur la position de la cible
             agent.SetDestination(target.position);
 
 
-            // Vérifier si l'agent est arrivé à destination
+            // Vï¿½rifier si l'agent est arrivï¿½ ï¿½ destination
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 //  Debug.Log("succe");
-                return NodeState.SUCCESS; // Retourne succès si l'agent est arrivé
+                return NodeState.SUCCESS; // Retourne succï¿½s si l'agent est arrivï¿½
 
             }
             // Debug.Log("en cour");

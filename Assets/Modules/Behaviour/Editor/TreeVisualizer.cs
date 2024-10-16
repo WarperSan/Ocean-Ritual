@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Tree = BehaviourModule.Trees.Tree;
 
 namespace BehaviourModule
 {
@@ -56,17 +55,21 @@ namespace BehaviourModule
                 return;
 
             // If same tree, skip
-            if (this.currentTree?.GetRoot() is not null && tree == this.currentTree)
+            if (this.currentTree?.GetRoot() != null && tree == this.currentTree)
                 return;
 
             this.currentTree = tree;
 
             // Create if not created
-            if (this.currentTree.GetRoot() is null)
+            Node rootNode = this.currentTree.GetRoot();
+
+            if (rootNode == null)
+            {
                 this.currentTree.RebuildRoot();
+                rootNode = this.currentTree.GetRoot();
+            }
 
             // Set up tree
-            Node rootNode = this.currentTree.GetRoot();
             this.root = CalculationNode.Create(rootNode, this.allowAutomaticHide);
             this.BuildFromRoot();
         }
@@ -169,7 +172,7 @@ namespace BehaviourModule
         /// </summary>
         /// <param name="node">Node to analyze</param>
         /// <returns>Color of the node</returns>
-        private Color GetNodeColor(Node node) => node?.state switch
+        private Color GetNodeColor(Node node) => node?.State switch
         {
             NodeState.FAILURE => Color.red,
             NodeState.RUNNING => Color.yellow,
