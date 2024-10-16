@@ -108,7 +108,7 @@ namespace EntityModule.Enemies
         }).Alias("Attack Cooldown");
         private Node SetAttackCooldown() => new CallbackNode(() =>
         {
-            this.attackCooldown = 5;
+            this.attackCooldown = 1.5f;
             durationTimer = 0;
             
             return NodeState.SUCCESS;
