@@ -16,6 +16,14 @@ namespace EntityModule.Entities
         protected override void OnStart()
         {
             this.tree = this.GetComponent<IVisualizable>();
+
+            this.root = this.tree.GetRoot();
+            if (this.root != null)
+            {
+                Debug.LogWarning($"The tree for {this.name} was built from another source. Please don't build it manually.");
+                return;
+            }
+
             this.tree.RebuildRoot();
             this.root = this.tree.GetRoot();
         }
