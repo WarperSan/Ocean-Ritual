@@ -27,6 +27,8 @@ namespace BlacksmithModule
             canvasParent = GetComponentInParent<Canvas>().transform;
         }
 
+        #region GemSlot
+
         public void ReceiveGem(GemData gem)
         {
             this.gem = gem;
@@ -60,6 +62,8 @@ namespace BlacksmithModule
             bgColor.a = Mathf.Clamp01(alpha);
             background.color = bgColor;
         }
+
+        #endregion
 
         #region IDragReceivable
 
