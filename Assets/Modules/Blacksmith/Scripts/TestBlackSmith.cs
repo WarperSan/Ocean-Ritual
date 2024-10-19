@@ -77,14 +77,13 @@ namespace BlacksmithModule
         }
         public void ChangeValueGemme(int x, int y, bool boolean)
         {
-            GemHelper.ModifiedList(ref TemporaryGemData.Shape.flatForme, x, y, boolean, TemporaryGemData.Shape.height);
+            GemHelper.ModifiedList(ref TemporaryGemData.Shape.flatForme, TemporaryGemData.Shape.height - x - 1, y, boolean, TemporaryGemData.Shape.height);
             UpdateUI();
         }
         // Tableaux pour stocker les textes originaux
         private string[] originalTexts;  // 0 = cost, 1 = MissingCase, 2 = ModifiedCase
         public void UpdateUI()
         {
-            Debug.Log("passeUpdateUI");
             // Initialisation des textes originaux seulement si ce n'est pas encore fait
             if (originalTexts == null)
             {
@@ -110,7 +109,6 @@ namespace BlacksmithModule
             // Si aucune case n'est manquante, on d�sactive la possibilit� d'ajouter de nouvelles cases
             canAddNewCase = missingSpot > 0;
         }
-
 
         public void RestoreOriginalTexts()
         {

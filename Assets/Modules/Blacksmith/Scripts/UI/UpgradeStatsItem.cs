@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace BlacksmithModule
 {
+    /// <summary>
+    /// Item that displays the stats upgrade of a given equipment
+    /// </summary>
     public class UpgradeStatsItem : UIComponent
     {
         #region Fields

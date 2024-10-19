@@ -1,3 +1,4 @@
+using ExtensionsModule;
 using System.Collections.Generic;
 using System.Text;
 using UIModule;
@@ -28,14 +29,14 @@ namespace GemModule.UI
 
             // ShowTab(grid);  // Affichage dans la console pour d�bogage, comme dans ShowTab
 
-            if (!data.ContainsKey("Row") || !data.ContainsKey("CaseHover"))
+            if (!data.ContainsKey("Row") || !data.ContainsKey("CaseBool"))
             {
                 Debug.LogError("Row ou CaseHover manquant dans le dictionnaire !");
                 return;
             }
 
             GameObject rowPrefab = data["Row"];
-            GameObject casePrefab = data["CaseHover"]; // Utilisation de CaseHover pour correspondre � ShowTab
+            GameObject casePrefab = data["CaseBool"]; // Utilisation de CaseHover pour correspondre � ShowTab
 
             // Calcul du facteur d'�chelle pour ajuster les dimensions des cases
             float scalingFactor = Mathf.Min(
@@ -44,8 +45,7 @@ namespace GemModule.UI
             );
 
             // Suppression des �l�ments pr�c�dents
-            foreach (Transform child in this.transform)
-                Destroy(child.gameObject);
+            this.transform.RemoveAll();
 
             // Inversion de l'ordre des lignes
             for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverse les lignes comme dans ShowTab

@@ -196,14 +196,14 @@ public class UiBSGBN : Singleton<UiBSGBN>
     #region Upgrade Stats
 
     [Header("Upgrade Stats")]
-    [SerializeField] private GameObject upgradeStatsContent;  // Parent pour les objets instanci�s
+    [SerializeField] private Transform upgradeStatsContent;  // Parent pour les objets instanci�s
     [SerializeField] private GameObject Horizontal;  // Pr�fab contenant un layout horizontal pour 2 StatContainer
     [SerializeField] private GameObject StatContainer;  // Pr�fab pour afficher les stats
 
     public void CreateUiGBNUpgrade(List<UpgradeStats> ListStat)
     {
         // Nettoyer le contenu pr�c�dent
-        upgradeStatsContent.transform.RemoveAll();
+        upgradeStatsContent.RemoveAll();
 
         // Compteur pour v�rifier si deux StatContainer doivent �tre plac�s dans le m�me Horizontal
         GameObject currentHorizontalInstance = null;
@@ -215,7 +215,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             // Si le compteur est � 0 ou est un multiple de 2, on instancie un nouvel Horizontal
             if (counter % 2 == 0)
             {
-                currentHorizontalInstance = Instantiate(Horizontal, upgradeStatsContent.transform);
+                currentHorizontalInstance = Instantiate(Horizontal, upgradeStatsContent);
             }
 
             // Instancier un nouveau StatContainer et l'ajouter � l'Horizontal
