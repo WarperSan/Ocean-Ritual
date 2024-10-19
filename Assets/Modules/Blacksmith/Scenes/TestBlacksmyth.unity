@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731758, g: 0.13414757, b: 0.12107876, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -360,100 +360,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &400549795
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 400549797}
-  - component: {fileID: 400549796}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &400549796
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 400549795}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 1
-  m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &400549797
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 400549795}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &480115281
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +543,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1973267636}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99577016
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -948,7 +854,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000031741325}
+  m_AnchoredPosition: {x: 0, y: 0.0007322164}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &835721802
@@ -984,7 +890,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 38, y: 28}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &905796280
@@ -1096,11 +1002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a7484c696911f4ea61a725ab93b609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 1926759178}
-  Horizontal: {fileID: 7746584089562580387, guid: 31eec6848d19de64fbc999dab04674d4,
-    type: 3}
-  StatContainer: {fileID: 6917722243575807848, guid: 9c70029c0a4273f49811a99cdf2b4e65,
-    type: 3}
   ObjectStatUI: {fileID: 835721802}
   ObjectSocleUI: {fileID: 480115281}
   NumberObject: {fileID: 1984809154345175553, guid: bbe0631c2cc0e534eb373cf6f29ebc49,
@@ -1114,6 +1015,11 @@ MonoBehaviour:
   ContainerForNumberSocle: {fileID: 1721894134}
   column: {fileID: 905796280}
   BoutonExtentDomain: {fileID: 9108181963741336482}
+  upgradeStatsContent: {fileID: 1926759178}
+  Horizontal: {fileID: 7746584089562580387, guid: 31eec6848d19de64fbc999dab04674d4,
+    type: 3}
+  StatContainer: {fileID: 6917722243575807848, guid: 9c70029c0a4273f49811a99cdf2b4e65,
+    type: 3}
 --- !u!114 &1010525918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1311,7 +1217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072ceb108c9e6654db3255548a83bdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ListStat: []
 --- !u!1 &1277957385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,10 +1544,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1010525921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1330, y: 628}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1801946974
 MonoBehaviour:
@@ -3082,7 +2987,7 @@ GameObject:
   - component: {fileID: 7858016263170652991}
   - component: {fileID: 8227963710810364149}
   m_Layer: 0
-  m_Name: EquipmentTest (1)
+  m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3340,7 +3245,7 @@ GameObject:
   - component: {fileID: 7279577320558474676}
   - component: {fileID: 8801318244134671998}
   m_Layer: 0
-  m_Name: EquipmentTest
+  m_Name: Lance-flammes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4981,7 +4886,7 @@ MonoBehaviour:
     Type: 6
     Quantite: 1
   componentGBN: {fileID: 7080490393843732974}
-  Name: lance flame
+  Name: Lance-flammes
   forgePercentage: 10
   lvlOfEquipment: 2
   costToUpgrade: 100
@@ -5211,11 +5116,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1767263062}
-  - {fileID: 400549797}
   - {fileID: 1270451962}
   - {fileID: 7279577320558474676}
+  - {fileID: 7858016263170652991}
   - {fileID: 1115174593}
   - {fileID: 497652663}
-  - {fileID: 7858016263170652991}
   - {fileID: 1010525921}
   - {fileID: 1463970173}

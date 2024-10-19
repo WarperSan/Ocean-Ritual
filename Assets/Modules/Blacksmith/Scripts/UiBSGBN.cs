@@ -1,4 +1,6 @@
-using System.Collections;
+using BlacksmithModule;
+using ExtensionsModule;
+using GemModule.UI;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,10 +9,6 @@ using UtilsModule;
 
 public class UiBSGBN : Singleton<UiBSGBN>
 {
-   
-    [SerializeField] private GameObject content;  // Parent pour les objets instanciés
-    [SerializeField] private GameObject Horizontal;  // Préfab contenant un layout horizontal pour 2 StatContainer
-    [SerializeField] private GameObject StatContainer;  // Préfab pour afficher les stats
     [SerializeField] private GameObject ObjectStatUI;
     [SerializeField] private GameObject ObjectSocleUI;
 
@@ -22,73 +20,11 @@ public class UiBSGBN : Singleton<UiBSGBN>
     [SerializeField] private GameObject column;
     [SerializeField] private GameObject BoutonExtentDomain;
 
-
-
-
-    public void CreateUiGBNUpgrade(List<UpgradeStats> ListStat)
-    {
-        // Nettoyer le contenu précédent
-        foreach (Transform child in content.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // Compteur pour vérifier si deux StatContainer doivent être placés dans le même Horizontal
-        GameObject currentHorizontalInstance = null;
-        int counter = 0;
-
-        // Parcourir chaque élément de la liste ListStat
-        foreach (UpgradeStats upgradeStat in ListStat)
-        {
-            // Si le compteur est à 0 ou est un multiple de 2, on instancie un nouvel Horizontal
-            if (counter % 2 == 0)
-            {
-                currentHorizontalInstance = Instantiate(Horizontal, content.transform);
-            }
-
-            // Instancier un nouveau StatContainer et l'ajouter à l'Horizontal
-            GameObject statConteneurInstance = Instantiate(StatContainer, currentHorizontalInstance.transform);
-
-            // Accéder au premier composant TextMeshPro dans les enfants de StatContainer
-            TextMeshProUGUI textComponent = statConteneurInstance.GetComponentInChildren<TextMeshProUGUI>();
-
-            // Construire la chaîne de caractères pour l'affichage
-            string statsText = "";
-            statsText += upgradeStat.name + "  Cost: " + upgradeStat.upgradeCost + "\n";
-            for (int i = 0; i < upgradeStat.baseStats.Count; i++)
-            {
-                string baseStatText = upgradeStat.baseStats[i].name + " : " + upgradeStat.baseStats[i].quantity;
-                string previewStatText = " -> " + upgradeStat.previewStats[i].quantity;
-
-                // Ajout d'un saut de ligne après chaque stat, sauf pour la dernière ligne
-                statsText += baseStatText + previewStatText + "\n";
-            }
-
-            // Supprimer le dernier saut de ligne
-            statsText = statsText.TrimEnd('\n');
-
-            // Affecter le texte complet au TextMeshPro du StatContainer
-            textComponent.text = statsText;
-
-            // Accéder au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
-            Button upgradeButton = statConteneurInstance.GetComponentInChildren<Button>();
-            if (upgradeButton != null)
-            {
-                // Utilisation de l'upgradeStat.name dans le listener
-                string statName = upgradeStat.name;  // Capturer la variable locale
-                upgradeButton.onClick.AddListener(() => ShowSocleUpgradeForGBN(statName));
-            }
-
-            // Incrémenter le compteur
-            counter++;
-        }
-    }
-
-    // Appeler la méthode du Singleton Blacksmith
+    // Appeler la mï¿½thode du Singleton Blacksmith
     public void ShowSocleUpgradeForGBN(string name)
     {
-        componentGBN GBNcomponent =  Blacksmith.Instance.ShowSocleUpgradeForGBN(name);
-      
+        componentGBN GBNcomponent = Blacksmith.Instance.ShowSocleUpgradeForGBN(name);
+
         ShowSocleUpgrade(GBNcomponent);
     }
 
@@ -99,7 +35,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             ObjectStatUI.SetActive(false);
             ObjectSocleUI.SetActive(true);
         }
-        else if(ObjectSocleUI.activeSelf)
+        else if (ObjectSocleUI.activeSelf)
         {
 
             ObjectStatUI.SetActive(true);
@@ -107,28 +43,25 @@ public class UiBSGBN : Singleton<UiBSGBN>
         }
     }
 
-
-    public void ShowSocleUpgrade (componentGBN GBNcomponent)
+    public void ShowSocleUpgrade(componentGBN GBNcomponent)
     {
-     
+
         SwitchBetweenUi();
         CreateUi(GBNcomponent.GBNScript.SocleListe[0].PowerGemObjectScript.GridGemme);
         CreateSocleChoice(GBNcomponent.GBNScript.SocleListe);
-       
+
     }
     public void GiveRefDomainButton(GemmeGrid GemmeGrid)
     {
         BoutonExtentDomain.SetActive(true);
 
-            Button upgradeButton = BoutonExtentDomain.GetComponentInChildren<Button>();
-            if (upgradeButton != null)
-            {
+        Button upgradeButton = BoutonExtentDomain.GetComponentInChildren<Button>();
+        if (upgradeButton != null)
+        {
 
-                upgradeButton.onClick.AddListener(() => UpgradeSocle(GemmeGrid));
-            }
-        
-        
-      
+            upgradeButton.onClick.AddListener(() => UpgradeSocle(GemmeGrid));
+        }
+
     }
     public void UpgradeSocle(GemmeGrid GemmeGrid)
     {
@@ -143,27 +76,27 @@ public class UiBSGBN : Singleton<UiBSGBN>
     }
     public void CreateSocleChoice(List<componentPowerGemObject> List)
     {
-        // Nettoie les objets enfants précédents dans NumberObject (si nécessaire)
+        // Nettoie les objets enfants prï¿½cï¿½dents dans NumberObject (si nï¿½cessaire)
         foreach (Transform child in ContainerForNumberSocle.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // Parcours chaque élément de la liste des PowerGemObjects
+        // Parcours chaque ï¿½lï¿½ment de la liste des PowerGemObjects
         for (int i = 0; i < List.Count; i++)
         {
             // Instancie un nouvel objet pour chaque socle (un bouton, par exemple)
             GameObject buttonInstance = Instantiate(NumberObject, ContainerForNumberSocle.transform);
 
-            // Assigne le numéro de l'index dans le texte du bouton
+            // Assigne le numï¿½ro de l'index dans le texte du bouton
             TextMeshProUGUI textComponent = buttonInstance.GetComponentInChildren<TextMeshProUGUI>();
-           
+
             if (textComponent != null)
             {
-                textComponent.text = (i + 1).ToString(); // Affiche l'index comme numéro sur le bouton
+                textComponent.text = (i + 1).ToString(); // Affiche l'index comme numï¿½ro sur le bouton
             }
 
-            // Ajoute un onClick listener au bouton instancié pour appeler CreateUi avec la bonne grille
+            // Ajoute un onClick listener au bouton instanciï¿½ pour appeler CreateUi avec la bonne grille
             Button buttonComponent = buttonInstance.GetComponent<Button>();
             if (buttonComponent != null)
             {
@@ -180,7 +113,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             Button buttonComponent = buttonInstance.GetComponent<Button>();
             if (buttonComponent != null)
             {
-                
+
                 buttonComponent.onClick.AddListener(() =>
                 {
                     AddSocle();
@@ -203,15 +136,15 @@ public class UiBSGBN : Singleton<UiBSGBN>
             BoutonExtentDomain.SetActive(false);
         }
 
-            // Définir les dimensions maximales de la grille
-            float maxColumnWidth = 250;
+        // Dï¿½finir les dimensions maximales de la grille
+        float maxColumnWidth = 250;
         float maxColumnHeight = 250;
 
         // Utiliser Grid.width et Grid.height
         int gridWidth = Grid.width;
         int gridHeight = Grid.height;
 
-        // Calculer le facteur de mise à l'échelle en fonction de la taille de la grille
+        // Calculer le facteur de mise ï¿½ l'ï¿½chelle en fonction de la taille de la grille
         float scalingFactorX = maxColumnWidth / gridWidth;
         float scalingFactorY = maxColumnHeight / gridHeight;
         float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY);
@@ -222,7 +155,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             Destroy(child.gameObject);
         }
 
-        // Ajuster la taille de la colonne pour correspondre à la grille
+        // Ajuster la taille de la colonne pour correspondre ï¿½ la grille
         RectTransform columnRect = column.GetComponent<RectTransform>();
         columnRect.sizeDelta = new Vector2(
             gridWidth * scalingFactor,
@@ -247,19 +180,61 @@ public class UiBSGBN : Singleton<UiBSGBN>
                 caseRect.sizeDelta = new Vector2(scalingFactor, scalingFactor);
                 caseRect.anchoredPosition = new Vector2(j * scalingFactor, 0);
 
-                // Récupérer le script Position et assigner X et Y
+                // Rï¿½cupï¿½rer le script Position et assigner X et Y
                 Position posScript = caseInstance.GetComponent<Position>();
                 if (posScript != null)
                 {
-                    posScript.SetPoition(j, i);  // On attribue les coordonnées de la case
+                    posScript.SetPoition(j, i);  // On attribue les coordonnï¿½es de la case
                 }
             }
         }
 
-        // Positionner la colonne à zéro
+        // Positionner la colonne ï¿½ zï¿½ro
         //columnRect.anchoredPosition = Vector2.zero;
     }
 
+    #region Upgrade Stats
 
+    [Header("Upgrade Stats")]
+    [SerializeField] private GameObject upgradeStatsContent;  // Parent pour les objets instanciï¿½s
+    [SerializeField] private GameObject Horizontal;  // Prï¿½fab contenant un layout horizontal pour 2 StatContainer
+    [SerializeField] private GameObject StatContainer;  // Prï¿½fab pour afficher les stats
 
+    public void CreateUiGBNUpgrade(List<UpgradeStats> ListStat)
+    {
+        // Nettoyer le contenu prï¿½cï¿½dent
+        upgradeStatsContent.transform.RemoveAll();
+
+        // Compteur pour vï¿½rifier si deux StatContainer doivent ï¿½tre placï¿½s dans le mï¿½me Horizontal
+        GameObject currentHorizontalInstance = null;
+        int counter = 0;
+
+        // Parcourir chaque ï¿½lï¿½ment de la liste ListStat
+        foreach (UpgradeStats upgradeStat in ListStat)
+        {
+            // Si le compteur est ï¿½ 0 ou est un multiple de 2, on instancie un nouvel Horizontal
+            if (counter % 2 == 0)
+            {
+                currentHorizontalInstance = Instantiate(Horizontal, upgradeStatsContent.transform);
+            }
+
+            // Instancier un nouveau StatContainer et l'ajouter ï¿½ l'Horizontal
+            GameObject statConteneurInstance = Instantiate(StatContainer, currentHorizontalInstance.transform);
+
+            if (statConteneurInstance.TryGetComponent(out UpgradeStatsItem item))
+                item.SetItem(upgradeStat);
+
+            // Incrï¿½menter le compteur
+            counter++;
+        }
+    }
+
+    #endregion
+
+    #region Singleton
+
+    /// <inheritdoc/>
+    protected override bool DestroyOnLoad => true;
+
+    #endregion
 }

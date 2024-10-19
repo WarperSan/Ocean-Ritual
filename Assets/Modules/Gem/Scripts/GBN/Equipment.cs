@@ -1,12 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static EnumGeneral;
+using BlacksmithModule;
 
-
-
-public interface Equipment : Forgeable
+public interface Equipment : IForgeable
 {
     string Name { get; }
    

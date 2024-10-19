@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ExtensionsModule
@@ -20,7 +21,7 @@ namespace ExtensionsModule
             Vector3 angle = transform.eulerAngles.LerpAngleAll(target.eulerAngles, duration);
             transform.eulerAngles = angle;
         }
-        
+
         /// <summary>
         /// Distances between two transform
         /// </summary>
@@ -32,6 +33,22 @@ namespace ExtensionsModule
                 return 0;
 
             return Vector3.Distance(self.position, target.position);
+        }
+
+        /// <summary>
+        /// Removes all the children that meet the given condition
+        /// </summary>
+        public static void RemoveAll(this Transform self, Predicate<Transform> predicate = null)
+        {
+            predicate ??= t => true;
+
+            foreach (Transform item in self)
+            {
+                if (predicate.Invoke(item))
+                {
+                    UnityEngine.Object.Destroy(item.gameObject);
+                }
+            }
         }
     }
 }

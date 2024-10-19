@@ -9,12 +9,19 @@ namespace UIModule
     [RequireComponent(typeof(RectTransform))]
     public abstract class UIComponent : MonoBehaviour, IElementable
     {
-        /// <inheritdoc/>
-        public RectTransform Rect { get; private set; }
+        private RectTransform _rect;
 
-        private void Awake()
+        /// <inheritdoc/>
+        public RectTransform Rect
         {
-            this.Rect = this.GetComponent<RectTransform>();
+            get
+            {
+                if (this._rect != null)
+                    return this._rect;
+
+                this._rect = this.GetComponent<RectTransform>();
+                return this._rect;
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace GemModule.UI
         private Image Icon;
 
         [SerializeField]
-        private ShowForm Form;
+        private ShowGemShape Form;
 
         [SerializeField]
         private TextMeshProUGUI Level;
@@ -101,7 +101,7 @@ namespace GemModule.UI
                             txt.text = $"{list[index].Type} : {list[index].Quantite}";
 
                             // Applique la couleur du texte bas�e sur le ratio
-                            txt.color = this.GetTextColorForRatio((float)list[index].Quantite / lvl);
+                            txt.color = GetTextColorForRatio(list[index].Quantite / lvl);
                         }
                     }
                 }
@@ -109,28 +109,26 @@ namespace GemModule.UI
         }
 
         // Sous-fonction pour r�cup�rer la couleur en fonction du ratio
-        private Color GetTextColorForRatio(float ratio)
+        private static Color GetTextColorForRatio(float ratio)
         {
+            // Blanc pour ratio = 1
             if (ratio == 1)
-            {
-                return Color.white; // Blanc pour ratio = 1
-            }
-            else if (ratio == 2)
-            {
-                return Color.green; // Vert pour ratio = 2
-            }
-            else if (ratio == 3)
-            {
-                return new Color(0.7f, 0.4f, 0.7f); // Violet clair pour ratio = 3
-            }
-            else if (ratio == 4)
-            {
-                return new Color(1f, 0.647f, 0f); // Orange pour ratio = 4
-            }
-            else
-            {
-                return Color.white; // Par d�faut, la couleur est blanche
-            }
+                return Color.white;
+
+            // Vert pour ratio = 2
+            if (ratio == 2)
+                return Color.green;
+
+            // Violet clair pour ratio = 3
+            if (ratio == 3)
+                return new Color(0.7f, 0.4f, 0.7f);
+
+            // Orange pour ratio = 4
+            if (ratio == 4)
+                return new Color(1f, 0.647f, 0f);
+
+            // Par d�faut, la couleur est blanche
+            return Color.white;
         }
 
         #region HoverItem
@@ -144,8 +142,7 @@ namespace GemModule.UI
             this.Icon.sprite = gem.sprite;
             this.Level.text = $"Level of the gem :  {gem.LVL}";
             this.ChangeInfoStat(gem);
-            bool[,] grid = gem.Shape.GetForme();
-            this.Form.CreateUi(grid);
+            this.Form.ShowGem(gem);
         }
 
         #endregion

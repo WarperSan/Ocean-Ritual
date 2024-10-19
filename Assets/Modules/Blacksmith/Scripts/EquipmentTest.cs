@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using BlacksmithModule;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static DhafinFawwaz.AnimationUILib.Sequence;
 using static EnumGeneral;
 
 public class EquipmentTest : MonoBehaviour,Equipment
@@ -21,7 +20,7 @@ public class EquipmentTest : MonoBehaviour,Equipment
     {
         get { return Name; }
     }
-    componentGBN Forgeable.componentGBN
+    componentGBN IForgeable.componentGBN
     {
         get { return componentGBN; } 
     }
@@ -111,4 +110,3 @@ public class EquipmentTest : MonoBehaviour,Equipment
    
     public TypeQuantity<Enum> AfterUpgradPreviewStat(TypeQuantity<Enum> statToUpgrade) => throw new NotImplementedException();
 }
-
