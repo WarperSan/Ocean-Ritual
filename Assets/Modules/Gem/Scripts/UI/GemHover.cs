@@ -142,7 +142,7 @@ namespace GemModule.UI
             this.Icon.sprite = gem.sprite;
             this.Level.text = $"Level of the gem :  {gem.LVL}";
             this.ChangeInfoStat(gem);
-            this.Form.ShowGem(gem);
+            this.Form.Show(gem, gem);
         }
 
         #endregion

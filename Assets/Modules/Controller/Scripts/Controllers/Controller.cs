@@ -5,7 +5,7 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Class that provides methods to use other controller independently
     /// </summary>
-    public abstract class Controller : MonoBehaviour
+    public abstract class Controller : MonoBehaviour, IActionable
     {
         #region Look
 

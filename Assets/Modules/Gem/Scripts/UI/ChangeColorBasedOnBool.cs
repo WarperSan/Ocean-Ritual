@@ -1,4 +1,5 @@
 using BlacksmithModule;
+using ExtensionsModule;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,32 +15,25 @@ namespace GemModule.UI
 
         [Header("Fields")]
         [SerializeField]
-        private Image image;    // L'�l�ment UI Image � changer de couleur
+        private Graphic select;
+
+        [SerializeField]
+        private Graphic background;
 
         #endregion
 
-        #region Properties
-
-        [Header("Properties")]
-        [SerializeField]
-        private Color activeColor = Color.green;
-
-        [SerializeField]
-        private Color inactiveColor = Color.gray;
-
-        #endregion
-
-        public void UpdateColor()
+        private void UpdateColor()
         {
-            if (isActive)
+            if (this.isActive)
             {
-                image.color = activeColor; // Si le bool�en est true, couleur verte
+                select.SetAlpha(1);
             }
-            else
+            else 
             {
-                image.color = inactiveColor; // Sinon, couleur grise
+                select.SetAlpha(0);
             }
         }
+
         public void SwapState()
         {
             if (TestBlackSmith.Instance.canAddNewCase || start || isActive)
@@ -48,6 +42,14 @@ namespace GemModule.UI
                 isActive = !isActive;
                 UpdateColor();
             }
+        }
+
+        public void SetState(bool isActive, Color activeColor, Color backgroundColor)
+        {
+            this.isActive = isActive;
+            this.select.color = activeColor;
+            this.background.color = backgroundColor;
+            this.UpdateColor();
         }
     }
 }

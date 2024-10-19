@@ -1,7 +1,7 @@
 namespace ControllerModule.Controllers.Interfaces
 {
     /// <summary>
-    /// Defines the controllers that want to be notify when the player fires
+    /// Defines the objects that want to be notify when the player fires
     /// </summary>
     public interface IFirable
     {

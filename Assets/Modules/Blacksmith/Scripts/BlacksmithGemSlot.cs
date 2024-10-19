@@ -42,9 +42,9 @@ namespace BlacksmithModule
             this.gem = gem;
             this.Icon.sprite = gem.sprite;
             this.Icon.SetAlpha(1);
-            TestBlackSmith.Instance.SetData(gem);
-            this.showGemShape.ShowGem(gem);
             this.enabled = true;
+
+            TestBlackSmith.Instance.SetData(gem);
         }
 
         public void ClearGem(bool returnToInventory)
@@ -54,15 +54,13 @@ namespace BlacksmithModule
                 Inventory.Instance.AddItem(this.gem, this.slotIndex);
             }
 
-            this.ResetGemSlot();
-        }
-
-        private void ResetGemSlot()
-        {
+            this.gem = null;
+            this.Icon.sprite = null;
             this.Icon.SetAlpha(0);
             this.enabled = false;
-            this.gem = null;
             this.slotIndex = -1;
+
+            TestBlackSmith.Instance.SetData(null);
         }
 
         public void SetBackgroundAlpha(float alpha)

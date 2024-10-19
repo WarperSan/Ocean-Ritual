@@ -73,24 +73,25 @@ namespace ControllerModule.Controllers
 
         #region Operations
 
-        public static InputMaster operator +(InputMaster input, Controller controller)
+        public static InputMaster operator +(InputMaster input, IActionable actionable)
         {
-            if (input == null || controller == null)
+            if (input == null || actionable == null)
                 return input;
 
             // Subscribe all events
-            input.OnLook += controller.OnLook;
+            if (actionable is Controller controller)
+                input.OnLook += controller.OnLook;
 
-            if (controller is IMovable movable)
+            if (actionable is IMovable movable)
                 input.OnMove += movable.OnMove;
 
-            if (controller is IFirable firable)
+            if (actionable is IFirable firable)
             {
                 input.OnFireStart += firable.OnFireStart;
                 input.OnFireEnd += firable.OnFireEnd;
             }
 
-            if (controller is IJumpable jumpable)
+            if (actionable is IJumpable jumpable)
             {
                 input.OnJump += jumpable.OnJump;
             }
@@ -98,24 +99,25 @@ namespace ControllerModule.Controllers
             return input;
         }
 
-        public static InputMaster operator -(InputMaster input, Controller controller)
+        public static InputMaster operator -(InputMaster input, IActionable actionable)
         {
-            if (input == null || controller == null)
+            if (input == null || actionable == null)
                 return input;
 
             // Unsubscribe all events
-            input.OnLook -= controller.OnLook;
+            if (actionable is Controller controller)
+                input.OnLook -= controller.OnLook;
 
-            if (controller is IMovable movable)
+            if (actionable is IMovable movable)
                 input.OnMove -= movable.OnMove;
 
-            if (controller is IFirable firable)
+            if (actionable is IFirable firable)
             {
                 input.OnFireStart -= firable.OnFireStart;
                 input.OnFireEnd -= firable.OnFireEnd;
             }
 
-            if (controller is IJumpable jumpable)
+            if (actionable is IJumpable jumpable)
             {
                 input.OnJump -= jumpable.OnJump;
             }

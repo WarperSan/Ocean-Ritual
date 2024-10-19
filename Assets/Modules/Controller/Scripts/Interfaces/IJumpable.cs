@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace ControllerModule.Controllers.Interfaces
 {
+    /// <summary>
+    /// Defines the objects that want to be notify when the player jumps
+    /// </summary>
     public interface IJumpable
     {
         /// <summary>

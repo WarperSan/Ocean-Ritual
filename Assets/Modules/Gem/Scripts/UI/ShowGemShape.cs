@@ -12,15 +12,30 @@ namespace GemModule.UI
         Dictionary<string, GameObject> data;  // Dictionnaire contenant les prefabs charg�s
         [SerializeField] GemData Gem;
 
+        #region Colors
+
+        [Header("Colors")]
+        [SerializeField, Tooltip("Color used when a case is filled")]
+        private Color activeColor = Color.green;
+
+        [SerializeField, Tooltip("Color used when a case is empty, but was previously filled")]
+        private Color wasActiveColor = Color.black;
+
+        [SerializeField, Tooltip("Color used when a case is empty")]
+        private Color inactiveColor = Color.gray;
+
+        #endregion
+
         public void GetResource()
         {
             // R�cup�rer les objets GameObject � partir du dictionnaire
             data = DictionaryGenerator.DictionaryGameObjectGenerator(casePath);
         }
 
-        public void ShowGem(GemData gem)
+        public void Show(GemData gem, GemData original)
         {
             bool[,] grid = gem.Shape.GetForme();
+            bool[,] originalGrid = original.Shape.GetForme();
 
             if (data == null)
             {
@@ -45,7 +60,7 @@ namespace GemModule.UI
             );
 
             // Suppression des �l�ments pr�c�dents
-            this.transform.RemoveAll();
+            this.Clear();
 
             // Inversion de l'ordre des lignes
             for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverse les lignes comme dans ShowTab
@@ -72,12 +87,16 @@ namespace GemModule.UI
                     ChangeColorBasedOnBool CasScript = caseInstance.GetComponent<ChangeColorBasedOnBool>();
 
                     // Inverser l'indexation des lignes et colonnes dans grid
-                    if (grid[i, j])  // Utilisation correcte de i et j dans le tableau
-                    {
-                        CasScript.SwapState(); // Si la case est true, on applique l'�tat (par exemple, [X])
-                    }
+                    bool isActive = grid[i, j];
+                    CasScript.SetState(isActive, this.activeColor, originalGrid[i, j] ? this.wasActiveColor : this.inactiveColor);
                 }
             }
+        }
+
+        public void Clear()
+        {
+            // Suppression des �l�ments pr�c�dents
+            this.transform.RemoveAll();
         }
 
         #region Editor

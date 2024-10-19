@@ -1,5 +1,7 @@
 using UnityEngine;
 using UIModule.Interfaces;
+using ControllerModule;
+using ControllerModule.Controllers;
 
 namespace UIModule
 {
@@ -7,7 +9,7 @@ namespace UIModule
     /// Class that defines all the UI components
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIComponent : MonoBehaviour, IElementable
+    public abstract class UIComponent : MonoBehaviour, IElementable, IActionable
     {
         private RectTransform _rect;
 
@@ -23,5 +25,15 @@ namespace UIModule
                 return this._rect;
             }
         }
+
+        #region MonoBehaviour
+
+        /// <inheritdoc/>
+        private void OnEnable() => InputMaster.Instance += this;
+
+        /// <inheritdoc/>
+        private void OnDisable() => InputMaster.Instance -= this;
+
+        #endregion
     }
 }
