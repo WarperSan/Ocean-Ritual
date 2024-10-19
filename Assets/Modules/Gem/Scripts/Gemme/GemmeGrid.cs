@@ -7,7 +7,7 @@ public class GemmeGrid : MonoBehaviour
     [SerializeField] public int width;
     [SerializeField] public int height;
     [SerializeField] public bool[,] Grid;
-
+  
     #endregion
 
     #region Unity Methods
@@ -27,7 +27,24 @@ public class GemmeGrid : MonoBehaviour
     {
         Grid = new bool[width, height];
     }
-
+    public void UpGrade()
+    {
+        Debug.Log("passeUpgrade");
+        if (CanUpgrade()) // Vérifie d'abord si une amélioration est possible
+        {
+            width += 1;  // Augmente la largeur
+            height += 1; // Augmente la hauteur
+        }
+        else
+        {
+            Debug.Log("Impossible d'améliorer : la largeur ou la hauteur dépasse déjà ou sont déja à 6.");
+        }
+    }
+    public bool CanUpgrade()
+    {
+        // Vérifie si les dimensions actuelles dépassent 6 après une amélioration
+        return (width < 6 && height < 6);
+    }
     #endregion
 
     #region Object Placement

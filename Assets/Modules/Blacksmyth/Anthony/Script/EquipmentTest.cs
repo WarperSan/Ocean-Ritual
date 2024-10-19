@@ -21,7 +21,7 @@ public class EquipmentTest : MonoBehaviour,Equipment
     {
         get { return Name; }
     }
-    componentGBN Equipment.componentGBN
+    componentGBN Forgeable.componentGBN
     {
         get { return componentGBN; } 
     }

@@ -8,7 +8,7 @@ using static EnumGeneral;
 public class Blacksmith : MonoBehaviour
 {
     [SerializeField] public List<Forgeable> forgeableItems = new ();
-
+    Dictionary<string, componentGBN> DictionaireComponentGBN= new();
     [SerializeField] public List<UpgradeStats> ListStat;
     private static Blacksmith instance;
 
@@ -47,7 +47,7 @@ public class Blacksmith : MonoBehaviour
             
                 // Récupère les données d'amélioration
                 UpgradeStats upgradeData = item.GetStatToUpgradeAndCost();
-
+            DictionaireComponentGBN.Add(upgradeData.name, item.componentGBN);
                 // Ajoute les données à ListStat
                 ListStat.Add(upgradeData);
             
@@ -58,5 +58,10 @@ public class Blacksmith : MonoBehaviour
     {
         IEnumerable<Forgeable> list = FindObjectsOfType<MonoBehaviour>().OfType<Forgeable>();
         forgeableItems =   new List<Forgeable>(list);
+    }
+
+    public componentGBN ShowSocleUpgradeForGBN(string name)
+    {
+       return DictionaireComponentGBN[name] ;
     }
 }
