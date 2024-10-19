@@ -14,15 +14,18 @@ namespace BlacksmithModule
 
         private void Start()
         {
+            InterfaceUpgrade();
+        }
+        public void InterfaceUpgrade()
+        {
             this.GetAllUpgradeableItem();
             this.GetAllUpgrade();
             UiBSGBN.Instance.CreateUiGBNUpgrade(ListStat);
         }
-
         private void GetAllUpgrade()
         {
             this.ListStat.Clear(); // Assurez-vous de vider la liste avant d'ajouter de nouveaux �l�ments
-
+            DictionaireComponentGBN = new();
             // Parcours de chaque forgeable item
             foreach (IForgeable item in this.forgeableItems)
             {

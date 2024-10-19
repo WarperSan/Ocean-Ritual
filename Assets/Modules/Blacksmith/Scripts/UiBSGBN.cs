@@ -19,13 +19,13 @@ public class UiBSGBN : Singleton<UiBSGBN>
     [SerializeField] private GameObject ContainerForNumberSocle;
     [SerializeField] private GameObject column;
     [SerializeField] private GameObject BoutonExtentDomain;
-
+    [SerializeField] private GameObject SoclePrefab;
     // Appeler la m�thode du Singleton Blacksmith
     public void ShowSocleUpgradeForGBN(string name)
     {
         componentGBN GBNcomponent = Blacksmith.Instance.ShowSocleUpgradeForGBN(name);
 
-        ShowSocleUpgrade(GBNcomponent);
+        ShowSocleUpgrade(GBNcomponent, name);
     }
 
     public void SwitchBetweenUi()
@@ -43,22 +43,23 @@ public class UiBSGBN : Singleton<UiBSGBN>
         }
     }
 
-    public void ShowSocleUpgrade(componentGBN GBNcomponent)
+    public void ShowSocleUpgrade(componentGBN GBNcomponent, string name)
     {
 
         SwitchBetweenUi();
-        CreateUi(GBNcomponent.GBNScript.SocleListe[0].PowerGemObjectScript.GridGemme);
-        CreateSocleChoice(GBNcomponent.GBNScript.SocleListe);
+        CreateUi(GBNcomponent.GBNScript.SocleListe[0].PowerGemObjectScript.GridGemme, name);
+        CreateSocleChoice(GBNcomponent, name);
 
     }
-    public void GiveRefDomainButton(GemmeGrid GemmeGrid)
+    public void GiveRefDomainButton(GemmeGrid GemmeGrid, string name)
     {
         BoutonExtentDomain.SetActive(true);
 
         Button upgradeButton = BoutonExtentDomain.GetComponentInChildren<Button>();
         if (upgradeButton != null)
         {
-
+            upgradeButton.onClick.RemoveAllListeners();
+            upgradeButton.onClick.AddListener(() => UpgradeStateBase(name));
             upgradeButton.onClick.AddListener(() => UpgradeSocle(GemmeGrid));
         }
 
@@ -70,12 +71,19 @@ public class UiBSGBN : Singleton<UiBSGBN>
 
         SwitchBetweenUi();
     }
-    public void SwitchCase()
+    public void UpgradeStateBase(string name)
     {
-
+        componentGBN GBNcomponent = Blacksmith.Instance.ShowSocleUpgradeForGBN(name);
+        Equipment equipmentScript = GBNcomponent.GetComponentInParent<Equipment>();
+        if (equipmentScript != null)
+        {
+            equipmentScript.UpgradeEquipment();
+            Blacksmith.Instance.InterfaceUpgrade();
+        }
     }
-    public void CreateSocleChoice(List<componentPowerGemObject> List)
+    public void CreateSocleChoice(componentGBN component, string name)
     {
+        List<componentPowerGemObject> List = component.GBNScript.SocleListe;
         // Nettoie les objets enfants pr�c�dents dans NumberObject (si n�cessaire)
         foreach (Transform child in ContainerForNumberSocle.transform)
         {
@@ -103,7 +111,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
                 int index = i; // Capture l'index dans une variable locale pour le callback
                 buttonComponent.onClick.AddListener(() =>
                 {
-                    CreateUi(List[index].PowerGemObjectScript.GridGemme);
+                    CreateUi(List[index].PowerGemObjectScript.GridGemme, name);
                 });
             }
         }
@@ -116,27 +124,32 @@ public class UiBSGBN : Singleton<UiBSGBN>
 
                 buttonComponent.onClick.AddListener(() =>
                 {
-                    AddSocle();
+                    UpgradeStateBase(name);
+                    AddSocle(component);
+                    SwitchBetweenUi();
                 });
             }
         }
     }
-    public void AddSocle()
+    public void AddSocle(componentGBN component)
     {
-        Debug.Log("allo");
+    //
+        component.AddNewSocle(SoclePrefab);
     }
-    public void CreateUi(GemmeGrid Grid)
+    public void CreateUi(GemmeGrid Grid, string name)
     {
+        bool MoreGrid = false;
         if (Grid.CanUpgrade())
         {
-            GiveRefDomainButton(Grid);
+            MoreGrid = true;
+            GiveRefDomainButton(Grid, name);
         }
         else
         {
             BoutonExtentDomain.SetActive(false);
         }
 
-        // D�finir les dimensions maximales de la grille
+        // Définir les dimensions maximales de la grille
         float maxColumnWidth = 250;
         float maxColumnHeight = 250;
 
@@ -144,7 +157,14 @@ public class UiBSGBN : Singleton<UiBSGBN>
         int gridWidth = Grid.width;
         int gridHeight = Grid.height;
 
-        // Calculer le facteur de mise � l'�chelle en fonction de la taille de la grille
+        // Si MoreGrid est vrai, on ajoute une ligne et une colonne
+        if (MoreGrid)
+        {
+            gridWidth += 1;
+            gridHeight += 1;
+        }
+
+        // Calculer le facteur de mise à l'échelle en fonction de la taille de la grille
         float scalingFactorX = maxColumnWidth / gridWidth;
         float scalingFactorY = maxColumnHeight / gridHeight;
         float scalingFactor = Mathf.Min(scalingFactorX, scalingFactorY);
@@ -155,7 +175,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             Destroy(child.gameObject);
         }
 
-        // Ajuster la taille de la colonne pour correspondre � la grille
+        // Ajuster la taille de la colonne pour correspondre à la grille
         RectTransform columnRect = column.GetComponent<RectTransform>();
         columnRect.sizeDelta = new Vector2(
             gridWidth * scalingFactor,
@@ -180,18 +200,30 @@ public class UiBSGBN : Singleton<UiBSGBN>
                 caseRect.sizeDelta = new Vector2(scalingFactor, scalingFactor);
                 caseRect.anchoredPosition = new Vector2(j * scalingFactor, 0);
 
-                // R�cup�rer le script Position et assigner X et Y
+                // Récupérer le script Position et assigner X et Y
                 Position posScript = caseInstance.GetComponent<Position>();
                 if (posScript != null)
                 {
-                    posScript.SetPoition(j, i);  // On attribue les coordonn�es de la case
+                    posScript.SetPoition(j, i);  // On attribue les coordonnées de la case
+                }
+
+                // Appliquer une couleur noire si on est sur la dernière ligne ou la dernière colonne
+                if (MoreGrid && (i == 0 || j == gridWidth - 1))
+                {
+                    // Appliquer une couleur noire à la case
+                    RawImage caseImage = caseInstance.GetComponent<RawImage>();
+                    if (caseImage != null)
+                    {
+                        caseImage.color = Color.black; // Appliquer la couleur noire
+                    }
                 }
             }
         }
 
-        // Positionner la colonne � z�ro
-        //columnRect.anchoredPosition = Vector2.zero;
+        // Positionner la colonne à zéro (si nécessaire)
+        // columnRect.anchoredPosition = Vector2.zero;
     }
+
 
     #region Upgrade Stats
 
