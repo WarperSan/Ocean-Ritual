@@ -15,7 +15,7 @@ public enum LanceFlameModes
     ICE
 };
 
-public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes>
+public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes> 
 {
     #region Controller
 
@@ -258,6 +258,8 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     public int CostToUpgrade { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public int ForgePercentage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public int LvlOfEquipment { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+    public string Name => throw new System.NotImplementedException();
 
     /// <inheritdoc/>
     public void UpdateStat()

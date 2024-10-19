@@ -14,8 +14,17 @@ public class EquipmentTest : MonoBehaviour,Equipment
     [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
     [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
     [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
-    public componentGBN componentGBN => throw new System.NotImplementedException();
+    [SerializeField] public componentGBN componentGBN;
+    [SerializeField] public string Name;
 
+    string Equipment.Name
+    {
+        get { return Name; }
+    }
+    componentGBN Equipment.componentGBN
+    {
+        get { return componentGBN; } 
+    }
     [SerializeField]
     private int forgePercentage;
 
@@ -69,7 +78,7 @@ public class EquipmentTest : MonoBehaviour,Equipment
         AfterUpgradPreviewStat(Range)
     };
 
-        return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade());
+        return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(),Name);
     }
 
     // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData

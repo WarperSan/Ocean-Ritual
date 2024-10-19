@@ -8,7 +8,8 @@ using static EnumGeneral;
 
 public interface Equipment : Forgeable
 {
-   componentGBN componentGBN { get; }
+    string Name { get; }
+    componentGBN componentGBN { get; }
    
 
     public void UpdateStat();

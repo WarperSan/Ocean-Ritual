@@ -33,6 +33,7 @@ public class Blacksmith : MonoBehaviour
     {
         getAllUpgradeableItem();
         GetAllUpgrade();
+       UiBSGBN.Instance.CreateUiGBNUpgrade(ListStat);
     }
 
 
