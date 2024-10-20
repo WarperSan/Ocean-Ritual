@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace ControllerModule.Controllers.Interfaces
+namespace ControllerModule.Interfaces.Player
 {
     /// <summary>
-    /// Defines the objects that want to be notify when the player moves
+    /// Defines the controllers that want to be notify when the player moves
     /// </summary>
     public interface IMovable
     {

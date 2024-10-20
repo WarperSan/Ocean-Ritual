@@ -210,6 +210,11 @@ namespace UIModule
                         yield return null;
                         break;
                 }
+
+                if (CurrentMenu == null)
+                    InputMaster.ResumePlay();
+                else
+                    InputMaster.StartMenu();
             }
 
             this.currentProcess = null;

@@ -25,7 +25,7 @@ public class HoverManager : UIComponent
     private void RaycastToUI()
     {
         // Si la souris n'est plus sur un �l�ment UI (en dehors de l'inventaire), fermer la ressource
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject())
         {
             this.HideHover();
             return;

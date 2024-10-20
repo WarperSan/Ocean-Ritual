@@ -1,3 +1,4 @@
+using ControllerModule.Interfaces.UI;
 using System.Collections.Generic;
 using TMPro;
 using UIModule.Components;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 namespace GemModule.UI
 {
-    public class GemHover : HoverItem<GemData>
+    public class GemHover : HoverItem<GemData>, ITabable
     {
         #region Fields
 
@@ -143,7 +144,22 @@ namespace GemModule.UI
             this.Level.text = $"Level of the gem :  {gem.LVL}";
             this.ChangeInfoStat(gem);
             this.Form.Show(gem, gem);
+            this.navBar.Select(0);
         }
+
+        #endregion
+
+        #region ITabable
+
+        [Header("ITabable")]
+        [SerializeField]
+        private NavBar navBar;
+
+        /// <inheritdoc/>
+        public void OnTabNext() => this.navBar.Next();
+
+        /// <inheritdoc/>
+        public void OnTabPrevious() => this.navBar.Previous();
 
         #endregion
     }
