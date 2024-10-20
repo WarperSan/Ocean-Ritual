@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class FusionCase : UIComponent, IDragReceivable<InventorySlot>, IDraggable
 {
     private int slotIndex = -1;
-    public GemData gem;
+    public GemData gems = null;
     [SerializeField] int CasePostion = 0;// 1 left ,2= right ,3 = mid
     #region Fields
 
@@ -37,14 +37,14 @@ public class FusionCase : UIComponent, IDragReceivable<InventorySlot>, IDraggabl
     }
     public void ReceiveGem(GemData gem)
     {
-        this.gem = gem;
+        this.gems = gem;
         this.Icon.sprite = gem.sprite;
         
         this.enabled = true;  
     }
     public void ReceiveGemFromFusion(GemData gem)
     {
-        this.gem = gem;
+        this.gems = gem;
         Debug.Log(gem.sprite);
         Debug.Log(this.Icon.sprite);
         this.Icon.sprite = gem.sprite;
@@ -56,22 +56,30 @@ public class FusionCase : UIComponent, IDragReceivable<InventorySlot>, IDraggabl
     public void Resete()
     {
         slotIndex = -1;
-          gem = null; 
+          gems = null;
+        this.Icon.sprite = null;
 
-}
+    }
 
     public void OnDragReceive(InventorySlot slot)
     {
+    
         if (slot.GetData() is not GemData gem)
-            return;
-        if(CasePostion!=1 || CasePostion!= 2)
         {
+            Debug.Log("je recois pas gemdata1");
             return;
         }
+          
+        if(CasePostion!=1 && CasePostion!= 2)
+        {
+            Debug.Log("je recois pas gemdata2");
+            return;
+        }
+        Debug.Log("je recois");
         Inventory.Instance.DropItem(slot.slotIndex);
 
         if (this.slotIndex != -1)
-            Inventory.Instance.AddItem(this.gem, slot.slotIndex);
+            Inventory.Instance.AddItem(this.gems, slot.slotIndex);
 
         this.ReceiveGem(gem);
         this.slotIndex = slot.slotIndex;

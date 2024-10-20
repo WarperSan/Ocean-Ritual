@@ -20,23 +20,34 @@ public class fusionBSManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (left.gem != null && right.gem!= null)
+        if(left.gems !=null && right.gems != null)
         {
-            button.SetActive(true);
+            if (left.gems.LVL != 0 && right.gems.LVL != 0)
+            {
+                button.SetActive(true);
+            }
+            else
+            {
+                button.SetActive(false);
+            }
         }
+        
         else
         {
             button.SetActive(false);
         }
+       
         if (fill.CanFuse)
         {
             if(!fuse)
             {
-                int lvl = GemHelper.fusionGemTab(left.gem.LVL, right.gem.LVL);
-                GemData TheGemme = GeneratorGem.GenerateRandomGemme(lvl, left.gem);
+                int lvl = GemHelper.fusionGemTab(left.gems.LVL, right.gems.LVL);
+                GemData TheGemme = GeneratorGem.GenerateRandomGemme(lvl, left.gems);
                 TheGemme.sprite = sprite;
                 mid.ReceiveGemFromFusion(TheGemme);
                 fuse= true;
+                left.Resete();
+                right.Resete();
             }
             
             

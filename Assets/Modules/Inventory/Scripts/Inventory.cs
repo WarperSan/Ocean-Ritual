@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
 
     void AddTestGemme()
     {
-        string[] gemColors = { "gem Rouge", "gem Bleue", "gem Verte" };
+        string[] gemColors = { "gems Rouge", "gems Bleue", "gems Verte" };
 
         for (int i = 0; i < 6; i++)
         {
@@ -322,12 +322,12 @@ public class Inventory : MonoBehaviour
         {
             case TypeOfSort.Nom:
                 SortName();
-                Console.WriteLine("Tri par name de fish les gem apres");
+                Console.WriteLine("Tri par name de fish les gems apres");
                 break;
 
             case TypeOfSort.Type:
                 this.SortType();
-                Console.WriteLine("Tri par type fish ou gem");
+                Console.WriteLine("Tri par type fish ou gems");
                 break;
 
             case TypeOfSort.Quantite:
@@ -342,7 +342,7 @@ public class Inventory : MonoBehaviour
 
             case TypeOfSort.Niveau:
                 SortLVL();
-                Console.WriteLine(" trie par niveau de gem fish après");
+                Console.WriteLine(" trie par niveau de gems fish après");
                 break;
 
             default:
@@ -355,14 +355,14 @@ public class Inventory : MonoBehaviour
 
     public void SortName()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
 
         // Trier les fish par name (supposant que FishData a un champ 'name')
         fish = fish.OrderBy(p => p.fish.DisplayName).ToList();
 
-        // Réorganiser l'inventaire avec fish d'abord, puis les gem
+        // Réorganiser l'inventaire avec fish d'abord, puis les gems
         ItemList = new List<ItemData>();
         ItemList.AddRange(fish);
         ItemList.AddRange(gem);
@@ -374,21 +374,21 @@ public class Inventory : MonoBehaviour
 
     public void SortType()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
 
-        // Réorganiser l'inventaire avec les fish d'abord, puis les gem
+        // Réorganiser l'inventaire avec les fish d'abord, puis les gems
         ItemList = new List<ItemData>();
         ItemList.AddRange(fish);
         ItemList.AddRange(gem);
 
-        Debug.Log("Liste triée par type (fish puis gem).");
+        Debug.Log("Liste triée par type (fish puis gems).");
     }
 
     public void SortQuantity()
     {
-        // Trier les objets par quantité (qu'ils soient des fish ou des gem)
+        // Trier les objets par quantité (qu'ils soient des fish ou des gems)
         ItemList = ItemList.OrderByDescending(item => item.quantity).ToList();
 
         Debug.Log("Liste triée par quantité.");
@@ -396,24 +396,24 @@ public class Inventory : MonoBehaviour
 
     public void SortLVL()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
 
-        // Trier uniquement les gem par niveau
+        // Trier uniquement les gems par niveau
         gem = gem.OrderByDescending(g => g.LVL).ToList();
 
-        // Réorganiser l'inventaire avec les gem d'abord, puis les fish
+        // Réorganiser l'inventaire avec les gems d'abord, puis les fish
         ItemList = new List<ItemData>();
         ItemList.AddRange(gem);
         ItemList.AddRange(fish);
 
-        Debug.Log("Liste triée par niveau de gem.");
+        Debug.Log("Liste triée par niveau de gems.");
     }
 
     public void AutoMerge()
     {
-        // On garde les gem intactes
+        // On garde les gems intactes
         List<ItemData> gem = ItemList.Where(item => item is GemData).ToList();
 
         // On filtre les fish avec quantité > 0
@@ -459,7 +459,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Maintenant on replace tout dans ItemList
-        // En gardant d'abord les fish fusionnés, puis les gem
+        // En gardant d'abord les fish fusionnés, puis les gems
         ItemList = poissonsFusionnes.Cast<ItemData>()
                                     .Concat(gem)
                                     .ToList();

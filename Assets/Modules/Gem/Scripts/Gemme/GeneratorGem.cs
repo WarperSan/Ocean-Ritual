@@ -20,20 +20,20 @@ public   class GeneratorGem: MonoBehaviour
     // Singleton instance
 
     static bool dataLoad = false;
-    static string GemmePath = "Gemme/AllGemme"; // Path to the gem prefabs
-    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gem prefab
-   // static string GemmeName = "Red"; // Default gem name
+    static string GemmePath = "Gemme/AllGemme"; // Path to the gems prefabs
+    static string SampleGemmePath = "Gemme/SampleGemme"; // Path to the sample gems prefab
+   // static string GemmeName = "Red"; // Default gems name
     //static float Spacebetween = 1f; // Space between gemmes
-    static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gem prefabs
-    static private GameObject SampleGemme; // Sample gem prefab
+    static Dictionary<string, GameObject> DictionaryGemme = new(); // Dictionary to store gems prefabs
+    static private GameObject SampleGemme; // Sample gems prefab
     //static int lvlTest = 3; // Test level
-    static int height = 1; // Height of the gem
+    static int height = 1; // Height of the gems
 
     // Start is called before the first frame update
     #endregion
 
     #region Load Data
-    // Function to load gem data from resources
+    // Function to load gems data from resources
     public static void LoadGemmeData()
     {
         DictionaryGemme = DictionaryGenerator.DictionaryGameObjectGenerator(GemmePath);
@@ -49,7 +49,7 @@ public   class GeneratorGem: MonoBehaviour
 
     #region Gemme Creation
 
-    // Function to create a random gem
+    // Function to create a random gems
     //public static void CreatGemmeRandomFunction(int lvlTests, string GemmeNames, Transform Conteneur)
     //{
     //    if (!dataLoad)
@@ -62,7 +62,7 @@ public   class GeneratorGem: MonoBehaviour
 
    
 
-    // Function to generate a random gem
+    // Function to generate a random gems
     public static GemData GenerateRandomGemme(int LVL)
     {
 
@@ -98,7 +98,7 @@ public   class GeneratorGem: MonoBehaviour
 
         if (gemmeScript != null)
         {
-            if(LVL> gemHeritage.LVL)
+            if(LVL>= gemHeritage.LVL)
             {
                 gemmeScript.quantityMax = 1;
                 gemmeScript.quantity = 1;
@@ -190,7 +190,7 @@ public   class GeneratorGem: MonoBehaviour
         // Retourner le name de la couleur sélectionnée aléatoirement
         return colors.GetValue(randomIndex).ToString();
     }
-    // Function to generate the shape of the gem based on the level
+    // Function to generate the shape of the gems based on the level
     private static FormBool GenerateForme(int LVL)
     {
         int size = Mathf.CeilToInt(Mathf.Sqrt(LVL));
@@ -328,7 +328,7 @@ public   class GeneratorGem: MonoBehaviour
    
 
 
-    // Function to create a gem object in the scene
+    // Function to create a gems object in the scene
     public static GameObject? CreatGemmeObject(Gem GemmeScript, Transform Conteneur)
     {
         if (!dataLoad)
@@ -350,7 +350,7 @@ public   class GeneratorGem: MonoBehaviour
 
 
 
-    // Function to create the material for the gem object
+    // Function to create the material for the gems object
     public static bool CreateMaterialGemme(GameObject instantiatedGemme)
     {
         if (!dataLoad)
