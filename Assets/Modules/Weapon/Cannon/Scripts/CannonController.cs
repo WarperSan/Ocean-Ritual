@@ -1,5 +1,5 @@
 using ControllerModule.Controllers;
-using ControllerModule.Controllers.Interfaces;
+using ControllerModule.Interfaces.Player;
 using EntityModule;
 using UnityEngine;
 using UnityEngine.UI;

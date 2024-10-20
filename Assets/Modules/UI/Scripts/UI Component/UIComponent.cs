@@ -1,7 +1,7 @@
 using UnityEngine;
 using UIModule.Interfaces;
-using ControllerModule;
 using ControllerModule.Controllers;
+using ControllerModule.Interfaces.UI;
 
 namespace UIModule
 {
@@ -9,7 +9,7 @@ namespace UIModule
     /// Class that defines all the UI components
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIComponent : MonoBehaviour, IElementable, IActionable
+    public abstract class UIComponent : MonoBehaviour, IElementable, IUIActionable
     {
         private RectTransform _rect;
 

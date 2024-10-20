@@ -1,4 +1,4 @@
-namespace ControllerModule
+namespace ControllerModule.Interfaces
 {
     /// <summary>
     /// Defines the objects that can receive input actions

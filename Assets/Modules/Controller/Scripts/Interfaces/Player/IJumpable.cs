@@ -1,7 +1,7 @@
-namespace ControllerModule.Controllers.Interfaces
+namespace ControllerModule.Interfaces.Player
 {
     /// <summary>
-    /// Defines the objects that want to be notify when the player jumps
+    /// Defines the controllers that want to be notify when the player jumps
     /// </summary>
     public interface IJumpable
     {

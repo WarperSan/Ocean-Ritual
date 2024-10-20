@@ -1,4 +1,6 @@
-using ControllerModule.Controllers.Interfaces;
+using ControllerModule.Interfaces;
+using ControllerModule.Interfaces.Player;
+using ControllerModule.Interfaces.UI;
 using UIModule;
 using UIModule.Menus;
 using UnityEngine;
@@ -9,6 +11,7 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Class that manages the inputs of the player
     /// </summary>
+    [RequireComponent(typeof(PlayerInput))]
     public class InputMaster : UtilsModule.Singleton<InputMaster>
     {
         #region Delegates
@@ -17,6 +20,7 @@ namespace ControllerModule.Controllers
         public delegate void MoveEvent(Vector2 direction);
         public delegate void JumpEvent();
         public delegate void FireEvent();
+        public delegate void TabEvent();
 
         #endregion
 
@@ -27,6 +31,14 @@ namespace ControllerModule.Controllers
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
         public event JumpEvent OnJump;
+        public event TabEvent OnTabNext;
+        public event TabEvent OnTabPrevious;
+
+        #endregion
+
+        #region States
+
+        public bool IsShift { get; private set; }
 
         #endregion
 
@@ -69,6 +81,45 @@ namespace ControllerModule.Controllers
             if (context.started)
                 UIManager.Toggle<InventoryMenu>();
         }
+
+        public void Tab(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                if (this.IsShift)
+                    this.OnTabPrevious?.Invoke();
+                else
+                    this.OnTabNext?.Invoke();
+            }
+        }
+
+        public void Shift(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                this.IsShift = true;
+            else if (context.canceled)
+                this.IsShift = false;
+        }
+
+        #endregion
+
+        #region Maps
+
+        private InputActionMap PlayerMap;
+        private InputActionMap UIMap;
+
+        public static void ResumePlay()
+        {
+            Instance.UIMap.Disable();
+            Instance.PlayerMap.Enable();
+        }
+
+        public static void StartMenu()
+        {
+            Instance.PlayerMap.Disable();
+            Instance.UIMap.Enable();
+        }
+
         #endregion
 
         #region Operations
@@ -79,22 +130,12 @@ namespace ControllerModule.Controllers
                 return input;
 
             // Subscribe all events
-            if (actionable is Controller controller)
-                input.OnLook += controller.OnLook;
-
-            if (actionable is IMovable movable)
-                input.OnMove += movable.OnMove;
-
-            if (actionable is IFirable firable)
+            input = actionable switch
             {
-                input.OnFireStart += firable.OnFireStart;
-                input.OnFireEnd += firable.OnFireEnd;
-            }
-
-            if (actionable is IJumpable jumpable)
-            {
-                input.OnJump += jumpable.OnJump;
-            }
+                IPlayerActionable player => player + input,
+                IUIActionable ui => ui + input,
+                _ => input
+            };
 
             return input;
         }
@@ -105,24 +146,26 @@ namespace ControllerModule.Controllers
                 return input;
 
             // Unsubscribe all events
-            if (actionable is Controller controller)
-                input.OnLook -= controller.OnLook;
-
-            if (actionable is IMovable movable)
-                input.OnMove -= movable.OnMove;
-
-            if (actionable is IFirable firable)
+            input = actionable switch
             {
-                input.OnFireStart -= firable.OnFireStart;
-                input.OnFireEnd -= firable.OnFireEnd;
-            }
-
-            if (actionable is IJumpable jumpable)
-            {
-                input.OnJump -= jumpable.OnJump;
-            }
+                IPlayerActionable player => player - input,
+                IUIActionable ui => ui - input,
+                _ => input
+            };
 
             return input;
+        }
+
+        #endregion
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override void OnAwake()
+        {
+            PlayerInput input = this.GetComponent<PlayerInput>();
+            this.PlayerMap = input.actions.FindActionMap("Player");
+            this.UIMap = input.actions.FindActionMap("UI");
         }
 
         #endregion

@@ -58,7 +58,7 @@ namespace UIModule.Components
             }
 
             Button button = this.GetComponent<Button>();
-            button.onClick.AddListener(() => navBar.Select(this));
+            button.onClick.AddListener(() => navBar.SelectTab(this));
         }
 
         #endregion

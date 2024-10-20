@@ -171,46 +171,6 @@ MonoBehaviour:
     m_ActionId: 61495e5d-0c1c-4ee6-a235-2d1d2011919f
     m_ActionName: Player/Fire[/Mouse/leftButton,/Keyboard/space,/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: df1e9c38-6056-4b0c-bfac-7bef61a9331a
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8227aa85-aeec-4edc-8d9b-a110b77068e7
-    m_ActionName: UI/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 544b06dd-83f9-493e-84b5-59bab8e96093
-    m_ActionName: UI/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 13fd0058-c90b-440a-9cc1-99d644c8732e
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 52d34456-f01d-4b88-8c70-f79fa1e8c962
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 58266713-9ff7-470e-a4c5-4882dfda7033
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e4391daa-f178-442c-8611-f741c906efce
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b5848609-c2da-4d05-be3f-2140c31cb5f5
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8aa75db1-465d-496e-a949-2a56a932b0c6
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c5323f9a-b8a0-47d1-bf2d-ef73948b6050
-    m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3210125780624037466}
         m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
@@ -246,6 +206,38 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3210125780624037466}
         m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Tab
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8831f59d-715f-4c60-b0cc-7e263f94eab8
+    m_ActionName: UI/Tab[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Shift
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a72d8953-cbf7-43f8-8f93-e36aaccb520e
+    m_ActionName: UI/Shift[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
         m_MethodName: Inventory
         m_Mode: 0
         m_Arguments:
@@ -256,8 +248,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 5c6a8f27-7131-45a5-ab45-f02b4ffddda1
-    m_ActionName: Player/Inventory[/Keyboard/i]
+    m_ActionId: 1f0d65e1-cd04-4c1f-85e9-913dfc33014a
+    m_ActionName: Player/Inventory[/Keyboard/i,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Inventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 85fc9809-6ef1-4d01-a42d-f6722836e212
+    m_ActionName: UI/Inventory[/Keyboard/i,/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1091,7 +1099,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8488282162877148584}
   m_HandleRect: {fileID: 4582932343254741439}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

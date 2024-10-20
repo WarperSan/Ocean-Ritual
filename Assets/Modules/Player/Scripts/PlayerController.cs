@@ -1,4 +1,4 @@
-using ControllerModule.Controllers.Interfaces;
+using ControllerModule.Interfaces.Player;
 using InteractModule;
 using UnityEngine;
 using UnityEngine.UI;
