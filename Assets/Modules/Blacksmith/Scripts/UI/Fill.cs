@@ -17,7 +17,7 @@ public class Fill : MonoBehaviour
     [Range(0, 1)] public float fillAmountMilieu = 0f;        // Remplissage pour la partie centrale
 
     [SerializeField] ForgeButton button;
-
+    [SerializeField] public bool CanFuse = false;
     void Update()
     {
         if (!button.isButtonHeld)
@@ -77,6 +77,7 @@ public class Fill : MonoBehaviour
 
     private void updateFillCase()
     {
+        CanFuse = fillAmountCote >= 1f && fillAmountMilieu >= 1f;
         // Remplissage des côtés gauche et droit
         float armGrowthFactor = fillAmountCote * 10f * growthPer10Percent;
 
