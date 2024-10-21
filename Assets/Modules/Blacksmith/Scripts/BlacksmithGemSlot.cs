@@ -63,13 +63,6 @@ namespace BlacksmithModule
             TestBlackSmith.Instance.SetData(null);
         }
 
-        public void SetBackgroundAlpha(float alpha)
-        {
-            Color bgColor = this.background.color;
-            bgColor.a = Mathf.Clamp01(alpha);
-            this.background.color = bgColor;
-        }
-
         #endregion
 
         #region IDraggable
@@ -92,7 +85,7 @@ namespace BlacksmithModule
             this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
 
             this.transform.SetParent(this.canvasParent);
-            this.SetBackgroundAlpha(0f);
+            this.background.SetAlpha(0f);
         }
 
         /// <inheritdoc/>
@@ -115,7 +108,7 @@ namespace BlacksmithModule
                 Destroy(this.fillingChild);
 
             this.canvasGroup.blocksRaycasts = true;
-            this.SetBackgroundAlpha(1f);
+            this.background.SetAlpha(1f);
         }
 
         #endregion

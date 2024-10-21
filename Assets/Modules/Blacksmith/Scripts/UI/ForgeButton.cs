@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,8 +6,8 @@ public class ForgeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] Fill fillScript;
     [SerializeField] float amount;
     [SerializeField] float timeBetweenFill = 1f;  // Temps entre chaque ajout de remplissage
-    private float deltaTime = 0f;                 // Le temps écoulé depuis le dernier remplissage
-    public bool isButtonHeld = false;            // Indique si le bouton est maintenu enfoncé
+    private float deltaTime = 0f;                 // Le temps ï¿½coulï¿½ depuis le dernier remplissage
+    public bool isButtonHeld = false;            // Indique si le bouton est maintenu enfoncï¿½
 
     void Update()
     {
@@ -19,31 +15,36 @@ public class ForgeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             deltaTime += Time.deltaTime;
 
-            // Vérifie si le temps écoulé dépasse le temps requis pour ajouter du remplissage
+            // Vï¿½rifie si le temps ï¿½coulï¿½ dï¿½passe le temps requis pour ajouter du remplissage
             if (deltaTime >= timeBetweenFill)
             {
-                AddFill();   // Appelle la méthode pour ajouter du remplissage
-                deltaTime = 0f;  // Réinitialise le compteur de temps
+                AddFill();   // Appelle la mï¿½thode pour ajouter du remplissage
+                deltaTime = 0f;  // Rï¿½initialise le compteur de temps
             }
         }
     }
 
-    // Méthode appelée lorsque le bouton est maintenu enfoncé
-    public void OnPointerDown(PointerEventData eventData)
+    // Mï¿½thode appelï¿½e lorsque le bouton est maintenu enfoncï¿½
+    public void OnPointerDown(PointerEventData eventData) => this.Press();
+
+    // Mï¿½thode appelï¿½e lorsque le bouton est relï¿½chï¿½
+    public void OnPointerUp(PointerEventData eventData) => this.Release();
+    private void OnDisable() => this.Release();
+
+    // Ajoute du remplissage ï¿½ l'objet liï¿½
+    public void AddFill()
+    {
+        fillScript.AddingFill(amount);
+    }
+
+    private void Press()
     {
         isButtonHeld = true;
     }
 
-    // Méthode appelée lorsque le bouton est relâché
-    public void OnPointerUp(PointerEventData eventData)
+    private void Release()
     {
         isButtonHeld = false;
-        deltaTime = 0f;  // Réinitialise le temps quand le bouton est relâché
-    }
-
-    // Ajoute du remplissage à l'objet lié
-    public void AddFill()
-    {
-        fillScript.AddingFill(amount);
+        deltaTime = 0f;  // Rï¿½initialise le temps quand le bouton est relï¿½chï¿½
     }
 }

@@ -1,19 +1,17 @@
 using UnityEngine;
 
-using UnityEngine;
-
 public class Fill : MonoBehaviour
 {
     [SerializeField] public RectTransform leftArmFill;       // Remplissage du bras gauche
     [SerializeField] public RectTransform rightArmFill;      // Remplissage du bras droit
     [SerializeField] public RectTransform centerFill;        // Remplissage central
 
-    [SerializeField] public float removingAmout = 10f;       // Quantité à retirer
+    [SerializeField] public float removingAmout = 10f;       // Quantitï¿½ ï¿½ retirer
 
     [SerializeField] public float growthPer10Percent = 60f;  // Croissance des bras gauche et droit par tranche de 10%
     [SerializeField] public float centerGrowthPer10Percent = 40f; // Croissance du centre par tranche de 10%
 
-    [Range(0, 1)] public float fillAmountCote = 0f;          // Remplissage pour les côtés gauche et droit
+    [Range(0, 1)] public float fillAmountCote = 0f;          // Remplissage pour les cï¿½tï¿½s gauche et droit
     [Range(0, 1)] public float fillAmountMilieu = 0f;        // Remplissage pour la partie centrale
 
     [SerializeField] ForgeButton button;
@@ -30,55 +28,61 @@ public class Fill : MonoBehaviour
 
     public void AddingFill(float amount)
     {
-        // Si les côtés ne sont pas à 100%, on ajoute d'abord à fillAmountCote
+        // Si les cï¿½tï¿½s ne sont pas ï¿½ 100%, on ajoute d'abord ï¿½ fillAmountCote
         if (fillAmountCote < 1f)
         {
             float spaceInCote = 1f - fillAmountCote;
             if (amount <= spaceInCote)
             {
-                // Si la quantité à ajouter rentre dans le côté
+                // Si la quantitï¿½ ï¿½ ajouter rentre dans le cï¿½tï¿½
                 fillAmountCote += amount;
             }
             else
             {
-                // Si on dépasse, on ajoute ce qu'il reste à fillAmountMilieu
-                fillAmountCote = 1f; // Les côtés sont remplis à 100%
+                // Si on dï¿½passe, on ajoute ce qu'il reste ï¿½ fillAmountMilieu
+                fillAmountCote = 1f; // Les cï¿½tï¿½s sont remplis ï¿½ 100%
                 float remainingAmount = amount - spaceInCote;
-                fillAmountMilieu = Mathf.Min(fillAmountMilieu + remainingAmount, 1f); // Limite à 100%
+                fillAmountMilieu = Mathf.Min(fillAmountMilieu + remainingAmount, 1f); // Limite ï¿½ 100%
             }
         }
         else
         {
-            // Si les côtés sont déjà remplis, tout va au centre
-            fillAmountMilieu = Mathf.Min(fillAmountMilieu + amount, 1f); // Limite à 100%
+            // Si les cï¿½tï¿½s sont dï¿½jï¿½ remplis, tout va au centre
+            fillAmountMilieu = Mathf.Min(fillAmountMilieu + amount, 1f); // Limite ï¿½ 100%
         }
     }
 
     public void RemovingFill()
     {
-        // Quantité à retirer en fonction du temps écoulé entre les frames
+        // Quantitï¿½ ï¿½ retirer en fonction du temps ï¿½coulï¿½ entre les frames
         float amountToRemove = removingAmout * Time.deltaTime;
 
-        // On commence par retirer du milieu si nécessaire
+        // On commence par retirer du milieu si nï¿½cessaire
         if (fillAmountCote < 1f || fillAmountMilieu < 1f)
         {
             if (fillAmountMilieu > 0f)
             {
-                fillAmountMilieu = Mathf.Max(fillAmountMilieu - amountToRemove, 0f); // Limite à 0%
+                fillAmountMilieu = Mathf.Max(fillAmountMilieu - amountToRemove, 0f); // Limite ï¿½ 0%
             }
             else if (fillAmountCote > 0f)
             {
-                // Ensuite, on retire des côtés si le milieu est vide
-                fillAmountCote = Mathf.Max(fillAmountCote - amountToRemove, 0f); // Limite à 0%
+                // Ensuite, on retire des cï¿½tï¿½s si le milieu est vide
+                fillAmountCote = Mathf.Max(fillAmountCote - amountToRemove, 0f); // Limite ï¿½ 0%
             }
         }
     }
 
+    public void EmptyFill()
+    {
+        this.fillAmountCote = 0;
+        this.fillAmountMilieu = 0;
+        this.updateFillCase();
+    }
 
     private void updateFillCase()
     {
         CanFuse = fillAmountCote >= 1f && fillAmountMilieu >= 1f;
-        // Remplissage des côtés gauche et droit
+        // Remplissage des cï¿½tï¿½s gauche et droit
         float armGrowthFactor = fillAmountCote * 10f * growthPer10Percent;
 
         // Ajuster la taille des bras gauche et droit

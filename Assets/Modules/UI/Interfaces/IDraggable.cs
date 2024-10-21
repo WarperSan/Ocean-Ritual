@@ -89,7 +89,7 @@ namespace UIModule.Interfaces
             }
 
             firstReceivable?.OnDragReceive(this);
-            
+
             this.OnDragEnd(firstReceivable, firstTarget);
         }
 

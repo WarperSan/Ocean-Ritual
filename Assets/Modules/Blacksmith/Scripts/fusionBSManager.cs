@@ -1,58 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class fusionBSManager : MonoBehaviour
 {
     [SerializeField] Fill fill;
     [SerializeField] GameObject button;
-    [SerializeField] FusionCase left;
-    [SerializeField] FusionCase right;
-    [SerializeField] FusionCase mid;
+
+    private FusionCase[] inputs;
+    private FusionCase output;
+
     [SerializeField] Sprite sprite;
-    bool fuse = false;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        
+        FusionCase[] cases = this.GetComponentsInChildren<FusionCase>();
+
+        this.output = cases.FirstOrDefault(c => c.role == CaseRole.OUTPUT);
+        this.inputs = cases.Where(c => c.role == CaseRole.INPUT).ToArray();
+
+        if (this.output == null)
+        {
+            Debug.LogError($"'{nameof(fusionBSManager)}' expected an output.");
+            this.enabled = false;
+            return;
+        }
+
+        if (this.inputs.Length < 2)
+        {
+            Debug.LogError($"'{nameof(fusionBSManager)}' expected at least two inputs.");
+            this.enabled = false;
+            return;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(left.gems !=null && right.gems != null)
+        bool buttonActive = true;
+
+        foreach (FusionCase item in this.inputs)
         {
-            if (left.gems.LVL != 0 && right.gems.LVL != 0)
+            if (item.gem == null)
             {
-                button.SetActive(true);
+                buttonActive = false;
+                break;
             }
-            else
+
+            if (item.gem.LVL <= 0)
             {
-                button.SetActive(false);
+                buttonActive = false;
+                break;
             }
         }
-        
-        else
-        {
-            button.SetActive(false);
-        }
-       
+
+        button.SetActive(buttonActive);
+
         if (fill.CanFuse)
         {
-            if(!fuse)
-            {
-                int lvl = GemHelper.fusionGemTab(left.gems.LVL, right.gems.LVL);
-                GemData TheGemme = GeneratorGem.GenerateRandomGemme(lvl, left.gems);
-                TheGemme.sprite = sprite;
-                mid.ReceiveGemFromFusion(TheGemme);
-                fuse= true;
-                left.Resete();
-                right.Resete();
-            }
-            
-            
+            FusionCase left = this.inputs[0];
+            FusionCase right = this.inputs[1];
+
+            int lvl = GemHelper.fusionGemTab(left.gem.LVL, right.gem.LVL);
+            GemData TheGemme = GeneratorGem.GenerateRandomGemme(lvl, left.gem);
+            TheGemme.sprite = sprite;
+            this.output.ReceiveGem(TheGemme);
+            left.ClearGem();
+            right.ClearGem();
+
+            // Clear fill
+            fill.EmptyFill();
         }
-       
-        
     }
 }

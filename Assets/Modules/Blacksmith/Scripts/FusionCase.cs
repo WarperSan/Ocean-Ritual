@@ -1,93 +1,90 @@
-using System.Collections;
-using System.Collections.Generic;
 using UIModule.Interfaces;
 using UIModule;
 using UnityEngine;
-using BlacksmithModule;
-using GemModule.UI;
 using UIModule.Menus;
 using UnityEngine.UI;
+using ExtensionsModule;
 
+public enum CaseRole
+{
+    INPUT,
+    OUTPUT
+}
 
 public class FusionCase : UIComponent, IDragReceivable<InventorySlot>, IDraggable
 {
     private int slotIndex = -1;
-    public GemData gems = null;
-    [SerializeField] int CasePostion = 0;// 1 left ,2= right ,3 = mid
+    public GemData gem = null;
+    public CaseRole role = CaseRole.INPUT;
+
     #region Fields
 
     [Header("Fields")]
-
-   
+    [SerializeField]
+    private BlacksmithMenu menu;
 
     [SerializeField]
     private Image Icon;
 
     #endregion
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        
+        this.enabled = this.role == CaseRole.INPUT;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void ReceiveGem(GemData gem)
     {
-        this.gems = gem;
+        this.gem = gem;
         this.Icon.sprite = gem.sprite;
-        
-        this.enabled = true;  
-    }
-    public void ReceiveGemFromFusion(GemData gem)
-    {
-        this.gems = gem;
-        Debug.Log(gem.sprite);
-        Debug.Log(this.Icon.sprite);
-        this.Icon.sprite = gem.sprite;
+        this.Icon.SetAlpha(1f);
 
         this.enabled = true;
-
-   
     }
-    public void Resete()
+
+    public void ClearGem()
     {
         slotIndex = -1;
-          gems = null;
-        this.Icon.sprite = null;
-
+        gem = null;
+        this.Icon.SetAlpha(0f);
+        this.enabled = false;
     }
 
+    #region IDragReceivable
+
+    /// <inheritdoc/>
     public void OnDragReceive(InventorySlot slot)
     {
-    
         if (slot.GetData() is not GemData gem)
-        {
-            Debug.Log("je recois pas gemdata1");
             return;
-        }
-          
-        if(CasePostion!=1 && CasePostion!= 2)
-        {
-            Debug.Log("je recois pas gemdata2");
-            return;
-        }
-        Debug.Log("je recois");
+
         Inventory.Instance.DropItem(slot.slotIndex);
 
         if (this.slotIndex != -1)
-            Inventory.Instance.AddItem(this.gems, slot.slotIndex);
+            Inventory.Instance.AddItem(this.gem, slot.slotIndex);
 
         this.ReceiveGem(gem);
         this.slotIndex = slot.slotIndex;
-       
-        TestBlackSmith.Instance.UpdateUI();
+
+        this.menu.inventoryUI.UpdateSelf();
         slot.DragEnd();
         Destroy(slot.gameObject);
     }
+
+    /// <inheritdoc/>
+    public void OnDragLeave(InventorySlot slot) { }
+
+    /// <inheritdoc/>
+    public bool CanReceiveDraggable(InventorySlot slot)
+    {
+        if (this.role != CaseRole.INPUT)
+            return false;
+
+        return slot.GetData() is GemData;
+    }
+
+    #endregion
+
     #region IDraggable
 
     private Transform originalParent;
@@ -97,17 +94,37 @@ public class FusionCase : UIComponent, IDragReceivable<InventorySlot>, IDraggabl
     /// <inheritdoc/>
     public void OnDragStart()
     {
- 
+        this.originalParent = this.transform.parent;
+
+        this.fillingChild = Instantiate(this.gameObject, this.transform.parent);
+
+        if (this.fillingChild.TryGetComponent(out CanvasGroup childCanvasGroup))
+            childCanvasGroup.alpha = 0.3f;
+
+        this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+
+        this.transform.SetParent(this.canvasParent);
     }
 
     /// <inheritdoc/>
     public void OnDragEnd(IDragReceivable receivable, RectTransform target)
     {
-     
+        if (receivable == null && target != null)
+        {
+            if (target.TryGetComponent(out InventorySlot slot))
+            {
+                Inventory.Instance.AddItem(this.gem, slot.slotIndex);
+                this.menu.inventoryUI.UpdateSelf();
+                this.ClearGem();
+            }
+
+            this.transform.SetParent(this.originalParent);
+            this.transform.localPosition = this.fillingChild.transform.localPosition;
+        }
+
+        if (this.fillingChild != null)
+            Destroy(this.fillingChild);
     }
 
     #endregion
-  
-    public void OnDragLeave(InventorySlot slot) { }
-    bool IDragReceivable<InventorySlot>.CanReceiveDraggable(InventorySlot slot) => slot.GetData() is GemData;
 }
