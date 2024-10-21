@@ -4,6 +4,8 @@ using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
+using static Unity.VisualScripting.Member;
 
 namespace EntityModule.Enemies
 {
@@ -50,17 +52,20 @@ namespace EntityModule.Enemies
         public Collider hitboxCollider;
         public float attackDuration;
         private float durationTimer = 0;
+        public sharkHitboxProjectile projectile;
+
+        public Animator animator;
 
         private Node AttackSequence()
         {
             Sequence attackSequence = new();
             
             Sequence attack = new();
-            
+            attack += this.AttackCooldown();
             attack += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
             //attackSequence += this.AttackCooldown();
 
-
+            
             attack += this.DoAttack();
             //faire l'attaque + animation
             attackSequence += attack;
@@ -69,7 +74,7 @@ namespace EntityModule.Enemies
             Sequence attackReset = new();
             //attackReset += this.SetAttackCooldown();
             attackReset += this.ResetHitbox();
-            attackReset += this.AttackCooldown();
+            
             attackReset += this.SetAttackCooldown();
             attackSequence += attackReset.Alias("Attack Reset");
             //reset animation
@@ -82,14 +87,18 @@ namespace EntityModule.Enemies
             if (!hitboxCollider.enabled)
             {
                 hitboxCollider.enabled = true;
+                projectile.ResetSelf();
+                this.animator.SetBool("isAttacking",true);
             }
             durationTimer += Time.deltaTime;
-            
-            if (durationTimer < attackDuration) 
+            Debug.Log(projectile.hitPlayer);
+            if (!projectile.hitPlayer) 
             {
                 return NodeState.RUNNING;
             }
-            
+
+
+            this.animator.SetBool("isAttacking", false);
             return NodeState.SUCCESS;
         }).Alias("Do Attack");
 
@@ -103,12 +112,12 @@ namespace EntityModule.Enemies
         private Node AttackCooldown() => new CallbackNode(() =>
         {
             this.attackCooldown -= Time.deltaTime;
-
+            
             return this.attackCooldown > 0 ? NodeState.RUNNING : NodeState.SUCCESS;
         }).Alias("Attack Cooldown");
         private Node SetAttackCooldown() => new CallbackNode(() =>
         {
-            this.attackCooldown = 1.5f;
+            this.attackCooldown = 5f;
             durationTimer = 0;
             
             return NodeState.SUCCESS;

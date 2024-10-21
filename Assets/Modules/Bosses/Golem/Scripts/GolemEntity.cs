@@ -38,6 +38,8 @@ namespace BossesModule.Golem
             this.healthBar.value = this.Health;
         }
 
+
+
         #endregion
 
         #region Quest
@@ -47,6 +49,7 @@ namespace BossesModule.Golem
         {
             this.healthBar.value = 0;
             QuestManager.SomeoneDeath(this.name);
+            this.gameObject.SetActive(false);
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace EntityModule
             direction.y = 300;
 
             //knockback?
-            this.GetComponent<Rigidbody>().AddForce(direction);
+            //this.GetComponent<Rigidbody>().AddForce(direction);
         }
 
         /// <inheritdoc/>

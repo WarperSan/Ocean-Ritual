@@ -21,6 +21,13 @@ namespace EntityModule.Enemies
             
         }
 
+        protected override void OnDeath(float overDamage)
+        {
+            //item drops
+            this.gameObject.SetActive(false);
+        }
+
+
         //private void OnTriggerEnter(Collider other)
         //{
         //    UnityEngine.Debug.Log("touched");
