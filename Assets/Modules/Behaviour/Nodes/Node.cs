@@ -2,6 +2,7 @@ using BehaviourModule.Nodes.Generic;
 using BehaviourModule.Nodes.Controls;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BehaviourModule.Nodes
 {
@@ -99,7 +100,7 @@ namespace BehaviourModule.Nodes
 
         #region State
 
-        public NodeState state = NodeState.NONE;
+        public NodeState State { get; private set; } = NodeState.NONE;
 
         /// <summary>
         /// Updates the state of this node
@@ -107,8 +108,8 @@ namespace BehaviourModule.Nodes
         /// <returns>New state of the node</returns>
         public NodeState Evaluate()
         {
-            this.state = this.OnEvaluate();
-            return this.state;
+            this.State = this.OnEvaluate();
+            return this.State;
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace BehaviourModule.Nodes
         /// </summary>
         public void Reset()
         {
-            this.state = NodeState.NONE;
+            this.State = NodeState.NONE;
             foreach (Node child in this)
                 child.Reset();
         }
@@ -169,7 +170,7 @@ namespace BehaviourModule.Nodes
 
         #region Children
 
-        private readonly List<Node> children = new();
+        protected readonly List<Node> children = new();
 
         /// <summary>
         /// Attaches the given nodes to this node
@@ -183,7 +184,7 @@ namespace BehaviourModule.Nodes
                 this.children.Add(item);
             }
         }
-
+            
         #endregion
 
         #region IEnumerable
