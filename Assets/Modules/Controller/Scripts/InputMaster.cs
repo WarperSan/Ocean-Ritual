@@ -17,6 +17,7 @@ namespace ControllerModule.Controllers
         public delegate void MoveEvent(Vector2 direction);
         public delegate void JumpEvent();
         public delegate void FireEvent();
+        public delegate void PauseEvent();
 
         #endregion
 
@@ -27,6 +28,7 @@ namespace ControllerModule.Controllers
         public event FireEvent OnFireStart;
         public event FireEvent OnFireEnd;
         public event JumpEvent OnJump;
+        public event PauseEvent OnPause;
 
         #endregion
 
@@ -68,6 +70,12 @@ namespace ControllerModule.Controllers
         {
             if (context.started)
                 UIManager.Toggle<InventoryMenu>();
+        }
+
+        public void Pause(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                UIManager.Toggle<PauseMenu>();  
         }
         #endregion
 
