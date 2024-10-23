@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform parent;
     [SerializeField] TextMeshProUGUI playerGold;
 
-    private void OnEnable()
+    public void UpdateSelf()
     {
         Inventory.Instance.UpdateItemListeUI(this);
     }
@@ -35,14 +34,14 @@ public class InventoryUI : MonoBehaviour
                 maxStack = (uint)item.quantityMax;
             }
 
-            this.CreateSlot(sprite, quantity, maxStack);
+            this.CreateSlot(i, sprite, quantity, maxStack);
         }
     }
 
-    private void CreateSlot(Sprite sprite, uint quantity, uint maxStack)
+    private void CreateSlot(int slotIndex, Sprite sprite, uint quantity, uint maxStack)
     {
         GameObject newSlot = Instantiate(slot, parent);
-        newSlot.GetComponent<InventorySlot>().SetSlot(sprite, quantity, maxStack > 1);
+        newSlot.GetComponent<InventorySlot>().SetSlot(slotIndex, sprite, quantity, maxStack > 1);
     }
 
     private Sprite GetSpriteFromItem(ItemData item)
@@ -53,9 +52,10 @@ public class InventoryUI : MonoBehaviour
         return item.sprite;
     }
 
-
     public void SetPlayerGold(int gold = 9999)
     {
+        if (playerGold == null)
+            return;
         playerGold.text = "$" + gold.ToString();
     }
 }

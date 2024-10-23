@@ -8,13 +8,13 @@ public class Gem
 {
 
     #region Data
-    // X coordinate of the gem's position
+    // X coordinate of the gems's position
     [SerializeField] public int PositionX = 0;
 
-    // Z coordinate of the gem's position
+    // Z coordinate of the gems's position
     [SerializeField] public int PositionZ = 0;
 
-    // Shape of the gem (2D boolean array)
+    // Shape of the gems (2D boolean array)
     [SerializeField]
     public FormBool form = new(new bool[,]
    {
@@ -23,10 +23,10 @@ public class Gem
         { false, false, true }
    }, 3, 3);
 
-    // Name of the gem's color
+    // Name of the gems's color
     [SerializeField] public string GemColorsName;
 
-    // Level of the gem
+    // Level of the gems
     [SerializeField] public int LVL = 0;
 
     // List of weapon types with quantities

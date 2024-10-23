@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
@@ -34,13 +32,7 @@ public class InventoryTest : MonoBehaviour
             AddFish = false; // Remplace ! par false pour ne pas inverser à chaque update
 
             // Crée une nouvelle instance de FishData
-            FishData NewFish = new FishData()
-            {
-                name = Fish.name,
-                quantity = Fish.quantity,
-                quantityMax = Fish.quantityMax,
-                sprite = Fish.sprite,
-            };
+            var NewFish = new FishData(Fish.fish, Fish.quantity);
 
             Inventory.Instance.AddItem(NewFish); // Utilise la nouvelle instance
         }
@@ -61,21 +53,25 @@ public class InventoryTest : MonoBehaviour
 
             Inventory.Instance.AddItem(NewGemme); // Utilise la nouvelle instance
         }
+
         if (clearInventaire)
         {
             clearInventaire = false;
             InventoryPlayer.CleanSlot();
         }
+
         if (Sort)
         {
             Sort = false;
             InventoryPlayer.SortItem(TypeSort);
         }
+
         if (SwapPlace)
         {
             SwapPlace = false;
             InventoryPlayer.SwapPlace(index1, index2);
         }
+
         if (drop)
         {
             drop = false;

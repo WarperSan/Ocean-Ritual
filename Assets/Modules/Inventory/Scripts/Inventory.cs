@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using UnityEngine;
 using static EnumGeneral;
 using System.Linq;
+using FishingModule;
 
 [System.Serializable]
 public class Inventory : MonoBehaviour
@@ -32,7 +31,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
-    [SerializeField] InventoryUI inventoryUI;
     //bool InventaireOuvert = false;
 
     // Start is called before the first frame update
@@ -46,7 +44,7 @@ public class Inventory : MonoBehaviour
 
     void AddTestGemme()
     {
-        string[] gemColors = { "gem Rouge", "gem Bleue", "gem Verte" };
+        string[] gemColors = { "gems Rouge", "gems Bleue", "gems Verte" };
 
         for (int i = 0; i < 6; i++)
         {
@@ -56,45 +54,6 @@ public class Inventory : MonoBehaviour
                 LVL = i + 1 // Niveau croissant
             };
             ItemList.Add(gem);
-        }
-    }
-
-    void AddFishTest()
-    {
-        // Poisson A
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishA = new FishData
-            {
-                name = "Poisson A",
-                quantityMax = 5,
-                quantity = 5 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishA);
-        }
-
-        // Poisson B
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishB = new FishData
-            {
-                name = "Poisson B",
-                quantityMax = 8,
-                quantity = 8 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishB);
-        }
-
-        // Poisson C
-        for (int i = 0; i < 3; i++)
-        {
-            FishData FishC = new FishData
-            {
-                name = "Poisson C",
-                quantityMax = 10,
-                quantity = 10 // Quantité égale à la quantité maximale
-            };
-            ItemList.Add(FishC);
         }
     }
 
@@ -146,7 +105,7 @@ public class Inventory : MonoBehaviour
                 if (item is FishData poisson && ItemList[i] is FishData poissonInList)
                 {
                     // Vérifie que le name est identique et que la quantité max n'est pas atteinte
-                    if (poissonInList.name == poisson.name && poissonInList.quantity < poissonInList.quantityMax)
+                    if (poissonInList.fish == poisson.fish && poissonInList.quantity < poissonInList.quantityMax)
                     {
                         ListIndexItemSame.Add(i);
                     }
@@ -243,7 +202,19 @@ public class Inventory : MonoBehaviour
     {
         return ItemList[index];
     }
-
+    public void AddItem(ItemData item,int slot)
+    {
+        if (ItemList[slot] == null)
+        {
+            ItemList[slot] = item;
+         
+        }
+        else
+        {
+            AddItem(item);
+        }
+     
+    }
     public void AddItem(ItemData item)
     {
         // Récupère les emplacements d'objets similaires et disponibles
@@ -335,10 +306,6 @@ public class Inventory : MonoBehaviour
         //}
 
         UpdateListeComplementary();
-        Debug.Log(ItemList.Count);
-
-        ////
-        UpdateItemListeUI(inventoryUI);
     }
 
     public List<ItemData> GetInventaire()
@@ -347,11 +314,7 @@ public class Inventory : MonoBehaviour
         return new List<ItemData>(ItemList); // Crée une nouvelle liste en copiant l'ancienne
     }
 
-    public void UpdateItemListeUI(InventoryUI ui)
-    {
-        //  CleanSlot();
-        ui.UpdateUI(ItemList);
-    }
+    public void UpdateItemListeUI(InventoryUI ui) => ui.UpdateUI(ItemList);
 
     public void SortItem(TypeOfSort SortType)
     {
@@ -359,12 +322,12 @@ public class Inventory : MonoBehaviour
         {
             case TypeOfSort.Nom:
                 SortName();
-                Console.WriteLine("Tri par name de fish les gem apres");
+                Console.WriteLine("Tri par name de fish les gems apres");
                 break;
 
             case TypeOfSort.Type:
                 this.SortType();
-                Console.WriteLine("Tri par type fish ou gem");
+                Console.WriteLine("Tri par type fish ou gems");
                 break;
 
             case TypeOfSort.Quantite:
@@ -379,7 +342,7 @@ public class Inventory : MonoBehaviour
 
             case TypeOfSort.Niveau:
                 SortLVL();
-                Console.WriteLine(" trie par niveau de gem fish après");
+                Console.WriteLine(" trie par niveau de gems fish après");
                 break;
 
             default:
@@ -388,19 +351,18 @@ public class Inventory : MonoBehaviour
                 break;
         }
         UpdateListeComplementary();
-        UpdateItemListeUI(inventoryUI);
     }
 
     public void SortName()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
 
         // Trier les fish par name (supposant que FishData a un champ 'name')
-        fish = fish.OrderBy(p => p.name).ToList();
+        fish = fish.OrderBy(p => p.fish.DisplayName).ToList();
 
-        // Réorganiser l'inventaire avec fish d'abord, puis les gem
+        // Réorganiser l'inventaire avec fish d'abord, puis les gems
         ItemList = new List<ItemData>();
         ItemList.AddRange(fish);
         ItemList.AddRange(gem);
@@ -412,21 +374,21 @@ public class Inventory : MonoBehaviour
 
     public void SortType()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
 
-        // Réorganiser l'inventaire avec les fish d'abord, puis les gem
+        // Réorganiser l'inventaire avec les fish d'abord, puis les gems
         ItemList = new List<ItemData>();
         ItemList.AddRange(fish);
         ItemList.AddRange(gem);
 
-        Debug.Log("Liste triée par type (fish puis gem).");
+        Debug.Log("Liste triée par type (fish puis gems).");
     }
 
     public void SortQuantity()
     {
-        // Trier les objets par quantité (qu'ils soient des fish ou des gem)
+        // Trier les objets par quantité (qu'ils soient des fish ou des gems)
         ItemList = ItemList.OrderByDescending(item => item.quantity).ToList();
 
         Debug.Log("Liste triée par quantité.");
@@ -434,24 +396,24 @@ public class Inventory : MonoBehaviour
 
     public void SortLVL()
     {
-        // Séparer les fish et les gem
+        // Séparer les fish et les gems
         List<GemData> gem = ItemList.OfType<GemData>().ToList();
         List<FishData> fish = ItemList.OfType<FishData>().ToList();
 
-        // Trier uniquement les gem par niveau
+        // Trier uniquement les gems par niveau
         gem = gem.OrderByDescending(g => g.LVL).ToList();
 
-        // Réorganiser l'inventaire avec les gem d'abord, puis les fish
+        // Réorganiser l'inventaire avec les gems d'abord, puis les fish
         ItemList = new List<ItemData>();
         ItemList.AddRange(gem);
         ItemList.AddRange(fish);
 
-        Debug.Log("Liste triée par niveau de gem.");
+        Debug.Log("Liste triée par niveau de gems.");
     }
 
     public void AutoMerge()
     {
-        // On garde les gem intactes
+        // On garde les gems intactes
         List<ItemData> gem = ItemList.Where(item => item is GemData).ToList();
 
         // On filtre les fish avec quantité > 0
@@ -460,19 +422,19 @@ public class Inventory : MonoBehaviour
                                              .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les fish par name
-        Dictionary<string, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<string, (int, int)>();
+        Dictionary<FishSO, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<FishSO, (int, int)>();
 
         foreach (var poisson in fish)
         {
-            if (!fusionPoissons.ContainsKey(poisson.name))
+            if (!fusionPoissons.ContainsKey(poisson.fish))
             {
                 // On stocke la quantité totale et le quantityMax
-                fusionPoissons[poisson.name] = (poisson.quantity, poisson.quantityMax);
+                fusionPoissons[poisson.fish] = (poisson.quantity, poisson.quantityMax);
             }
             else
             {
                 // On ajoute la quantité au total déjà enregistré
-                fusionPoissons[poisson.name] = (fusionPoissons[poisson.name].quantiteTotale + poisson.quantity, poisson.quantityMax);
+                fusionPoissons[poisson.fish] = (fusionPoissons[poisson.fish].quantiteTotale + poisson.quantity, poisson.quantityMax);
             }
         }
 
@@ -481,26 +443,23 @@ public class Inventory : MonoBehaviour
 
         foreach (var entry in fusionPoissons)
         {
-            string nomPoisson = entry.Key;
             int quantiteTotale = entry.Value.quantiteTotale;
             int quantiterMax = entry.Value.quantiterMax;
 
             // On répartit les fish en respectant la quantité maximale propre à chaque fish
             while (quantiteTotale > 0)
             {
-                FishData nouveauPoisson = new FishData
-                {
-                    name = nomPoisson,
-                    quantity = Math.Min(quantiterMax, quantiteTotale), // Utilisation de la valeur quantityMax propre à ce fish
-                    quantityMax = quantiterMax
-                };
+                var nouveauPoisson = new FishData(
+                    entry.Key, 
+                    Math.Min(quantiterMax, quantiteTotale) // Utilisation de la valeur quantityMax propre à ce fish
+                );
                 poissonsFusionnes.Add(nouveauPoisson);
                 quantiteTotale -= nouveauPoisson.quantity;
             }
         }
 
         // Maintenant on replace tout dans ItemList
-        // En gardant d'abord les fish fusionnés, puis les gem
+        // En gardant d'abord les fish fusionnés, puis les gems
         ItemList = poissonsFusionnes.Cast<ItemData>()
                                     .Concat(gem)
                                     .ToList();

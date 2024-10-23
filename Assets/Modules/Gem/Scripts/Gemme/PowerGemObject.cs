@@ -25,9 +25,9 @@ public class PowerGemObject
         }
     
     }
-
+  
     #region Gemme Placement
- //   int AddSpace = 1;
+    //   int AddSpace = 1;
     // Places gems in the grid and sets their position
     public void PlaceGem(List<Gemcomponent> ListGem)
     {
@@ -51,13 +51,13 @@ public class PowerGemObject
 
     #region Gemme Management
 
-    // Receives a gem (implementation needed)
+    // Receives a gems (implementation needed)
     public void ReceiveGemme(Gem oneGemme)
     {
 
     }
 
-    // Deletes a gem (implementation needed)
+    // Deletes a gems (implementation needed)
     public void DeletedGemme()
     {
 

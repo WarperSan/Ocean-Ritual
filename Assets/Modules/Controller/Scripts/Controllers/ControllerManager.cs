@@ -25,7 +25,6 @@ namespace ControllerModule.Controllers
         /// Current controller being used
         /// </summary>
         private static Controller ActiveController => stack.Count > 0 ? stack.Peek() : null;
-        
 
         /// <summary>
         /// Switches to the given controller
@@ -36,7 +35,7 @@ namespace ControllerModule.Controllers
             // If exists, switch out current
             if (ActiveController != null)
                 ActiveController.SwitchOut();
-                
+
             // Cancel if given not found
             if (controller == null)
                 return;
@@ -44,7 +43,7 @@ namespace ControllerModule.Controllers
             // Switch in the given
             controller.SwitchIn();
             stack.Push(controller);
-            
+
             // Set the controller to the given
             CameraMovement.Instance.SetController(controller);
         }
@@ -57,11 +56,6 @@ namespace ControllerModule.Controllers
             // Skip if current not found
             if (ActiveController == null)
                 return;
-
-            // Remove current
-            //Controller current = stack.Pop();
-            //current.SwitchOut();
-            //controller.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 
             // Switch to given
             SwitchTo(controller);

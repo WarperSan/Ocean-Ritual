@@ -19,13 +19,13 @@ public class sharkHitboxProjectile : Projectile
     protected override void OnReset()
     {
         hitPlayer = false;
-        this.Attribute(new Attack() { Damage = 15, TargetType = ProjectileTarget.PLAYER, Type = AttackType.NORMAL });
+        this.Attribute(new Attack() { Damage = 15, TargetType = ProjectileTarget.PLAYER_CONTROLLED, Type = AttackType.NORMAL });
     }
     
 
     protected override void OnPostApply(Entity entity, Attack attack)
     {
-        Debug.Log(entity.Health);
+       // Debug.Log(entity.Health);
         hitPlayer = true;
 
         Vector3 direction = this.rbShark.transform.position - entity.transform.position;

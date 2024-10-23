@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FishingModule
+namespace FishingModule.UI
 {
     public class FishEntryUI : MonoBehaviour
     {

@@ -54,7 +54,6 @@ public static class GemHelper
         missingSpot = missingSpot - modifiedSpot;
         // Calcul du co�t total
         int totalCost = Mathf.CeilToInt((modifiedSpot * modifiedSpotCost) + (missingSpot * missingSpotCost ));
-
         return (totalCost, modifiedSpot, missingSpot, CasseOnlytrue);
     }
 
@@ -70,7 +69,7 @@ public static class GemHelper
     public static void ModifiedList(ref List<bool> ListBool, int Xposition, int YPosition, bool value, int width)
     {
         // Calculer l'index dans la liste
-        int index = YPosition * width + Xposition;
+        int index = Xposition * width + YPosition;//YPosition * width + Xposition;
 
         // V�rifier que l'index est valide
         if (index >= 0 && index < ListBool.Count)

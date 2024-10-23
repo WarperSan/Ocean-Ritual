@@ -151,7 +151,7 @@ using static EnumGeneral;
             }
         }
     /// <summary>
-    /// add the stat form the gem to the good list of stat
+    /// add the stat form the gems to the good list of stat
     /// </summary>
     /// <typeparam name="TEnum"></typeparam>
     /// <param name="theGemmeScript"></param>

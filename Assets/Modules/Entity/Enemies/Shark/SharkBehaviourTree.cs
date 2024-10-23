@@ -38,7 +38,7 @@ namespace EntityModule.Enemies
             );
 
             _root.SetData(AGENT, this.agent);
-            _root.SetData(CURRENT_TARGET, this.target);
+            _root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
 
             this.root = _root;
         }
@@ -63,7 +63,7 @@ namespace EntityModule.Enemies
             Sequence attack = new();
             attack += this.AttackCooldown();
             attack += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
-            //attackSequence += this.AttackCooldown();
+            
 
             
             attack += this.DoAttack();
@@ -84,6 +84,7 @@ namespace EntityModule.Enemies
 
         private Node DoAttack() => new CallbackNode(() =>
         {
+            
             if (!hitboxCollider.enabled)
             {
                 hitboxCollider.enabled = true;
@@ -91,7 +92,7 @@ namespace EntityModule.Enemies
                 this.animator.SetBool("isAttacking",true);
             }
             durationTimer += Time.deltaTime;
-            Debug.Log(projectile.hitPlayer);
+            //Debug.Log(projectile.hitPlayer);
             if (!projectile.hitPlayer) 
             {
                 return NodeState.RUNNING;
@@ -141,6 +142,7 @@ namespace EntityModule.Enemies
 
         private Node Move() => new CallbackNode(() =>
         {
+            root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = root.GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
             
@@ -179,6 +181,7 @@ namespace EntityModule.Enemies
 
         private NodeState RotateTowardsTarget(Node n)
         {
+            root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = n.GetData<Transform>(CURRENT_TARGET);
             Debug.Log("Rotate");
             // If target is invalid, return fail
