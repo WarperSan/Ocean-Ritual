@@ -11,6 +11,8 @@ namespace EntityModule
         ALL = -~0, // Every entity
 
         PLAYER = 1 << 0, // Only player
+        BOAT = 1 << 3, // Only Boat
+        PLAYER_CONTROLLED = PLAYER | BOAT,
 
         ENEMY = 1 << 1, // Only enemies
         BOSS = 1 << 2, // Only bosses
@@ -51,18 +53,27 @@ namespace EntityModule
         public static int BOSS_LAYER = -1;
         public static int ENEMY_LAYER = -1;
         public static int PLAYER_LAYER = -1;
+        public static int BOAT_LAYER = -1;
+
 
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
         {
+            
+            
             // If hit non-entity, skip
-            if (!other.TryGetComponent(out Entity entity))
+            if (!other.TryGetComponent(out Entity entity) && other.GetComponentInParent<Entity>() == null )
                 return;
+
+            if (other.GetComponentInParent<Entity>() != null)
+            {
+                entity = other.GetComponentInParent<Entity>();
+            }
 
             // If entity not targettable, skip
             if (!this.IsEntityTarget(entity))
                 return;
-
+            Debug.Log("hit");
             this.HitEntity(entity);
         }
 
@@ -84,6 +95,14 @@ namespace EntityModule
             // If hit a player, but not targeting player
             if (!this.attack.TargetType.HasFlag(ProjectileTarget.PLAYER) && layer == PLAYER_LAYER)
                 return false;
+
+            // If hit boat, but not targeting boat
+            if (!this.attack.TargetType.HasFlag(ProjectileTarget.BOAT) && layer == BOAT_LAYER)
+            {
+                Debug.Log("not boat");
+                return false;
+            }
+                
 
             // If hit an enemy, but not targeting enemies
             if (!this.attack.TargetType.HasFlag(ProjectileTarget.ENEMY) && layer == ENEMY_LAYER)
@@ -214,6 +233,9 @@ namespace EntityModule
 
             if (PLAYER_LAYER == -1)
                 PLAYER_LAYER = LayerMask.NameToLayer("Player");
+
+            if (BOAT_LAYER == -1)
+                BOAT_LAYER = LayerMask.NameToLayer("Boat");
 
             conditions = this.GetComponents<ProjectileCondition>();
         }

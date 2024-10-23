@@ -63,7 +63,7 @@ namespace EntityModule.Enemies
             Sequence attack = new();
             attack += this.AttackCooldown();
             attack += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
-            //attackSequence += this.AttackCooldown();
+            
 
             
             attack += this.DoAttack();
@@ -91,7 +91,7 @@ namespace EntityModule.Enemies
                 this.animator.SetBool("isAttacking",true);
             }
             durationTimer += Time.deltaTime;
-            Debug.Log(projectile.hitPlayer);
+            //Debug.Log(projectile.hitPlayer);
             if (!projectile.hitPlayer) 
             {
                 return NodeState.RUNNING;

@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 8405565583249869323}
   m_Layer: 29
   m_Name: CameraAnchor
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -319,10 +319,10 @@ MonoBehaviour:
   disableIfOut: 0
   _rb: {fileID: 8827376533077435850}
   aboardParent: {fileID: 3567286561129488995}
-  turningSpeed: 5
+  turningSpeed: 10
   movementSpeed: 4
   movementAcceleration: 0.05
-  movementDeceleration: 0.05
+  movementDeceleration: 0.02
   waveOffset: 0.2
 --- !u!54 &8827376533077435850
 Rigidbody:
@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 6016687297718501322}
   m_Layer: 29
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -523,8 +523,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 7.021335, y: 9.690944, z: 1.1652609}
-  m_Center: {x: 0.066154845, y: -0.16477777, z: 0.082630426}
+  m_Size: {x: 7.021335, y: 9.690944, z: 2.099215}
+  m_Center: {x: 0.06615473, y: -0.16477767, z: -0.38434696}
 --- !u!1 &3413020065980125521
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 3567286561129488995}
   m_Layer: 29
   m_Name: Aboard Parent
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 5806408622018204485}
   m_Layer: 29
   m_Name: Aboard Collider
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1100,9 +1100,9 @@ GameObject:
   - component: {fileID: 1501555675776278278}
   - component: {fileID: 8179424635827021516}
   - component: {fileID: 954070959546925365}
-  m_Layer: 6
+  m_Layer: 29
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1271,7 +1271,7 @@ GameObject:
   - component: {fileID: 6765925996723241336}
   m_Layer: 29
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1507,10 +1507,20 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 29
       objectReference: {fileID: 0}
+    - target: {fileID: 2543362492093361666, guid: 902cb739d4cd6ff9594faa345b0a3b4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 29
+      objectReference: {fileID: 0}
     - target: {fileID: 2848845106965808539, guid: 902cb739d4cd6ff9594faa345b0a3b4f,
         type: 3}
       propertyPath: m_Name
       value: Cannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2848845106965808539, guid: 902cb739d4cd6ff9594faa345b0a3b4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 3959447438170074276, guid: 902cb739d4cd6ff9594faa345b0a3b4f,
         type: 3}

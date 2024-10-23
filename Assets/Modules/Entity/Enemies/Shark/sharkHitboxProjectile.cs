@@ -19,7 +19,7 @@ public class sharkHitboxProjectile : Projectile
     protected override void OnReset()
     {
         hitPlayer = false;
-        this.Attribute(new Attack() { Damage = 15, TargetType = ProjectileTarget.PLAYER, Type = AttackType.NORMAL });
+        this.Attribute(new Attack() { Damage = 15, TargetType = ProjectileTarget.PLAYER_CONTROLLED, Type = AttackType.NORMAL });
     }
     
 
