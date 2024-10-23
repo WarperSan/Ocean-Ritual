@@ -2,6 +2,7 @@ using ControllerModule.Controllers;
 using System.Collections;
 using UnityEngine;
 using UIModule.Interfaces;
+using ControllerModule.Interfaces.UI;
 
 namespace UIModule.Menus
 {
@@ -9,7 +10,7 @@ namespace UIModule.Menus
     /// Class that represents a menu
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public abstract class UIMenu : Controller, IElementable
+    public abstract class UIMenu : Controller, IElementable, IEscapable
     {
         /// <summary>
         /// Called to open this menu
@@ -49,6 +50,13 @@ namespace UIModule.Menus
         {
             this.Rect = this.GetComponent<RectTransform>();
         }
+
+        #endregion
+
+        #region IEscapable
+
+        /// <inheritdoc/>
+        public void OnEscape() => UIManager.Close(this);
 
         #endregion
     }

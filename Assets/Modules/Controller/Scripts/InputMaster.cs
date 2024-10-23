@@ -21,6 +21,7 @@ namespace ControllerModule.Controllers
         public delegate void JumpEvent();
         public delegate void FireEvent();
         public delegate void TabEvent();
+        public delegate void EscapeEvent();
 
         #endregion
 
@@ -33,6 +34,7 @@ namespace ControllerModule.Controllers
         public event JumpEvent OnJump;
         public event TabEvent OnTabNext;
         public event TabEvent OnTabPrevious;
+        public event EscapeEvent OnEscape;
 
         #endregion
 
@@ -71,6 +73,7 @@ namespace ControllerModule.Controllers
             if (context.started)
                 ControllerManager.BackTo();
         }
+
         public void Jump(InputAction.CallbackContext context)
         {
             if (context.started)
@@ -110,6 +113,12 @@ namespace ControllerModule.Controllers
                 UIManager.Toggle<PauseMenu>();
         }
 
+        public void Escape(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                this.OnEscape?.Invoke();
+        }
+
         #endregion
 
         #region Maps
@@ -128,7 +137,7 @@ namespace ControllerModule.Controllers
             Instance.PlayerMap.Disable();
             Instance.UIMap.Enable();
         }
-        
+
         #endregion
 
         #region Operations
@@ -139,12 +148,11 @@ namespace ControllerModule.Controllers
                 return input;
 
             // Subscribe all events
-            input = actionable switch
-            {
-                IPlayerActionable player => player + input,
-                IUIActionable ui => ui + input,
-                _ => input
-            };
+            if (actionable is IPlayerActionable player)
+                input = player + input;
+
+            if (actionable is IUIActionable ui)
+                input = ui + input;
 
             return input;
         }
@@ -155,12 +163,11 @@ namespace ControllerModule.Controllers
                 return input;
 
             // Unsubscribe all events
-            input = actionable switch
-            {
-                IPlayerActionable player => player - input,
-                IUIActionable ui => ui - input,
-                _ => input
-            };
+            if (actionable is IPlayerActionable player)
+                input = player - input;
+
+            if (actionable is IUIActionable ui)
+                input = ui - input;
 
             return input;
         }
@@ -175,6 +182,7 @@ namespace ControllerModule.Controllers
             PlayerInput input = this.GetComponent<PlayerInput>();
             this.PlayerMap = input.actions.FindActionMap("Player");
             this.UIMap = input.actions.FindActionMap("UI");
+            this.transform.SetParent(null);
         }
 
         /// <inheritdoc/>

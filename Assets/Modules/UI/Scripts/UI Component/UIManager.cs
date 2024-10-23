@@ -186,6 +186,7 @@ namespace UIModule
                     // Open menu
                     case OperationType.OPEN:
                         yield return menu.Open();
+                        InputMaster.Instance += menu;
                         openedMenus.Push(menu);
                         ControllerManager.SwitchTo(menu);
                         break;
@@ -200,6 +201,7 @@ namespace UIModule
                             if (cur == null)
                                 break;
 
+                            InputMaster.Instance -= cur;
                             yield return cur.Close();
                             openedMenus.Pop();
                             ControllerManager.BackTo();

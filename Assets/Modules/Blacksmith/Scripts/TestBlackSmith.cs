@@ -110,6 +110,9 @@ namespace BlacksmithModule
 
         private void RestoreOriginalTexts()
         {
+            if (originalTexts == null)
+                return;
+                
             // Restaurer les textes originaux si n�cessaire
             cost.text = originalTexts[0];
             MissingCase.text = originalTexts[1];
@@ -120,7 +123,7 @@ namespace BlacksmithModule
         {
             if (true)// potentielement mettre que faut que le joueur a assé d'Argent
             {
-                GemData.Shape = new (TemporaryGemData.Shape.flatForme, TemporaryGemData.Shape.width, TemporaryGemData.Shape.height);
+                GemData.Shape = new(TemporaryGemData.Shape.flatForme, TemporaryGemData.Shape.width, TemporaryGemData.Shape.height);
                 SetData(GemData);
             }
         }

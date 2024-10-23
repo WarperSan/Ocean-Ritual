@@ -1,5 +1,6 @@
 using ControllerModule.Controllers;
 using UIModule;
+using UIModule.Interfaces;
 using UnityEngine;
 
 namespace ControllerModule.Interfaces.UI
@@ -15,13 +16,13 @@ namespace ControllerModule.Interfaces.UI
                 return input;
 
             // If not a UI Component, skip
-            if (actionable is not UIComponent component)
+            if (actionable is not IElementable component)
             {
                 Debug.LogWarning(string.Format(
                     "Tried to subscribe the object '{0}' to event from '{1}', but they are only available for classes that inherits '{2}'.",
                     actionable.GetType().Name,
                     nameof(IUIActionable),
-                    nameof(UIComponent)
+                    nameof(IElementable)
                 ));
                 return input;
             }
@@ -32,6 +33,10 @@ namespace ControllerModule.Interfaces.UI
                 input.OnTabNext += tabable.OnTabNext;
                 input.OnTabPrevious += tabable.OnTabPrevious;
             }
+
+            // Escape
+            if (component is IEscapable escapable)
+                input.OnEscape += escapable.OnEscape;
 
             return input;
         }
@@ -51,6 +56,10 @@ namespace ControllerModule.Interfaces.UI
                 input.OnTabNext -= tabable.OnTabNext;
                 input.OnTabPrevious -= tabable.OnTabPrevious;
             }
+
+            // Escape
+            if (component is IEscapable escapable)
+                input.OnEscape -= escapable.OnEscape;
 
             return input;
         }
