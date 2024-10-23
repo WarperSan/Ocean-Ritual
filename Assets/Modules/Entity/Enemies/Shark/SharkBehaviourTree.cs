@@ -38,7 +38,7 @@ namespace EntityModule.Enemies
             );
 
             _root.SetData(AGENT, this.agent);
-            _root.SetData(CURRENT_TARGET, this.target);
+            _root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
 
             this.root = _root;
         }
@@ -142,6 +142,7 @@ namespace EntityModule.Enemies
 
         private Node Move() => new CallbackNode(() =>
         {
+            root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = root.GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
             
