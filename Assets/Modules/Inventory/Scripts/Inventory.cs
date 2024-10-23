@@ -27,8 +27,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private int NbSlotInventory = 15;
+    private int NbSlotInventory = 20;
     [SerializeField] public List<ItemData> ItemList = new();
+    [SerializeField] private int Cash = 0;
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
     //bool InventaireOuvert = false;
@@ -463,5 +464,47 @@ public class Inventory : MonoBehaviour
         ItemList = poissonsFusionnes.Cast<ItemData>()
                                     .Concat(gem)
                                     .ToList();
+    }
+
+
+    public void AddCash(int AddingCash=0)
+    {
+        Debug.Log("getCash");
+        Cash += AddingCash;
+    }
+
+    public void RemoveCash(int RemovingCash = 0 )
+    {
+        if (Cash- RemovingCash >= 0 )
+        {
+            Cash -= RemovingCash;
+        }
+    }
+
+    public bool HaveEnoughtCash(int CashNeed =0)
+    {
+       
+        return Cash>=CashNeed;
+    }
+   
+    public  int NumberOfCashFromSellingFish()
+    {
+        int CashFromSelling=0;
+        List<FishData> fish = ItemList.OfType<FishData>()
+                                           .Where(poisson => poisson.quantity > 0)
+                                           .ToList();
+        foreach (FishData fishData in fish)
+        {
+
+            CashFromSelling += fishData.fish.GetPrice()* fishData.quantity;
+
+        }
+
+
+        return CashFromSelling;
+    }
+    public void sellingAllFish()
+    {
+
     }
 }
