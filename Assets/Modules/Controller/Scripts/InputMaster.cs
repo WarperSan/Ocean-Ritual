@@ -75,7 +75,7 @@ namespace ControllerModule.Controllers
         public void Pause(InputAction.CallbackContext context)
         {
             if (context.started)
-                UIManager.Toggle<PauseMenu>();  
+                UIManager.Toggle<PauseMenu>();
         }
         #endregion
 
@@ -130,6 +130,13 @@ namespace ControllerModule.Controllers
 
             return input;
         }
+
+        #endregion
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override bool DestroyOnLoad => true;
 
         #endregion
     }
