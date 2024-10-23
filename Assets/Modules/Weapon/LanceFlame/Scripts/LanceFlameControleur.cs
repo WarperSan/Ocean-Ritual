@@ -1,5 +1,4 @@
 using EntityModule;
-using EntityModule.Conditions;
 using System.Collections.Generic;
 using UnityEngine;
 using WeaponModule;
@@ -15,7 +14,7 @@ public enum LanceFlameModes
     ICE
 };
 
-public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes>
+public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes> 
 {
     #region Controller
 
@@ -234,7 +233,6 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private componentGBN ComponantGBN;
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
@@ -251,13 +249,14 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
     [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
 
-    public componentGBN ComposnantGBN => ComponantGBN;
-
-    public componentGBN componentGBN => throw new System.NotImplementedException();
+    [SerializeField] private componentGBN ComponantGBN;
+    public componentGBN componentGBN => ComponantGBN;
 
     public int CostToUpgrade { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public int ForgePercentage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public int LvlOfEquipment { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+    public string Name => throw new System.NotImplementedException();
 
     /// <inheritdoc/>
     public void UpdateStat()

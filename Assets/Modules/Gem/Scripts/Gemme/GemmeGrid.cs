@@ -7,7 +7,7 @@ public class GemmeGrid : MonoBehaviour
     [SerializeField] public int width;
     [SerializeField] public int height;
     [SerializeField] public bool[,] Grid;
-
+  
     #endregion
 
     #region Unity Methods
@@ -27,7 +27,24 @@ public class GemmeGrid : MonoBehaviour
     {
         Grid = new bool[width, height];
     }
-
+    public void UpGrade()
+    {
+        Debug.Log("passeUpgrade");
+        if (CanUpgrade()) // Vérifie d'abord si une amélioration est possible
+        {
+            width += 1;  // Augmente la largeur
+            height += 1; // Augmente la hauteur
+        }
+        else
+        {
+            Debug.Log("Impossible d'améliorer : la largeur ou la hauteur dépasse déjà ou sont déja à 6.");
+        }
+    }
+    public bool CanUpgrade()
+    {
+        // Vérifie si les dimensions actuelles dépassent 6 après une amélioration
+        return (width < 6 && height < 6);
+    }
     #endregion
 
     #region Object Placement
@@ -135,14 +152,14 @@ public class GemmeGrid : MonoBehaviour
     // Attempts to place an object on the grid and updates the grid accordingly
     public bool TryPlaceObjectOnGrid(int x, int y, bool[,] form, Gem gemmeToPlace, bool[,] formBoolPrincipal)
     {
-        // Find the previous position of the gem and remove it
+        // Find the previous position of the gems and remove it
         RemoveObject(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
 
         if (CanPlaceObject(x, y, form))
         {
             UpdateGrid(x, y, form);
 
-            // Update the gem's position
+            // Update the gems's position
             gemmeToPlace.PositionX = x;
             gemmeToPlace.PositionZ = y;
 
@@ -150,7 +167,7 @@ public class GemmeGrid : MonoBehaviour
         }
         else
         {
-            // Re-add the old gem if placement fails
+            // Re-add the old gems if placement fails
             UpdateGrid(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
             return false;
         }

@@ -35,7 +35,7 @@ namespace FishingModule
             if (isCollected)
             {
               foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
-                    Inventory.Instance.AddItem(new FishData(fish.Key, fish.Value));
+                    Inventory.Instance.AddItem(new FishData(fish.Key, (int) fish.Value));
             }
             else
             {

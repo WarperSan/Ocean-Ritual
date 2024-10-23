@@ -133,7 +133,7 @@ public class UpgradeStats
     public List<UpgradeNameData> baseStats = new List<UpgradeNameData>();
     public List<UpgradeNameData> previewStats = new List<UpgradeNameData>();
     public int upgradeCost;
-
+    public string name;
     // Constructeur par défaut
     public UpgradeStats()
     {
@@ -141,11 +141,12 @@ public class UpgradeStats
         upgradeCost = 0;
     }
 
-    public UpgradeStats(List<UpgradeNameData> baseStats, List<UpgradeNameData> previewStats, int upgradeCost)
+    public UpgradeStats(List<UpgradeNameData> baseStats, List<UpgradeNameData> previewStats, int upgradeCost, string name)
     {
         this.baseStats = baseStats;
         this.previewStats = previewStats;
         this.upgradeCost = upgradeCost;
+        this.name = name;
     }
 }
 
@@ -176,7 +177,7 @@ public class FormBool
     {
         this.width = width;
         this.height = height;
-        this.flatForme = form;
+        this.flatForme = new List<bool> (form);
         
     }
     public bool[,] GetForme()

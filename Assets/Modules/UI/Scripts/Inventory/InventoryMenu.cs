@@ -5,10 +5,13 @@ namespace UIModule.Menus
 {
     public class InventoryMenu : AnimatedMenu
     {
+        public InventoryUI inventoryUI;
+
         public override IEnumerator Open()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            inventoryUI.UpdateSelf();
 
             yield return base.Open();
         }

@@ -1,14 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static EnumGeneral;
+using BlacksmithModule;
 
-
-
-public interface Equipment : Forgeable
+public interface Equipment : IForgeable
 {
-   componentGBN componentGBN { get; }
+    string Name { get; }
+   
    
 
     public void UpdateStat();

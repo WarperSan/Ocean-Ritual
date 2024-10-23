@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using ControllerModule.Interfaces.Player;
+using UnityEngine;
 
 namespace ControllerModule.Controllers
 {
     /// <summary>
     /// Class that provides methods to use other controller independently
     /// </summary>
-    public abstract class Controller : MonoBehaviour
+    public abstract class Controller : MonoBehaviour, IPlayerActionable
     {
         #region Look
 

@@ -94,38 +94,38 @@ public class GBNSaveLoad: MonoBehaviour
 //            GridGemme = ConvertToGridData(powerGemmeObject.GridGemme),
 //            ListGemmeData = new List<GemData>()
 //        };
-//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gem");
+//        Debug.Log(" il y a " + powerGemmeObject.GemmeList.Count + " object dans la listede gems");
 
-//        foreach (var gem in powerGemmeObject.GemmeList)
+//        foreach (var gems in powerGemmeObject.GemmeList)
 //        {
-//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gem));
+//            powerGemmeObjectData.ListGemmeData.Add(ConvertToGemmeData(gems));
 //        }
 
 //        return powerGemmeObjectData;
 //    }
 //    /// <summary>
-//    ///  convert gem to gem data
+//    ///  convert gems to gems data
 //    /// </summary>
-//    /// <param name="gem"></param>
+//    /// <param name="gems"></param>
 //    /// <returns></returns>
-//    private GemData ConvertToGemmeData(Gem gem)
+//    private GemData ConvertToGemmeData(Gem gems)
 //    {
 //        return new GemData
 //        {
-//            PositionX = gem.PositionX,
-//            PositionZ = gem.PositionZ,
-//            Shape = gem.Shape,
-//            GemColorsName = gem.GemColorsName,
-//            LVL = gem.LVL,
-//            typeWeapon = gem.typeWeapon,
-//            typeBoat = gem.typeBoat,
-//            typeNet = gem.typeNet
+//            PositionX = gems.PositionX,
+//            PositionZ = gems.PositionZ,
+//            Shape = gems.Shape,
+//            GemColorsName = gems.GemColorsName,
+//            LVL = gems.LVL,
+//            typeWeapon = gems.typeWeapon,
+//            typeBoat = gems.typeBoat,
+//            typeNet = gems.typeNet
 //        };
 //    }
 //    /// <summary>
 //    ///  convert GemmeGrid to Grid data
 //    /// </summary>
-//    /// <param name="gem"></param>
+//    /// <param name="gems"></param>
 //    /// <returns></returns>
 //    private GridtData ConvertToGridData(GemmeGrid gridGemme)
 //    {

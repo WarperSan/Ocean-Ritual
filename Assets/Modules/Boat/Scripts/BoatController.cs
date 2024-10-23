@@ -1,4 +1,4 @@
-using ControllerModule.Controllers.Interfaces;
+using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;

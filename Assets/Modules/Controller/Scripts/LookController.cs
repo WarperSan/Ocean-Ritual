@@ -11,7 +11,6 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how fast the camera rotates")]
         private float sensitivity = 5.0f;
 
-
         #endregion
 
         #region Angles Clamp
