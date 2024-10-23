@@ -56,7 +56,9 @@ namespace ControllerModule.Controllers
             if (stack.Count <= 1)
                 return;
 
-            stack.Pop();
+            Controller prev = stack.Pop();
+            prev.SwitchOut();
+            
             Controller cur = stack.Pop();
             SwitchTo(cur);
         }
