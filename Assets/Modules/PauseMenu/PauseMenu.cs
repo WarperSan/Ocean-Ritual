@@ -10,6 +10,7 @@ namespace UIModule.Menus
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            //Time.timeScale = 0f;
 
             yield return base.Open();
         }
@@ -18,13 +19,14 @@ namespace UIModule.Menus
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            //Time.timeScale = 1f;
 
             yield return base.Close();
         }
 
         public void ResumeButton()
         {
-            StartCoroutine(Close());
+            UIManager.Close(this);
         }
 
         public void ExitButton()
