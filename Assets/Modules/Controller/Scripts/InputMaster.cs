@@ -177,10 +177,6 @@ namespace ControllerModule.Controllers
             this.UIMap = input.actions.FindActionMap("UI");
         }
 
-        #endregion
-
-        #region Singleton
-
         /// <inheritdoc/>
         protected override bool DestroyOnLoad => true;
 
