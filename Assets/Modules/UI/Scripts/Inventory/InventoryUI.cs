@@ -1,3 +1,4 @@
+using ExtensionsModule;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,10 +16,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI(List<ItemData> itemList)
     {
-        foreach (Transform child in parent)
-        {
-            Destroy(child.gameObject);
-        }
+        parent.RemoveAll();
 
         for (int i = 0; i < itemList.Count; i++)
         {
