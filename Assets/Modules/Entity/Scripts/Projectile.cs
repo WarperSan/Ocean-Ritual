@@ -59,10 +59,10 @@ namespace EntityModule
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
         {
-            
-            
+
+
             // If hit non-entity, skip
-            if (!other.TryGetComponent(out Entity entity) && other.GetComponentInParent<Entity>() == null )
+            if (!other.TryGetComponent(out Entity entity) && other.GetComponentInParent<Entity>() == null)
                 return;
 
             if (other.GetComponentInParent<Entity>() != null)
@@ -73,7 +73,7 @@ namespace EntityModule
             // If entity not targettable, skip
             if (!this.IsEntityTarget(entity))
                 return;
-            Debug.Log("hit");
+
             this.HitEntity(entity);
         }
 
@@ -102,7 +102,7 @@ namespace EntityModule
                 Debug.Log("not boat");
                 return false;
             }
-                
+
 
             // If hit an enemy, but not targeting enemies
             if (!this.attack.TargetType.HasFlag(ProjectileTarget.ENEMY) && layer == ENEMY_LAYER)
