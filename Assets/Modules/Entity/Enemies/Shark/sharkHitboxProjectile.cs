@@ -25,7 +25,7 @@ public class sharkHitboxProjectile : Projectile
 
     protected override void OnPostApply(Entity entity, Attack attack)
     {
-        Debug.Log(entity.Health);
+       // Debug.Log(entity.Health);
         hitPlayer = true;
 
         Vector3 direction = this.rbShark.transform.position - entity.transform.position;
