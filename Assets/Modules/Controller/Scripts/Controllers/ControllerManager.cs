@@ -49,19 +49,6 @@ namespace ControllerModule.Controllers
         }
 
         /// <summary>
-        /// Replaces the current controller with the given controller
-        /// </summary>
-        private static void ReplaceCurrent(Controller controller)
-        {
-            // Skip if current not found
-            if (ActiveController == null)
-                return;
-
-            // Switch to given
-            SwitchTo(controller);
-        }
-
-        /// <summary>
         /// Switches to the previous controller
         /// </summary>
         public static void BackTo()
@@ -69,8 +56,9 @@ namespace ControllerModule.Controllers
             if (stack.Count <= 1)
                 return;
 
-            Controller previous = stack.Skip(1).First();
-            ReplaceCurrent(previous);
+            stack.Pop();
+            Controller cur = stack.Pop();
+            SwitchTo(cur);
         }
     }
 }

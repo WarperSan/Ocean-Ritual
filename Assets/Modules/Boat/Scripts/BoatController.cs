@@ -136,13 +136,13 @@ namespace ControllerModule.Controllers
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
+            newPosition.y = this.transform.position.y;
+
+            _rb.MovePosition(newPosition);
 
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
             movement = diff;
-
-
-            _rb.MovePosition(newPosition);
 
             // Update Aboard
             //this.UpdateAboardPosition(diff);
