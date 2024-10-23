@@ -116,6 +116,14 @@ namespace BlacksmithModule
             ModifiedCase.text = originalTexts[2];
         }
 
+        public void ConfirmChoice()
+        {
+            if (true)// potentielement mettre que faut que le joueur a assé d'Argent
+            {
+                GemData.Shape = new (TemporaryGemData.Shape.flatForme, TemporaryGemData.Shape.width, TemporaryGemData.Shape.height);
+                SetData(GemData);
+            }
+        }
         #endregion
 
         #region Singleton

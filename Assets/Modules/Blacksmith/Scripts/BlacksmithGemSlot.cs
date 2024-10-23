@@ -46,6 +46,10 @@ namespace BlacksmithModule
 
             TestBlackSmith.Instance.SetData(gem);
         }
+        public void Confirm()
+        {
+            TestBlackSmith.Instance.ConfirmChoice();
+        }
 
         public void ClearGem(bool returnToInventory)
         {
