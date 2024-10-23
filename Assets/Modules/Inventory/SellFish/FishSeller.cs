@@ -17,8 +17,9 @@ public class FishSeller : MonoBehaviour, IInteractable
 
     public void openMenu()
     {
-        InterfaceSeller.ShowMenu();
         UIManager.Open<FishMenu>();
+        InterfaceSeller.ShowMenu();
+      
     }
 
 }
