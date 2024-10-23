@@ -21,6 +21,7 @@ namespace ControllerModule.Controllers
         public delegate void JumpEvent();
         public delegate void FireEvent();
         public delegate void TabEvent();
+        public delegate void PauseEvent();
 
         #endregion
 
@@ -33,6 +34,7 @@ namespace ControllerModule.Controllers
         public event JumpEvent OnJump;
         public event TabEvent OnTabNext;
         public event TabEvent OnTabPrevious;
+        public event PauseEvent OnPause;
 
         #endregion
 
@@ -79,7 +81,9 @@ namespace ControllerModule.Controllers
         public void Inventory(InputAction.CallbackContext context)
         {
             if (context.started)
+            {
                 UIManager.Toggle<InventoryMenu>();
+            }
         }
 
         public void Tab(InputAction.CallbackContext context)
@@ -120,6 +124,11 @@ namespace ControllerModule.Controllers
             Instance.UIMap.Enable();
         }
 
+        public void Pause(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                UIManager.Toggle<PauseMenu>();  
+        }
         #endregion
 
         #region Operations

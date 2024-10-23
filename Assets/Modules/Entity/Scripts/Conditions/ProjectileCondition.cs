@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace EntityModule.Conditions
 {
+    [RequireComponent(typeof(Projectile))]
     public abstract class ProjectileCondition : MonoBehaviour
     {
         /// <summary>

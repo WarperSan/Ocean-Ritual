@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using static EnumGeneral;
-using UnityEditor;
 
 public static class GemHelper
 {
@@ -13,7 +10,6 @@ public static class GemHelper
 
     public static (int cost, int modifiedSpot, int missingSpot,bool CasseOnlytrue) GetInformationAboutForm(List<bool> formOriginal, List<bool> modifiedForm, int lvlGem)
     {
-      
         // V�rification si la liste modifi�e est plus grande que l'originale
         if (modifiedForm.Count > formOriginal.Count)
         {

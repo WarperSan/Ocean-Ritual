@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 6757331812712978645}
   - component: {fileID: 1604041424450743481}
   - component: {fileID: 8827376533077435850}
+  - component: {fileID: 7537291407510166962}
   m_Layer: 29
   m_Name: Boat
   m_TagString: Boat
@@ -318,7 +319,6 @@ MonoBehaviour:
   disableIfOut: 0
   _rb: {fileID: 8827376533077435850}
   aboardParent: {fileID: 3567286561129488995}
-  cc: {fileID: 0}
   turningSpeed: 5
   movementSpeed: 4
   movementAcceleration: 0.05
@@ -333,7 +333,7 @@ Rigidbody:
   m_GameObject: {fileID: 2219113162198206845}
   serializedVersion: 4
   m_Mass: 100
-  m_Drag: 0
+  m_Drag: 0.1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -351,6 +351,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 1
+--- !u!114 &7537291407510166962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219113162198206845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c2348e6c088754ab466ea1b8b30d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeath: 100
 --- !u!1 &2273967157756141426
 GameObject:
   m_ObjectHideFlags: 0

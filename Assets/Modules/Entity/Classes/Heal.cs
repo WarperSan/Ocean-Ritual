@@ -5,7 +5,14 @@ namespace EntityModule
     /// </summary>
     public sealed class Heal
     {
+        /// <summary>
+        /// Amount of health this heal will recover
+        /// </summary>
         public float Amount;
+
+        /// <summary>
+        /// Type of the heal
+        /// </summary>
         public HealType Type = HealType.ENVIRONMENT;
     }
 

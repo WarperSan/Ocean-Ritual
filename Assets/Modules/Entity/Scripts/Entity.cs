@@ -12,8 +12,9 @@ namespace EntityModule
         [Header("Health")]
         [SerializeField, Tooltip("Maximum health for this entity")]
         protected float MaxHeath;
-
-        protected float Health { get; private set; }
+        [SerializeField, Tooltip("Maximum health to heal for this entity")]
+        protected float HealthTotal { get; private set; }
+        public float Health { get; private set; }
 
         /// <summary>
         /// Determines if this entity can take damage
@@ -73,9 +74,9 @@ namespace EntityModule
         /// <summary>
         /// Damages this entity with the given attack
         /// </summary>
-        public void UseAttack(Attack attack)
+        public void UseAttack(Attack attack, Projectile source)
         {
-            this.OnPreAttack();
+            this.OnPreAttack(source);
 
             // If immuned to damage, skip
             if (!this.TakeDamage)
@@ -88,7 +89,7 @@ namespace EntityModule
             // If not dead, skip
             if (this.Health > 0)
             {
-                this.OnPostAttack();
+                this.OnPostAttack(source);
                 return;
             }
 
@@ -104,12 +105,12 @@ namespace EntityModule
         /// <summary>
         /// Called before this entity receives an attack
         /// </summary>
-        protected virtual void OnPreAttack() { }
+        protected virtual void OnPreAttack(Projectile source) { }
 
         /// <summary>
         /// Called after this entity receives an non-fatal attack
         /// </summary>
-        protected virtual void OnPostAttack() { }
+        protected virtual void OnPostAttack(Projectile source) { }
 
         #endregion
 

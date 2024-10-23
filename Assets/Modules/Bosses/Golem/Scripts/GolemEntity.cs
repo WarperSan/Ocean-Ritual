@@ -1,3 +1,4 @@
+using EntityModule;
 using EntityModule.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,10 +33,12 @@ namespace BossesModule.Golem
         private Slider healthBar;
 
         /// <inheritdoc/>
-        protected override void OnPostAttack() 
+        protected override void OnPostAttack(Projectile source) 
         {
             this.healthBar.value = this.Health;
         }
+
+
 
         #endregion
 
@@ -46,6 +49,7 @@ namespace BossesModule.Golem
         {
             this.healthBar.value = 0;
             QuestManager.SomeoneDeath(this.name);
+            this.gameObject.SetActive(false);
         }
 
         #endregion

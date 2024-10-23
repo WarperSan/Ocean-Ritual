@@ -89,7 +89,7 @@ public   class GeneratorGem: MonoBehaviour
         return null;
     }
 
-    //si on appele cela inclu que a gemme est fusionné
+    //si on appele cela inclu que a gemme est fusionnï¿½
     public static GemData GenerateRandomGemme(int LVL, GemData gemHeritage )
     {
 
@@ -158,19 +158,19 @@ public   class GeneratorGem: MonoBehaviour
 
 
 
-    // Méthode générique qui génère une liste de TypeQuantity<T> où chaque quantité est égale au niveau LVL
+    // Mï¿½thode gï¿½nï¿½rique qui gï¿½nï¿½re une liste de TypeQuantity<T> oï¿½ chaque quantitï¿½ est ï¿½gale au niveau LVL
     public static List<TypeQuantity<T>> GeneratesRandomlvlStat<T>(int LVL) where T : Enum
     {
-        // Obtenir tous les types disponibles dans l'énumération T
+        // Obtenir tous les types disponibles dans l'ï¿½numï¿½ration T
         T[] enumValues = (T[])Enum.GetValues(typeof(T));
 
-        // Créer une liste pour stocker les résultats
+        // Crï¿½er une liste pour stocker les rï¿½sultats
         List<TypeQuantity<T>> resultList = new List<TypeQuantity<T>>();
 
-        // Boucle pour ajouter chaque type avec la quantité LVL
+        // Boucle pour ajouter chaque type avec la quantitï¿½ LVL
         foreach (T enumValue in enumValues)
         {
-            // Ajouter la paire (type, quantité) dans la liste, avec la quantité égale à LVL
+            // Ajouter la paire (type, quantitï¿½) dans la liste, avec la quantitï¿½ ï¿½gale ï¿½ LVL
             resultList.Add(new TypeQuantity<T>(enumValue, GenerateStats( LVL)));
         }
 
@@ -178,16 +178,16 @@ public   class GeneratorGem: MonoBehaviour
     }
     public static string GeneratesRandomlColors()
     {
-        // Récupérer tous les noms de l'énumération ColorsName
+        // Rï¿½cupï¿½rer tous les noms de l'ï¿½numï¿½ration ColorsName
         Array colors = Enum.GetValues(typeof(EnumGeneral.ColorsName));
 
-        // Créer une instance de Random pour sélectionner un élément aléatoire
+        // Crï¿½er une instance de Random pour sï¿½lectionner un ï¿½lï¿½ment alï¿½atoire
         System.Random random = new System.Random();
 
-        // Sélectionner un index aléatoire dans la liste des couleurs
+        // Sï¿½lectionner un index alï¿½atoire dans la liste des couleurs
         int randomIndex = random.Next(colors.Length);
 
-        // Retourner le name de la couleur sélectionnée aléatoirement
+        // Retourner le name de la couleur sï¿½lectionnï¿½e alï¿½atoirement
         return colors.GetValue(randomIndex).ToString();
     }
     // Function to generate the shape of the gems based on the level
@@ -236,13 +236,13 @@ public   class GeneratorGem: MonoBehaviour
     }
     private static FormBool GenerateForme(FormBool gemForm)
     {
-        // Extraction des données de la forme existante
+        // Extraction des donnï¿½es de la forme existante
         List<bool> existingFormFlat = gemForm.flatForme;
         int rows = gemForm.height;
         int cols = gemForm.width;
         int trueCount = 0;
 
-        // Compter les cases 'true' et vérifier si des espaces 'false' sont disponibles
+        // Compter les cases 'true' et vï¿½rifier si des espaces 'false' sont disponibles
         List<int> falsePositions = new List<int>();
         for (int i = 0; i < existingFormFlat.Count; i++)
         {
@@ -259,7 +259,7 @@ public   class GeneratorGem: MonoBehaviour
      
        
 
-        // Si l'on a de l'espace disponible, activer une case aléatoire qui est actuellement 'false'
+        // Si l'on a de l'espace disponible, activer une case alï¿½atoire qui est actuellement 'false'
         if (falsePositions.Count > 0)
         {
             System.Random rand = new System.Random();
@@ -280,14 +280,14 @@ public   class GeneratorGem: MonoBehaviour
                 newSize += 2;
             }
 
-            // Créer une nouvelle grille de la nouvelle taille
+            // Crï¿½er une nouvelle grille de la nouvelle taille
             List<bool> newForm = new List<bool>(newSize * newSize);
             for (int i = 0; i < newSize * newSize; i++)
             {
                 newForm.Add(false);
             }
 
-            // Copier l'ancienne forme centrée dans la nouvelle liste
+            // Copier l'ancienne forme centrï¿½e dans la nouvelle liste
             int rowOffset = (newSize - rows) / 2;
             int colOffset = (newSize - cols) / 2;
 
@@ -302,7 +302,7 @@ public   class GeneratorGem: MonoBehaviour
 
           
 
-            // Ajouter un 'true' à une position aléatoire dans la nouvelle forme agrandie
+            // Ajouter un 'true' ï¿½ une position alï¿½atoire dans la nouvelle forme agrandie
             List<int> newPositions = new List<int>();
             for (int i = 0; i < newForm.Count; i++)
             {
@@ -319,7 +319,7 @@ public   class GeneratorGem: MonoBehaviour
             return new FormBool(newForm, newSize, newSize);
         }
 
-        // Si l'on a activé un index aléatoire, renvoyer la forme modifiée
+        // Si l'on a activï¿½ un index alï¿½atoire, renvoyer la forme modifiï¿½e
         return new FormBool(existingFormFlat, cols, rows);
     }
 
@@ -328,8 +328,8 @@ public   class GeneratorGem: MonoBehaviour
    
 
 
-    // Function to create a gems object in the scene
-    public static GameObject? CreatGemmeObject(Gem GemmeScript, Transform Conteneur)
+    // Function to create a gem object in the scene
+    public static GameObject CreatGemmeObject(Gem GemmeScript, Transform Conteneur)
     {
         if (!dataLoad)
         {
@@ -381,7 +381,7 @@ public   class GeneratorGem: MonoBehaviour
         // 2. Calcul de l'offset pour centrer instantiatedGemme
         Vector3 positionOffset = new Vector3(gemmeScript.PositionX * space  , 0, gemmeScript.PositionZ * space );
 
-        // 3. Ajuster la position d'instantiatedGemme (enlever si tu ne veux pas que le centre soit impacté)
+        // 3. Ajuster la position d'instantiatedGemme (enlever si tu ne veux pas que le centre soit impactï¿½)
         instantiatedGemme.transform.localPosition = positionOffset;
       
         // Calcul du centre de la Shape
