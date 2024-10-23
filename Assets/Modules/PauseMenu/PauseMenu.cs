@@ -21,6 +21,16 @@ namespace UIModule.Menus
 
             yield return base.Close();
         }
+
+        public void ResumeButton()
+        {
+            StartCoroutine(Close());
+        }
+
+        public void ExitButton()
+        {
+           Application.Quit();
+        }
     }
 }
 

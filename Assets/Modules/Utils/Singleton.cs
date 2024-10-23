@@ -19,7 +19,7 @@ namespace UtilsModule
         private void Awake()
         {
             // Keep only one
-            if (Instance is not null)
+            if (Instance != null)
             {
                 Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
                 Destroy(this.gameObject);
