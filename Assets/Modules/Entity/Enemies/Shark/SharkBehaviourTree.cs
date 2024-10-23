@@ -84,6 +84,7 @@ namespace EntityModule.Enemies
 
         private Node DoAttack() => new CallbackNode(() =>
         {
+            
             if (!hitboxCollider.enabled)
             {
                 hitboxCollider.enabled = true;
@@ -179,6 +180,7 @@ namespace EntityModule.Enemies
 
         private NodeState RotateTowardsTarget(Node n)
         {
+            root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = n.GetData<Transform>(CURRENT_TARGET);
             Debug.Log("Rotate");
             // If target is invalid, return fail
