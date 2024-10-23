@@ -815,6 +815,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 954070959546925365, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: asset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d,
+        type: 2}
     - target: {fileID: 1604041424450743481, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: turningSpeed
@@ -853,12 +859,12 @@ PrefabInstance:
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22
+      value: -21.15
       objectReference: {fileID: 0}
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.25
+      value: 2.26
       objectReference: {fileID: 0}
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
@@ -899,6 +905,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797966064517645531, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6797966064517645531, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
@@ -37522,6 +37533,89 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262467970}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &265504951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 265504952}
+  - component: {fileID: 265504954}
+  - component: {fileID: 265504953}
+  m_Layer: 28
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &265504952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265504951}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.4166667, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 2.88}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 551826532}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &265504953
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265504951}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &265504954
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265504951}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &267751711
 GameObject:
   m_ObjectHideFlags: 0
@@ -38747,6 +38841,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536182434}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &551826532 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5666136772639146425, guid: afe8a9f6b26d10844b957d961fd8c843,
+    type: 3}
+  m_PrefabInstance: {fileID: 129452490540603149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &553126501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -158991,7 +159091,7 @@ PrefabInstance:
     - target: {fileID: 3237453903133248656, guid: afe8a9f6b26d10844b957d961fd8c843,
         type: 3}
       propertyPath: attackMaxRange
-      value: 9
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 3237453903133248656, guid: afe8a9f6b26d10844b957d961fd8c843,
         type: 3}
@@ -159108,6 +159208,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 28
       objectReference: {fileID: 0}
+    - target: {fileID: 6867785504967913763, guid: afe8a9f6b26d10844b957d961fd8c843,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.9961678
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867785504967913763, guid: afe8a9f6b26d10844b957d961fd8c843,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.7084807
+      objectReference: {fileID: 0}
     - target: {fileID: 7050699179793564855, guid: afe8a9f6b26d10844b957d961fd8c843,
         type: 3}
       propertyPath: m_Layer
@@ -159160,7 +159270,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5666136772639146425, guid: afe8a9f6b26d10844b957d961fd8c843,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 265504952}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
 --- !u!224 &470502000460196863 stripped

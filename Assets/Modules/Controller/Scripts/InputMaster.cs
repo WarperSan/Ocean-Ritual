@@ -21,7 +21,6 @@ namespace ControllerModule.Controllers
         public delegate void JumpEvent();
         public delegate void FireEvent();
         public delegate void TabEvent();
-        public delegate void PauseEvent();
 
         #endregion
 
@@ -34,7 +33,6 @@ namespace ControllerModule.Controllers
         public event JumpEvent OnJump;
         public event TabEvent OnTabNext;
         public event TabEvent OnTabPrevious;
-        public event PauseEvent OnPause;
 
         #endregion
 
@@ -75,7 +73,8 @@ namespace ControllerModule.Controllers
         }
         public void Jump(InputAction.CallbackContext context)
         {
-            this.OnJump?.Invoke();
+            if (context.started)
+                this.OnJump?.Invoke();
         }
 
         public void Inventory(InputAction.CallbackContext context)

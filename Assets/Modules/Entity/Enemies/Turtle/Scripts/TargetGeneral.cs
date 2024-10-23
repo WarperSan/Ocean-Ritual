@@ -5,5 +5,12 @@ using UtilsModule;
 
 public class TargetGeneral : Singleton<TargetGeneral>
 {
-    [SerializeField] public Transform Target;
+    public Transform Target;
+
+    #region Singleton
+
+    /// <inheritdoc/>
+    protected override bool DestroyOnLoad => true;
+
+    #endregion
 }
