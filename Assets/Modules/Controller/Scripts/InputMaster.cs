@@ -105,6 +105,12 @@ namespace ControllerModule.Controllers
                 this.IsShift = false;
         }
 
+        public void Pause(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                UIManager.Toggle<PauseMenu>();
+        }
+
         #endregion
 
         #region Maps
@@ -123,12 +129,7 @@ namespace ControllerModule.Controllers
             Instance.PlayerMap.Disable();
             Instance.UIMap.Enable();
         }
-
-        public void Pause(InputAction.CallbackContext context)
-        {
-            if (context.started)
-                UIManager.Toggle<PauseMenu>();
-        }
+        
         #endregion
 
         #region Operations
