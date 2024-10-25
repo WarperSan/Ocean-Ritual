@@ -4,10 +4,15 @@ using UnityEngine;
 using static EnumGeneral;
 using System.Linq;
 using FishingModule;
+using TMPro;
+using BlacksmithModule;
 
 [System.Serializable]
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI textCostInventory;
+    [SerializeField] TextMeshProUGUI textCostInventoryBlacksmith;
+    private int CashToUpGradeSocle=0;
     private static Inventory instance;
 
     public static Inventory Instance
@@ -73,6 +78,7 @@ public class Inventory : MonoBehaviour
         {
             AddSlot();
         }
+        UpdateCashCost();
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -466,11 +472,19 @@ public class Inventory : MonoBehaviour
                                     .ToList();
     }
 
-
+    public void UpdateCashCost()
+    {
+     
+        textCostInventory.text = Cash.ToString();
+        textCostInventoryBlacksmith.text = Cash.ToString();
+       Blacksmith.Instance.InterfaceUpgrade();
+    }
     public void AddCash(int AddingCash=0)
     {
-        Debug.Log("getCash");
+       
+      
         Cash += AddingCash;
+        UpdateCashCost();
     }
 
     public void RemoveCash(int RemovingCash = 0 )
@@ -478,9 +492,18 @@ public class Inventory : MonoBehaviour
         if (Cash- RemovingCash >= 0 )
         {
             Cash -= RemovingCash;
+            UpdateCashCost();
         }
     }
 
+    public void GetCashUpgradeSocleCost (int cash= 0)
+    {
+        CashToUpGradeSocle = cash;
+    }
+    public void RemoveCashSocleCost()
+    {
+        RemoveCash(CashToUpGradeSocle);
+    }
     public bool HaveEnoughtCash(int CashNeed =0)
     {
        
@@ -505,6 +528,11 @@ public class Inventory : MonoBehaviour
     }
     public void sellingAllFish()
     {
+        int totalCash = NumberOfCashFromSellingFish();
 
+      
+        ItemList.RemoveAll(item => item is FishData fishData);
+        // Ajout du total obtenu à la variable Cash
+        AddCash(totalCash);
     }
 }

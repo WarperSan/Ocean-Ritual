@@ -61,6 +61,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             upgradeButton.onClick.RemoveAllListeners();
             upgradeButton.onClick.AddListener(() => UpgradeStateBase(name));
             upgradeButton.onClick.AddListener(() => UpgradeSocle(GemmeGrid));
+            upgradeButton.onClick.AddListener(() =>Inventory.Instance.RemoveCashSocleCost());
         }
 
     }

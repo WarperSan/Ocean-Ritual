@@ -22,7 +22,8 @@ public class FishMenu : AnimatedMenu
     }
     public void Accept()
     {
-        Inventory.Instance.AddCash(cash);
+        Inventory.Instance.sellingAllFish();
+        
         UIManager.Close(this);
     }
 }
