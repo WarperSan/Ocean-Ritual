@@ -1,6 +1,8 @@
+using ExtensionsModule;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UIModule.Menus
 {
@@ -31,8 +33,37 @@ namespace UIModule.Menus
 
         public void ExitButton()
         {
-           Application.Quit();
+            Application.Quit();
         }
+
+        #region Letter
+
+        [Header("Letter")]
+        [SerializeField]
+        private Sprite letterCloseBottom;
+
+        [SerializeField]
+        private Sprite letterOpenBottom;
+
+        [SerializeField]
+        private Graphic letterTop;
+
+        [SerializeField]
+        private Image letterBottom;
+
+        public void OpenLetter()
+        {
+            this.letterTop.SetAlpha(1f);
+            this.letterBottom.sprite = this.letterOpenBottom;
+        }
+
+        public void CloseLetter()
+        {
+            this.letterTop.SetAlpha(0f);
+            this.letterBottom.sprite = this.letterCloseBottom;
+        }
+
+        #endregion
     }
 }
 
