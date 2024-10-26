@@ -51,10 +51,8 @@ static public class EnumGeneral
     public enum TypeBoat
     {
         Life,
-        Shield,
-        Armor,
-        Resistance,
-        navigateSpeed
+        navigateSpeed,
+        Handling
     }
 
     // Énumération pour les types de filets

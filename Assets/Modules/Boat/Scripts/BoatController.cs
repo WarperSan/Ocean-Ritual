@@ -2,6 +2,7 @@ using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnumGeneral;
 
 namespace ControllerModule.Controllers
 {
@@ -9,7 +10,7 @@ namespace ControllerModule.Controllers
     {
         [SerializeField]
         private Rigidbody _rb;
-
+        
         #region Aboard
 
         [Header("Aboard")]
@@ -73,11 +74,11 @@ namespace ControllerModule.Controllers
             //D�signe le sense de la rotation et la vitesse de rotation 
             if (this.direction.x > 0)
             {
-                eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
+                eulerAngleVelocity = new Vector3(0, GetHandling(), 0);
             }
             else if (this.direction.x < 0)
             {
-                eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
+                eulerAngleVelocity = new Vector3(0, -GetHandling(), 0);
             }
 
             // Rotation RB
@@ -122,7 +123,7 @@ namespace ControllerModule.Controllers
         private void UpdateMove(float elapsed)
         {
 
-            float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
+            float speed = GetSpeedMultiplier(this.direction) * this.GetSpeed();
 
             // Lerp the current speed to the wanted speed
             this.currentSpeed = this.currentSpeed < speed
@@ -255,6 +256,47 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         public void OnMove(Vector2 direction) => this.direction = direction;
 
+        #endregion
+
+        #region Stats
+
+        [SerializeField] private TypeQuantity<TypeBoat> BASE_LIFE = new(TypeBoat.Life, 1f);
+        [SerializeField] private TypeQuantity<TypeBoat> BASE_SPEED = new(TypeBoat.navigateSpeed, 4f);
+        [SerializeField] private TypeQuantity<TypeBoat> BASE_HANDLING = new(TypeBoat.Handling, 10f);
+
+        [SerializeField] private TypeQuantity<TypeBoat> BOOST_LIFE = new(TypeBoat.Life, 1f);
+        [SerializeField] private TypeQuantity<TypeBoat> BOOST_SPEED = new(TypeBoat.navigateSpeed, 4f);
+        [SerializeField] private TypeQuantity<TypeBoat> BOOST_HANDLING = new(TypeBoat.Handling, 10f);
+
+        [SerializeField] private componentGBN ComponantGBN;
+        public componentGBN componentGBN => ComponantGBN;
+
+        public void UpdateStat()
+        {
+            var baseStats = new List<TypeQuantity<TypeBoat>>
+            {
+                BASE_LIFE,
+                BASE_SPEED, BASE_HANDLING
+            };
+
+                // Cr�ation de la liste des statistiques boost�es
+            var boostedStats = new List<TypeQuantity<TypeBoat>>
+            {
+                BOOST_LIFE, BOOST_SPEED, BOOST_HANDLING
+            };
+
+            // Mise � jour des statistiques avec les boosts
+            ComponantGBN.GBNScript.UpdateStatsWithBoost(baseStats, boostedStats);
+        }
+
+        public float GetLife(bool getBoosted = true) => getBoosted ? this.BOOST_LIFE.Quantite : this.BASE_LIFE.Quantite;
+        public float GetSpeed(bool getBoosted = true) => getBoosted ? this.BOOST_SPEED.Quantite : this.BASE_SPEED.Quantite;
+        public float GetHandling(bool getBoosted = true) => getBoosted ? this.BOOST_HANDLING.Quantite : this.BASE_HANDLING.Quantite;
+
+        protected override void OnStart()
+        {
+            this.UpdateStat();
+        }
         #endregion
     }
 }
