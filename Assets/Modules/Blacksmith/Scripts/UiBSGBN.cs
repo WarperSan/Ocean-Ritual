@@ -42,7 +42,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             ObjectSocleUI.SetActive(false);
         }
     }
-
+  
     public void ShowSocleUpgrade(componentGBN GBNcomponent, string name)
     {
 
@@ -122,9 +122,10 @@ public class UiBSGBN : Singleton<UiBSGBN>
             Button buttonComponent = buttonInstance.GetComponent<Button>();
             if (buttonComponent != null)
             {
-
+                
                 buttonComponent.onClick.AddListener(() =>
                 {
+                    Inventory.Instance.RemoveCashSocleCost();
                     UpgradeStateBase(name);
                     AddSocle(component);
                     SwitchBetweenUi();
@@ -261,8 +262,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             counter++;
         }
     }
-
-    #endregion
+     #endregion
 
     #region Singleton
 

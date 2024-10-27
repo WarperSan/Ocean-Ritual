@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UIModule.Menus
 {
-    public class BlacksmithMenu : AnimatedMenu
+    public class BlacksmithMenu : AnimatedMenu  
     {
         public InventoryUI inventoryUI;
         public BlacksmithGemSlot gemSlot;
