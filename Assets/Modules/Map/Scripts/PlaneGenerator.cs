@@ -47,6 +47,19 @@ namespace MapModule
                 Mathf.FloorToInt(-scaledSize.y / 2f)
             ));
             int[] triangles = GenerateTriangles(scaledSize);
+            Vector2[] uvs = new Vector2[vertices.Length];
+
+
+            for (int y = 0; y < size.y; y++)
+            {
+                for (int x = 0; x < size.x; x++)
+                {
+                    uvs[(int)(x + (y * size.x))] = new Vector2(
+                        x / size.x,
+                        y / size.y
+                    );
+                }
+            }
 
             var mesh = new Mesh { name = name ?? $"Generated Plane ({scaledSize.x}x{scaledSize.y})" };
 
@@ -54,6 +67,7 @@ namespace MapModule
             mesh.Clear();
             mesh.vertices = vertices;
             mesh.triangles = triangles;
+            mesh.uv = uvs;
             mesh.RecalculateNormals();
 
             return mesh;
