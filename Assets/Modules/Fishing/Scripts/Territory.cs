@@ -11,6 +11,8 @@ namespace FishingModule
 
         [SerializeField]
         private FishPercent[] _fishes = new FishPercent[] { };
+        [SerializeField]
+        private GameObject[] enemies = new GameObject[] { };
 
         private void Start()
         {
@@ -99,6 +101,18 @@ namespace FishingModule
             return fishes;
         }
 
+        /// <summary>
+        /// Finds all the unique enemies
+        /// </summary>
+        /// <returns>Enemies found</returns>
+        public static Dictionary<GameObject, float> Enemies()
+        {
+            Dictionary<GameObject, float> enemies = new();
+
+            // todo
+
+            return enemies;
+        }
         #endregion
 
         #region Editor

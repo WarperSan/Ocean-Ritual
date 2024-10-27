@@ -24,6 +24,8 @@ namespace FishingModule
             //foreach (KeyValuePair<FishSO, float> item in fishes)
             //    Debug.Log(item.Key.name + ": " + item.Value + "%");
 
+            //*** Give to spawn manager enemies
+
             this.StartBuoy(Territory.Fishes(territories));
         }
 
