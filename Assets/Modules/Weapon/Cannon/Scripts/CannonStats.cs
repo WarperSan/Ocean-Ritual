@@ -1,4 +1,5 @@
 ﻿using BlacksmithModule;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -147,7 +148,7 @@ public class CannonStats : MonoBehaviour, Equipment
     }
 
     // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData
-    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade)
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T: Enum
     {
         float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f);
         int roundedValue = Mathf.CeilToInt(newValue);

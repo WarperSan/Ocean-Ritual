@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,6 @@ namespace BlacksmithModule
         public int GetCostForUpgrade();
         public UpgradeStats GetStatToUpgradeAndCost();
 
-        public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade);
+        public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum;
     }
 }

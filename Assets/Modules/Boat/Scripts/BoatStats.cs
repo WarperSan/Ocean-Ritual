@@ -87,9 +87,9 @@ public class BoatStats : MonoBehaviour, Equipment
     {
         // à implémenter une fois IEquipment a été fix
 
-        //BASE_LIFE.Quantite = AfterUpgradPreviewStat(BASE_LIFE).quantity;
-        //BASE_SPEED.Quantite = AfterUpgradPreviewStat(BASE_SPEED).quantity;
-        //BASE_HANDLING.Quantite = AfterUpgradPreviewStat(BASE_HANDLING).quantity;
+        BASE_LIFE.Quantite = AfterUpgradPreviewStat(BASE_LIFE).quantity;
+        BASE_SPEED.Quantite = AfterUpgradPreviewStat(BASE_SPEED).quantity;
+        BASE_HANDLING.Quantite = AfterUpgradPreviewStat(BASE_HANDLING).quantity;
         LvlOfEquipment++;
     }
     public int GetCostForUpgrade()
@@ -112,19 +112,23 @@ public class BoatStats : MonoBehaviour, Equipment
         {
             // à implémenter une fois IEquipment a été fix
 
-            //AfterUpgradPreviewStat(BASE_LIFE),
-            //AfterUpgradPreviewStat(BASE_SPEED),
-            //AfterUpgradPreviewStat(BASE_HANDLING),
+            AfterUpgradPreviewStat(BASE_LIFE),
+            AfterUpgradPreviewStat(BASE_SPEED),
+            AfterUpgradPreviewStat(BASE_HANDLING),
 
         };
 
         return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(), Name);
     }
 
-    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade )
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade ) where T : Enum
     {
         // à implémenter une fois IEquipment a été fix
-        throw new NotImplementedException();
+        float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f);
+        int roundedValue = Mathf.CeilToInt(newValue);
+
+        return new UpgradeNameData(roundedValue, statToUpgrade.Type.ToString());
+        
     }
 
     #endregion
