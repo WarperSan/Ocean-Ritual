@@ -152,7 +152,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: slot_dark
+      name: slot_dark_frame
       rect:
         serializedVersion: 2
         x: 720
@@ -173,7 +173,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: slot_light
+      name: slot_light_frame
       rect:
         serializedVersion: 2
         x: 768
@@ -551,7 +551,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: container_wooden
+      name: container_wooden_frame
       rect:
         serializedVersion: 2
         x: 656
@@ -572,7 +572,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: container_steel
+      name: container_steel_frame
       rect:
         serializedVersion: 2
         x: 656
@@ -601,7 +601,7 @@ TextureImporter:
         width: 32
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 4, y: 4, z: 4, w: 4}
       outline: []
       physicsShape: []
@@ -609,6 +609,48 @@ TextureImporter:
       bones: []
       spriteID: 3c4d27ca888c8b2cf973f2deea6420cb
       internalID: -1268755806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: container_wooden_inner
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 123
+        width: 38
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 8, z: 8, w: 31}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0de04554551ad54b4a75a02f5ce19e57
+      internalID: -261285138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slot_light_inner
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 8
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 817704a63a72c410b89235c22161c03b
+      internalID: -1644772138
       vertices: []
       indices: 
       edges: []
@@ -637,8 +679,9 @@ TextureImporter:
       brown_stain_1: -1406878203
       brown_stain_2: -138372872
       brown_stain_3: 800446097
-      container_steel: 909715739
-      container_wooden: 780205917
+      container_steel_frame: 909715739
+      container_wooden_frame: 780205917
+      container_wooden_inner: -1271225299
       letter_close: 1871075879
       letter_open_bottom: 2065776355
       letter_open_top: 1057635986
@@ -646,8 +689,9 @@ TextureImporter:
       next_up: -1302830486
       open_notebook_blank: -847216662
       open_notebook_lines: 1468026812
-      slot_dark: 844704541
-      slot_light: 1572464502
+      slot_dark_frame: 844704541
+      slot_light_frame: 1572464502
+      slot_light_inner: -1644772138
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
