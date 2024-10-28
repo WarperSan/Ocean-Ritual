@@ -20,13 +20,12 @@ namespace FishingModule
             );
 
             Dictionary<FishSO, float> fishes = Territory.Fishes(territories);
+            Dictionary<GameObject, float> enemies = Territory.Enemies(territories);
 
             //foreach (KeyValuePair<FishSO, float> item in fishes)
             //    Debug.Log(item.Key.name + ": " + item.Value + "%");
 
-            //*** Give to spawn manager enemies
-
-            this.StartBuoy(Territory.Fishes(territories));
+            this.StartBuoy(fishes, enemies);
         }
 
         public void EndFishing()
@@ -78,7 +77,7 @@ namespace FishingModule
 
         private FishingBuoy _buoy = null;
 
-        private bool StartBuoy(Dictionary<FishSO, float> fishesToCatch)
+        private bool StartBuoy(Dictionary<FishSO, float> fishesToCatch, Dictionary<GameObject, float> enemies)
         {
             // Spawn buoy
             if (this._buoy == null)
@@ -94,6 +93,12 @@ namespace FishingModule
                 {
                     zoneManager.SetTarget(this.transform);
                     zoneManager.manager = this;
+                }
+
+                // Set up SpawnManager
+                if (this._buoy.TryGetComponent(out SpawnManager spawnManager))
+                {
+                    spawnManager.SetUp(this._buoy.transform.position, enemies);
                 }
             }
 

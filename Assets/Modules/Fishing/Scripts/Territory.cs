@@ -105,11 +105,18 @@ namespace FishingModule
         /// Finds all the unique enemies
         /// </summary>
         /// <returns>Enemies found</returns>
-        public static Dictionary<GameObject, float> Enemies()
+        public static Dictionary<GameObject, float> Enemies(IEnumerable<Territory> territories)
         {
             Dictionary<GameObject, float> enemies = new();
 
-            // todo
+            // Compile percentages
+            foreach (Territory territory in territories)
+            {
+                foreach (GameObject item in territory.enemies)
+                {
+                    enemies[item] = 1;
+                }
+            }
 
             return enemies;
         }
