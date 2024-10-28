@@ -204,6 +204,9 @@ MonoBehaviour:
     percent: 50
   - fish: {fileID: 11400000, guid: 20b4d7cbed0d75bf599025b095c782bf, type: 2}
     percent: 50
+  enemies:
+  - {fileID: 8269282008370612787, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
+  - {fileID: 2037964921717928066, guid: 26bcb97a30ce56b45923c3ec9d023123, type: 3}
 --- !u!65 &782760885
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -741,6 +744,9 @@ MonoBehaviour:
   _fishes:
   - fish: {fileID: 11400000, guid: af77792fe137cfdcc859e9b3283f2604, type: 2}
     percent: 100
+  enemies:
+  - {fileID: 8269282008370612787, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
+  - {fileID: 2037964921717928066, guid: 26bcb97a30ce56b45923c3ec9d023123, type: 3}
 --- !u!65 &1311854660
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -772,6 +778,52 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1389102253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389102255}
+  - component: {fileID: 1389102254}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1389102254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389102253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a5c16036a16dd45a78993694d84162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnRadius: 10
+  spawnCenter: {x: 0, y: 0, z: 0}
+--- !u!4 &1389102255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389102253}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1176.2424, y: -712.87836, z: 1760.8854}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -971,6 +1023,9 @@ MonoBehaviour:
   _fishes:
   - fish: {fileID: 11400000, guid: b70071b146767bb858ee97300a2641bc, type: 2}
     percent: 100
+  enemies:
+  - {fileID: 8269282008370612787, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
+  - {fileID: 2037964921717928066, guid: 26bcb97a30ce56b45923c3ec9d023123, type: 3}
 --- !u!65 &1590572071
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1131,6 +1186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1830041474}
   - component: {fileID: 1830041473}
+  - component: {fileID: 1830041475}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1215,6 +1271,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1830041475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830041472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1229,3 +1308,4 @@ SceneRoots:
   - {fileID: 1304361903}
   - {fileID: 1456052651}
   - {fileID: 1594738189}
+  - {fileID: 1389102255}

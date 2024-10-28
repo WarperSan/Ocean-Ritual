@@ -52,10 +52,12 @@ namespace FishingModule
 
             this.Buoy.KeepCollecting = false;
 
+
+            // todo
             // If player is in the aggro zone
             if (distance <= this.aggroRadius)
             {
-                // <Target player>
+                //TargetGeneral.Instance.Target = Player;
                 return;
             }
 
@@ -65,6 +67,7 @@ namespace FishingModule
             if (distance <= this.fleeRadius)
             {
                 // <Damage buoy>
+                //TargetGeneral.Instance.Target = Buoy;
                 return;
             }
 
