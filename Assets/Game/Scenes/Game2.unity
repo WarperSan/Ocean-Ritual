@@ -11332,7 +11332,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 30
     m_Bottom: 30
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -20263,7 +20263,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 30
     m_Bottom: 30
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -30369,7 +30369,7 @@ RectTransform:
   - {fileID: 2023609831}
   m_Father: {fileID: 698672098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.45, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -4.9999933}
   m_SizeDelta: {x: 0, y: -10.000013}
@@ -31160,6 +31160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 752723937}
+  - component: {fileID: 752723938}
   m_Layer: 5
   m_Name: Stars
   m_TagString: Untagged
@@ -31190,6 +31191,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &752723938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752723936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0187f9eba0bb8e64985e327efe2410e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bronze: {fileID: 2022185412440056504, guid: 09000e372f1c6912d8373db1b1617333, type: 3}
+  Argent: {fileID: 5393598518147668905, guid: 369631f6b582f0ac7a09f125765b35b8, type: 3}
+  Or: {fileID: 217356252578664628, guid: 575edcafe19b9cfb783bcdc90cac825d, type: 3}
+  Empty: {fileID: 8566202148233943917, guid: ca79b4fa3e19e97e2a45d323af84ed41, type: 3}
+  starContainers:
+  - {fileID: 1457058991}
+  - {fileID: 268296824}
+  - {fileID: 2053322702}
+  - {fileID: 482933292}
+  totalStars: 16
 --- !u!4 &753523903 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5221775342483985645, guid: 8cea2fe39499cb84db122b1292fe5423,
@@ -33705,10 +33728,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1601190020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -60, y: -60}
+  m_SizeDelta: {x: 132, y: 132}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &821997938
 MonoBehaviour:
@@ -64035,7 +64058,7 @@ MonoBehaviour:
     m_Right: 30
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -70331,8 +70354,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -136.74911, y: -33.392227}
-  m_SizeDelta: {x: 150, y: 150}
+  m_AnchoredPosition: {x: -140, y: 0}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1601514735
 PrefabInstance:
@@ -72207,6 +72230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 0}
   Form: {fileID: 821997938}
+  Stars: {fileID: 752723938}
   Level: {fileID: 0}
   Gun: {fileID: 1289211556}
   Boat: {fileID: 1645189369}
@@ -90027,7 +90051,7 @@ MonoBehaviour:
     m_Right: 30
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1

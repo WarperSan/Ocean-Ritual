@@ -19,6 +19,9 @@ namespace GemModule.UI
         private ShowGemShape Form;
 
         [SerializeField]
+        private StarsManager Stars;
+
+        [SerializeField]
         private TextMeshProUGUI Level;
 
         [SerializeField]
@@ -144,6 +147,7 @@ namespace GemModule.UI
             //this.Level.text = $"Level of the gems :  {gem.LVL}";
             this.ChangeInfoStat(gem);
             this.Form.Show(gem, gem);
+            this.Stars.CreateStars(gem);
             this.navBar.Select(0);
         }
 
