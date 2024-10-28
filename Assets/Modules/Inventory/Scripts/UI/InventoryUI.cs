@@ -7,6 +7,9 @@ public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject slot;
     [SerializeField] Transform parent;
+    [SerializeField] Transform Gauche;
+    [SerializeField] Transform Droite;
+    [SerializeField] int index;
     [SerializeField] TextMeshProUGUI playerGold;
 
     public void UpdateSelf()
@@ -16,8 +19,8 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI(List<ItemData> itemList)
     {
-        parent.RemoveAll();
-
+        Gauche.RemoveAll();
+        Droite.RemoveAll();
         for (int i = 0; i < itemList.Count; i++)
         {
             Sprite sprite = null;
@@ -32,13 +35,16 @@ public class InventoryUI : MonoBehaviour
                 maxStack = (uint)item.quantityMax;
             }
 
-            this.CreateSlot(i, sprite, quantity, maxStack);
+            // Choisir le parent en fonction de l'index
+            Transform slotParent = i < 9 ? Gauche : Droite;
+            this.CreateSlot(i, sprite, quantity, maxStack, slotParent);
         }
     }
 
-    private void CreateSlot(int slotIndex, Sprite sprite, uint quantity, uint maxStack)
+    private void CreateSlot(int slotIndex, Sprite sprite, uint quantity, uint maxStack, Transform slotParent)
     {
-        GameObject newSlot = Instantiate(slot, parent);
+        // Instancie le nouveau slot dans le bon parent
+        GameObject newSlot = Instantiate(slot, slotParent);
         newSlot.GetComponent<InventorySlot>().SetSlot(slotIndex, sprite, quantity, maxStack > 1);
     }
 

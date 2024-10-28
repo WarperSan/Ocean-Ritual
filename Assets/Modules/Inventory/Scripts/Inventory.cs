@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private int NbSlotInventory = 21;
+    public int NbSlotInventory = 18;
     [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
