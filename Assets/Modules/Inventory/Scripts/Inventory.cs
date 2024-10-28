@@ -4,30 +4,12 @@ using UnityEngine;
 using static EnumGeneral;
 using System.Linq;
 using FishingModule;
+using UtilsModule;
 
 [System.Serializable]
-public class Inventory : MonoBehaviour
+public class Inventory : Singleton<Inventory>
 {
-    private static Inventory instance;
-
-    public static Inventory Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<Inventory>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("Inventory");
-                    instance = obj.AddComponent<Inventory>();
-                }
-            }
-            return instance;
-        }
-    }
-
-    public int NbSlotInventory = 18;
+    public int NbSlotInventory = 12 * 2; // 12 items per page for 2 pages
     [SerializeField] public List<ItemData> ItemList = new();
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
@@ -464,4 +446,11 @@ public class Inventory : MonoBehaviour
                                     .Concat(gem)
                                     .ToList();
     }
+
+    #region Singleton
+
+    /// <inheritdoc/>
+    protected override bool DestroyOnLoad => true;
+
+    #endregion
 }

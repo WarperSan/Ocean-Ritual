@@ -6,11 +6,10 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] GameObject slot;
-    [SerializeField] Transform parent;
-    [SerializeField] Transform Gauche;
-    [SerializeField] Transform Droite;
-    [SerializeField] int index;
     [SerializeField] TextMeshProUGUI playerGold;
+
+    [SerializeField]
+    private Transform[] pages;
 
     public void UpdateSelf()
     {
@@ -19,9 +18,12 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI(List<ItemData> itemList)
     {
-        int half = Inventory.Instance.NbSlotInventory / 2;
-        Gauche.RemoveAll();
-        Droite.RemoveAll();
+        // Clear all pages
+        foreach (Transform item in this.pages)
+            item.RemoveAll();
+
+        int amountPerPage = Inventory.Instance.NbSlotInventory / this.pages.Length;
+
         for (int i = 0; i < itemList.Count; i++)
         {
             Sprite sprite = null;
@@ -37,7 +39,7 @@ public class InventoryUI : MonoBehaviour
             }
 
             // Choisir le parent en fonction de l'index
-            Transform slotParent = i < half ? Gauche : Droite;
+            Transform slotParent = this.pages[i / amountPerPage];
             this.CreateSlot(i, sprite, quantity, maxStack, slotParent);
         }
     }
