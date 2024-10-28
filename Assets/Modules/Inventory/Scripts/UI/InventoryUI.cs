@@ -19,6 +19,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateUI(List<ItemData> itemList)
     {
+        int half = Inventory.Instance.NbSlotInventory / 2;
         Gauche.RemoveAll();
         Droite.RemoveAll();
         for (int i = 0; i < itemList.Count; i++)
@@ -36,7 +37,7 @@ public class InventoryUI : MonoBehaviour
             }
 
             // Choisir le parent en fonction de l'index
-            Transform slotParent = i < 9 ? Gauche : Droite;
+            Transform slotParent = i < half ? Gauche : Droite;
             this.CreateSlot(i, sprite, quantity, maxStack, slotParent);
         }
     }
