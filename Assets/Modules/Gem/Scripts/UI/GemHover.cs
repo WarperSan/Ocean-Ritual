@@ -140,8 +140,8 @@ namespace GemModule.UI
             if (data == null)
                 FetchData();
 
-            this.Icon.sprite = gem.sprite;
-            this.Level.text = $"Level of the gems :  {gem.LVL}";
+            //this.Icon.sprite = gem.sprite;
+            //this.Level.text = $"Level of the gems :  {gem.LVL}";
             this.ChangeInfoStat(gem);
             this.Form.Show(gem, gem);
             this.navBar.Select(0);

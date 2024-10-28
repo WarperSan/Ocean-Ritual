@@ -8,14 +8,15 @@ public class StarsManager : MonoBehaviour
     [SerializeField] GameObject Bronze;
     [SerializeField] GameObject Argent;
     [SerializeField] GameObject Or;
+    [SerializeField] GameObject Empty;
     [SerializeField] GameObject StarsContainer;
     [SerializeField] bool updateData = false;
     [SerializeField] int LVL = 1;
-    [SerializeField] int MaxLVL = 100;
+    [SerializeField] int totalStars = 16;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -28,42 +29,34 @@ public class StarsManager : MonoBehaviour
     }
     public void CreatUiStars(int lvl)
     {
-        if (lvl > MaxLVL)
-        {
-            Debug.Log("niveau trop grand  de la gemme");
-            return;
-        }
-        // On vide d'abord le conteneur pour éviter les doublons
+        // On vide d'abord le conteneur pour ï¿½viter les doublons
         foreach (Transform child in StarsContainer.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // Calcul du nombre de chaque étoile
-        int numOr = lvl / 10;            // Chaque étoile Or représente 10 niveaux
+        // Calcul du nombre de chaque ï¿½toile
+        int numOr = lvl / 10;            // Chaque ï¿½toile Or reprï¿½sente 10 niveaux
         int remainingAfterOr = lvl % 10;
 
-        int numArgent = remainingAfterOr / 5; // Chaque étoile Argent représente 5 niveaux
+        int numArgent = remainingAfterOr / 5; // Chaque ï¿½toile Argent reprï¿½sente 5 niveaux
         int remainingAfterArgent = remainingAfterOr % 5;
 
-        int numBronze = remainingAfterArgent; // Chaque étoile Bronze représente 1 niveau
+        int numBronze = remainingAfterArgent; // Chaque ï¿½toile Bronze reprï¿½sente 1 niveau
 
-        // Création des étoiles Or
+        // Crï¿½ation des ï¿½toiles Or
         for (int i = 0; i < numOr; i++)
-        {
             Instantiate(Or, StarsContainer.transform);
-        }
 
-        // Création des étoiles Argent
+        // Crï¿½ation des ï¿½toiles Argent
         for (int i = 0; i < numArgent; i++)
-        {
             Instantiate(Argent, StarsContainer.transform);
-        }
 
-        // Création des étoiles Bronze
+        // Crï¿½ation des ï¿½toiles Bronze
         for (int i = 0; i < numBronze; i++)
-        {
             Instantiate(Bronze, StarsContainer.transform);
-        }
+
+        for (int i = numBronze + numArgent + numOr; i < totalStars; i++)
+            Instantiate(Empty, StarsContainer.transform);
     }
 }
