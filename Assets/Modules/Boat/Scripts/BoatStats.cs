@@ -15,7 +15,7 @@ public class BoatStats : MonoBehaviour, Equipment
         this.UpdateStat();
     }
 
-    
+
 
     #region Stats
 
@@ -27,7 +27,7 @@ public class BoatStats : MonoBehaviour, Equipment
     [SerializeField] private TypeQuantity<TypeBoat> BOOST_SPEED = new(TypeBoat.navigateSpeed, 4f);
     [SerializeField] private TypeQuantity<TypeBoat> BOOST_HANDLING = new(TypeBoat.Handling, 10f);
 
-    
+
 
     public void UpdateStat()
     {
@@ -54,7 +54,14 @@ public class BoatStats : MonoBehaviour, Equipment
     #endregion
 
     #region Upgrades
-    public string Name { get; }
+    [SerializeField] string Name;
+
+    
+
+    string Equipment.Name
+    {
+        get { return Name; }
+    }
     [SerializeField]
     private int forgePercentage;
 
