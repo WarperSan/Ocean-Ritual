@@ -1,6 +1,7 @@
 using DhafinFawwaz.AnimationUILib;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -14,6 +15,12 @@ namespace UIModule.Components
     {
         [SerializeField, Tooltip("Content that will be toggled by this tab")]
         private GameObject Content;
+
+        [SerializeField]
+        private UnityEvent OnOpen;
+
+        [SerializeField]
+        private UnityEvent OnClose;
 
         #region Select
 
@@ -53,6 +60,8 @@ namespace UIModule.Components
 
             if (!this.isSelected)
                 this.Select();
+
+            this.OnOpen?.Invoke();
         }
 
         /// <summary>
@@ -64,6 +73,8 @@ namespace UIModule.Components
 
             if (this.isSelected)
                 this.UnSelect();
+
+            this.OnClose?.Invoke();
         }
 
         #region Hover
