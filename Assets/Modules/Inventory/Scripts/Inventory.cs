@@ -466,10 +466,10 @@ public class Inventory : Singleton<Inventory>
     public void UpdateCashCost()
     {
         if (textCostInventory)
-            textCostInventory.text = Cash.ToString();
+            textCostInventory.text = string.Format("<sprite name=stack_coins_icon> {0}", Cash);
 
         if (textCostInventoryBlacksmith)
-            textCostInventoryBlacksmith.text = Cash.ToString();
+            textCostInventoryBlacksmith.text = string.Format("<sprite name=stack_coins_icon> {0}", Cash);
         Blacksmith.Instance.InterfaceUpgrade();
     }
     public void AddCash(int AddingCash = 0)
