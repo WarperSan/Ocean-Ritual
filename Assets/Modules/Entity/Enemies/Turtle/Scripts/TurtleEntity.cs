@@ -11,7 +11,6 @@ public class TurtleEntity :  EntityBehaviour
     [SerializeField] float chance = 20;
     [SerializeField] int min = 1;
     [SerializeField] int max = 4;
-    [SerializeField] bool dead = false;
     #region EntityBehaviour
     protected override void OnStart()
     {

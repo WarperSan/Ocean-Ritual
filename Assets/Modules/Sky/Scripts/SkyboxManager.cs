@@ -6,34 +6,30 @@ namespace SkyModule
 {
     public class SkyboxManager : MonoBehaviour
     {
-        public List<ParallaxObject> parallaxObjects;
+        public List<Transform> parallaxObjects;
         public MeshRenderer dome;
         private float offset;
         public float factor;
+
+        public float timePerCycle = 10;
 
         // Update is called once per frame
         void Update()
         {
             float elapsed = Time.deltaTime;
+            offset += elapsed;
 
-            foreach (ParallaxObject item in this.parallaxObjects)
+            float scaledOffset = offset / timePerCycle;
+
+            foreach (Transform item in this.parallaxObjects)
             {
-                item.origin.Rotate(Vector3.up, item.factor * elapsed);
+                Vector3 rotation = item.rotation.eulerAngles;
+                rotation.y = scaledOffset * 360f;
+
+                item.rotation = Quaternion.Euler(rotation);
             }
 
-            offset += elapsed * this.factor / 100f;// * this.factor;
-
-            dome.material.mainTextureOffset = new Vector2(offset, 0);
-
-            //offset += elapsed * this.factor * 0.25f / 90f;
-            //dome.material.mainTextureOffset = new Vector2(offset, 0);
-        }
-
-        [Serializable]
-        public struct ParallaxObject
-        {
-            public float factor;
-            public Transform origin;
+            dome.material.mainTextureOffset = new Vector2(scaledOffset, 0);
         }
     }
 }

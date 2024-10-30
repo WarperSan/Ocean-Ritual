@@ -19,7 +19,7 @@ namespace TortueNode
         
         private float RayonToHeal;
         private float HealPower;
-        private Transform healerTransform; // Position à partir de laquelle on effectue la recherche
+        private Transform healerTransform; // Position ï¿½ partir de laquelle on effectue la recherche
         Heal heal = new Heal();
         // Constructeur
         public Heals(float RayonToHeal, float HealPower, Transform healerTransform)
@@ -31,7 +31,7 @@ namespace TortueNode
 
         }
 
-        // Méthode principale du node
+        // Mï¿½thode principale du node
         protected override NodeState OnEvaluate()
         {
            
@@ -58,7 +58,7 @@ namespace TortueNode
                 foreach (Entity entity in entitiesToHeal)
                 {
 
-                    entity.UseHeal(heal); // Par exemple, une méthode 'Heal' qui augmente la santé
+                    entity.UseHeal(heal); // Par exemple, une mï¿½thode 'Heal' qui augmente la santï¿½
                 }
 
                 return NodeState.SUCCESS;
@@ -67,7 +67,7 @@ namespace TortueNode
             return NodeState.SUCCESS;
         }
 
-        // Méthode pour trouver les entités dans un rayon
+        // Mï¿½thode pour trouver les entitï¿½s dans un rayon
         private List<Entity> FindPeopleToHeal()
         {
             List<Entity> entitiesToHeal = new List<Entity>();
@@ -75,22 +75,22 @@ namespace TortueNode
             // Utilisation d'un LayerMask pour ne chercher que les ennemis
             int enemyLayerMask = LayerMask.GetMask("Enemy");
 
-            // On vérifie que le healerTransform est bien initialisé avant d'appeler OverlapSphere
+            // On vï¿½rifie que le healerTransform est bien initialisï¿½ avant d'appeler OverlapSphere
             if (healerTransform == null)
             {
                 Debug.LogError("Healer Transform is not assigned!");
                 return entitiesToHeal;
             }
 
-            // Exécution de la détection dans un rayon avec filtrage par layer
+            // Exï¿½cution de la dï¿½tection dans un rayon avec filtrage par layer
             Collider[] hitColliders = Physics.OverlapSphere(healerTransform.position, RayonToHeal, enemyLayerMask);
 
-            // Parcours des objets détectés
+            // Parcours des objets dï¿½tectï¿½s
             foreach (Collider hitCollider in hitColliders)
             {
                 Entity entity = hitCollider.GetComponent<Entity>();
 
-                // Vérification que l'entité n'est pas nulle et différente du casteur
+                // Vï¿½rification que l'entitï¿½ n'est pas nulle et diffï¿½rente du casteur
                 if (entity != null && entity.gameObject != healerTransform.gameObject)
                 {
                     entitiesToHeal.Add(entity);
@@ -110,24 +110,24 @@ namespace TortueNode
 
     public class Cooldown : Node
     {
-        // Durée entre deux attaques
+        // Durï¿½e entre deux attaques
         private float TimeBetwenneCooldown;
         
         private bool impactReset = false;
-        // Temps écoulé depuis la dernière attaque
+        // Temps ï¿½coulï¿½ depuis la derniï¿½re attaque
         private float timeLapse;
         public const string NeedFolow = "needFolow";
-        public const string Reset = "Reset";
+        public const string RESET_TAG = "Reset";
         // Constructeur pour initialiser le temps entre deux attaques
         public Cooldown(float TimeBetwenneAttack, bool impactReset = false)
         {
             
             this.TimeBetwenneCooldown = TimeBetwenneAttack;
-            this.timeLapse = 0f; // Initialiser le temps écoulé à zéro
+            this.timeLapse = 0f; // Initialiser le temps ï¿½coulï¿½ ï¿½ zï¿½ro
             this.impactReset = impactReset;
         }
 
-        // Méthode appelée à chaque évaluation du nœud
+        // Mï¿½thode appelï¿½e ï¿½ chaque ï¿½valuation du nï¿½ud
         protected override NodeState OnEvaluate()
         {
             bool NeedFolows = GetData<bool>(NeedFolow);
@@ -138,31 +138,31 @@ namespace TortueNode
                 {
                     return NodeState.FAILURE;
                 }
-                reset= GetData<bool>(Reset);
+                reset= GetData<bool>(RESET_TAG);
                 if (reset)
                 {
-                    SetData(Reset, false, 3);
+                    SetData(RESET_TAG, false, 3);
                     timeLapse = 0;
                 }
             }
-            // Incrémenter le temps écoulé depuis la dernière attaque
+            // Incrï¿½menter le temps ï¿½coulï¿½ depuis la derniï¿½re attaque
             timeLapse += Time.deltaTime;
 
-            // Si le temps écoulé dépasse ou atteint le temps d'attente entre les attaques
+            // Si le temps ï¿½coulï¿½ dï¿½passe ou atteint le temps d'attente entre les attaques
             if (timeLapse >= TimeBetwenneCooldown)
             {
-                // Le cooldown est terminé, réinitialiser le temps écoulé et retourner le succès
+                // Le cooldown est terminï¿½, rï¿½initialiser le temps ï¿½coulï¿½ et retourner le succï¿½s
                 timeLapse = 0f;
                 return NodeState.SUCCESS;
             }
             else
             {
-                // Si le cooldown n'est pas encore terminé, retourne "RUNNING"
+                // Si le cooldown n'est pas encore terminï¿½, retourne "RUNNING"
                 return NodeState.RUNNING;
             }
         }
 
-        // Fonction pour afficher le texte du nœud (utile pour un éditeur de comportement, par exemple)
+        // Fonction pour afficher le texte du nï¿½ud (utile pour un ï¿½diteur de comportement, par exemple)
         public override string GetText() => $"Cooldown ({timeLapse:F2}/{TimeBetwenneCooldown} sec)";
     }
 
@@ -170,12 +170,11 @@ namespace TortueNode
 
     public class ProxiBoat : Sequence
     {
-        public const string Reset = "Reset";
-        DistanceSmaller DistanceSmaller; // Peut être une autre Node si vous en avez besoin
+        DistanceSmaller DistanceSmaller; // Peut ï¿½tre une autre Node si vous en avez besoin
         Node root;
         Transform self;
-        string targets; // Nom ou clé des cibles
-        float distance; // Distance de proximité à vérifier
+        string targets; // Nom ou clï¿½ des cibles
+        float distance; // Distance de proximitï¿½ ï¿½ vï¿½rifier
         public const string NeedFolow = "needFolow";
         public ProxiBoat(Transform self, string target, float distance, Node root)
         {
@@ -189,19 +188,19 @@ namespace TortueNode
         {
            
 
-            // Vérifie si la distance à la cible est inférieure ou égale à la distance donnée
+            // Vï¿½rifie si la distance ï¿½ la cible est infï¿½rieure ou ï¿½gale ï¿½ la distance donnï¿½e
             if (IsClose())
             {
-                //  Debug.Log("Cible à proximité. Arrêter le suivi et déclencher l'animation.");
+                //  Debug.Log("Cible ï¿½ proximitï¿½. Arrï¿½ter le suivi et dï¿½clencher l'animation.");
                 SetData(NeedFolow, false, 1);
-                // SetData(Reset, false); // Arrêter le suivi si proche
+                // SetData(Reset, false); // Arrï¿½ter le suivi si proche
                 return NodeState.SUCCESS;
             }
             else
             {
-             //   Debug.Log("Cible éloignée. Continuer le suivi.");
+             //   Debug.Log("Cible ï¿½loignï¿½e. Continuer le suivi.");
                
-                SetData(Reset, true,1); // Continuer le suivi si loin
+                SetData(Cooldown.RESET_TAG, true,1); // Continuer le suivi si loin
                 SetData(NeedFolow, true, 1); // Continuer le suivi si loin
                
 
@@ -213,7 +212,7 @@ namespace TortueNode
 
         private bool IsClose()
         {
-            Transform target = TargetGeneral.Instance.Target; // Récupère la cible via la clé
+            Transform target = TargetGeneral.Instance.Target; // Rï¿½cupï¿½re la cible via la clï¿½
 
             if (target == null)
             {
@@ -225,7 +224,7 @@ namespace TortueNode
             float currentDistance = Vector3.Distance(self.position, target.position);
            
             
-            // Comparer avec la distance limite définie
+            // Comparer avec la distance limite dï¿½finie
             return currentDistance <= distance;
         }
 
@@ -245,12 +244,11 @@ namespace TortueNode
         bool returning = false;
         public const string CURRENT_TARGET = "currentTarget";
         Transform target;   // Rotation
-        Transform lunch;    // Déplacement
+        Transform lunch;    // Dï¿½placement
         Vector3 initialPosition; // Position initiale de lunch
         float initialYRotation;  // Rotation Y initiale
         float Distance;
         float timeLapseRotation =0;
-        public const string Reset = "Reset";
         bool start = false;
         public AnimationAttack(float distance,float animationTime, float animationVitesse, float animationTimeLunch, float floatanimationVitesseLunch, Transform target, Transform lunch)
         {
@@ -269,7 +267,7 @@ namespace TortueNode
         /// <returns></returns>
         protected override NodeState OnEvaluate()
         {
-          bool   reset = GetData<bool>(Reset);
+          bool   reset = GetData<bool>(Cooldown.RESET_TAG);
            
            
             NodeState state = children[0].Evaluate();
@@ -279,8 +277,7 @@ namespace TortueNode
                 {
                     ResetAnimation();
                     start= false;
-                    Debug.Log("CCCCCCCCC");
-                    SetData(Reset, false, 2);
+                    SetData(Cooldown.RESET_TAG, false, 2);
                 }
                 return state;
             }
@@ -322,7 +319,7 @@ namespace TortueNode
 
            
 
-            return NodeState.SUCCESS; // Animation terminée
+            return NodeState.SUCCESS; // Animation terminï¿½e
         }
 
         // Rotation simple sur l'axe Y
@@ -346,7 +343,7 @@ namespace TortueNode
                 if (timeLapseRotation >= animationTimeLunch)
                 {
                     returning = true;
-                    timeLapseRotation = 0f; // Réinitialise le timer pour le retour
+                    timeLapseRotation = 0f; // Rï¿½initialise le timer pour le retour
                     timeLapse = 0f;
                 }
             }
@@ -361,7 +358,7 @@ namespace TortueNode
                 }
                 else
                 {
-                    lunch.position = initialPosition; // Retourne à la position initiale
+                    lunch.position = initialPosition; // Retourne ï¿½ la position initiale
                     returning = false; // Fin du retour
                     lunchAnimation = false;
 
@@ -370,7 +367,7 @@ namespace TortueNode
             }
         }
 
-        // Réinitialisation après l'animation
+        // Rï¿½initialisation aprï¿½s l'animation
         public void ResetAnimation()
         {
             Debug.Log("REset animation");
@@ -449,30 +446,30 @@ namespace TortueNode
             if (!NeedFolows)
             {
                 agent.ResetPath(); // Annule toute destination en cours
-                return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppé
+                return NodeState.RUNNING; // Retourne FAILURE car le suivi est stoppï¿½
             }
 
             
             
 
-            // Vérifier si la cible ou l'agent sont null
+            // Vï¿½rifier si la cible ou l'agent sont null
             if (target == null || agent == null)
             {
                 Debug.Log("echec");
-                return NodeState.FAILURE; // Retourne échec s'il n'y a pas de cible ou d'agent
+                return NodeState.FAILURE; // Retourne ï¿½chec s'il n'y a pas de cible ou d'agent
             }
            
                
           
-            // Définir la destination de l'agent sur la position de la cible
+            // Dï¿½finir la destination de l'agent sur la position de la cible
             agent.SetDestination(target.position);
           
          
-            // Vérifier si l'agent est arrivé à destination
+            // Vï¿½rifier si l'agent est arrivï¿½ ï¿½ destination
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
               //  Debug.Log("succe");
-                return NodeState.SUCCESS; // Retourne succès si l'agent est arrivé
+                return NodeState.SUCCESS; // Retourne succï¿½s si l'agent est arrivï¿½
                 
             }
            // Debug.Log("en cour");

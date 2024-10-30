@@ -61,8 +61,6 @@ namespace ControllerModule.Controllers
         #region Turn
 
         [Header("Turn")]
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat can turn")]
-        private float turningSpeed = 1;
         private Vector2 direction;
 
         /// <summary>
@@ -97,9 +95,6 @@ namespace ControllerModule.Controllers
         #region Move
 
         [Header("Move")]
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat walks")]
-        private float movementSpeed = 20;
-
         [SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up")]
         private float movementAcceleration = 0.01f;
 
@@ -114,13 +109,7 @@ namespace ControllerModule.Controllers
 
         //For player movememnt correction
         private Vector3 movement;
-        public Vector3 MovementBoat
-        {
-            get
-            {
-                return movement;
-            }
-        }
+        public Vector3 MovementBoat => movement;
 
         /// <summary>
         /// Updates the movement of the boat
@@ -154,10 +143,6 @@ namespace ControllerModule.Controllers
             // Update Aboard
             //this.UpdateAboardPosition(diff);
         }
-        private void LateUpdate()
-        {
-            movement = Vector3.zero;
-        }
 
         public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
 
@@ -188,15 +173,9 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-        /// <inheritdoc/>
-        protected override void OnUpdate(float elapsed)
+        private void LateUpdate()
         {
-            // Only update when enabled
-            if (this.IsEnabled)
-            {
-                //this.UpdateWheel(elapsed);
-
-            }
+            movement = Vector3.zero;
         }
 
         /// <inheritdoc/>
