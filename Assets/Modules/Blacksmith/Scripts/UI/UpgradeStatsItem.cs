@@ -29,7 +29,6 @@ namespace BlacksmithModule
         {
             // Construire la cha�ne de caract�res pour l'affichage
             StringBuilder builder = new();
-
             builder.AppendFormat("<b>{0}</b>", stats.name);
             builder.AppendLine();
 
@@ -54,11 +53,24 @@ namespace BlacksmithModule
             text.text = builder.ToString();
 
             // Acc�der au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
-            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color=#030>{0}</color>", stats.upgradeCost);
+            bool enough = Inventory.Instance.HaveEnoughtCash(stats.upgradeCost);
+            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color={1}#030>{0}</color>", 
+            	stats.upgradeCost, 
+            	enough ? "#030" : "#700"
+            );
             button.onClick.RemoveAllListeners();
 
             string statName = stats.name;  // Capturer la variable locale
-            button.onClick.AddListener(() => UiBSGBN.Instance.ShowSocleUpgradeForGBN(statName));
+            button.onClick.AddListener(() => UpgradeStatItem(statName, stats.upgradeCost));
+            button.gameObject.SetActive(enough);
+        }
+        
+        public void UpgradeStatItem(string statName, int cost)
+        {
+            UiBSGBN.Instance.ShowSocleUpgradeForGBN(statName);
+            Inventory.Instance.GetCashUpgradeSocleCost(cost);
+
         }
     }
+   
 }

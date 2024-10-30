@@ -42,7 +42,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             ObjectSocleUI.SetActive(false);
         }
     }
-
+  
     public void ShowSocleUpgrade(componentGBN GBNcomponent, string name)
     {
 
@@ -61,6 +61,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
             upgradeButton.onClick.RemoveAllListeners();
             upgradeButton.onClick.AddListener(() => UpgradeStateBase(name));
             upgradeButton.onClick.AddListener(() => UpgradeSocle(GemmeGrid));
+            upgradeButton.onClick.AddListener(() =>Inventory.Instance.RemoveCashSocleCost());
         }
 
     }
@@ -121,9 +122,10 @@ public class UiBSGBN : Singleton<UiBSGBN>
             Button buttonComponent = buttonInstance.GetComponent<Button>();
             if (buttonComponent != null)
             {
-
+                
                 buttonComponent.onClick.AddListener(() =>
                 {
+                    Inventory.Instance.RemoveCashSocleCost();
                     UpgradeStateBase(name);
                     AddSocle(component);
                     SwitchBetweenUi();
@@ -246,8 +248,7 @@ public class UiBSGBN : Singleton<UiBSGBN>
                 item.SetItem(upgradeStat);
         }
     }
-
-    #endregion
+     #endregion
 
     #region Singleton
 

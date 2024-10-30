@@ -5006,6 +5006,7 @@ GameObject:
   - component: {fileID: 7643415117335893770}
   - component: {fileID: 2782474341744008936}
   - component: {fileID: 4923335370230827153}
+  - component: {fileID: 740450675727487252}
   m_Layer: 0
   m_Name: Buoy
   m_TagString: Buoy
@@ -5067,6 +5068,20 @@ MonoBehaviour:
   harvestRadius: 10
   aggroRadius: 20
   fleeRadius: 30
+--- !u!114 &740450675727487252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4936839583539260942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a5c16036a16dd45a78993694d84162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnRadius: 10
+  spawnCenter: {x: 0, y: 0, z: 0}
 --- !u!1001 &2482361954142978827
 PrefabInstance:
   m_ObjectHideFlags: 0

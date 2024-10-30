@@ -10,6 +10,7 @@ namespace FishingModule
     public class ZoneManager : MonoBehaviour
     {
         private FishingBuoy Buoy;
+        private GameObject targetBoat;
 
         [HideInInspector]
         public FishingManager manager;
@@ -26,14 +27,14 @@ namespace FishingModule
         #region Rings
 
         [Header("Rings")]
-        [SerializeField, Tooltip("Determines the radius of the harvest zone")]
-        private float harvestRadius;
+        //[SerializeField, Tooltip("Determines the radius of the harvest zone")]
+        private float harvestRadius = 25f;
 
-        [SerializeField, Tooltip("Determines the radius of the aggressiveness zone")]
-        private float aggroRadius;
+        //[SerializeField, Tooltip("Determines the radius of the aggressiveness zone")]
+        private float aggroRadius = 50f;
 
-        [SerializeField, Tooltip("Determines the radius of the flee zone")]
-        private float fleeRadius;
+        //[SerializeField, Tooltip("Determines the radius of the flee zone")]
+        private float fleeRadius = 75f;
 
         private void CheckForRings(Vector3 origin, Vector3 target)
         {
@@ -52,10 +53,12 @@ namespace FishingModule
 
             this.Buoy.KeepCollecting = false;
 
+
+            // todo
             // If player is in the aggro zone
             if (distance <= this.aggroRadius)
             {
-                // <Target player>
+                TargetGeneral.Instance.Target = targetBoat.transform;
                 return;
             }
 
@@ -65,6 +68,7 @@ namespace FishingModule
             if (distance <= this.fleeRadius)
             {
                 // <Damage buoy>
+                TargetGeneral.Instance.Target = Buoy.transform;
                 return;
             }
 
@@ -81,6 +85,7 @@ namespace FishingModule
         {
             this.Buoy = this.GetComponent<FishingBuoy>();
             this.startPosition = this.Buoy.transform.position;
+            this.targetBoat = GameObject.FindWithTag("Boat");
         }
 
         /// <inheritdoc/>

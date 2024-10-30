@@ -33,5 +33,20 @@ namespace FishingModule
 
             return $"<color={color}>{this.DisplayName}</color>";
         }
+
+        public int GetPrice()
+        {
+            int cash = this.Rarity switch
+            {
+                FishRarity.Uncommon => 5,
+                FishRarity.Rare => 10,
+                FishRarity.Epic => 15,
+                FishRarity.Legendary => 20,
+                FishRarity.Mythic => 25,
+                _ => 0
+            };
+            return cash;
+
+        }
     }
 }

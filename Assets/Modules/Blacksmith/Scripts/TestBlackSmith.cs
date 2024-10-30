@@ -15,7 +15,7 @@ namespace BlacksmithModule
         [SerializeField] public bool canAddNewCase;
         [SerializeField] private ShowGemShape showGemShape;
         public bool CasseOnlytrue;
-
+        private int Cost;
         public void ConvertGemme()
         {
             GemData = GemHelper.ConvertGemToGemData(Gem.GemScript);
@@ -81,7 +81,7 @@ namespace BlacksmithModule
 
             // Si aucune case n'est manquante, on d�sactive la possibilit� d'ajouter de nouvelles cases
             canAddNewCase = missingSpot > 0;
-
+            Cost = totalCost;
             this.SetTexts(totalCost, modifiedSpot, missingSpot);
         }
 
@@ -98,7 +98,10 @@ namespace BlacksmithModule
         private void SetTexts(int totalCost, int missingCount, int modifiedCount)
         {
             // Mise � jour des textes avec les nouvelles valeurs, tout en sauvegardant les textes originaux
-            cost.text = originalTexts[0] + " " + totalCost.ToString();             // Ajoute la valeur originale avec la nouvelle valeur du co�t
+            cost.text = Inventory.Instance.HaveEnoughtCash(Cost)
+                ? originalTexts[0] + " " + totalCost.ToString()
+                : originalTexts[0] + " <color=#FF0000>" + totalCost.ToString() + "</color>";
+            // Ajoute la valeur originale avec la nouvelle valeur du co�t
             MissingCase.text = originalTexts[1] + " " + missingCount.ToString();    // Ajoute la valeur originale avec le nombre de cases manquantes
             ModifiedCase.text = originalTexts[2] + " " + modifiedCount.ToString();  // Ajoute        nale avec le nombre de cases modifi�es
 
@@ -107,7 +110,7 @@ namespace BlacksmithModule
             LayoutRebuilder.ForceRebuildLayoutImmediate(MissingCase.rectTransform);
             LayoutRebuilder.ForceRebuildLayoutImmediate(ModifiedCase.rectTransform);
         }
-
+        
         private void RestoreOriginalTexts()
         {
             if (originalTexts == null)
@@ -121,8 +124,9 @@ namespace BlacksmithModule
 
         public void ConfirmChoice()
         {
-            if (true)// potentielement mettre que faut que le joueur a assé d'Argent
+            if (Inventory.Instance.HaveEnoughtCash(Cost))// potentielement mettre que faut que le joueur a assé d'Argent
             {
+                Inventory.Instance.RemoveCash(Cost);
                 GemData.Shape = new(TemporaryGemData.Shape.flatForme, TemporaryGemData.Shape.width, TemporaryGemData.Shape.height);
                 SetData(GemData);
             }

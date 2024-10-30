@@ -54,41 +54,41 @@ public class EquipmentTest : MonoBehaviour,Equipment
     public UpgradeStats GetStatToUpgradeAndCost()
     {
         // Crée des listes pour les statistiques de base et d'aperçu
-        List<UpgradeNameData> baseStats = new List<UpgradeNameData>
-    {
-        new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
-        new ((int)Attack.Quantite, Attack.Type.ToString()),
-        new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
-        new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
-        new ((int)FireRate.Quantite, FireRate.Type.ToString()),
-        new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
-        new ((int)Range.Quantite, Range.Type.ToString())
-    };
+        var baseStats = new List<UpgradeNameData>
+        {
+            new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
+            new ((int)Attack.Quantite, Attack.Type.ToString()),
+            new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
+            new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
+            new ((int)FireRate.Quantite, FireRate.Type.ToString()),
+            new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
+            new ((int)Range.Quantite, Range.Type.ToString())
+        };
 
 
-        List<UpgradeNameData> previewStats = new List<UpgradeNameData>
-    {
-        AfterUpgradPreviewStat(ReloadSpeed),
-        AfterUpgradPreviewStat(Attack),
-        AfterUpgradPreviewStat(BulletSpeed),
-        AfterUpgradPreviewStat(BulletSize),
-        AfterUpgradPreviewStat(FireRate),
-        AfterUpgradPreviewStat(AmmoCapacity),
-        AfterUpgradPreviewStat(Range)
-    };
+        var previewStats = new List<UpgradeNameData>
+        {
+            AfterUpgradPreviewStat(ReloadSpeed),
+            AfterUpgradPreviewStat(Attack),
+            AfterUpgradPreviewStat(BulletSpeed),
+            AfterUpgradPreviewStat(BulletSize),
+            AfterUpgradPreviewStat(FireRate),
+            AfterUpgradPreviewStat(AmmoCapacity),
+            AfterUpgradPreviewStat(Range)
+        };
 
         return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(),Name);
     }
 
     // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData
-    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade)
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum
     {
         float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f);
         int roundedValue = Mathf.CeilToInt(newValue);
 
         return new UpgradeNameData(roundedValue, statToUpgrade.Type.ToString());
     }
-   
+
     public void UpgradeEquipment()
     {
         ReloadSpeed.Quantite = AfterUpgradPreviewStat(ReloadSpeed).quantity;

@@ -11,6 +11,8 @@ namespace FishingModule
 
         [SerializeField]
         private FishPercent[] _fishes = new FishPercent[] { };
+        [SerializeField]
+        private GameObject[] enemies = new GameObject[] { };
 
         private void Start()
         {
@@ -99,6 +101,25 @@ namespace FishingModule
             return fishes;
         }
 
+        /// <summary>
+        /// Finds all the unique enemies
+        /// </summary>
+        /// <returns>Enemies found</returns>
+        public static Dictionary<GameObject, float> Enemies(IEnumerable<Territory> territories)
+        {
+            Dictionary<GameObject, float> enemies = new();
+
+            // Compile percentages
+            foreach (Territory territory in territories)
+            {
+                foreach (GameObject item in territory.enemies)
+                {
+                    enemies[item] = 1;
+                }
+            }
+
+            return enemies;
+        }
         #endregion
 
         #region Editor

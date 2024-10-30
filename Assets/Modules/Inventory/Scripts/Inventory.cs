@@ -5,12 +5,16 @@ using static EnumGeneral;
 using System.Linq;
 using FishingModule;
 using UtilsModule;
+using TMPro;
+using BlacksmithModule;
 
 [System.Serializable]
 public class Inventory : Singleton<Inventory>
 {
     public int NbSlotInventory = 12 * 2; // 12 items per page for 2 pages
+
     [SerializeField] public List<ItemData> ItemList = new();
+    [SerializeField] private int Cash = 0;
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
     //bool InventaireOuvert = false;
@@ -54,6 +58,7 @@ public class Inventory : Singleton<Inventory>
         {
             AddSlot();
         }
+        UpdateCashCost();
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -453,4 +458,69 @@ public class Inventory : Singleton<Inventory>
     protected override bool DestroyOnLoad => true;
 
     #endregion
+
+    public void UpdateCashCost()
+    {
+     
+        textCostInventory.text = Cash.ToString();
+        textCostInventoryBlacksmith.text = Cash.ToString();
+       Blacksmith.Instance.InterfaceUpgrade();
+    }
+    public void AddCash(int AddingCash=0)
+    {
+       
+      
+        Cash += AddingCash;
+        UpdateCashCost();
+    }
+
+    public void RemoveCash(int RemovingCash = 0 )
+    {
+        if (Cash- RemovingCash >= 0 )
+        {
+            Cash -= RemovingCash;
+            UpdateCashCost();
+        }
+    }
+
+    public void GetCashUpgradeSocleCost (int cash= 0)
+    {
+        CashToUpGradeSocle = cash;
+    }
+    public void RemoveCashSocleCost()
+    {
+        RemoveCash(CashToUpGradeSocle);
+    }
+    public bool HaveEnoughtCash(int CashNeed =0)
+    {
+       
+        return Cash>=CashNeed;
+    }
+   
+    public  int NumberOfCashFromSellingFish()
+    {
+        int CashFromSelling=0;
+        List<FishData> fish = ItemList.OfType<FishData>()
+                                           .Where(poisson => poisson.quantity > 0)
+                                           .ToList();
+        foreach (FishData fishData in fish)
+        {
+
+            CashFromSelling += fishData.fish.GetPrice()* fishData.quantity;
+
+        }
+
+
+        return CashFromSelling;
+    }
+    
+    public void sellingAllFish()
+    {
+        int totalCash = NumberOfCashFromSellingFish();
+
+      
+        ItemList.RemoveAll(item => item is FishData fishData);
+        // Ajout du total obtenu à la variable Cash
+        AddCash(totalCash);
+    }
 }

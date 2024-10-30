@@ -2,6 +2,7 @@ using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;
+using static EnumGeneral;
 
 namespace ControllerModule.Controllers
 {
@@ -9,6 +10,12 @@ namespace ControllerModule.Controllers
     {
         [SerializeField]
         private Rigidbody _rb;
+        private BoatStats _stats;
+
+        protected override void OnStart()
+        {
+            _stats = GetComponent<BoatStats>();
+        }
 
         #region Aboard
 
@@ -73,11 +80,11 @@ namespace ControllerModule.Controllers
             //D�signe le sense de la rotation et la vitesse de rotation 
             if (this.direction.x > 0)
             {
-                eulerAngleVelocity = new Vector3(0, turningSpeed, 0);
+                eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
             }
             else if (this.direction.x < 0)
             {
-                eulerAngleVelocity = new Vector3(0, -turningSpeed, 0);
+                eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
             }
 
             // Rotation RB
@@ -122,7 +129,7 @@ namespace ControllerModule.Controllers
         private void UpdateMove(float elapsed)
         {
 
-            float speed = GetSpeedMultiplier(this.direction) * this.movementSpeed;
+            float speed = GetSpeedMultiplier(this.direction) * _stats.GetSpeed();
 
             // Lerp the current speed to the wanted speed
             this.currentSpeed = this.currentSpeed < speed
@@ -256,5 +263,7 @@ namespace ControllerModule.Controllers
         public void OnMove(Vector2 direction) => this.direction = direction;
 
         #endregion
+
+        
     }
 }
