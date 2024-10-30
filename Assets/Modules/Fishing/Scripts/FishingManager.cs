@@ -94,7 +94,7 @@ namespace FishingModule
             if (this._buoy == null)
             {
                 this._buoy = Instantiate(this.buoyPrefab).GetComponent<FishingBuoy>();
-                this._buoy.transform.position = this.GetTerritoryCheckOrigin();
+                this._buoy.transform.position = this.GetTerritoryCheckOrigin() + new Vector3(0,5,0);
 
                 // Add callback
                 this._buoy.OnFishCaught += f => this.OnFishCaught?.Invoke(f);
