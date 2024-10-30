@@ -22,16 +22,18 @@ namespace FishingModule
         {
             string color = this.Rarity switch
             {
-                FishRarity.Uncommon => "green",
-                FishRarity.Rare => "#066",
-                FishRarity.Epic => "purple",
-                FishRarity.Legendary => "orange",
-                FishRarity.Mythic => "pink",
-                _ => "white"
+                FishRarity.Common => "#000000", // Black
+                FishRarity.Uncommon => "#0b6100", // Dark green
+                FishRarity.Rare => "#004a91", // Dark blue 
+                FishRarity.Epic => "#570091", // Dark purple
+                FishRarity.Legendary => "#c74c00", // Orange
+                FishRarity.Mythic => "#ff2957", // Redish pink
+                _ => "#000000" // No color (black by default)
             };
 
             return $"<color={color}>{this.DisplayName}</color>";
         }
+
         public int GetPrice()
         {
             int cash = this.Rarity switch
@@ -46,6 +48,5 @@ namespace FishingModule
             return cash;
 
         }
-
     }
 }

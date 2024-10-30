@@ -19,6 +19,9 @@ namespace GemModule.UI
         private ShowGemShape Form;
 
         [SerializeField]
+        private StarsManager Stars;
+
+        [SerializeField]
         private TextMeshProUGUI Level;
 
         [SerializeField]
@@ -75,7 +78,7 @@ namespace GemModule.UI
             }
 
             // Instancie et remplit les �l�ments horizontaux
-            for (int i = 0; i < list.Count; i += 2) // Pour chaque paire d'�l�ments
+            for (int i = 0; i < list.Count; i += 1) // Pour chaque paire d'�l�ments
             {
                 // R�cup�re le prefab de "horizontale" � partir du dictionnaire
                 if (!data.TryGetValue("horizontale", out GameObject prefab))
@@ -87,13 +90,11 @@ namespace GemModule.UI
                 // Instancie le prefab de "horizontale" sous le parent correspondant (Gun, Boat, Net)
                 GameObject horizontalInstance = Instantiate(prefab, parent.transform);
 
-                // Remplit les deux enfants avec les types et quantit�s, s'ils existent
-                for (int j = 0; j < 2; j++)
-                {
-                    int index = i + j;
+              
+                    int index = i ;
                     if (index < list.Count)
                     {
-                        Transform child = horizontalInstance.transform.GetChild(j); // R�cup�re l'enfant (0 ou 1)
+                        Transform child = horizontalInstance.transform.GetChild(0); // R�cup�re l'enfant (0 ou 1)
                         TextMeshProUGUI txt = child.GetComponentInChildren<TextMeshProUGUI>(); // R�cup�re le composant Text
 
                         if (txt != null)
@@ -105,7 +106,7 @@ namespace GemModule.UI
                             txt.color = GetTextColorForRatio(list[index].Quantite / lvl);
                         }
                     }
-                }
+                
             }
         }
 
@@ -114,7 +115,7 @@ namespace GemModule.UI
         {
             // Blanc pour ratio = 1
             if (ratio == 1)
-                return Color.white;
+                return Color.black;
 
             // Vert pour ratio = 2
             if (ratio == 2)
@@ -140,10 +141,11 @@ namespace GemModule.UI
             if (data == null)
                 FetchData();
 
-            this.Icon.sprite = gem.sprite;
-            this.Level.text = $"Level of the gems :  {gem.LVL}";
+            //this.Icon.sprite = gem.sprite;
+            //this.Level.text = $"Level of the gems :  {gem.LVL}";
             this.ChangeInfoStat(gem);
             this.Form.Show(gem, gem);
+            this.Stars.CreateStars(gem);
             this.navBar.Select(0);
         }
 

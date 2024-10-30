@@ -185,10 +185,8 @@ namespace UIModule
                 {
                     // Open menu
                     case OperationType.OPEN:
-                        yield return menu.Open();
-                        InputMaster.Instance += menu;
+                        yield return this.OpenMenu(menu);
                         openedMenus.Push(menu);
-                        ControllerManager.SwitchTo(menu);
                         break;
                     // Close menu
                     case OperationType.CLOSE:
@@ -201,10 +199,8 @@ namespace UIModule
                             if (cur == null)
                                 break;
 
-                            InputMaster.Instance -= cur;
-                            yield return cur.Close();
+                            yield return this.CloseMenu(cur);
                             openedMenus.Pop();
-                            ControllerManager.BackTo();
                         } while (cur != menu);
                         break;
                     default:
@@ -220,6 +216,18 @@ namespace UIModule
             }
 
             this.currentProcess = null;
+        }
+
+        private IEnumerator OpenMenu(UIMenu menu)
+        {
+            ControllerManager.SwitchTo(menu); // Desactivate previous inputs
+            yield return menu.Open(); // Wait for animation
+        }
+
+        private IEnumerator CloseMenu(UIMenu menu)
+        {
+            yield return menu.Close(); // Wait for animation
+            ControllerManager.BackTo(); // Activate previous inputs
         }
 
         #endregion

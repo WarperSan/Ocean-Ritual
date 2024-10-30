@@ -7,8 +7,6 @@ using UIModule.Interfaces;
 
 public class HoverManager : UIComponent
 {
-    private GameObject hoveredObject;
-
     private void Start()
     {
         this.hoverItems = this.GetComponentsInChildren<HoverItem>(true);
@@ -16,20 +14,33 @@ public class HoverManager : UIComponent
 
     private void Update()
     {
-        this.RaycastToUI();
+        IHoverable target = this.RaycastToUI();
 
-        // G�rer les mouvements de l'interface
-        this.MoveHover(Input.mousePosition);
-    }
-
-    private void RaycastToUI()
-    {
-        // Si la souris n'est plus sur un �l�ment UI (en dehors de l'inventaire), fermer la ressource
-        if (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject())
+        // Si aucun slot n'a �t� touch� (la souris n'est plus sur un InventorySlot), fermer les ressources
+        if (target == null)
         {
             this.HideHover();
             return;
         }
+
+        // Met � jour l'item
+        if (target != this.hoveredObject)
+        {
+            this.hoveredObject = target;
+            this.ShowHover(target.GetData());
+        }
+        // G�rer les mouvements de l'interface
+        else
+        {
+            this.MoveHover();
+        }
+    }
+
+    private IHoverable RaycastToUI()
+    {
+        // Si la souris n'est plus sur un �l�ment UI (en dehors de l'inventaire), fermer la ressource
+        if (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject())
+            return null;
 
         var pointerEventData = new PointerEventData(EventSystem.current)
         {
@@ -45,25 +56,19 @@ public class HoverManager : UIComponent
             if (!result.gameObject.TryGetComponent(out IHoverable hoverable))
                 continue;
 
-            // If hovering the same object, skip
-            if (this.hoveredObject == result.gameObject)
-                return;
-
-            // Met � jour l'item et le flag upDate
-            this.hoveredObject = result.gameObject;
-            this.ShowHover(hoverable.GetData());
-            return; // Sortir de la fonction une fois l'item trouv�
+            return hoverable; // Sortir de la fonction une fois l'item trouv�
         }
 
-        // Si aucun slot n'a �t� touch� (la souris n'est plus sur un InventorySlot), fermer les ressources
-        this.HideHover();
+        return null;
     }
 
     #region Movement
 
     private readonly Vector3[] corners = new Vector3[4];
-    private void MoveHover(Vector3 screenPosition)
+    private void MoveHover()
     {
+        Vector3 screenPosition = Input.mousePosition;
+
         this.Rect.GetWorldCorners(corners);
         float width = corners[2].x - corners[0].x;
         float height = corners[1].y - corners[0].y;
@@ -85,6 +90,7 @@ public class HoverManager : UIComponent
     #region Toggle Hover
 
     private HoverItem[] hoverItems;
+    private IHoverable hoveredObject;
 
     private bool ShowHover(ItemData itemData)
     {
@@ -95,7 +101,9 @@ public class HoverManager : UIComponent
                 continue;
 
             hover.SetData(itemData);
-            hover.gameObject.SetActive(true);
+            this.Rect.sizeDelta = hover.Rect.sizeDelta; // Copy size
+            this.MoveHover(); // Update position
+            hover.gameObject.SetActive(true); // Set active
             return true;
         }
 

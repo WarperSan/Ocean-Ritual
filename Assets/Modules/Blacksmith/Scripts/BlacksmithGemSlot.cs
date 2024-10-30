@@ -28,6 +28,9 @@ namespace BlacksmithModule
         private Graphic background;
 
         [SerializeField]
+        private Graphic frame;
+
+        [SerializeField]
         private ShowGemShape showGemShape;
 
         [SerializeField]
@@ -90,6 +93,7 @@ namespace BlacksmithModule
 
             this.transform.SetParent(this.canvasParent);
             this.background.SetAlpha(0f);
+            this.frame.SetAlpha(0f);
         }
 
         /// <inheritdoc/>
@@ -113,6 +117,7 @@ namespace BlacksmithModule
 
             this.canvasGroup.blocksRaycasts = true;
             this.background.SetAlpha(1f);
+            this.frame.SetAlpha(1f);
         }
 
         #endregion

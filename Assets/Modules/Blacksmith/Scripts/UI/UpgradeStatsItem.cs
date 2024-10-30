@@ -20,17 +20,16 @@ namespace BlacksmithModule
         [SerializeField]
         private Button button;
 
+        [SerializeField]
+        private TextMeshProUGUI buttonText;
+
         #endregion
 
         public void SetItem(UpgradeStats stats)
         {
             // Construire la cha�ne de caract�res pour l'affichage
             StringBuilder builder = new();
-
-            bool enought = Inventory.Instance.HaveEnoughtCash(stats.upgradeCost);
-            string color = enought ? "green" : "red";
-
-            builder.AppendFormat(" (<color={0}>${1}</color>)", color, stats.upgradeCost);
+            builder.AppendFormat("<b>{0}</b>", stats.name);
             builder.AppendLine();
 
             for (int i = 0; i < stats.baseStats.Count; i++)
@@ -39,7 +38,7 @@ namespace BlacksmithModule
                 UpgradeNameData upgradedStats = stats.previewStats[i];
 
                 builder.AppendFormat(
-                    "{0}:\t<color=red>{1}</color> > <color=green>{2}</color>",
+                    "{0}: <color=#700>{1}</color> > <color=#030>{2}</color>",
                     baseStats.name,
                     baseStats.quantity,
                     upgradedStats.quantity
@@ -54,15 +53,18 @@ namespace BlacksmithModule
             text.text = builder.ToString();
 
             // Acc�der au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
+            bool enough = Inventory.Instance.HaveEnoughtCash(stats.upgradeCost);
+            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color={1}>{0}</color>", 
+            	stats.upgradeCost, 
+            	enough ? "#030" : "#700"
+            );
             button.onClick.RemoveAllListeners();
 
             string statName = stats.name;  // Capturer la variable locale
             button.onClick.AddListener(() => UpgradeStatItem(statName, stats.upgradeCost));
-            if(!enought)
-            {
-                button.gameObject.SetActive(false);
-            }
+            button.gameObject.SetActive(enough);
         }
+        
         public void UpgradeStatItem(string statName, int cost)
         {
             UiBSGBN.Instance.ShowSocleUpgradeForGBN(statName);

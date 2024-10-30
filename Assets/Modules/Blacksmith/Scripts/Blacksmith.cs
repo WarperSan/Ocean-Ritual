@@ -12,15 +12,11 @@ namespace BlacksmithModule
 
         private Dictionary<string, componentGBN> DictionaireComponentGBN = new();
 
-        private void Start()
-        {
-            InterfaceUpgrade();
-        }
         public void InterfaceUpgrade()
         {
             this.GetAllUpgradeableItem();
             this.GetAllUpgrade();
-            UiBSGBN.Instance.CreateUiGBNUpgrade(ListStat);
+            UiBSGBN.Instance?.CreateUiGBNUpgrade(ListStat);
         }
         private void GetAllUpgrade()
         {
@@ -48,5 +44,12 @@ namespace BlacksmithModule
         {
             return DictionaireComponentGBN[name];
         }
+
+        #region Singleton
+
+        /// <inheritdoc/>
+        protected override bool DestroyOnLoad => true;
+
+        #endregion
     }
 }

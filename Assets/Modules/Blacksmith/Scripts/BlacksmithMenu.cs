@@ -1,6 +1,7 @@
 using BlacksmithModule;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UIModule.Menus
 {
@@ -29,5 +30,15 @@ namespace UIModule.Menus
         }
 
         public void CloseButton() => UIManager.Close<BlacksmithMenu>();
+
+        #region Page
+
+        [Header("Page")]
+        [SerializeField]
+        private RectMask2D pageMask;
+
+        public void TogglePageMask(bool isEnable) => this.pageMask.enabled = isEnable;
+
+        #endregion
     }
 }

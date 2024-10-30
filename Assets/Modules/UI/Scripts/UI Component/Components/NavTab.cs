@@ -1,4 +1,8 @@
+using DhafinFawwaz.AnimationUILib;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UIModule.Components
@@ -7,13 +11,45 @@ namespace UIModule.Components
     /// Component that determines a tab in a nav bar
     /// </summary>
     [RequireComponent(typeof(Button))]
-    public class NavTab : UIComponent
+    public class NavTab : UIComponent, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField, Tooltip("Content that will be toggled by this tab")]
         private GameObject Content;
 
-        [SerializeField, Tooltip("Bar that tells the user that this tab is selected")]
-        private GameObject SelectedBar;
+        [SerializeField]
+        private UnityEvent OnOpen;
+
+        [SerializeField]
+        private UnityEvent OnClose;
+
+        #region Select
+
+        [Header("Select")]
+        [SerializeField, Tooltip("Animation played when this tab is selected or hovered")]
+        private AnimationUI selectAnimation;
+
+        [SerializeField, Tooltip("Animation played when this tab is unselected")]
+        private AnimationUI unselectAnimation;
+
+        private bool isSelected = false;
+
+        private void Select()
+        {
+            if (this.gameObject.activeInHierarchy && this.selectAnimation != null)
+                this.selectAnimation.Play();
+
+            this.isSelected = true;
+        }
+
+        private void UnSelect()
+        {
+            if (this.gameObject.activeInHierarchy && this.unselectAnimation != null)
+                this.unselectAnimation.Play();
+
+            this.isSelected = false;
+        }
+
+        #endregion
 
         /// <summary>
         /// Opens this tab
@@ -22,8 +58,10 @@ namespace UIModule.Components
         {
             this.Content.SetActive(true);
 
-            if (this.SelectedBar != null)
-                this.SelectedBar.SetActive(true);
+            if (!this.isSelected)
+                this.Select();
+
+            this.OnOpen?.Invoke();
         }
 
         /// <summary>
@@ -33,9 +71,21 @@ namespace UIModule.Components
         {
             this.Content.SetActive(false);
 
-            if (this.SelectedBar != null)
-                this.SelectedBar.SetActive(false);
+            if (this.isSelected)
+                this.UnSelect();
+
+            this.OnClose?.Invoke();
         }
+
+        #region Hover
+
+        /// <inheritdoc/>
+        public void OnPointerEnter(PointerEventData eventData) => this.Select();
+
+        /// <inheritdoc/>
+        public void OnPointerExit(PointerEventData eventData) => this.UnSelect();
+
+        #endregion
 
         #region MonoBehaviour
 

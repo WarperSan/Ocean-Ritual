@@ -438,8 +438,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b0d8e645a714e42968e1718ae8561b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NbSlotInventory: 24
+  Cash: 100
   poissons: []
   gemmes: []
+  CashToUpGradeSocle: 0
+  textCostInventory: {fileID: 0}
+  textCostInventoryBlacksmith: {fileID: 0}
 --- !u!1 &2756187559124039721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,7 +1540,6 @@ Transform:
   - {fileID: 6332721204956459001}
   - {fileID: 527487167171045058}
   - {fileID: 7670487424783528657}
-  - {fileID: 6813953542670006289}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1452363097933179278
@@ -1644,54 +1648,6 @@ CapsuleCollider:
   m_Height: 2.0055313
   m_Direction: 1
   m_Center: {x: 0, y: 0.0029568672, z: 0}
---- !u!1 &6128096088832077432
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6813953542670006289}
-  - component: {fileID: 2715670129809882491}
-  m_Layer: 30
-  m_Name: Inventory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6813953542670006289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6128096088832077432}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6283901322987064102}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2715670129809882491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6128096088832077432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80b0d8e645a714e42968e1718ae8561b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textCostInventory: {fileID: 0}
-  Cash: 0
-  poissons: []
-  gemmes: []
 --- !u!1 &6502702440546438525
 GameObject:
   m_ObjectHideFlags: 0
