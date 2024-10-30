@@ -29,7 +29,7 @@ namespace EntityModule
         private Attack attack = null;
 
         /// <summary>
-        /// Attributes an attack to this projectile
+        /// Attributes an Attaque to this projectile
         /// </summary>
         public void Attribute(Attack attack)
         {
@@ -38,7 +38,7 @@ namespace EntityModule
         }
 
         /// <summary>
-        /// Called when this projectile gets attributed an attack
+        /// Called when this projectile gets attributed an Attaque
         /// </summary>
         protected virtual void OnAttributed(Attack attack) { }
 
@@ -118,10 +118,10 @@ namespace EntityModule
 
         private void HitEntity(Entity entity)
         {
-            // If attack invalid, skip
+            // If Attaque invalid, skip
             if (this.attack == null)
             {
-                Debug.LogWarning($"No attack was attributed when '{this.name}' hit the entity '{entity.name}'.");
+                Debug.LogWarning($"No Attaque was attributed when '{this.name}' hit the entity '{entity.name}'.");
                 return;
             }
 
@@ -131,12 +131,12 @@ namespace EntityModule
         }
 
         /// <summary>
-        /// Called before this projectile applies its attack to the entity
+        /// Called before this projectile applies its Attaque to the entity
         /// </summary>
         protected virtual void OnPreApply(Entity entity, Attack attack) { }
 
         /// <summary>
-        /// Called after this projectile applied its attack to the entity
+        /// Called after this projectile applied its Attaque to the entity
         /// </summary>
         protected virtual void OnPostApply(Entity entity, Attack attack) { }
 

@@ -72,7 +72,7 @@ namespace EntityModule
         #region Receive Attack
 
         /// <summary>
-        /// Damages this entity with the given attack
+        /// Damages this entity with the given Attaque
         /// </summary>
         public void UseAttack(Attack attack, Projectile source)
         {
@@ -98,17 +98,17 @@ namespace EntityModule
         }
 
         /// <summary>
-        /// Modifies the amount of damage this entity will take from the given attack
+        /// Modifies the amount of damage this entity will take from the given Attaque
         /// </summary>
         protected virtual void ModifyAttack(Attack attack) { }
 
         /// <summary>
-        /// Called before this entity receives an attack
+        /// Called before this entity receives an Attaque
         /// </summary>
         protected virtual void OnPreAttack(Projectile source) { }
 
         /// <summary>
-        /// Called after this entity receives an non-fatal attack
+        /// Called after this entity receives an non-fatal Attaque
         /// </summary>
         protected virtual void OnPostAttack(Projectile source) { }
 

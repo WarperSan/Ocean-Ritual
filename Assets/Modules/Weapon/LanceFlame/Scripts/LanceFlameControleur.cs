@@ -234,21 +234,21 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.attack, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Range, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.Attaque, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Porter, 1f);
 
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.attack, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Range, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.Attaque, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Porter, 1f);
 
     [SerializeField] private componentGBN ComponantGBN;
     public componentGBN componentGBN => ComponantGBN;

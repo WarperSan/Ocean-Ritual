@@ -19,13 +19,13 @@ public class BoatStats : MonoBehaviour, Equipment
 
     #region Stats
 
-    [SerializeField] private TypeQuantity<TypeBoat> BASE_LIFE = new(TypeBoat.Life, 1f);
-    [SerializeField] private TypeQuantity<TypeBoat> BASE_SPEED = new(TypeBoat.navigateSpeed, 4f);
-    [SerializeField] private TypeQuantity<TypeBoat> BASE_HANDLING = new(TypeBoat.Handling, 10f);
+    [SerializeField] private TypeQuantity<TypeBoat> BASE_LIFE = new(TypeBoat.Vie, 1f);
+    [SerializeField] private TypeQuantity<TypeBoat> BASE_SPEED = new(TypeBoat.VitesseDeNavigation, 4f);
+    [SerializeField] private TypeQuantity<TypeBoat> BASE_HANDLING = new(TypeBoat.Maniment, 10f);
 
-    [SerializeField] private TypeQuantity<TypeBoat> BOOST_LIFE = new(TypeBoat.Life, 1f);
-    [SerializeField] private TypeQuantity<TypeBoat> BOOST_SPEED = new(TypeBoat.navigateSpeed, 4f);
-    [SerializeField] private TypeQuantity<TypeBoat> BOOST_HANDLING = new(TypeBoat.Handling, 10f);
+    [SerializeField] private TypeQuantity<TypeBoat> BOOST_LIFE = new(TypeBoat.Vie, 1f);
+    [SerializeField] private TypeQuantity<TypeBoat> BOOST_SPEED = new(TypeBoat.VitesseDeNavigation, 4f);
+    [SerializeField] private TypeQuantity<TypeBoat> BOOST_HANDLING = new(TypeBoat.Maniment, 10f);
 
 
 

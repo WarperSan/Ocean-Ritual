@@ -120,7 +120,7 @@ namespace WeaponModule
         }
 
         /// <summary>
-        /// Fetches the attack value for the new projectile
+        /// Fetches the Attaque value for the new projectile
         /// </summary>
         protected virtual Attack GetAttack() => null;
 

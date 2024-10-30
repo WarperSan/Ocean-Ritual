@@ -37,31 +37,31 @@ static public class EnumGeneral
     // Énumération pour les types d'armes
     public enum TypeWeapon
     {
-        ReloadSpeed,
-        attack,
-        bulletspeed,
-        bulletSize,
-        fireRate,
-        AmmoCapacity,
+        VitesseRechargement,
+        Attaque,
+        VitesseBalle,
+        TailleDeBalle,
+        VitesseDeTire,
+        CapaciterDeBall,
    
-        Range
+        Porter
     }
 
     // Énumération pour les types de bateaux
     public enum TypeBoat
     {
-        Life,
-        navigateSpeed,
-        Handling
+        Vie,
+        VitesseDeNavigation,
+        Maniment
     }
 
     // Énumération pour les types de filets
     public enum TypeNet
     {
-        MoreWeight,
-        NumberofFishCatch,
-        DistanceOfEnnemieSpawn,
-        TimeBetwenneEnnemieSpawn,
+        Poid,
+        PlusDePoissonAttraper,
+        CercleDePeche,
+        TempsEntreLesVague,
         
 
     }

@@ -6,13 +6,13 @@ using static EnumGeneral;
 
 public class EquipmentTest : MonoBehaviour,Equipment
 {
-    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.ReloadSpeed, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.attack, 1f);
-    [SerializeField] public TypeQuantity<TypeWeapon> BulletSpeed = new(TypeWeapon.bulletspeed, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> BulletSize = new(TypeWeapon.bulletSize, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.fireRate, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.AmmoCapacity, 1f);
-    [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Range, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.VitesseRechargement, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.Attaque, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> BulletSpeed = new(TypeWeapon.VitesseBalle, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> BulletSize = new(TypeWeapon.TailleDeBalle, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.VitesseDeTire, 1f);
+    [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.CapaciterDeBall, 1f);
+    [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Porter, 1f);
     [SerializeField] public componentGBN componentGBN;
     [SerializeField] public string Name;
 

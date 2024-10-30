@@ -62,7 +62,7 @@ public class TurtleBehaviorThree : MonoBehaviour, IVisualizable
         Parallel Parallel2 = new Parallel();
      //   _root.Attach(Parallel2);
 
-       // 2em embranchement section attack
+       // 2em embranchement section Attaque
        // Sequence sequence1 = new Sequence();
         
    
