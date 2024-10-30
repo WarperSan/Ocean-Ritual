@@ -6,7 +6,8 @@ namespace FishingModule
 {
     public class FishingManager : MonoBehaviour
     {
-        //
+        #region Fishing
+
         public void StartFishing()
         {
             // If buoy exists, skip
@@ -47,6 +48,8 @@ namespace FishingModule
             // Destroy buoy
             Destroy(this._buoy.gameObject);
         }
+
+        #endregion
 
         #region IInteractable
 
