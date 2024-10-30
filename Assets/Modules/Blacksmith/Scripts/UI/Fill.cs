@@ -35,7 +35,7 @@ public class Fill : MonoBehaviour
             if (amount <= spaceInCote)
             {
                 // Si la quantit� � ajouter rentre dans le c�t�
-                fillAmountCote += amount;
+                fillAmountCote += amount*2;
             }
             else
             {
@@ -83,7 +83,7 @@ public class Fill : MonoBehaviour
     {
         CanFuse = fillAmountCote >= 1f && fillAmountMilieu >= 1f;
         // Remplissage des c�t�s gauche et droit
-        float armGrowthFactor = fillAmountCote * 10f * growthPer10Percent;
+        float armGrowthFactor = fillAmountCote/2 * 10f * growthPer10Percent;
 
         // Ajuster la taille des bras gauche et droit
         leftArmFill.sizeDelta = new Vector2(armGrowthFactor, leftArmFill.sizeDelta.y);
