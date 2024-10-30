@@ -16,7 +16,7 @@ namespace BlacksmithModule
         {
             this.GetAllUpgradeableItem();
             this.GetAllUpgrade();
-            UiBSGBN.Instance.CreateUiGBNUpgrade(ListStat);
+            UiBSGBN.Instance?.CreateUiGBNUpgrade(ListStat);
         }
         private void GetAllUpgrade()
         {

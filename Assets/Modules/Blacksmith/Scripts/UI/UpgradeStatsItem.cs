@@ -54,7 +54,7 @@ namespace BlacksmithModule
 
             // Acc�der au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
             bool enough = Inventory.Instance.HaveEnoughtCash(stats.upgradeCost);
-            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color={1}#030>{0}</color>", 
+            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color={1}>{0}</color>", 
             	stats.upgradeCost, 
             	enough ? "#030" : "#700"
             );
