@@ -62,7 +62,7 @@ namespace BlacksmithModule
 
             string statName = stats.name;  // Capturer la variable locale
             button.onClick.AddListener(() => UpgradeStatItem(statName, stats.upgradeCost));
-            button.gameObject.SetActive(enough);
+            button.interactable = enough;
         }
         
         public void UpgradeStatItem(string statName, int cost)
