@@ -7,6 +7,22 @@ using static EnumGeneral;
 public class Gem
 {
 
+    public Gem()
+    {
+
+    }
+    public Gem(GemData gemdata)
+    {
+        var gemConvert = GemHelper.ConvertGemDataToGem(gemdata);
+        this.PositionX = gemConvert.PositionX;
+        this.PositionZ = gemConvert.PositionZ;
+        this.form = gemConvert.form;
+        this.GemColorsName = gemConvert.GemColorsName;
+        this.LVL = gemConvert.LVL;
+        this.typeWeapon = gemConvert.typeWeapon;
+        this.typeBoat = gemConvert.typeBoat;
+        this.typeNet = gemConvert.typeNet;
+    }
     #region Data
     // X coordinate of the gems's position
     [SerializeField] public int PositionX = 0;

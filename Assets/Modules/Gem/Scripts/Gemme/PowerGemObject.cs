@@ -14,6 +14,7 @@ public class PowerGemObject
 
     public List<Gemcomponent> GemcomponentList = new();
     [SerializeField] public List<Gem> GemmeList = new();
+    [SerializeField] Gem TemporaryGem;
     #endregion
 
     public void GetGemToScriptList()
@@ -24,6 +25,10 @@ public class PowerGemObject
             GemmeList.Add(item.GemScript);
         }
     
+    }
+    public void ReceiveGemData(GemData gemData)
+    {
+        TemporaryGem = new(gemData);
     }
   
     #region Gemme Placement
@@ -47,7 +52,15 @@ public class PowerGemObject
 
     #endregion
 
-   
+   public void TryPlacetemporaryGem(int x,int z)
+    {
+        if (GridGemme.PlaceObject(x, z, TemporaryGem.form.GetForme()))
+        {
+
+            GameObject theGemme = GeneratorGem.CreatGemmeObject(TemporaryGem, GemContainer.transform);
+            // theGemme.transform.position += new Vector3((Gemmes.GemScript.PositionX + AddSpace) * SocleGenerator.Instance.spaceBetweenCube, 0, (Gemmes.GemScript.PositionZ + AddSpace) * SocleGenerator.Instance.spaceBetweenCube);
+        }
+    }
 
     #region Gemme Management
 
