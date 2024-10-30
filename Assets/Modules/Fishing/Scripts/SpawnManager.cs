@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    float spawnRadius = 150f;
+    float spawnRadius = 100f;
     float spawnInterval = 15f;
 
     Vector3 spawnPosition;
