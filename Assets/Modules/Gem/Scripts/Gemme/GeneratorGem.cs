@@ -60,9 +60,29 @@ public   class GeneratorGem: MonoBehaviour
     //    CreatGemmeObject(GenerateRandomGemme(lvlTests, GemmeNames), Conteneur);
     //}
 
-   
+
 
     // Function to generate a random gems
+    public static (bool, int) randomlvl(int min, int max, float chance)
+    {
+        // Si la chance est en dehors de l'intervalle valide (0% à 100%), on retourne false et 0
+        if (chance <= 0f) return (false, 0);
+        if (chance >= 100f) chance = 100f;
+
+        // Générer un nombre aléatoire entre 0 et 100 pour décider de la création de la gemme
+        float randomChance = UnityEngine.Random.Range(0f, 100f);
+        if (randomChance <= chance)
+        {
+            // Si la gemme est créée, on génère un niveau aléatoire entre min et max
+            int level = UnityEngine.Random.Range(min, max + 1);
+            return (true, level);
+        }
+
+        // Si la gemme n'est pas créée, on retourne false et 0
+        return (false, 0);
+    }
+
+
     public static GemData GenerateRandomGemme(int LVL)
     {
 

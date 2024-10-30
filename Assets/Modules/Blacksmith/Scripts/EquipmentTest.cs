@@ -88,7 +88,7 @@ public class EquipmentTest : MonoBehaviour,Equipment
 
         return new UpgradeNameData(roundedValue, statToUpgrade.Type.ToString());
     }
-   
+
     public void UpgradeEquipment()
     {
         ReloadSpeed.Quantite = AfterUpgradPreviewStat(ReloadSpeed).quantity;
