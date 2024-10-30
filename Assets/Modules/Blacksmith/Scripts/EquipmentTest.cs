@@ -54,28 +54,28 @@ public class EquipmentTest : MonoBehaviour,Equipment
     public UpgradeStats GetStatToUpgradeAndCost()
     {
         // Crée des listes pour les statistiques de base et d'aperçu
-        List<UpgradeNameData> baseStats = new List<UpgradeNameData>
-    {
-        new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
-        new ((int)Attack.Quantite, Attack.Type.ToString()),
-        new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
-        new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
-        new ((int)FireRate.Quantite, FireRate.Type.ToString()),
-        new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
-        new ((int)Range.Quantite, Range.Type.ToString())
-    };
+        var baseStats = new List<UpgradeNameData>
+        {
+            new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
+            new ((int)Attack.Quantite, Attack.Type.ToString()),
+            new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
+            new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
+            new ((int)FireRate.Quantite, FireRate.Type.ToString()),
+            new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
+            new ((int)Range.Quantite, Range.Type.ToString())
+        };
 
 
-        List<UpgradeNameData> previewStats = new List<UpgradeNameData>
-    {
-        AfterUpgradPreviewStat(ReloadSpeed),
-        AfterUpgradPreviewStat(Attack),
-        AfterUpgradPreviewStat(BulletSpeed),
-        AfterUpgradPreviewStat(BulletSize),
-        AfterUpgradPreviewStat(FireRate),
-        AfterUpgradPreviewStat(AmmoCapacity),
-        AfterUpgradPreviewStat(Range)
-    };
+        var previewStats = new List<UpgradeNameData>
+        {
+            AfterUpgradPreviewStat(ReloadSpeed),
+            AfterUpgradPreviewStat(Attack),
+            AfterUpgradPreviewStat(BulletSpeed),
+            AfterUpgradPreviewStat(BulletSize),
+            AfterUpgradPreviewStat(FireRate),
+            AfterUpgradPreviewStat(AmmoCapacity),
+            AfterUpgradPreviewStat(Range)
+        };
 
         return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(),Name);
     }

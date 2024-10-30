@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028386, g: 0.22571427, b: 0.3069231, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -730,6 +730,12 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!224 &42371334 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3957834289167369804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &44312363
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,45 +827,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 954070959546925365, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: asset
-      value: 
-      objectReference: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d,
-        type: 2}
-    - target: {fileID: 1604041424450743481, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: turningSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1604041424450743481, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: movementDeceleration
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 2106167650794525003, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
-      value: Boat
-      objectReference: {fileID: 0}
     - target: {fileID: 2219113162198206845, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_Name
-      value: Boat
-      objectReference: {fileID: 0}
-    - target: {fileID: 2784294855443454938, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
-      value: Boat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3822919803148657661, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
-      value: Boat
-      objectReference: {fileID: 0}
-    - target: {fileID: 5452742149475532186, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
       value: Boat
       objectReference: {fileID: 0}
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
@@ -910,31 +880,6 @@ PrefabInstance:
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6797966064517645531, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6797966064517645531, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
-      value: Boat
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223288101983374972, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_TagString
-      value: Boat
-      objectReference: {fileID: 0}
-    - target: {fileID: 8721158448699621411, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8827376533077435850, guid: a0feb32f73fae1247a7cecdc50361629,
-        type: 3}
-      propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1270,7 +1215,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1362,7 +1307,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -37162,7 +37107,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -39472,7 +39417,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -41598,6 +41543,7 @@ RectTransform:
   - {fileID: 5975660572969873188}
   - {fileID: 394837736}
   - {fileID: 1494216484}
+  - {fileID: 42371334}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -76809,7 +76755,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -79759,7 +79705,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -80896,7 +80842,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -121789,6 +121735,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1833277247}
   - component: {fileID: 1833277246}
+  - component: {fileID: 1833277248}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -121873,6 +121820,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1833277248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833277245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!43 &1859315395
 Mesh:
   m_ObjectHideFlags: 0
@@ -123935,7 +123905,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -158868,7 +158838,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -159701,6 +159671,129 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ddd01fcbbc6faa6b8bf8366f26d09ed, type: 3}
+--- !u!1001 &3957834289167369804
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 784964658}
+    m_Modifications:
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2834.294
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1572.9998
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -47.241295
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -56.23226
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 570571598206495119, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213756478124071466, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_Name
+      value: GameOverMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213756478124071466, guid: f124e4fc50df794439087af1949ee13c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f124e4fc50df794439087af1949ee13c, type: 3}
 --- !u!1001 &5083037257465664019
 PrefabInstance:
   m_ObjectHideFlags: 0
