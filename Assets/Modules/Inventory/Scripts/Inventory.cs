@@ -17,6 +17,10 @@ public class Inventory : Singleton<Inventory>
     [SerializeField] private int Cash = 0;
     [SerializeField] List<FishData> poissons;
     [SerializeField] List<GemData> gemmes;
+
+    [SerializeField] int CashToUpGradeSocle;
+    [SerializeField] TextMeshProUGUI textCostInventory;
+    [SerializeField] TextMeshProUGUI textCostInventoryBlacksmith;
     //bool InventaireOuvert = false;
 
     // Start is called before the first frame update
@@ -174,7 +178,7 @@ public class Inventory : Singleton<Inventory>
         // Vérifie si l'index est dans les limites de la liste
         if (index >= 0 && index < ItemList.Count)
         {
-            ItemList[index]=null;
+            ItemList[index] = null;
         }
         else
         {
@@ -182,25 +186,25 @@ public class Inventory : Singleton<Inventory>
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
         UpdateListeComplementary();
-     
+
     }
 
     public ItemData GetItem(int index)
     {
         return ItemList[index];
     }
-    public void AddItem(ItemData item,int slot)
+    public void AddItem(ItemData item, int slot)
     {
         if (ItemList[slot] == null)
         {
             ItemList[slot] = item;
-         
+
         }
         else
         {
             AddItem(item);
         }
-     
+
     }
     public void AddItem(ItemData item)
     {
@@ -258,7 +262,7 @@ public class Inventory : Singleton<Inventory>
                 quantityremaining -= item.quantityMax;
             }
         }
-        
+
         //// 3. Si encore de la quantité à placer, crée un nouvel emplacement
         //int iterationLimit = 100; // Limite maximale d'itérations pour éviter les boucles infinies
         //int iterationCount = 0;   // Compteur d'itérations
@@ -357,7 +361,7 @@ public class Inventory : Singleton<Inventory>
         Debug.Log("Liste triée par name de fish.");
     }
 
-  
+
 
     public void SortType()
     {
@@ -437,7 +441,7 @@ public class Inventory : Singleton<Inventory>
             while (quantiteTotale > 0)
             {
                 var nouveauPoisson = new FishData(
-                    entry.Key, 
+                    entry.Key,
                     Math.Min(quantiterMax, quantiteTotale) // Utilisation de la valeur quantityMax propre à ce fish
                 );
                 poissonsFusionnes.Add(nouveauPoisson);
@@ -461,29 +465,31 @@ public class Inventory : Singleton<Inventory>
 
     public void UpdateCashCost()
     {
-     
-        textCostInventory.text = Cash.ToString();
-        textCostInventoryBlacksmith.text = Cash.ToString();
-       Blacksmith.Instance.InterfaceUpgrade();
+        if (textCostInventory)
+            textCostInventory.text = Cash.ToString();
+
+        if (textCostInventoryBlacksmith)
+            textCostInventoryBlacksmith.text = Cash.ToString();
+        Blacksmith.Instance.InterfaceUpgrade();
     }
-    public void AddCash(int AddingCash=0)
+    public void AddCash(int AddingCash = 0)
     {
-       
-      
+
+
         Cash += AddingCash;
         UpdateCashCost();
     }
 
-    public void RemoveCash(int RemovingCash = 0 )
+    public void RemoveCash(int RemovingCash = 0)
     {
-        if (Cash- RemovingCash >= 0 )
+        if (Cash - RemovingCash >= 0)
         {
             Cash -= RemovingCash;
             UpdateCashCost();
         }
     }
 
-    public void GetCashUpgradeSocleCost (int cash= 0)
+    public void GetCashUpgradeSocleCost(int cash = 0)
     {
         CashToUpGradeSocle = cash;
     }
@@ -491,34 +497,34 @@ public class Inventory : Singleton<Inventory>
     {
         RemoveCash(CashToUpGradeSocle);
     }
-    public bool HaveEnoughtCash(int CashNeed =0)
+    public bool HaveEnoughtCash(int CashNeed = 0)
     {
-       
-        return Cash>=CashNeed;
+
+        return Cash >= CashNeed;
     }
-   
-    public  int NumberOfCashFromSellingFish()
+
+    public int NumberOfCashFromSellingFish()
     {
-        int CashFromSelling=0;
+        int CashFromSelling = 0;
         List<FishData> fish = ItemList.OfType<FishData>()
                                            .Where(poisson => poisson.quantity > 0)
                                            .ToList();
         foreach (FishData fishData in fish)
         {
 
-            CashFromSelling += fishData.fish.GetPrice()* fishData.quantity;
+            CashFromSelling += fishData.fish.GetPrice() * fishData.quantity;
 
         }
 
 
         return CashFromSelling;
     }
-    
+
     public void sellingAllFish()
     {
         int totalCash = NumberOfCashFromSellingFish();
 
-      
+
         ItemList.RemoveAll(item => item is FishData fishData);
         // Ajout du total obtenu à la variable Cash
         AddCash(totalCash);
