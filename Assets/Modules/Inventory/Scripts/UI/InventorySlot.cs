@@ -35,7 +35,6 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.itemImage.SetAlpha(1);
 
         this.enabled = true;
-        //this.dragAndDropHandler.enabled = true;
     }
 
     /// <summary>
@@ -47,7 +46,6 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.quantity.text = "";
 
         this.enabled = false;
-        //this.dragAndDropHandler.enabled = false; // If the slot is cleared, cannot be dragged
     }
 
     /// <summary>
@@ -69,6 +67,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     Transform originalParent;
     GameObject fillingChild;
     Transform canvasParent;
+    int childIndex;
 
     /// <inheritdoc/>
     public void OnDragStart()
@@ -77,10 +76,12 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.originalParent = this.transform.parent;
         this.canvasGroup.blocksRaycasts = false;
 
+        this.childIndex = this.transform.GetSiblingIndex();
+
         // Adds temporary ghost slot
         this.fillingChild = Instantiate(this.gameObject, this.transform.parent);
         this.fillingChild.GetComponent<CanvasGroup>().alpha = 0.3f;
-        this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+        this.fillingChild.transform.SetSiblingIndex(this.childIndex);
 
         this.transform.SetParent(this.canvasParent);
 
@@ -131,10 +132,20 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     {
         Inventory.Instance.SwapPlace(this.slotIndex, slot.slotIndex);
 
-        slot.transform.SetParent(slot.originalParent);
-        slot.transform.SetSiblingIndex(this.slotIndex);
+        Transform parent = this.transform.parent;
+        int index = this.transform.GetSiblingIndex();
 
-        this.transform.SetSiblingIndex(slot.slotIndex);
+        this.transform.SetParent(slot.originalParent);
+        this.transform.SetSiblingIndex(slot.childIndex);
+
+        Transform otherParent = slot.originalParent;
+
+        // If same container but higher
+        if (otherParent == parent && this.slotIndex > slot.slotIndex)
+            index++;
+
+        slot.transform.SetParent(parent);
+        slot.transform.SetSiblingIndex(index);
 
         (this.slotIndex, slot.slotIndex) = (slot.slotIndex, this.slotIndex);
     }
