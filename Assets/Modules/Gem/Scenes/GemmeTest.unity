@@ -453,6 +453,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &370333233 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+    type: 3}
+  m_PrefabInstance: {fileID: 1622202739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0436abc96051d48bef9dd739ba75ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &372203725 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7652180690975914507, guid: f792ae393de1f7f4abcbf2939d232353,
@@ -615,6 +627,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3224549949748853335}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &915752002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+    type: 3}
+  m_PrefabInstance: {fileID: 1395624303}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0436abc96051d48bef9dd739ba75ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1031971058
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +650,7 @@ GameObject:
   - component: {fileID: 1031971061}
   - component: {fileID: 1031971060}
   - component: {fileID: 1031971059}
+  - component: {fileID: 1031971062}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -707,6 +732,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1031971062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031971058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &1032085005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1103668142667882387, guid: f792ae393de1f7f4abcbf2939d232353,
@@ -767,6 +836,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1120017909}
   - component: {fileID: 1120017908}
+  - component: {fileID: 1120017910}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -851,6 +921,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1120017910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120017907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!43 &1150656698
 Mesh:
   m_ObjectHideFlags: 0
@@ -1278,7 +1371,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.GemColorsName
-      value: Purple
+      value: Mauve
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -1505,6 +1598,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38029019e2fbbad489c5d24ad0767555, type: 3}
+--- !u!114 &1413808580 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+    type: 3}
+  m_PrefabInstance: {fileID: 1779772286}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0436abc96051d48bef9dd739ba75ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1580346300 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4943999832100611748, guid: f792ae393de1f7f4abcbf2939d232353,
@@ -1885,7 +1990,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.GemColorsName
-      value: Green
+      value: Vert
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -2073,6 +2178,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3224549949748853335}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1671757644 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
+    type: 3}
+  m_PrefabInstance: {fileID: 1615221942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0436abc96051d48bef9dd739ba75ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1779772286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2159,7 +2276,7 @@ PrefabInstance:
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
       propertyPath: GemScript.GemColorsName
-      value: Red
+      value: Rouge
       objectReference: {fileID: 0}
     - target: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
         type: 3}
@@ -2375,7 +2492,7 @@ PrefabInstance:
     - target: {fileID: 1216147678134185538, guid: f792ae393de1f7f4abcbf2939d232353,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 706
+      value: 775
       objectReference: {fileID: 0}
     - target: {fileID: 1585331831636985511, guid: f792ae393de1f7f4abcbf2939d232353,
         type: 3}
@@ -2535,7 +2652,7 @@ PrefabInstance:
     - target: {fileID: 6102911973240744481, guid: f792ae393de1f7f4abcbf2939d232353,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 706
+      value: 775
       objectReference: {fileID: 0}
     - target: {fileID: 7107214949324090436, guid: f792ae393de1f7f4abcbf2939d232353,
         type: 3}
@@ -2630,6 +2747,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[0]
+      value: 
+      objectReference: {fileID: 915752002}
+    - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[1]
+      value: 
+      objectReference: {fileID: 370333233}
+    - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[2]
+      value: 
+      objectReference: {fileID: 1413808580}
+    - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[3]
+      value: 
+      objectReference: {fileID: 1671757644}
     - target: {fileID: 5396478706487964537, guid: 04535e8df9139324e9c54fbad9bd6a38,
         type: 3}
       propertyPath: m_LocalPosition.x
