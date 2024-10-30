@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private float spawnRadius = 10f;
-    [SerializeField] private float spawnInterval = 10f;
+    float spawnRadius = 150f;
+    float spawnInterval = 15f;
 
     Vector3 spawnPosition;
     Dictionary<GameObject, float> enemies;
