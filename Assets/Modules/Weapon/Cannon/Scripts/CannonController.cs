@@ -11,6 +11,14 @@ namespace WeaponModule.Weapons.Cannon
     /// </summary>
     public class CannonController : WeaponController, IMovable
     {
+        private CannonStats _stats;
+
+        protected override void OnStart()
+        {
+            _stats = GetComponent<CannonStats>();
+        }
+
+
         #region Rotation
 
         [Header("Rotation")]
@@ -74,11 +82,12 @@ namespace WeaponModule.Weapons.Cannon
             // Place projectile
             projectile.transform.position = this.origin.position;
             projectile.transform.up = this.origin.forward;
-
+            
             // Set thrust
             if (projectile is BeachBall beachBall)
             {
                 beachBall.splashForce = this.thrustAmount;
+               
             }
         }
 
@@ -101,7 +110,7 @@ namespace WeaponModule.Weapons.Cannon
 
         protected override Attack GetAttack() => new()
         {
-            Damage = this.thrustAmount * 10,
+            Damage = _stats.GetDamage(),
             Type = AttackType.NORMAL,
             TargetType = ProjectileTarget.OPPONENTS
         };

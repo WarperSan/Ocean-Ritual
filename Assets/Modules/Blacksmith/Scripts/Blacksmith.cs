@@ -27,7 +27,7 @@ namespace BlacksmithModule
             this.ListStat.Clear(); // Assurez-vous de vider la liste avant d'ajouter de nouveaux �l�ments
             DictionaireComponentGBN = new();
             // Parcours de chaque forgeable item
-          Debug.Log(  this.forgeableItems.Count);
+         
             foreach (IForgeable item in this.forgeableItems)
             {
                 // R�cup�re les donn�es d'am�lioration

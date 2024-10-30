@@ -1,4 +1,5 @@
 using EntityModule;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using WeaponModule;
@@ -333,11 +334,16 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     public void UpgradeEquipment() => throw new System.NotImplementedException();
     public int GetCostForUpgrade() => throw new System.NotImplementedException();
     public UpgradeStats GetStatToUpgradeAndCost() => throw new System.NotImplementedException();
-    public UpgradeNameData AfterUpgradPreviewStat(TypeQuantity<TypeWeapon> statToUpgrade) => throw new System.NotImplementedException();
 
-    #endregion
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum
+    {
+        return null;
+    }
 
-    #region Effects
+
+        #endregion
+
+        #region Effects
 
     [Header("Effects")]
     [SerializeField] private ParticuleControleur ParticuleControleurs;
