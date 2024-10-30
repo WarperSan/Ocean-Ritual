@@ -6,6 +6,9 @@ namespace FishingModule
 {
     public class FishingManager : MonoBehaviour
     {
+        [SerializeField]
+        private SpawnManager spawnManager;
+
         #region Fishing
 
         public void StartFishing()
@@ -45,6 +48,7 @@ namespace FishingModule
                 Debug.Log("Player has failed the fishing!");
             }
 
+            spawnManager.DespawnEnemies();
             // Destroy buoy
             Destroy(this._buoy.gameObject);
         }

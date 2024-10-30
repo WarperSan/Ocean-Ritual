@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    float spawnRadius = 100f;
+    float spawnRadius = 50f;
     float spawnInterval = 15f;
-
     Vector3 spawnPosition;
     Dictionary<GameObject, float> enemies;
     List<GameObject> spawnedEnemies = new();
