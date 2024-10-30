@@ -141,6 +141,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHeath: 20
+  sprite: {fileID: 0}
+  chance: 100
+  min: 1
+  max: 4
+  dead: 0
 --- !u!195 &4161890283496119181
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -160,7 +165,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.25
+  m_BaseOffset: 1.6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!65 &6867785504967913763
@@ -237,7 +242,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}
@@ -247,7 +252,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}
@@ -262,7 +267,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 46024d3cf00086c9e945392ab7f20033,
         type: 3}

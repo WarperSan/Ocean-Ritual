@@ -6,8 +6,7 @@ namespace FishingModule
 {
     public class FishingManager : MonoBehaviour
     {
-        [SerializeField]
-        private SpawnManager spawnManager;
+        
 
         #region Fishing
 
@@ -34,6 +33,7 @@ namespace FishingModule
 
         public void EndFishing()
         {
+            
             bool isCollected = this._buoy != null && this._buoy.isCollected;
 
             // <Success>
@@ -48,7 +48,11 @@ namespace FishingModule
                 Debug.Log("Player has failed the fishing!");
             }
 
-            spawnManager.DespawnEnemies();
+            if (this._buoy.gameObject.TryGetComponent(out SpawnManager spawnManager))
+            {
+                spawnManager.DespawnEnemies();
+            }
+
             // Destroy buoy
             Destroy(this._buoy.gameObject);
         }

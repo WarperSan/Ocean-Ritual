@@ -20628,6 +20628,7 @@ MonoBehaviour:
     percent: 50
   enemies:
   - {fileID: 1218484418122100985, guid: c9dc2fe2cb4ac444b83450157e32ac55, type: 3}
+  - {fileID: 8269282008370612787, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
 --- !u!65 &501830242
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34803,6 +34804,11 @@ PrefabInstance:
       propertyPath: attackMinRange
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3518120984552420865, guid: afe8a9f6b26d10844b957d961fd8c843,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3576344779892675118, guid: afe8a9f6b26d10844b957d961fd8c843,
         type: 3}
       propertyPath: m_Layer
@@ -48188,7 +48194,7 @@ PrefabInstance:
     - target: {fileID: 785430545167892359, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 917465006152022518, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
@@ -48373,12 +48379,12 @@ PrefabInstance:
     - target: {fileID: 6801753351233765457, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6801753351233765457, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6904612692063458921, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
@@ -55888,6 +55894,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 229360806137528038, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: spawnManager
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 229360806137528038, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: territoryCheckOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 229360806137528038, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: territoryCheckOffset.z
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 759439653456713545, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: GBNScript.Name
@@ -55926,7 +55947,7 @@ PrefabInstance:
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.4
+      value: 5.13
       objectReference: {fileID: 0}
     - target: {fileID: 6757331812712978645, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
@@ -84333,6 +84354,11 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 1347593946}
+    - target: {fileID: 2715670129809882491, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: Cash
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2791313025613275967, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
       propertyPath: m_IsActive

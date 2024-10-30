@@ -30,6 +30,7 @@ public class SpawnManager : MonoBehaviour
             GameObject spawnedEnemy = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
 
             spawnedEnemies.Add(spawnedEnemy);
+            Debug.Log(spawnedEnemies.Count);
         }
     }
 
@@ -38,8 +39,10 @@ public class SpawnManager : MonoBehaviour
     /// </summary>
     public void DespawnEnemies()
     {
+        Debug.Log(spawnedEnemies.Count);
         foreach (GameObject enemy in spawnedEnemies)
         {
+
             if (enemy != null)
                 Destroy(enemy);
         }

@@ -14,24 +14,14 @@ namespace EntityModule.Enemies
         [SerializeField] float chance = 100;
         [SerializeField] int min = 1;
         [SerializeField] int max = 4;
-        [SerializeField] bool dead = false;
+        
         protected override void OnStart()
         {
             base.OnStart();
         }
 
-        /// <inheritdoc/>
-        private void Update()
-        {
-            if (dead)
-            {
-                OnDeath(1);
-            }
-            this.UpdateTree();
-            
-        }
-
-        protected override void OnDeath(float overDamage)
+        
+          protected override void OnDeath(float overDamage)
         {
             (bool, int) value = GeneratorGem.randomlvl(min,max,chance);
             if (value.Item1)
