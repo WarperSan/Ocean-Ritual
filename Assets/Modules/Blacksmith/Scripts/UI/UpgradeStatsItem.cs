@@ -20,6 +20,9 @@ namespace BlacksmithModule
         [SerializeField]
         private Button button;
 
+        [SerializeField]
+        private TextMeshProUGUI buttonText;
+
         #endregion
 
         public void SetItem(UpgradeStats stats)
@@ -28,7 +31,6 @@ namespace BlacksmithModule
             StringBuilder builder = new();
 
             builder.AppendFormat("<b>{0}</b>", stats.name);
-            builder.AppendFormat(" (<color=green>${0}</color>)", stats.upgradeCost);
             builder.AppendLine();
 
             for (int i = 0; i < stats.baseStats.Count; i++)
@@ -37,7 +39,7 @@ namespace BlacksmithModule
                 UpgradeNameData upgradedStats = stats.previewStats[i];
 
                 builder.AppendFormat(
-                    "{0}:\t<color=red>{1}</color> > <color=green>{2}</color>",
+                    "{0}: <color=#700>{1}</color> > <color=#030>{2}</color>",
                     baseStats.name,
                     baseStats.quantity,
                     upgradedStats.quantity
@@ -52,6 +54,7 @@ namespace BlacksmithModule
             text.text = builder.ToString();
 
             // Acc�der au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
+            buttonText.text = string.Format("Upgrade: <sprite name=coins_icons_icon> <color=#030>{0}</color>", stats.upgradeCost);
             button.onClick.RemoveAllListeners();
 
             string statName = stats.name;  // Capturer la variable locale

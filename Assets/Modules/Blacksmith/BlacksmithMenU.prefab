@@ -456,7 +456,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Content: {fileID: 2669748074935188852}
-  SelectedBar: {fileID: 323714527411245656}
+  OnOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClose:
+    m_PersistentCalls:
+      m_Calls: []
+  selectAnimation: {fileID: 0}
+  unselectAnimation: {fileID: 0}
 --- !u!1 &519363919149589015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,6 +1938,7 @@ MonoBehaviour:
   menu: {fileID: 333869201433375959}
   Icon: {fileID: 8462749632516107490}
   background: {fileID: 4172780133006553305}
+  frame: {fileID: 0}
   showGemShape: {fileID: 1899379880125292109}
   canvasGroup: {fileID: 5289990435906587250}
 --- !u!222 &8579559036404122008
@@ -2405,7 +2413,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Content: {fileID: 6334969635215631190}
-  SelectedBar: {fileID: 3161482707871134266}
+  OnOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClose:
+    m_PersistentCalls:
+      m_Calls: []
+  selectAnimation: {fileID: 0}
+  unselectAnimation: {fileID: 0}
 --- !u!1 &2185069133872848849
 GameObject:
   m_ObjectHideFlags: 0
@@ -2420,7 +2435,7 @@ GameObject:
   - component: {fileID: 5089337448366745342}
   - component: {fileID: 5231897586898324092}
   m_Layer: 5
-  m_Name: BlacksmithMenu
+  m_Name: BlacksmithMenU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2464,6 +2479,7 @@ MonoBehaviour:
   closeAnimation: {fileID: 5231897586898324092}
   inventoryUI: {fileID: 6245305549510668311}
   gemSlot: {fileID: 4211979022877026730}
+  pageMask: {fileID: 0}
 --- !u!225 &2465360720216552270
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2490,7 +2506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TotalDuration: 0.21000001
   AnimationSequence:
-  - AtTime: At 0s [Wait 0,01s]
+  - AtTime: At 0s [Wait 0.01s]
     StartTime: 0
     TriggerStart: 0
     TriggerEnd: 0
@@ -2569,7 +2585,7 @@ MonoBehaviour:
     MaxVisibleCharactersState: 0
     MaxVisibleCharactersStart: 0
     MaxVisibleCharactersEnd: 0
-  - AtTime: At 0,01s [Parent] [SetActive to True]
+  - AtTime: At 0.01s [Parent] [SetActive to True]
     StartTime: 0.01
     TriggerStart: 0
     TriggerEnd: 0
@@ -2648,7 +2664,7 @@ MonoBehaviour:
     MaxVisibleCharactersState: 0
     MaxVisibleCharactersStart: 0
     MaxVisibleCharactersEnd: 0
-  - AtTime: At 0,01s [BlacksmithMenu] [CanvasGroup]
+  - AtTime: At 0.01s [BlacksmithMenU] [CanvasGroup]
     StartTime: 0.01
     TriggerStart: 0
     TriggerEnd: 0
@@ -2744,7 +2760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TotalDuration: 0.35
   AnimationSequence:
-  - AtTime: At 0s [Wait 0,1s]
+  - AtTime: At 0s [Wait 0.1s]
     StartTime: 0
     TriggerStart: 0
     TriggerEnd: 0
@@ -2823,7 +2839,7 @@ MonoBehaviour:
     MaxVisibleCharactersState: 0
     MaxVisibleCharactersStart: 0
     MaxVisibleCharactersEnd: 0
-  - AtTime: At 0,1s [BlacksmithMenu] [CanvasGroup]
+  - AtTime: At 0.1s [BlacksmithMenU] [CanvasGroup]
     StartTime: 0.1
     TriggerStart: 0
     TriggerEnd: 0
@@ -2902,7 +2918,7 @@ MonoBehaviour:
     MaxVisibleCharactersState: 0
     MaxVisibleCharactersStart: 0
     MaxVisibleCharactersEnd: 0
-  - AtTime: At 0,1s [Wait 0,25s]
+  - AtTime: At 0.1s [Wait 0.25s]
     StartTime: 0.1
     TriggerStart: 0
     TriggerEnd: 0
@@ -2981,7 +2997,7 @@ MonoBehaviour:
     MaxVisibleCharactersState: 0
     MaxVisibleCharactersStart: 0
     MaxVisibleCharactersEnd: 0
-  - AtTime: At 0,35s [Parent] [SetActive to False]
+  - AtTime: At 0.35s [Parent] [SetActive to False]
     StartTime: 0.35
     TriggerStart: 0
     TriggerEnd: 0
@@ -3613,7 +3629,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Content: {fileID: 7169366838126524733}
-  SelectedBar: {fileID: 757421781387565614}
+  OnOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClose:
+    m_PersistentCalls:
+      m_Calls: []
+  selectAnimation: {fileID: 0}
+  unselectAnimation: {fileID: 0}
 --- !u!1 &2623669506105285485
 GameObject:
   m_ObjectHideFlags: 0
