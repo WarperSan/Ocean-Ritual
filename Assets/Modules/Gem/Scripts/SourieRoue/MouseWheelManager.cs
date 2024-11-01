@@ -264,8 +264,8 @@ public class MouseWheelManager : MonoBehaviour
             {
                 Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript.GivePositionRef(gem.GemScript);
                 objetMemory.transform.SetParent(scripSocle.GemContainer.transform);
-                   Debug.Log(gem.GemScript.PositionX);
-                Debug.Log(gem.GemScript.PositionZ);
+                   //Debug.Log(gem.GemScript.PositionX);
+               // Debug.Log(gem.GemScript.PositionZ);
               //  Debug.Log(coordone.z);
                 MoveObject(objetMemory.transform, true);
                 notSelectObject();
