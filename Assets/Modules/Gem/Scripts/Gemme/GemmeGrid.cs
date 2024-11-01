@@ -172,7 +172,26 @@ public class GemmeGrid : MonoBehaviour
             return false;
         }
     }
+    //appeler si on tente de placer une gemme qui n'est pas sur la grid (de l'inventaire)
+    public bool TryPlaceObjectOnGrid(int x, int y, Gem gemmeToPlace)
+    {
 
+       bool[,] form = gemmeToPlace.form.GetForme();
+        if (CanPlaceObject(x, y, form))
+        {
+            UpdateGrid(x, y, form);
+
+            // Update the gems's position
+            gemmeToPlace.PositionX = x;
+            gemmeToPlace.PositionZ = y;
+
+            return true;
+        }
+        
+            
+            return false;
+        
+    }
     #endregion
 
     #region Example Usage

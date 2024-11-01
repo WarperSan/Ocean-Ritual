@@ -7,6 +7,7 @@ public class LinkWheelEquipment : MonoBehaviour
 
     [SerializeField] componentGBN equipment;
     [SerializeField] List<GameObject> PlacementPoint;
+    [SerializeField] List<componentPowerGemObject> listStand = new();
     [SerializeField] float SizeBase = 1;
     [SerializeField] float rotation = 0;
     private bool DoSocle = true;
@@ -29,7 +30,7 @@ public class LinkWheelEquipment : MonoBehaviour
 
     public void PlaceStand()
     {
-        List<componentPowerGemObject> listStand = equipment.GBNScript.SocleListe;
+        listStand = equipment.GBNScript.SocleListe;
         List<GameObject> PlacementpointBase = new List<GameObject>();
         equipment.GenerationSocle();
        
@@ -42,8 +43,20 @@ public class LinkWheelEquipment : MonoBehaviour
             PlacementpointBase[^1].transform.rotation = Quaternion.Euler(rotation, 0, 0);
             rotation += 45;
         }
-   
-       
+
+
+    }
+    public GameObject GetStand(int stand = 0)
+    {
+        if(stand< listStand.Count)
+        {
+            return listStand[stand].gameObject;
+        }
+        Debug.Log("GetStand function liste null");
+       return null;
+    }
+    public void TransitionCam()
+    {
 
     }
 

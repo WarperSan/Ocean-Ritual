@@ -30,7 +30,10 @@ public class PowerGemObject
     {
         TemporaryGem = new(gemData);
     }
-  
+    public void ReceiveGemData(Gem gemData)
+    {
+        TemporaryGem = gemData;
+    }
     #region Gemme Placement
     //   int AddSpace = 1;
     // Places gems in the grid and sets their position
@@ -52,14 +55,19 @@ public class PowerGemObject
 
     #endregion
 
-   public void TryPlacetemporaryGem(int x,int z)
+
+   public bool TryPlaceTemporaryGem(int x,int z)
     {
-        if (GridGemme.PlaceObject(x, z, TemporaryGem.form.GetForme()))
+        if (GridGemme.TryPlaceObjectOnGrid(x,z, TemporaryGem))
         {
 
-            GameObject theGemme = GeneratorGem.CreatGemmeObject(TemporaryGem, GemContainer.transform);
-            // theGemme.transform.position += new Vector3((Gemmes.GemScript.PositionX + AddSpace) * SocleGenerator.Instance.spaceBetweenCube, 0, (Gemmes.GemScript.PositionZ + AddSpace) * SocleGenerator.Instance.spaceBetweenCube);
+            GemmeList.Add(TemporaryGem);
+            TemporaryGem = null;
+
+
+            return true;
         }
+        return false;
     }
 
     #region Gemme Management

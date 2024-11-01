@@ -4,16 +4,67 @@ public class MouseWheelManager : MonoBehaviour
 {
     public LayerMask layerSocle;
     public LayerMask layerVoid;
-    private GameObject objetMemory; // Pour garder en mémoire le CG détecté
+    [SerializeField] GameObject objetMemory; // Pour garder en mémoire le CG détecté
     private int layerInitial = 26;
-    private GameObject objectTouch; // Pour garder l'objet CV détecté
+    [SerializeField] GameObject objectTouch; // Pour garder l'objet CV détecté
     private GameObject ObjetGlow = null;
     private GameObject Socle;
     private bool[,] ShapeBoolMain;
     [SerializeField] string layerInitialName = "Socle";
+
+
+    [SerializeField] GameObject SrinkGameObject;
+    [SerializeField] float SrinkValue= 0.2f;
+    [SerializeField] bool testSpawnGem = false;
+    [SerializeField] GemData TestGemData ;
+    [SerializeField] int SelectedSocle = 0;
+    [SerializeField] int xTest = 0;
+    [SerializeField] int zTest = 0;
+    [SerializeField] LinkWheelEquipment linkWheelEquipment;
     void Update()
     {
 
+        MouseWheelControleur();
+        if (testSpawnGem)
+        {
+            TestSpawnGemme();
+            testSpawnGem = false;
+        }
+
+    }
+    public void TestSpawnGemme()
+    {
+        Gem gem = new(TestGemData);
+        GameObject TheGem = GeneratorGem.CreatGemmeObject(gem, this.transform);
+        SrinkGameObject.transform.localScale = new Vector3(1, 1, 1);
+        TheGem.transform.SetParent(SrinkGameObject.transform);
+        TheGem.transform.localPosition = new Vector3(0, 0, 0);
+        SrinkGameObject.transform.localScale = new Vector3(SrinkValue, SrinkValue, SrinkValue);
+        GiveRefNewGem(TheGem);
+    }
+    public void GiveRefNewGem(GameObject gameObj)
+    {
+        objetMemory = gameObj;
+    }
+    public bool TryPLaceTemporaryGemme(int x, int z)
+    {
+
+
+        if (Socle == null)
+        {
+            SelectionSocle();
+        }
+        componentPowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>();
+        scripSocle.PowerGemObjectScript.ReceiveGemData(TestGemData);
+   
+      return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(xTest, zTest);
+    }
+    public void SelectionSocle()
+    {
+        Socle = linkWheelEquipment.GetStand(SelectedSocle);
+    }
+    public void MouseWheelControleur()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             if (objetMemory == null)
@@ -54,14 +105,13 @@ public class MouseWheelManager : MonoBehaviour
             }
             else
             {
-                
+
                 Glow();
             }
 
 
 
         }
-
 
     }
     void Glow()
@@ -193,17 +243,26 @@ public class MouseWheelManager : MonoBehaviour
     }
     GameObject DetectCV()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Vérifie si la souris est dans l'écran
+        Vector3 mousePos = Input.mousePosition;
+        if (mousePos.x < 0 || mousePos.y < 0 || mousePos.x > Screen.width || mousePos.y > Screen.height)
+        {
+            return null;
+        }
+
+        // Raycast seulement si la souris est dans l'écran
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 9, layerVoid))
         {
-            //  Debug.Log("Objet détecté : " + hit.collider.gameObject.name);
+            // Debug.Log("Objet détecté : " + hit.collider.gameObject.name);
             return hit.collider.gameObject;
         }
 
         return null;
     }
+
 
     void MoveObject(Transform parent, bool inverse = false)
     {
@@ -272,15 +331,17 @@ public class MouseWheelManager : MonoBehaviour
         return null;
     }
 
-    void MoveObjectOnCV(Transform objetCG, Transform objetCV)
+    void MoveObjectOnCV(Transform objetCG, Transform objetCV,bool nouvelGem = false)
     {
+        Vector3 nouvellePositionLocale;
         Transform VoidParent = objetCV.parent;
-        // Calculer la nouvelle position en coordonnées locales du CV
-        Vector3 nouvellePositionLocale = new Vector3(
+        nouvellePositionLocale = new Vector3(
             VoidParent.localPosition.x,
             objetCG.localPosition.y,
             VoidParent.localPosition.z
         );
+        // Calculer la nouvelle position en coordonnées locales du CV
+
 
         // Déplacer l'objet CG en coordonnées locales
         objetCG.localPosition = nouvellePositionLocale;
