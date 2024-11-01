@@ -29,7 +29,9 @@ public class PowerGemObject
     public void ReceiveGemData(GemData gemData)
     {
         TemporaryGem = new(gemData);
+       
     }
+   
     public void ReceiveGemData(Gem gemData)
     {
         TemporaryGem = gemData;
@@ -55,19 +57,29 @@ public class PowerGemObject
 
     #endregion
 
-
+    
    public bool TryPlaceTemporaryGem(int x,int z)
     {
+        //   Debug.Log(TemporaryGem.PositionX);
+        //Debug.Log(TemporaryGem.PositionZ);
         if (GridGemme.TryPlaceObjectOnGrid(x,z, TemporaryGem))
         {
-
+           // Debug.Log(TemporaryGem.PositionX);
+          // Debug.Log(TemporaryGem.PositionZ);
             GemmeList.Add(TemporaryGem);
-            TemporaryGem = null;
+            //TemporaryGem = null;
+          // Debug.Log(GemmeList.Count);
 
 
             return true;
         }
+      //  Debug.Log("false TryPlaceTemporaryGem");
         return false;
+    }
+    public void  GivePositionRef(Gem gem)
+    {
+        gem.PositionX =  TemporaryGem.PositionX  ;
+        gem.PositionZ =  TemporaryGem.PositionZ ;
     }
 
     #region Gemme Management

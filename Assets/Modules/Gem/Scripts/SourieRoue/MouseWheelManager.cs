@@ -12,14 +12,13 @@ public class MouseWheelManager : MonoBehaviour
     private bool[,] ShapeBoolMain;
     [SerializeField] string layerInitialName = "Socle";
 
-
+    [SerializeField] bool GemFromInventory = false;
     [SerializeField] GameObject SrinkGameObject;
     [SerializeField] float SrinkValue= 0.2f;
     [SerializeField] bool testSpawnGem = false;
     [SerializeField] GemData TestGemData ;
     [SerializeField] int SelectedSocle = 0;
-    [SerializeField] int xTest = 0;
-    [SerializeField] int zTest = 0;
+
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
     void Update()
     {
@@ -34,19 +33,29 @@ public class MouseWheelManager : MonoBehaviour
     }
     public void TestSpawnGemme()
     {
+        if (Socle == null)
+        {
+            SelectionSocle();
+        }
         Gem gem = new(TestGemData);
-        GameObject TheGem = GeneratorGem.CreatGemmeObject(gem, this.transform);
         SrinkGameObject.transform.localScale = new Vector3(1, 1, 1);
-        TheGem.transform.SetParent(SrinkGameObject.transform);
+        GameObject TheGem = GeneratorGem.CreatGemmeObject(gem, SrinkGameObject.transform);
+     
+       // TheGem.transform.SetParent(SrinkGameObject.transform);
         TheGem.transform.localPosition = new Vector3(0, 0, 0);
         SrinkGameObject.transform.localScale = new Vector3(SrinkValue, SrinkValue, SrinkValue);
+        SrinkGameObject.transform.position = Socle.transform.position;
         GiveRefNewGem(TheGem);
     }
     public void GiveRefNewGem(GameObject gameObj)
     {
+        GemFromInventory = true;
+        Vector3 newPosition = gameObj.transform.localPosition;
+        newPosition.y += 2;
+        gameObj.transform.localPosition = newPosition;
         objetMemory = gameObj;
     }
-    public bool TryPLaceTemporaryGemme(int x, int z)
+    public bool TryPLaceTemporaryGem(int x, int z)
     {
 
 
@@ -57,13 +66,25 @@ public class MouseWheelManager : MonoBehaviour
         componentPowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>();
         scripSocle.PowerGemObjectScript.ReceiveGemData(TestGemData);
    
-      return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(xTest, zTest);
+      return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(x, z);
     }
     public void SelectionSocle()
     {
         Socle = linkWheelEquipment.GetStand(SelectedSocle);
     }
     public void MouseWheelControleur()
+    {
+
+        if (!GemFromInventory)
+        {
+            controleurFromSocle();
+        }
+        else
+        {
+            controleurFromInventory();
+        }
+    }
+    public void controleurFromSocle()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -112,7 +133,54 @@ public class MouseWheelManager : MonoBehaviour
 
 
         }
+    }
+    public void controleurFromInventory()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (objetMemory != null)
+            {
+                PlaceGemme(true);
+            }
+              
+            
 
+
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            if (objetMemory != null)
+            {
+                rotate();
+            }
+        }
+        else
+        {
+            if (objetMemory != null)
+            {
+                GameObject temp = DetectCV();
+                if (temp != null)
+                {
+
+
+                    objectTouch = temp;
+
+                }
+
+                if (objectTouch != null)
+                {
+                    MoveObjectOnCV(objetMemory.transform, objectTouch.transform);
+                }
+            }
+            else
+            {
+
+                Glow();
+            }
+
+
+
+        }
     }
     void Glow()
     {
@@ -170,22 +238,60 @@ public class MouseWheelManager : MonoBehaviour
         gem.GemScript.form.Rotate(gem.GemScript.form.GetForme(), 90);
         objetMemory.transform.Rotate(Vector3.up, 90f);
     }
-    void PlaceGemme()
+    void PlaceGemme(bool FromInventory = false)
     {
-        Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
-
-        GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
-
         LocationSocle coordone = objectTouch.GetComponentInParent<LocationSocle>();
-        if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gem.GemScript.form.GetForme(), gem.GemScript, ShapeBoolMain))
+        Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
+        if (!FromInventory)
         {
-            MoveObject(objetMemory.transform, true);
-            notSelectObject();
+            
+
+            GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
+
+           // Debug.Log(BoolArrayToString(ShapeBoolMain));
+            if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gem.GemScript.form.GetForme(), gem.GemScript, ShapeBoolMain))
+            {
+                MoveObject(objetMemory.transform, true);
+                notSelectObject();
+            }
         }
+        else
+        {
+
+            PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
+        
+            if (TryPLaceTemporaryGem(coordone.x, coordone.z))
+            {
+                Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript.GivePositionRef(gem.GemScript);
+                objetMemory.transform.SetParent(scripSocle.GemContainer.transform);
+                   Debug.Log(gem.GemScript.PositionX);
+                Debug.Log(gem.GemScript.PositionZ);
+              //  Debug.Log(coordone.z);
+                MoveObject(objetMemory.transform, true);
+                notSelectObject();
+            }
+        }
+        
 
 
     }
+    private string BoolArrayToString(bool[,] array)
+    {
+        int rows = array.GetLength(0);
+        int cols = array.GetLength(1);
+        string result = "";
 
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                result += array[i, j] ? "1 " : "0 ";
+            }
+            result += "\n";
+        }
+
+        return result;
+    }
     void DetectAndSelectObject()
     {
         GameObject temp = DetectGemmeRC();
@@ -221,7 +327,9 @@ public class MouseWheelManager : MonoBehaviour
 
                     layerInitial = objetMemory.layer; // Stocker le layer initial
                     Transform SocleParent = ClimbeUpParent(objetMemory.transform);
-                    Socle = SocleParent.gameObject;
+                
+                        SelectionSocle();
+                    
                     LayerChange(objetMemory, 0); // Changer temporairement le layer
                     if (ShapeBoolMain == null)
                     {
@@ -374,6 +482,7 @@ public class MouseWheelManager : MonoBehaviour
     {
         if (objetMemory != null)
         {
+            GemFromInventory=false;
             ResetInitialLayer(objetMemory); // Rétablir le layer initial
             objetMemory = null; // Réinitialiser l'objet en mémoire
             objectTouch = null;  // Réinitialiser l'objet CV en mémoire

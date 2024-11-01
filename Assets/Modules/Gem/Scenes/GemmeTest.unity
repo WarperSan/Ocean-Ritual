@@ -453,18 +453,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &370333233 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8868966850594774663, guid: 38029019e2fbbad489c5d24ad0767555,
-    type: 3}
-  m_PrefabInstance: {fileID: 1622202739}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e0436abc96051d48bef9dd739ba75ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &372203725 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7652180690975914507, guid: f792ae393de1f7f4abcbf2939d232353,
@@ -542,6 +530,7 @@ MonoBehaviour:
   objetMemory: {fileID: 0}
   objectTouch: {fileID: 0}
   layerInitialName: Socle
+  GemFromInventory: 0
   SrinkGameObject: {fileID: 572205488}
   SrinkValue: 0.2
   testSpawnGem: 0
@@ -559,8 +548,6 @@ MonoBehaviour:
     typeBoat: []
     typeNet: []
   SelectedSocle: 0
-  xTest: 0
-  zTest: 0
   linkWheelEquipment: {fileID: 488963658}
 --- !u!1 &681001166
 GameObject:
@@ -3003,7 +2990,7 @@ PrefabInstance:
     - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
         type: 3}
       propertyPath: PowerGemObjectScript.GemcomponentList.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
         type: 3}
@@ -3014,12 +3001,12 @@ PrefabInstance:
         type: 3}
       propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[1]
       value: 
-      objectReference: {fileID: 370333233}
+      objectReference: {fileID: 1413808580}
     - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
         type: 3}
       propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[2]
       value: 
-      objectReference: {fileID: 1413808580}
+      objectReference: {fileID: 1671757644}
     - target: {fileID: 2478787029519009675, guid: 04535e8df9139324e9c54fbad9bd6a38,
         type: 3}
       propertyPath: PowerGemObjectScript.GemcomponentList.Array.data[3]
