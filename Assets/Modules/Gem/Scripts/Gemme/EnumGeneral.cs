@@ -83,11 +83,11 @@ static public class EnumGeneral
     }
     public enum ColorsName
     {
-       Red,
+       Rouge,
        Blue,
-       Purple,
-       Yellow,
-       Green,
+       orange,
+       Vert,
+       Mauve,
     }
 }
 //
