@@ -15,7 +15,7 @@ namespace ControllerModule.Interfaces.UI
             if (input == null || actionable == null)
                 return input;
 
-            // If not a UI Component, skip
+            // If not an UI element, skip
             if (actionable is not IElementable component)
             {
                 Debug.LogWarning(string.Format(
@@ -46,8 +46,8 @@ namespace ControllerModule.Interfaces.UI
             if (input == null || actionable == null)
                 return input;
 
-            // If not a UI Component, skip
-            if (actionable is not UIComponent component)
+            // If not an UI element, skip
+            if (actionable is not IElementable component)
                 return input;
 
             // Tab movement
