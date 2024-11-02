@@ -105,7 +105,9 @@ namespace ControllerModule.Controllers
         private float waveOffset = 0;
 
         private Vector3 targetPosition;
-        private float currentSpeed;
+
+        public float CurrentSpeed { get; private set; }
+
 
         //For player movememnt correction
         private Vector3 movement;
@@ -117,17 +119,17 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
-
+            movement = Vector3.zero;
             float speed = GetSpeedMultiplier(this.direction) * _stats.GetSpeed();
 
             // Lerp the current speed to the wanted speed
-            this.currentSpeed = this.currentSpeed < speed
-                ? Mathf.Clamp(this.currentSpeed + this.movementAcceleration, float.MinValue, speed)
-                : Mathf.Clamp(this.currentSpeed - this.movementDeceleration, speed, float.MaxValue);
+            this.CurrentSpeed = this.CurrentSpeed < speed
+                ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
+                : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
 
             // Updates the wanted position
-            this.targetPosition = this.transform.position + (this.transform.forward * this.currentSpeed);
+            this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
             this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
 
             // Lerps to the position
@@ -139,7 +141,7 @@ namespace ControllerModule.Controllers
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
             movement = diff;
-
+            
             // Update Aboard
             //this.UpdateAboardPosition(diff);
         }
@@ -173,10 +175,7 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-        private void LateUpdate()
-        {
-            movement = Vector3.zero;
-        }
+        
 
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
@@ -216,6 +215,13 @@ namespace ControllerModule.Controllers
             {
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
                 this.aboardRbs.Add(rb);
+                return;
+            }
+
+            if (other.gameObject.TryGetComponent(out CharacterController cc))
+            {
+                other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
+                
                 return;
             }
         }

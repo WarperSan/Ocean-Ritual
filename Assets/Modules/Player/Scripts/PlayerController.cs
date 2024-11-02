@@ -88,7 +88,9 @@ namespace ControllerModule.Controllers
         [SerializeField]
         BoatController boatController;
 
-        private Rigidbody _rigidbody;
+        private CharacterController _characterController;
+
+        
         private Vector3 direction;
 
         /// <summary>
@@ -100,27 +102,32 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes == null || this._rigidbody == null)
+            if (this.Eyes == null || this._characterController == null)
                 return;
 
-            if (facing.x == 0 && facing.y == 0 && this.CheckGrounded())
-            {
-                this._rigidbody.velocity = Vector3.zero;
-            }
+            
 
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
 
-            // Move the character controller
-            moveDir *= speed * elapsed;
-            moveDir += this.transform.position;
-
+            
+            moveDir = moveDir.normalized * speed ;
+            
+            // Add boat movement 
             if (boatController != null)
-                moveDir += boatController.MovementBoat;
+            {
+                
+                moveDir += boatController.MovementBoat.normalized * boatController.CurrentSpeed;
+                Debug.Log(moveDir.ToString());
+            }
+                
 
-            this._rigidbody.MovePosition(moveDir);
+            // Move the character controller
+            this._characterController.Move(moveDir*elapsed);
+
+            //this._rigidbody.MovePosition(moveDir);
         }
 
         #endregion
@@ -138,10 +145,35 @@ namespace ControllerModule.Controllers
         private float GroundCheckRadius = 0.2f;
 
         private bool isGrounded;
+        private Vector3 velocity;
+
+        /// <summary>
+        /// Updates the gravity of the player
+        /// </summary>
+        /// <param name="elapsed">Time passed since the last frame</param>
+        private void UpdateGravity(float elapsed)
+        {
+            if (this.Feet == null || this._characterController == null)
+                return;
+
+            this.isGrounded = Physics.CheckSphere(
+                this.Feet.position,
+                this.GroundCheckRadius,
+                this.GroundLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            if (this.isGrounded && this.velocity.y < 0)
+                this.velocity.y = 0;
+            this.velocity += Physics.gravity * elapsed;
+
+            this._characterController.Move(this.velocity * elapsed);
+        }
+
 
         private bool CheckGrounded()
         {
-            if (this.Feet == null || this._rigidbody == null)
+            if (this.Feet == null || this._characterController == null)
                 return false;
 
             this.isGrounded = Physics.CheckSphere(
@@ -162,7 +194,7 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            this._rigidbody = this.GetComponent<Rigidbody>();
+            this._characterController = this.GetComponent<CharacterController>();
 
             // Start with this controller
             ControllerManager.SwitchTo(this);
@@ -172,11 +204,14 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
+            
+            
         }
 
         protected override void OnFixedUpdate(float elapsed)
         {
             this.UpdateMove(this.direction, this.movementSpeed, elapsed);
+            this.UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
@@ -227,12 +262,12 @@ namespace ControllerModule.Controllers
         private float jumpHeight = 1.0f;
         public void OnJump()
         {
-            //Debug.Log("Jump");
+            Debug.Log(CheckGrounded());
             if (CheckGrounded())
             {
-                //Debug.Log("grounded");
-                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
-
+                Debug.Log("grounded");
+                //_rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                velocity += new Vector3(0,jumpHeight,0);
             }
         }
         #endregion
