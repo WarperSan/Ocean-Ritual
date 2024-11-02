@@ -34,8 +34,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         {
             if(index!= -1 )
             {
-                Debug.Log("aAAA");
-                   Debug.Log(GemActif);
+                
                 if (GemActif.LVL== -1)
                 {
                     TrySpawnGemm(index);
@@ -54,7 +53,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     protected override bool DestroyOnLoad => true;
     public void TrySpawnGemm(int index)
     {
-        Debug.Log("BBBB");
+        
         ItemData itemData = Inventory.Instance.GetItem(index);
         if (itemData is GemData gemData)
         {
@@ -65,6 +64,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     }
     public void ResetGemme()
     {
+        GemActif = new();
         GemActif.LVL =-1;
         index = -1;
     }

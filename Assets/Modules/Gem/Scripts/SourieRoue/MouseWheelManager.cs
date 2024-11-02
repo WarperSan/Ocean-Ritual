@@ -103,6 +103,7 @@ public class MouseWheelManager : MonoBehaviour
 
 
         }
+     
         else if (Input.GetMouseButtonDown(1))
         {
             if (objetMemory != null)
@@ -115,17 +116,20 @@ public class MouseWheelManager : MonoBehaviour
             if (objetMemory != null)
             {
                 GameObject temp = DetectCV();
-                if (temp != null)
-                {
 
 
-                    objectTouch = temp;
 
-                }
+                objectTouch = temp;
+
+
 
                 if (objectTouch != null)
                 {
                     MoveObjectOnCV(objetMemory.transform, objectTouch.transform);
+                }
+                else
+                {
+                    MoveObjectToMouse(objetMemory.transform);
                 }
             }
             else
@@ -151,6 +155,14 @@ public class MouseWheelManager : MonoBehaviour
 
 
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (objetMemory != null)
+            {
+                PlaceGemme(true);
+            }
+
+        }
         else if (Input.GetMouseButtonDown(1))
         {
             if (objetMemory != null)
@@ -163,17 +175,20 @@ public class MouseWheelManager : MonoBehaviour
             if (objetMemory != null)
             {
                 GameObject temp = DetectCV();
-                if (temp != null)
-                {
+              
 
 
                     objectTouch = temp;
 
-                }
+                
 
                 if (objectTouch != null)
                 {
                     MoveObjectOnCV(objetMemory.transform, objectTouch.transform);
+                }
+                else
+                {
+                    MoveObjectToMouse(objetMemory.transform);
                 }
             }
             else
@@ -186,6 +201,8 @@ public class MouseWheelManager : MonoBehaviour
 
         }
     }
+
+  
     void Glow()
     {
         GameObject temp = DetectGemmeRC();
@@ -244,38 +261,40 @@ public class MouseWheelManager : MonoBehaviour
     }
     void PlaceGemme(bool FromInventory = false)
     {
-        LocationSocle coordone = objectTouch.GetComponentInParent<LocationSocle>();
-        Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
-        if (!FromInventory)
+        if (objectTouch != null)
         {
-            
-
-            GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
-
-           // Debug.Log(BoolArrayToString(ShapeBoolMain));
-            if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gem.GemScript.form.GetForme(), gem.GemScript, ShapeBoolMain))
+            LocationSocle coordone = objectTouch.GetComponentInParent<LocationSocle>();
+            Gemcomponent gem = objetMemory.GetComponent<Gemcomponent>();
+            if (!FromInventory)
             {
-                MoveObject(objetMemory.transform, true);
-                notSelectObject();
+
+
+                GemmeGrid grid = Socle.GetComponent<GemmeGrid>();
+
+                // Debug.Log(BoolArrayToString(ShapeBoolMain));
+                if (grid.TryPlaceObjectOnGrid(coordone.x, coordone.z, gem.GemScript.form.GetForme(), gem.GemScript, ShapeBoolMain))
+                {
+                    MoveObject(objetMemory.transform, true);
+                    notSelectObject();
+                }
+            }
+            else
+            {
+
+                PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
+
+                if (TryPLaceTemporaryGem(coordone.x, coordone.z))
+                {
+                    Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript.GivePositionRef(gem.GemScript);
+                    objetMemory.transform.SetParent(scripSocle.GemContainer.transform);
+                    //Debug.Log(gem.GemScript.PositionX);
+                    // Debug.Log(gem.GemScript.PositionZ);
+                    //  Debug.Log(coordone.z);
+                    MoveObject(objetMemory.transform, true);
+                    notSelectObject();
+                }
             }
         }
-        else
-        {
-
-            PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
-        
-            if (TryPLaceTemporaryGem(coordone.x, coordone.z))
-            {
-                Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript.GivePositionRef(gem.GemScript);
-                objetMemory.transform.SetParent(scripSocle.GemContainer.transform);
-                   //Debug.Log(gem.GemScript.PositionX);
-               // Debug.Log(gem.GemScript.PositionZ);
-              //  Debug.Log(coordone.z);
-                MoveObject(objetMemory.transform, true);
-                notSelectObject();
-            }
-        }
-        
 
 
     }
@@ -442,7 +461,28 @@ public class MouseWheelManager : MonoBehaviour
 
         return null;
     }
+    void MoveObjectToMouse(Transform objetCG)
+    {
+        // Récupérer la position de la souris
+        Vector3 mousePosition = Input.mousePosition;
 
+        // Créer un rayon depuis la caméra en direction de la position de la souris
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+        // Plan horizontal à la hauteur de l'objet (par exemple, au niveau de l'objet ou sol)
+        float height = objetCG.position.y;
+        Plane horizontalPlane = new Plane(Vector3.up, new Vector3(0, height, 0));
+
+        // Calculer le point d'intersection entre le rayon et le plan
+        if (horizontalPlane.Raycast(ray, out float distance))
+        {
+            Vector3 targetPosition = ray.GetPoint(distance);
+            targetPosition.y = height; // Fixer la position Y pour éviter tout changement de hauteur
+
+            // Déplacer l'objet vers la position cible calculée
+            objetCG.position = targetPosition;
+        }
+    }
     void MoveObjectOnCV(Transform objetCG, Transform objetCV,bool nouvelGem = false)
     {
         Vector3 nouvellePositionLocale;
@@ -491,6 +531,7 @@ public class MouseWheelManager : MonoBehaviour
             objetMemory = null; // Réinitialiser l'objet en mémoire
             objectTouch = null;  // Réinitialiser l'objet CV en mémoire
             ShapeBoolMain = null;
+            ZoneUIHandler.Instance.ResetGemme();
         }
     }
 }
