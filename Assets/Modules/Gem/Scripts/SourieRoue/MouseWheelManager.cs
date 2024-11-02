@@ -17,6 +17,7 @@ public class MouseWheelManager : MonoBehaviour
     [SerializeField] float SrinkValue= 0.2f;
     [SerializeField] bool testSpawnGem = false;
     [SerializeField] GemData TestGemData ;
+    [SerializeField] GemData gemData;
     [SerializeField] int SelectedSocle = 0;
 
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
@@ -26,18 +27,21 @@ public class MouseWheelManager : MonoBehaviour
         MouseWheelControleur();
         if (testSpawnGem)
         {
-            TestSpawnGemme();
+            TestSpawnGem();
             testSpawnGem = false;
         }
 
     }
-    public void TestSpawnGemme()
+    public void TestSpawnGem(GemData gemdataREceive = null)
     {
+        Gem gem;
         if (Socle == null)
         {
             SelectionSocle();
         }
-        Gem gem = new(TestGemData);
+        gem = gemdataREceive == null ? new(TestGemData) : new(gemdataREceive);
+
+        gemData = gemdataREceive ?? TestGemData;
         SrinkGameObject.transform.localScale = new Vector3(1, 1, 1);
         GameObject TheGem = GeneratorGem.CreatGemmeObject(gem, SrinkGameObject.transform);
      
@@ -64,7 +68,7 @@ public class MouseWheelManager : MonoBehaviour
             SelectionSocle();
         }
         componentPowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>();
-        scripSocle.PowerGemObjectScript.ReceiveGemData(TestGemData);
+        scripSocle.PowerGemObjectScript.ReceiveGemData(gemData);
    
       return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(x, z);
     }

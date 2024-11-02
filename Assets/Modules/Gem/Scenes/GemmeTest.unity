@@ -764,6 +764,19 @@ MonoBehaviour:
     typeWeapon: []
     typeBoat: []
     typeNet: []
+  gemData:
+    quantityMax: 1
+    quantity: 1
+    sprite: {fileID: 0}
+    Shape:
+      width: 0
+      height: 0
+      flatForme: 
+    GemColorsName: 
+    LVL: 0
+    typeWeapon: []
+    typeBoat: []
+    typeNet: []
   SelectedSocle: 0
   linkWheelEquipment: {fileID: 488963658}
 --- !u!1 &681001166
@@ -867,6 +880,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1957911967}
     m_Modifications:
+    - target: {fileID: 144531233659503211, guid: e91f8897a533f1b45abe200810d4df20,
+        type: 3}
+      propertyPath: index
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 144531233659503211, guid: e91f8897a533f1b45abe200810d4df20,
+        type: 3}
+      propertyPath: mousManager
+      value: 
+      objectReference: {fileID: 591648865}
+    - target: {fileID: 144531233659503211, guid: e91f8897a533f1b45abe200810d4df20,
+        type: 3}
+      propertyPath: GemActif.LVL
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 1531153015517840070, guid: e91f8897a533f1b45abe200810d4df20,
         type: 3}
       propertyPath: m_AnchorMax.x

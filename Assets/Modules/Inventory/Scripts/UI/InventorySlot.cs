@@ -72,6 +72,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     /// <inheritdoc/>
     public void OnDragStart()
     {
+        ZoneUIHandler.Instance.GiveIndex(slotIndex);
         // Set up slot for drag
         this.originalParent = this.transform.parent;
         this.canvasGroup.blocksRaycasts = false;
