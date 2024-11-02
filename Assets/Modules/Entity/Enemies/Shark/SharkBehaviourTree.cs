@@ -31,7 +31,7 @@ namespace EntityModule.Enemies
             // Rushes towards the player and attacks it
 
             Sequence _root = new();
-            
+
             _root += this.MovementSequence();
             _root += new Parallel(
                   this.AttackSequence()
@@ -46,7 +46,7 @@ namespace EntityModule.Enemies
         #endregion
 
         #region Attack
-        private float attackCooldown =5;
+        private float attackCooldown = 5;
         public float attackMinRange;
         public float attackMaxRange;
         public Collider hitboxCollider;
@@ -59,13 +59,13 @@ namespace EntityModule.Enemies
         private Node AttackSequence()
         {
             Sequence attackSequence = new();
-            
+
             Sequence attack = new();
             attack += this.AttackCooldown();
-            attack += new DistanceInBetween(this.transform, CURRENT_TARGET,attackMinRange,attackMaxRange);
-            
+            attack += new DistanceInBetween(this.transform, CURRENT_TARGET, attackMinRange, attackMaxRange);
 
-            
+
+
             attack += this.DoAttack();
             //faire l'attaque + animation
             attackSequence += attack;
@@ -74,7 +74,7 @@ namespace EntityModule.Enemies
             Sequence attackReset = new();
             //attackReset += this.SetAttackCooldown();
             attackReset += this.ResetHitbox();
-            
+
             attackReset += this.SetAttackCooldown();
             attackSequence += attackReset.Alias("Attack Reset");
             //reset animation
@@ -84,16 +84,16 @@ namespace EntityModule.Enemies
 
         private Node DoAttack() => new CallbackNode(() =>
         {
-            
+
             if (!hitboxCollider.enabled)
             {
                 hitboxCollider.enabled = true;
                 projectile.ResetSelf();
-                this.animator.SetBool("isAttacking",true);
+                this.animator.SetBool("isAttacking", true);
             }
             durationTimer += Time.deltaTime;
             //Debug.Log(projectile.hitPlayer);
-            if (!projectile.hitPlayer) 
+            if (!projectile.hitPlayer)
             {
                 return NodeState.RUNNING;
             }
@@ -105,22 +105,22 @@ namespace EntityModule.Enemies
 
         private Node ResetHitbox() => new CallbackNode(() =>
         {
-            hitboxCollider.enabled= false;
-            
+            hitboxCollider.enabled = false;
+
             return NodeState.SUCCESS;
         }).Alias("Reset Hitbox");
 
         private Node AttackCooldown() => new CallbackNode(() =>
         {
             this.attackCooldown -= Time.deltaTime;
-            
+
             return this.attackCooldown > 0 ? NodeState.RUNNING : NodeState.SUCCESS;
         }).Alias("Attack Cooldown");
         private Node SetAttackCooldown() => new CallbackNode(() =>
         {
             this.attackCooldown = 5f;
             durationTimer = 0;
-            
+
             return NodeState.SUCCESS;
         }).Alias("Reset Attack Cooldown");
 
@@ -145,7 +145,7 @@ namespace EntityModule.Enemies
             root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = root.GetData<Transform>(CURRENT_TARGET);
             NavMeshAgent agent = root.GetData<NavMeshAgent>(AGENT);
-            
+
             // V�rifier si la cible ou l'agent sont null
             if (target == null || agent == null)
             {
@@ -205,9 +205,11 @@ namespace EntityModule.Enemies
 
         private void OnDrawGizmos()
         {
+#if UNITY_EDITOR
             UnityEditor.Handles.color = Color.blue;
             UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMinRange);
             UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMaxRange);
+#endif
         }
 
         //private void OnTriggerEnter(Collider other)
