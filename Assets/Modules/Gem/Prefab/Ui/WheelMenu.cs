@@ -7,8 +7,9 @@ namespace UIModule.Menus
     public class WheelMenu : AnimatedMenu
     {
         public InventoryUI inventoryUI;
- 
 
+      
+        
         /// <inheritdoc/>
         public override IEnumerator Open()
         {
@@ -24,6 +25,8 @@ namespace UIModule.Menus
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            
+            TransitionCam.Instance.SwitchToCamA();
             yield return base.Close();
             
         }

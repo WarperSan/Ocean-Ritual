@@ -98,8 +98,7 @@ namespace UIModule
                 Debug.LogWarning($"Tried to close a menu of type '{menu.GetType().Name}', but no instance of this menu is opened.");
                 return;
             }
-            Debug.Log("coucou");
-            TransitionCam.Instance.SwitchToCamA();
+        
             // Close menu
             AddOperation(OperationType.CLOSE, menu);
         }
