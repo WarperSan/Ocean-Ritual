@@ -68,8 +68,8 @@ public class MouseWheelManager : MonoBehaviour
             SelectionSocle();
         }
         componentPowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>();
-        scripSocle.PowerGemObjectScript.ReceiveGemData(gemData);
-   
+      Gem gem =   scripSocle.PowerGemObjectScript.ReceiveGemData(gemData);
+        objetMemory.GetComponent<Gemcomponent>().GemScript = gem;
       return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(x, z);
     }
     public void SelectionSocle()
@@ -331,7 +331,8 @@ public class MouseWheelManager : MonoBehaviour
             // Vérifier si le parent existe
             if (parent != null)
             {
-            
+
+                ZoneUIHandler.Instance.ReceiveGemSocleTOInventory(parent.gameObject);
                 Gemcomponent scriptGemme = parent.gameObject.GetComponent<Gemcomponent>();
                 // Vérifier si l'objet détecté est un CubeGemme (CG) ou un CubeVide (CV)
                 if (scriptGemme != null) // C'est un CG
@@ -522,8 +523,16 @@ public class MouseWheelManager : MonoBehaviour
         }
     }
 
-    void notSelectObject()
+   public void notSelectObject(Gem gem = null)
     {
+        if (gem != null)
+        {
+           
+            PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
+            Debug.Log(scripSocle.GemmeList.Count);
+            Debug.Log(scripSocle.GemmeList[^1].form.GetForme());
+            scripSocle.DeletedGem(gem);
+        }
         if (objetMemory != null)
         {
             GemFromInventory=false;
@@ -533,5 +542,6 @@ public class MouseWheelManager : MonoBehaviour
             ShapeBoolMain = null;
             ZoneUIHandler.Instance.ResetGemme();
         }
+       
     }
 }

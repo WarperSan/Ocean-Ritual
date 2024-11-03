@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UtilsModule;
@@ -7,17 +8,26 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     private bool isHovering = false;
     public int index =-1;
     public GemData GemActif = null;
- 
+    public GameObject GemObject = null;
+    private Gemcomponent GemToInventory;
+    InventorySlot ActifInventorySlot;
     [SerializeField] MouseWheelManager mousManager;
-
-  
+    [SerializeField] InventoryUI InventoryUI;
+    [SerializeField] Sprite sprite;
     // Appelé quand la souris entre dans la zone de la cible
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovering = true;
         ChangeState(true); // Passe à l'état activé
     }
-
+    public void GiveRefInventorySlot(InventorySlot inventorySlot)
+    {
+        ActifInventorySlot = inventorySlot;
+    }
+    public void DeletRefInventorySlot( )
+    {
+        ActifInventorySlot.TransformIntoGem();
+    }
     // Appelé quand la souris quitte la zone de la cible
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -25,6 +35,11 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         ChangeState(false); // Retourne à l'état initial
     }
 
+    public void ReceiveGemSocleTOInventory(GameObject gem)
+    {
+        GemObject = gem;
+        GemToInventory = GemObject.GetComponent<Gemcomponent>() ;
+    }
     private void ChangeState(bool hovering)
     {
         
@@ -38,6 +53,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                 if (GemActif.LVL== -1)
                 {
                     TrySpawnGemm(index);
+                    DeletRefInventorySlot();
                 }
           
             }
@@ -46,6 +62,19 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         }
         else
         {
+            if (GemToInventory != null && GemToInventory.GemScript.LVL != -1)
+            {
+                Debug.Log("allo");
+                GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
+                gemdata.sprite = sprite;
+                Inventory.Instance.AddItem(gemdata);
+                mousManager.notSelectObject(GemToInventory.GemScript);
+                Destroy(GemToInventory.gameObject);
+                InventoryUI.UpdateSelf();
+                GemToInventory.GemScript.LVL = -1;
+                GemToInventory = null;
+                
+            }
             // Code pour revenir à l'état initial
             Debug.Log("État désactivé");
         }
@@ -57,7 +86,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         ItemData itemData = Inventory.Instance.GetItem(index);
         if (itemData is GemData gemData)
         {
-            Debug.Log("allo");
+            
             GemActif = gemData;
             mousManager.TestSpawnGem(gemData); 
         }

@@ -26,10 +26,12 @@ public class PowerGemObject
         }
     
     }
-    public void ReceiveGemData(GemData gemData)
+    public Gem ReceiveGemData(GemData gemData)
     {
         TemporaryGem = new(gemData);
-       
+        return TemporaryGem;
+
+
     }
    
     public void ReceiveGemData(Gem gemData)
@@ -84,16 +86,21 @@ public class PowerGemObject
 
     #region Gemme Management
 
-    // Receives a gems (implementation needed)
-    public void ReceiveGemme(Gem oneGemme)
+
+    // Deletes a gems 
+    public void DeletedGem(Gem theGem)
     {
 
-    }
-
-    // Deletes a gems (implementation needed)
-    public void DeletedGemme()
-    {
-
+        if (GemmeList.Contains(theGem))
+        {
+            GemmeList.Remove(theGem);
+            GridGemme.RemoveObject(theGem.PositionX, theGem.PositionZ, theGem.form.GetForme());
+            Debug.Log("La gemme a été supprimée avec succès.");
+        }
+        else
+        {
+            Debug.LogWarning("La gemme spécifiée n'existe pas dans la liste.");
+        }
     }
 
     #endregion

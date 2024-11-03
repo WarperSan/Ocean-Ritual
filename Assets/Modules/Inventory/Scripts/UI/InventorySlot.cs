@@ -10,6 +10,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     [SerializeField] Image itemImage;
     [SerializeField] TextMeshProUGUI quantity;
     [SerializeField] Graphic background;
+  
     public int slotIndex;
 
     private void Start()
@@ -72,6 +73,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     /// <inheritdoc/>
     public void OnDragStart()
     {
+        ZoneUIHandler.Instance.GiveRefInventorySlot(this);
         ZoneUIHandler.Instance.GiveIndex(slotIndex);
         // Set up slot for drag
         this.originalParent = this.transform.parent;
@@ -89,6 +91,12 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
         this.SetBackgroundAlpha(0f);
     }
 
+    public void TransformIntoGem()
+    {
+        Inventory.Instance.DropItem(this.slotIndex);
+        this.ClearSlot();
+        this.DragEnd();
+    }
     /// <inheritdoc/>
     public void OnDragEnd(IDragReceivable receivable, RectTransform target)
     {

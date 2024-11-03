@@ -172,7 +172,7 @@ public class GemmeGrid : MonoBehaviour
 
         return false;
     }
-    private void RemoveObject(int x, int y, bool[,] form)
+    public void RemoveObject(int x, int y, bool[,] form)
     {
         //Debug.Log(x);
         //Debug.Log(y);
