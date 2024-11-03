@@ -9,15 +9,15 @@ namespace WeaponModule.Weapons.Cannon
     /// <summary>
     /// Controller that manages how the cannon behaves
     /// </summary>
+    [RequireComponent(typeof(CannonStats))]
     public class CannonController : WeaponController, IMovable
     {
         private CannonStats _stats;
 
         protected override void OnStart()
         {
-            _stats = GetComponent<CannonStats>();
+            _stats = this.GetComponent<CannonStats>();
         }
-
 
         #region Rotation
 
@@ -47,7 +47,7 @@ namespace WeaponModule.Weapons.Cannon
             direction = Vector3.Scale(direction, this.turningSpeed);
 
             this.handlesLC.UpdateRotation(new Vector2(direction.y, 0), Time.deltaTime);
-            this.cannonLC.UpdateRotation(new Vector2(-direction.x, 0), Time.deltaTime);
+            this.cannonLC.UpdateRotation(new Vector2(0, -direction.x), Time.deltaTime);
         }
 
         #endregion
@@ -55,9 +55,6 @@ namespace WeaponModule.Weapons.Cannon
         #region Shoot
 
         [Header("Cannon Shoot")]
-        [SerializeField, Tooltip("Prefab that the cannon will shoot")]
-        private GameObject ball;
-
         [SerializeField, Tooltip("Determines the origin and the direction of the shot")]
         private Transform origin;
 
@@ -72,9 +69,6 @@ namespace WeaponModule.Weapons.Cannon
 
         [SerializeField]
         private AudioSource shootAudio;
-
-        /// <inheritdoc/>
-        protected override GameObject GetBullet() => this.ball;
 
         /// <inheritdoc/>
         protected override void SetupProjectile(Projectile projectile)
@@ -223,7 +217,7 @@ namespace WeaponModule.Weapons.Cannon
             this.direction = Vector3.zero;
 
             // Updates the cannon's rotation
-            this.defaultRotation = this.transform.eulerAngles;
+            //this.defaultRotation = this.transform.eulerAngles;
             this.UpdateRotation(Vector3.zero);
         }
 
@@ -235,7 +229,7 @@ namespace WeaponModule.Weapons.Cannon
             this.EndThrust();
 
             // Put back the cannon at it's default rotation
-            this.transform.eulerAngles = this.defaultRotation;
+            //this.transform.eulerAngles = this.defaultRotation;
         }
 
         /// <inheritdoc/>
