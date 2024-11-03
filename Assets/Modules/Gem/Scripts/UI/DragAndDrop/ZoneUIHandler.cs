@@ -66,7 +66,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
             {
                 Debug.Log("allo");
                 GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
-                gemdata.sprite = sprite;
+                
                 Inventory.Instance.AddItem(gemdata);
                 mousManager.notSelectObject(GemToInventory.GemScript);
                 Destroy(GemToInventory.gameObject);

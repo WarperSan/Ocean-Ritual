@@ -22,8 +22,10 @@ public class Gem
         this.typeWeapon = gemConvert.typeWeapon;
         this.typeBoat = gemConvert.typeBoat;
         this.typeNet = gemConvert.typeNet;
+        this.sprite = gemConvert.sprite;
     }
     #region Data
+    [SerializeField] public  Sprite sprite =null;
     // X coordinate of the gems's position
     [SerializeField] public int PositionX = 0;
 

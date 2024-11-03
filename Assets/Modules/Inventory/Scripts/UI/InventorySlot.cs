@@ -95,6 +95,7 @@ public class InventorySlot : UIComponent, IHoverable, IDraggable, IDragReceivabl
     {
         Inventory.Instance.DropItem(this.slotIndex);
         this.ClearSlot();
+        this.ReturnToPosition();
         this.DragEnd();
     }
     /// <inheritdoc/>

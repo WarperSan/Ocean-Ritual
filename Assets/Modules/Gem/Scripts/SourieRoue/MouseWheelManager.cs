@@ -44,8 +44,8 @@ public class MouseWheelManager : MonoBehaviour
         gemData = gemdataREceive ?? TestGemData;
         SrinkGameObject.transform.localScale = new Vector3(1, 1, 1);
         GameObject TheGem = GeneratorGem.CreatGemmeObject(gem, SrinkGameObject.transform);
-     
-       // TheGem.transform.SetParent(SrinkGameObject.transform);
+        ZoneUIHandler.Instance.ReceiveGemSocleTOInventory(TheGem);
+        // TheGem.transform.SetParent(SrinkGameObject.transform);
         TheGem.transform.localPosition = new Vector3(0, 0, 0);
         SrinkGameObject.transform.localScale = new Vector3(SrinkValue, SrinkValue, SrinkValue);
         SrinkGameObject.transform.position = Socle.transform.position;
