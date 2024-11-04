@@ -200,17 +200,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687722160491285244}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3575075910466715531}
+  m_Father: {fileID: 5637416815121340878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -369.9055, y: 0}
-  m_SizeDelta: {x: -739.8112, y: 0}
+  m_AnchoredPosition: {x: -369.90558, y: 27.00002}
+  m_SizeDelta: {x: -521.05975, y: 54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2182353540088335204
 CanvasRenderer:
@@ -263,7 +263,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  GemActif: {fileID: 0}
+  GemActif:
+    quantityMax: 1
+    quantity: 1
+    sprite: {fileID: 0}
+    Shape:
+      width: 0
+      height: 0
+      flatForme: 
+    GemColorsName: 
+    LVL: 0
+    typeWeapon: []
+    typeBoat: []
+    typeNet: []
+  GemObject: {fileID: 0}
+  mousManager: {fileID: 0}
+  InventoryUI: {fileID: 0}
+  sprite: {fileID: 0}
 --- !u!1 &2277194553951272255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1787,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3188596624076622714}
   - {fileID: 8881417284374312687}
   m_Father: {fileID: 3575075910466715531}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2936,7 +2953,6 @@ RectTransform:
   m_Children:
   - {fileID: 4277133778007494277}
   - {fileID: 5637416815121340878}
-  - {fileID: 3188596624076622714}
   m_Father: {fileID: 6391931271428146170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LinkWheelEquipment : MonoBehaviour
@@ -46,14 +47,40 @@ public class LinkWheelEquipment : MonoBehaviour
 
 
     }
-    public GameObject GetStand(int stand = 0)
+    //max 8 min 1 dans la liste donc de l'index 0 à 7
+    int stand = 0;
+    public GameObject GetStand()
     {
-        if(stand< listStand.Count)
+        if (stand < listStand.Count && listStand.Count > 0)
         {
             return listStand[stand].gameObject;
         }
         Debug.Log("GetStand function liste null");
-       return null;
+        return null;
+    }
+
+    public GameObject GetNextSocle()
+    {
+        // Décrémente Incrémente stand et boucle au début si la fin est atteinte
+        if (listStand.Count > 0)
+        {
+            stand = (stand - 1 + listStand.Count) % listStand.Count;
+            return listStand[stand].gameObject;
+        }
+        Debug.Log("GetNextSocle function liste vide");
+        return null;
+    }
+
+    public GameObject GetPreviewSocle()
+    {
+        // Incrémente stand et boucle à la fin si le début est atteint
+        if (listStand.Count > 0)
+        {
+            stand = (stand + 1) % listStand.Count;
+            return listStand[stand].gameObject;
+        }
+        Debug.Log("GetPreviewSocle function liste vide");
+        return null;
     }
     public void TransitionCam()
     {

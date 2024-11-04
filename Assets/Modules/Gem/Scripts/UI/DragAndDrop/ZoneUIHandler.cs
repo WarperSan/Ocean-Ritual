@@ -14,6 +14,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     [SerializeField] MouseWheelManager mousManager;
     [SerializeField] InventoryUI InventoryUI;
     [SerializeField] Sprite sprite;
+    [SerializeField] WheelSocket wheelSocket;
     // Appelé quand la souris entre dans la zone de la cible
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -57,8 +58,18 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                 
                 if (GemActif.LVL== -1)
                 {
-                    TrySpawnGemm(index);
-                    DeletRefInventorySlot();
+                    if (!wheelSocket.IsRotating())
+                    {
+                        TrySpawnGemm(index);
+                        DeletRefInventorySlot();
+                    }
+                    else
+                    {
+                        //TrySpawnGemm(index);
+                       // DeletRefInventorySlot();
+                      //  GoToInventory();
+                    }
+                  
                 }
           
             }
@@ -67,22 +78,27 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         }
         else
         {
-            if (GemToInventory != null && GemToInventory.GemScript.LVL != -1)
-            {
-                Debug.Log("allo");
-                GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
-                
-                Inventory.Instance.AddItem(gemdata);
-                mousManager.notSelectObject(GemToInventory.GemScript,false);
-                Destroy(GemToInventory.gameObject);
-                InventoryUI.UpdateSelf();
-                GemToInventory.GemScript.LVL = -1;
-                GemToInventory = null;
-                
-            }
-            // Code pour revenir à l'état initial
-            Debug.Log("État désactivé");
+            GoToInventory();
         }
+    }
+    private void GoToInventory(bool cancel = false)
+    {
+        
+        if (GemToInventory != null && GemToInventory.GemScript.LVL != -1)
+        {
+            Debug.Log("allo");
+            GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
+
+            Inventory.Instance.AddItem(gemdata);
+            mousManager.notSelectObject(GemToInventory.GemScript, false);
+            Destroy(GemToInventory.gameObject);
+            InventoryUI.UpdateSelf();
+            GemToInventory.GemScript.LVL = -1;
+            GemToInventory = null;
+
+        }
+        // Code pour revenir à l'état initial
+        Debug.Log("État désactivé");
     }
     protected override bool DestroyOnLoad => true;
     public void TrySpawnGemm(int index)

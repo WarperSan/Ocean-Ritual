@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MouseWheelManager : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class MouseWheelManager : MonoBehaviour
     [SerializeField] GemData gemData;
     [SerializeField] int SelectedSocle = 0;
 
+    [SerializeField] Button ButtonUp ;
+
+    [SerializeField] Button ButtonDown;
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
     void Update()
     {
@@ -72,9 +76,32 @@ public class MouseWheelManager : MonoBehaviour
         objetMemory.GetComponent<Gemcomponent>().GemScript = gem;
       return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(x, z);
     }
+    public void EndRotation()
+    {
+        SrinkGameObject.transform.position = Socle.transform.position;
+        SrinkGameObject.transform.rotation = Quaternion.identity;
+        ButtonUp.interactable = true;
+        ButtonDown.interactable = true;
+    }
+    public void StartRotation()
+    {
+        ButtonUp.interactable = false;
+        ButtonDown.interactable = false;
+    }
     public void SelectionSocle()
     {
-        Socle = linkWheelEquipment.GetStand(SelectedSocle);
+        Socle = linkWheelEquipment.GetStand();
+      
+    }
+    public void GetNextSocle()
+    {
+        Socle = linkWheelEquipment.GetNextSocle();
+     
+    }
+    public void GetPreviewSocle()
+    {
+        Socle = linkWheelEquipment.GetPreviewSocle();
+
     }
     public void MouseWheelControleur()
     {
@@ -533,8 +560,8 @@ public class MouseWheelManager : MonoBehaviour
             }
            
              PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
-            Debug.Log(scripSocle.GemmeList.Count);
-            Debug.Log(scripSocle.GemmeList[^1].form.GetForme());
+            //Debug.Log(scripSocle.GemmeList.Count);
+            //Debug.Log(scripSocle.GemmeList[^1].form.GetForme());
             scripSocle.DeletedGem(gem);
         }
         if (objetMemory != null)

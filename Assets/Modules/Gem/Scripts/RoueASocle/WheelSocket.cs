@@ -19,6 +19,7 @@ public class WheelSocket : MonoBehaviour
     public float ticDuration = 0.5f; 
     private bool isTicActive = false;
     private float ticTimeElapsed = 0f;
+    [SerializeField] MouseWheelManager mouseWheelManager;
 
     void Start()
     {
@@ -31,7 +32,7 @@ public class WheelSocket : MonoBehaviour
         {
             if (dejaTourner)
             {
-                StartRotationLeft();
+                StartRotationUP();
                 dejaTourner = false;
             }
         }
@@ -46,20 +47,25 @@ public class WheelSocket : MonoBehaviour
             CercleTic();
         }
     }
-
-    void StartRotationLeft()
+    public bool IsRotating()
     {
+        return isRotating;
+    }
+   public void StartRotationUP()
+    {
+        mouseWheelManager.StartRotation();
         isRotating = true;
-       
-        rotationTimeElapsed = 0f;
+        mouseWheelManager.GetNextSocle();
+         rotationTimeElapsed = 0f;
         initialRotation = transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
     }
 
-    void StartRotationRight()
+    public void StartRotationDown()
     {
+        mouseWheelManager.StartRotation();
         isRotating = true;
- 
+        mouseWheelManager.GetPreviewSocle();
         rotationTimeElapsed = 0f;
         initialRotation = transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);
@@ -98,7 +104,8 @@ public class WheelSocket : MonoBehaviour
         if (ticTimeElapsed >= ticDuration)
         {
             isTicActive = false;
-            transform.rotation = targetRotation; 
+            transform.rotation = targetRotation;
+            mouseWheelManager.EndRotation();
         }
     }
 }
