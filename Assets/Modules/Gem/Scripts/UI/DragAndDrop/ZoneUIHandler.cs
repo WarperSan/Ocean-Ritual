@@ -40,6 +40,11 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         GemObject = gem;
         GemToInventory = GemObject.GetComponent<Gemcomponent>() ;
     }
+    public void RemoveGemSocleTOInventory()
+    {
+        GemObject = null;
+        GemToInventory = null;
+    }
     private void ChangeState(bool hovering)
     {
         
@@ -68,7 +73,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                 GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
                 
                 Inventory.Instance.AddItem(gemdata);
-                mousManager.notSelectObject(GemToInventory.GemScript);
+                mousManager.notSelectObject(GemToInventory.GemScript,false);
                 Destroy(GemToInventory.gameObject);
                 InventoryUI.UpdateSelf();
                 GemToInventory.GemScript.LVL = -1;

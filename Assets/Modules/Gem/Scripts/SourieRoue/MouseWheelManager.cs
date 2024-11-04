@@ -523,19 +523,27 @@ public class MouseWheelManager : MonoBehaviour
         }
     }
 
-   public void notSelectObject(Gem gem = null)
+    public void notSelectObject(Gem gem = null, bool RemoveFromZone = true)
     {
         if (gem != null)
         {
+            if (RemoveFromZone)
+            {
+                ZoneUIHandler.Instance.RemoveGemSocleTOInventory();
+            }
            
-            PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
+             PowerGemObject scripSocle = Socle.GetComponent<componentPowerGemObject>().PowerGemObjectScript;
             Debug.Log(scripSocle.GemmeList.Count);
             Debug.Log(scripSocle.GemmeList[^1].form.GetForme());
             scripSocle.DeletedGem(gem);
         }
         if (objetMemory != null)
         {
-            GemFromInventory=false;
+            if (RemoveFromZone)
+            {
+                ZoneUIHandler.Instance.RemoveGemSocleTOInventory();
+            }
+            GemFromInventory =false;
             ResetInitialLayer(objetMemory); // Rétablir le layer initial
             objetMemory = null; // Réinitialiser l'objet en mémoire
             objectTouch = null;  // Réinitialiser l'objet CV en mémoire
