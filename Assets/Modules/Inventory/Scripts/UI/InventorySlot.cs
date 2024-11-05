@@ -52,10 +52,10 @@ using UnityEngine.UI;
         }
     public void ClearSlotCancel()
     {
-   
 
-        TemporaryDisableComponent();
-        SimulateMouseRelease();
+        this.enabled = false;
+       // TemporaryDisableComponent();
+       // SimulateMouseRelease();
     }
     public void SimulateMouseRelease()
     {
