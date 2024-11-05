@@ -65,9 +65,8 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                     }
                     else
                     {
-                        //TrySpawnGemm(index);
-                       // DeletRefInventorySlot();
-                      //  GoToInventory();
+                       
+                        ResetGemme(true);
                     }
                   
                 }
@@ -81,6 +80,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
             GoToInventory();
         }
     }
+  
     private void GoToInventory(bool cancel = false)
     {
         
@@ -112,11 +112,16 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
             mousManager.TestSpawnGem(gemData); 
         }
     }
-    public void ResetGemme()
+    public void ResetGemme(bool reset = false)
     {
         GemActif = new();
         GemActif.LVL =-1;
         index = -1;
+        if(reset) {
+            ActifInventorySlot.Cancel();
+        }
+        
+        ActifInventorySlot = null;
     }
     public void GiveIndex(int index)
     {
