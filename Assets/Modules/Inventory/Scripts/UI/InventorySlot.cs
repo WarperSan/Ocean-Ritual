@@ -53,10 +53,10 @@ using UnityEngine.UI;
     public void ClearSlotCancel()
     {
 
-        this.enabled = false;
-       TemporaryDisableComponent();
+        CancelDragTemporarily();
        
     }
+
     public void SimulateMouseRelease()
     {
         // Crée un PointerEventData pour simuler le relâchement
@@ -69,16 +69,34 @@ using UnityEngine.UI;
         // Envoie l'événement "Pointer Up" pour simuler le relâchement
         ExecuteEvents.Execute(gameObject, pointerEventData, ExecuteEvents.pointerUpHandler);
     }
-    public async void TemporaryDisableComponent()
+    private bool dragCancelled = false;
+    public async void CancelDragTemporarily()
     {
+        // Annuler l’action de drag actuelle
+        dragCancelled = true;
         this.enabled = false;
+        this.canvasGroup.blocksRaycasts = false;
+
+        // Forcer la fin du drag et simuler le relâchement
+        DragEnd();
         SimulateMouseRelease();
-        // Attendre 0,1 seconde (100 ms)
+
+        // Attendre un court délai avant de réactiver
         await Task.Delay(100);
 
+   
+
+        // Attendre jusqu’à ce que le bouton de la souris soit relâché
+        while (Input.GetMouseButton(0))
+        {
+            await Task.Yield(); // Attendre la prochaine frame
+        }
         this.enabled = true;
-        this.DragEnd();
+        this.canvasGroup.blocksRaycasts = true;
+        // Réinitialiser le flag une fois que le bouton est relâché
+        dragCancelled = false;
     }
+
     /// <summary>
     /// Sets the alpha of the background for this slot
     /// </summary>
@@ -103,7 +121,12 @@ using UnityEngine.UI;
         /// <inheritdoc/>
         public void OnDragStart()
         {
-            ZoneUIHandler.Instance.GiveRefInventorySlot(this);
+
+        if (dragCancelled)
+        {
+            return;
+        }
+        ZoneUIHandler.Instance.GiveRefInventorySlot(this);
             ZoneUIHandler.Instance.GiveIndex(slotIndex);
             // Set up slot for drag
             this.originalParent = this.transform.parent;
