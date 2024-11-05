@@ -54,8 +54,8 @@ using UnityEngine.UI;
     {
 
         this.enabled = false;
-       // TemporaryDisableComponent();
-       // SimulateMouseRelease();
+       TemporaryDisableComponent();
+       
     }
     public void SimulateMouseRelease()
     {
@@ -72,7 +72,7 @@ using UnityEngine.UI;
     public async void TemporaryDisableComponent()
     {
         this.enabled = false;
-
+        SimulateMouseRelease();
         // Attendre 0,1 seconde (100 ms)
         await Task.Delay(100);
 
