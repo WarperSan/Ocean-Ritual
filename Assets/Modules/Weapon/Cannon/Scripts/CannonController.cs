@@ -78,7 +78,7 @@ namespace WeaponModule.Weapons.Cannon
             projectile.transform.up = this.origin.forward;
             
             // Set thrust
-            if (projectile is BeachBall beachBall)
+            if (projectile is CannonBall beachBall)
             {
                 beachBall.splashForce = this.thrustAmount;
                
