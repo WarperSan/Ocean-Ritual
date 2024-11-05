@@ -28,16 +28,9 @@ public class WheelSocket : MonoBehaviour
 
     void Update()
     {
-        if (!isRotating && !isTicActive)
-        {
-            if (dejaTourner)
-            {
-                StartRotationUP();
-                dejaTourner = false;
-            }
-        }
+      
 
-        if (isRotating)
+        if (isRotating&& !isTicActive)
         {
             RotateWheel();
         }
@@ -80,7 +73,7 @@ public class WheelSocket : MonoBehaviour
 
         if (rotationTimeElapsed >= rotationDuration)
         {
-            isRotating = false;
+            //isRotating = false;
             transform.rotation = targetRotation;
             StartTicWheel();
         }
@@ -103,6 +96,7 @@ public class WheelSocket : MonoBehaviour
 
         if (ticTimeElapsed >= ticDuration)
         {
+            isRotating = false;
             isTicActive = false;
             transform.rotation = targetRotation;
             mouseWheelManager.EndRotation();
