@@ -81,19 +81,19 @@ using UnityEngine.UI;
         DragEnd();
         SimulateMouseRelease();
 
-        // Attendre un court délai avant de réactiver
+     
         await Task.Delay(100);
 
    
 
-        // Attendre jusqu’à ce que le bouton de la souris soit relâché
+      
         while (Input.GetMouseButton(0))
         {
-            await Task.Yield(); // Attendre la prochaine frame
+            await Task.Yield();
         }
         this.enabled = true;
         this.canvasGroup.blocksRaycasts = true;
-        // Réinitialiser le flag une fois que le bouton est relâché
+    
         dragCancelled = false;
     }
 
@@ -175,6 +175,7 @@ using UnityEngine.UI;
                 // If ended on nothing, drop
                 if (target == null)
                 {
+                Debug.Log("ALLO");
                     Inventory.Instance.DropItem(this.slotIndex);
                     this.ClearSlot();
                 }
@@ -194,6 +195,7 @@ using UnityEngine.UI;
 
             this.canvasGroup.blocksRaycasts = true;
             this.SetBackgroundAlpha(1f);
+        ZoneUIHandler.Instance.NeedReset();
         }
 
         public void ReturnToPosition()

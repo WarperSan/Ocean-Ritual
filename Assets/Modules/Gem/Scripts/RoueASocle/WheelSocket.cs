@@ -14,7 +14,7 @@ public class WheelSocket : MonoBehaviour
     private Quaternion initialRotation;
     private float rotationTimeElapsed = 0f;
    // private bool rotateLeft = true;
-    [SerializeField] bool dejaTourner = true;
+   
     public float ticIntensity = 2f; 
     public float ticDuration = 0.5f; 
     private bool isTicActive = false;

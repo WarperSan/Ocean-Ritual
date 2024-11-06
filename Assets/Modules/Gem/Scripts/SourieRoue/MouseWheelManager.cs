@@ -16,24 +16,24 @@ public class MouseWheelManager : MonoBehaviour
     [SerializeField] bool GemFromInventory = false;
     [SerializeField] GameObject SrinkGameObject;
     [SerializeField] float SrinkValue= 0.2f;
-    [SerializeField] bool testSpawnGem = false;
+  
     [SerializeField] GemData TestGemData ;
     [SerializeField] GemData gemData;
-    [SerializeField] int SelectedSocle = 0;
+
 
     [SerializeField] Button ButtonUp ;
 
     [SerializeField] Button ButtonDown;
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
+    [SerializeField] GameObject MenuActif;
+
+
     void Update()
     {
 
+        if(MenuActif.active)
         MouseWheelControleur();
-        if (testSpawnGem)
-        {
-            TestSpawnGem();
-            testSpawnGem = false;
-        }
+     
 
     }
     public void TestSpawnGem(GemData gemdataREceive = null)

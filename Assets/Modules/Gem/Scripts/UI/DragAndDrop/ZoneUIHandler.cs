@@ -5,7 +5,7 @@ using UtilsModule;
 
 public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPointerExitHandler
 {
-    private bool isHovering = false;
+  
     public int index =-1;
     public GemData GemActif = null;
     public GameObject GemObject = null;
@@ -18,7 +18,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     // Appelé quand la souris entre dans la zone de la cible
     public void OnPointerEnter(PointerEventData eventData)
     {
-        isHovering = true;
+       
         ChangeState(true); // Passe à l'état activé
     }
     public void GiveRefInventorySlot(InventorySlot inventorySlot)
@@ -32,7 +32,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     // Appelé quand la souris quitte la zone de la cible
     public void OnPointerExit(PointerEventData eventData)
     {
-        isHovering = false;
+      
         ChangeState(false); // Retourne à l'état initial
     }
 
@@ -60,12 +60,13 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                 {
                     if (!wheelSocket.IsRotating())
                     {
+                        Debug.Log("ALLO VRAI");
                         TrySpawnGemm(index);
                         DeletRefInventorySlot();
                     }
                     else
                     {
-                       
+                        Debug.Log("ALLO FAUX");
                         ResetGemme(true);
                     }
                   
@@ -77,6 +78,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         }
         else
         {
+            Debug.Log("ALLO CHANGE STAT");
             GoToInventory();
         }
     }
@@ -86,7 +88,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         
         if (GemToInventory != null && GemToInventory.GemScript.LVL != -1)
         {
-            Debug.Log("allo");
+        
             GemData gemdata = GemHelper.ConvertGemToGemData(GemToInventory.GemScript);
 
             Inventory.Instance.AddItem(gemdata);
@@ -114,6 +116,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     }
     public void ResetGemme(bool reset = false)
     {
+        Debug.Log("reset");
         GemActif = new();
         GemActif.LVL =-1;
         index = -1;
@@ -122,6 +125,13 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         }
         
         ActifInventorySlot = null;
+    }
+    public void NeedReset()
+    {
+        if(GemActif.LVL != -1 || index != -1)
+        {
+            ResetGemme();
+        }
     }
     public void GiveIndex(int index)
     {
