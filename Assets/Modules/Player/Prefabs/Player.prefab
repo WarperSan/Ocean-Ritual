@@ -314,6 +314,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2e803c50-3dda-4760-9ff6-0d05ad66e132
     m_ActionName: UI/Close[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3210125780624037466}
+        m_TargetAssemblyTypeName: ControllerModule.Controllers.InputMaster, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cd632ce4-9c94-4abd-83a6-e89c0c45b2e2
+    m_ActionName: Player/Interact[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -354,7 +370,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7040910536013203838
 CanvasRenderer:
@@ -384,7 +400,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 96c0f2505aa10fe20a801ea18130f8ac, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1561,14 +1577,14 @@ MonoBehaviour:
   cursor: {fileID: 1728905337464703902}
   interactRange: 2.5
   defaultInteraction: {fileID: 11400000, guid: 76cc6add2e5fe945fb78ccb0582f3f7d, type: 2}
-  movementSpeed: 10
+  movementSpeed: 7
   boatController: {fileID: 0}
   Feet: {fileID: 1035515871219090602}
   GroundLayers:
     serializedVersion: 2
     m_Bits: 3091202129
   GroundCheckRadius: 0.2
-  jumpHeight: 7
+  jumpHeight: 4
 --- !u!114 &9021505828091235812
 MonoBehaviour:
   m_ObjectHideFlags: 0

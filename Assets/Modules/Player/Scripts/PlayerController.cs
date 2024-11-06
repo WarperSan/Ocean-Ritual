@@ -9,7 +9,7 @@ namespace ControllerModule.Controllers
     /// Controller that manages how the player behaves
     /// </summary>
 
-    public class PlayerController : Controller, IMovable, IFirable, IJumpable
+    public class PlayerController : Controller, IMovable, IInteractionable, IJumpable
     {
         #region Cursor 
 
@@ -90,7 +90,7 @@ namespace ControllerModule.Controllers
 
         private CharacterController _characterController;
 
-        
+
         private Vector3 direction;
 
         /// <summary>
@@ -105,27 +105,19 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null || this._characterController == null)
                 return;
 
-            
-
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
 
-            
-            moveDir = moveDir.normalized * speed ;
-            
+            moveDir = moveDir.normalized * speed;
+
             // Add boat movement 
             if (boatController != null)
-            {
-                
                 moveDir += boatController.MovementBoat.normalized * boatController.CurrentSpeed;
-                Debug.Log(moveDir.ToString());
-            }
-                
 
             // Move the character controller
-            this._characterController.Move(moveDir*elapsed);
+            this._characterController.Move(moveDir * elapsed);
 
             //this._rigidbody.MovePosition(moveDir);
         }
@@ -204,8 +196,8 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
-            
-            
+
+
         }
 
         protected override void OnFixedUpdate(float elapsed)
@@ -246,30 +238,28 @@ namespace ControllerModule.Controllers
 
         #endregion
 
-        #region IFirable
+        #region IInteractionable
 
         /// <inheritdoc/>
-        public void OnFireStart() => this.Interact();
+        public void OnInteract() => this.Interact();
 
-        /// <inheritdoc/>
-        public void OnFireEnd() { }
-
-        #endregion 
+        #endregion
 
         #region IJumpable
+
         [Header("Jump")]
         [SerializeField, Tooltip("Determines height of Jump")]
         private float jumpHeight = 1.0f;
+
         public void OnJump()
         {
-            Debug.Log(CheckGrounded());
-            if (CheckGrounded())
-            {
-                Debug.Log("grounded");
-                //_rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
-                velocity += new Vector3(0,jumpHeight,0);
-            }
+            if (!this.CheckGrounded())
+                return;
+
+            //_rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+            velocity += new Vector3(0, jumpHeight, 0);
         }
+
         #endregion
 
         #region MonoBehaviour
