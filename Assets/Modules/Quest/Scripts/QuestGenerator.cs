@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class QuestGenerator : MonoBehaviour
@@ -22,7 +21,7 @@ public class QuestGenerator : MonoBehaviour
     public void applyModif()
     {
         QuestManager.QuestToDataSave();
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
         QuestManager.GetDataQuestLoad();
        
        
