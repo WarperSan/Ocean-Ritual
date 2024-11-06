@@ -98,10 +98,7 @@ namespace EntityModule
 
             // If hit boat, but not targeting boat
             if (!this.attack.TargetType.HasFlag(ProjectileTarget.BOAT) && layer == BOAT_LAYER)
-            {
-                Debug.Log("not boat");
                 return false;
-            }
 
 
             // If hit an enemy, but not targeting enemies

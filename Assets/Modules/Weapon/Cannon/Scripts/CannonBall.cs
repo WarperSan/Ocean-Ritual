@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WeaponModule.Weapons.Cannon
 {
-    public class BeachBall : Projectile
+    public class CannonBall : Projectile
     {
         #region Splash
 
