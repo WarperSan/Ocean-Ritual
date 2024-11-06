@@ -22,6 +22,7 @@ namespace ControllerModule.Controllers
         public delegate void FireEvent();
         public delegate void TabEvent();
         public delegate void EscapeEvent();
+        public delegate void InteractEvent();
 
         #endregion
 
@@ -35,6 +36,7 @@ namespace ControllerModule.Controllers
         public event TabEvent OnTabNext;
         public event TabEvent OnTabPrevious;
         public event EscapeEvent OnEscape;
+        public event InteractEvent OnInteract;
 
         #endregion
 
@@ -66,6 +68,12 @@ namespace ControllerModule.Controllers
                 this.OnFireStart?.Invoke();
             else if (context.canceled)
                 this.OnFireEnd?.Invoke();
+        }
+
+        public void Interact(InputAction.CallbackContext context)
+        {
+            if (context.started)
+                this.OnInteract?.Invoke();
         }
 
         public void Unmount(InputAction.CallbackContext context)
