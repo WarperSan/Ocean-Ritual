@@ -11,7 +11,9 @@ namespace EntityModule
 
         [Header("Health")]
         [SerializeField, Tooltip("Maximum health for this entity")]
-        protected float MaxHeath;
+        protected float _MaxHeath;
+        public float MaxHealth => this._MaxHeath;
+
         [SerializeField, Tooltip("Maximum health to heal for this entity")]
         protected float HealthTotal { get; private set; }
         public float Health { get; private set; }
@@ -26,7 +28,7 @@ namespace EntityModule
         /// </summary>
         private void ResetHealth()
         {
-            this.Health = this.MaxHeath;
+            this.Health = this._MaxHeath;
         }
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace EntityModule
                 return;
 
             this.ModifyHeal(heal);
-            this.Health = Mathf.Clamp(this.Health + heal.Amount, 0, this.MaxHeath);
+            this.Health = Mathf.Clamp(this.Health + heal.Amount, 0, this._MaxHeath);
         }
 
         /// <summary>

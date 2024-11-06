@@ -14,7 +14,7 @@ namespace BossesModule.Golem
         {
             base.OnStart();
 
-            this.healthBar.maxValue = this.MaxHeath;
+            this.healthBar.maxValue = this._MaxHeath;
             this.healthBar.value = this.Health;
         }
 
@@ -48,7 +48,6 @@ namespace BossesModule.Golem
         protected override void OnDeath(float overDamage)
         {
             this.healthBar.value = 0;
-            QuestManager.SomeoneDeath(this.name);
             this.gameObject.SetActive(false);
         }
 
