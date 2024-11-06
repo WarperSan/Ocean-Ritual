@@ -6,5 +6,6 @@ namespace InteractModule
     public class InteractionAsset : ScriptableObject
     {
         public Sprite icon;
+        public string tip;
     }
 }

@@ -28,12 +28,6 @@ namespace UIModule.Components
 
         #endregion
 
-        private void Start()
-        {
-            foreach (Sprite item in this.images)
-                this.iconsForName.Add(item.name, item);
-        }
-
         #region Controller Mode
 
         public bool IsKeyboard { get; private set; } = true;
@@ -44,31 +38,34 @@ namespace UIModule.Components
 
         private Coroutine showKeyCoroutine = null;
 
-        public static void ShowKey(KeyCode key)
-        {
-            if (Instance.showKeyCoroutine != null)
-                Instance.StopCoroutine(Instance.showKeyCoroutine);
+        public static void ShowKey(KeyCode key, string tag) => Instance.ShowKeyInstance(key, tag);
 
-            Instance.showKeyCoroutine = Instance.StartCoroutine(Instance.ShowKeyCoroutine(key));
+        private void ShowKeyInstance(KeyCode key, string tag)
+        {
+            if (this.usedTips.ContainsKey(tag))
+                return;
+
+            if (this.showKeyCoroutine != null)
+                this.StopCoroutine(this.showKeyCoroutine);
+
+            this.showKeyCoroutine = this.StartCoroutine(this.ShowKeyCoroutine(key, tag));
         }
 
-        private IEnumerator ShowKeyCoroutine(KeyCode key)
+        private IEnumerator ShowKeyCoroutine(KeyCode key, string tag)
         {
+            this.usedTips[tag] = false;
+
             yield return this.OpenAnimation.PlayAnimation();
 
-            int clickCount = 10;
+            bool pressed = true;
 
-            while (clickCount > 0)
+            while (this.usedTips.ContainsKey(tag) && !this.usedTips[tag])
             {
                 yield return new WaitForSeconds(1f);
 
-                this.SetKey(key, true);
+                this.SetKey(key, pressed);
 
-                yield return new WaitForSeconds(1f);
-
-                this.SetKey(key, false);
-
-                clickCount--;
+                pressed = !pressed;
             }
 
             yield return this.CloseAnimation.PlayAnimation();
@@ -95,10 +92,37 @@ namespace UIModule.Components
 
         #endregion
 
+        #region Tips
+
+        private readonly Dictionary<string, bool> usedTips = new();
+
+        public static void UseTip(string tag) => Instance.usedTips[tag] = true;
+
+        public static void DiscardTip(string tag)
+        {
+            // If tag not registered, skip
+            if (!Instance.usedTips.ContainsKey(tag))
+                return;
+
+            // If tag used, skip
+            if (Instance.usedTips[tag])
+                return;
+
+            Instance.usedTips.Remove(tag);
+        }
+
+        #endregion
+
         #region Singleton
 
         /// <inheritdoc/>
         protected override bool DestroyOnLoad => true;
+
+        protected override void OnAwake()
+        {
+            foreach (Sprite item in this.images)
+                this.iconsForName.Add(item.name, item);
+        }
 
         #endregion
     }
