@@ -2,7 +2,6 @@ using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;
-using static EnumGeneral;
 
 namespace ControllerModule.Controllers
 {
@@ -10,12 +9,14 @@ namespace ControllerModule.Controllers
     {
         [SerializeField]
         private Rigidbody _rb;
+
+        #region Stats
+
+        [Header("Stats")]
+        [SerializeField]
         private BoatStats _stats;
 
-        protected override void OnStart()
-        {
-            _stats = GetComponent<BoatStats>();
-        }
+        #endregion
 
         #region Aboard
 

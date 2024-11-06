@@ -9,15 +9,15 @@ namespace WeaponModule.Weapons.Cannon
     /// <summary>
     /// Controller that manages how the cannon behaves
     /// </summary>
-    [RequireComponent(typeof(CannonStats))]
     public class CannonController : WeaponController, IMovable
     {
+        #region Stats
+
+        [Header("Stats")]
+        [SerializeField]
         private CannonStats _stats;
 
-        protected override void OnStart()
-        {
-            _stats = this.GetComponent<CannonStats>();
-        }
+        #endregion
 
         #region Rotation
 
