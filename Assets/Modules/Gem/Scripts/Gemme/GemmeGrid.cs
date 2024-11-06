@@ -48,6 +48,12 @@ public class GemmeGrid : MonoBehaviour
     #endregion
 
     #region Object Placement
+    public void resetGrid()
+    {
+        Grid = new bool[width, height];
+    }
+
+
 
     //Checks if an object can be placed at the given coordinates
     public bool CanPlaceObject(int x, int y, bool[,] form)

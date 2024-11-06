@@ -15276,8 +15276,11 @@ MonoBehaviour:
   equipment: {fileID: 0}
   PlacementPoint: []
   listStand: []
+  PlacementpointBase: []
   SizeBase: 1
   rotation: 0
+  remove: 0
+  DoSocle: 1
 --- !u!1 &4062201555652351212
 GameObject:
   m_ObjectHideFlags: 0
@@ -15439,7 +15442,7 @@ Transform:
   m_GameObject: {fileID: 4433309713467469259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.08, z: -0.506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16231,6 +16234,7 @@ MonoBehaviour:
   rotationInterval: 10
   rotationDuration: 3
   rotationAmount: 45
+  RotateObject: {fileID: 8018434889344585719}
   ticIntensity: 2
   ticDuration: 1
   mouseWheelManager: {fileID: 0}
@@ -31273,7 +31277,7 @@ PrefabInstance:
     - target: {fileID: 812818171960934557, guid: 987559a28e158ea458031c0a52239ac4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5655322
+      value: -1.528
       objectReference: {fileID: 0}
     - target: {fileID: 812818171960934557, guid: 987559a28e158ea458031c0a52239ac4,
         type: 3}
@@ -31357,7 +31361,7 @@ PrefabInstance:
     - target: {fileID: 812818171960934557, guid: 987559a28e158ea458031c0a52239ac4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5655322
+      value: -1.562
       objectReference: {fileID: 0}
     - target: {fileID: 812818171960934557, guid: 987559a28e158ea458031c0a52239ac4,
         type: 3}

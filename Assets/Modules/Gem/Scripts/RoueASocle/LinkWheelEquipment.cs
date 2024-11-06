@@ -9,9 +9,11 @@ public class LinkWheelEquipment : MonoBehaviour
     [SerializeField] componentGBN equipment;
     [SerializeField] List<GameObject> PlacementPoint;
     [SerializeField] List<componentPowerGemObject> listStand = new();
+    [SerializeField] List<GameObject> PlacementpointBase = new List<GameObject>();
     [SerializeField] float SizeBase = 1;
     [SerializeField] float rotation = 0;
-    private bool DoSocle = true;
+    [SerializeField] bool remove = false;
+    [SerializeField] bool DoSocle = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,18 +23,28 @@ public class LinkWheelEquipment : MonoBehaviour
             PlaceStand();
         }
   
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (DoSocle)
+        {
+            DoSocle = !DoSocle;
+            PlaceStand();
+        }
+        if (remove)
+        {
+            remove = !remove;
+            RemoveStand();
+        }
     }
 
     public void PlaceStand()
     {
         listStand = equipment.GBNScript.SocleListe;
-        List<GameObject> PlacementpointBase = new List<GameObject>();
+       PlacementpointBase = new List<GameObject>();
         equipment.GenerationSocle();
        
         foreach (componentPowerGemObject socle in listStand)
@@ -46,6 +58,17 @@ public class LinkWheelEquipment : MonoBehaviour
         }
 
 
+    }
+
+    public void RemoveStand()
+    {
+         rotation = 0;
+        foreach (GameObject socle in PlacementpointBase)
+        {
+            socle.transform.SetParent(equipment.transform);
+            componentPowerGemObject scriptComponant = socle.GetComponent<componentPowerGemObject>();
+            scriptComponant.PowerGemObjectScript.RemoveStand();
+        }
     }
     //max 8 min 1 dans la liste donc de l'index 0 à 7
     int stand = 0;

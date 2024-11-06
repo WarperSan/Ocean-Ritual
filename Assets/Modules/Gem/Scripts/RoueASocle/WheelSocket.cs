@@ -8,7 +8,7 @@ public class WheelSocket : MonoBehaviour
     public float rotationInterval = 10f;
     public float rotationDuration = 2f;
     public float rotationAmount = 45f;
-
+    [SerializeField] GameObject RotateObject;
     private bool isRotating = false;
     private Quaternion targetRotation;
     private Quaternion initialRotation;
@@ -50,7 +50,7 @@ public class WheelSocket : MonoBehaviour
         isRotating = true;
         mouseWheelManager.GetNextSocle();
          rotationTimeElapsed = 0f;
-        initialRotation = transform.rotation;
+        initialRotation = RotateObject.transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
     }
 
@@ -60,7 +60,7 @@ public class WheelSocket : MonoBehaviour
         isRotating = true;
         mouseWheelManager.GetPreviewSocle();
         rotationTimeElapsed = 0f;
-        initialRotation = transform.rotation;
+        initialRotation = RotateObject.transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);
     }
 
@@ -69,12 +69,12 @@ public class WheelSocket : MonoBehaviour
         rotationTimeElapsed += Time.deltaTime;
         float t = rotationTimeElapsed / rotationDuration;
 
-        transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
+        RotateObject.transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
 
         if (rotationTimeElapsed >= rotationDuration)
         {
             //isRotating = false;
-            transform.rotation = targetRotation;
+            RotateObject.transform.rotation = targetRotation;
             StartTicWheel();
         }
     }
@@ -92,13 +92,13 @@ public class WheelSocket : MonoBehaviour
 
        
         float oscillation = Mathf.Sin(t * Mathf.PI * 2) * ticIntensity;
-        transform.rotation = targetRotation * Quaternion.Euler(oscillation, 0f, 0f);
+        RotateObject.transform.rotation = targetRotation * Quaternion.Euler(oscillation, 0f, 0f);
 
         if (ticTimeElapsed >= ticDuration)
         {
             isRotating = false;
             isTicActive = false;
-            transform.rotation = targetRotation;
+            RotateObject.transform.rotation = targetRotation;
             mouseWheelManager.EndRotation();
         }
     }
