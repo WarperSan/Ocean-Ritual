@@ -118,7 +118,18 @@ namespace EntityModule.Entities
         }
 
         /// <inheritdoc/>
-        protected override void OnPostAttack(Projectile source) => UpdateHealthBar();
+        protected override void OnPostAttack(Projectile source) 
+        {
+            animator.SetTrigger("isHit");
+            UpdateHealthBar();
+        }
+
+        protected override void OnDeath(float overDamage)
+        {
+            animator.SetTrigger("isDead");
+            enabled = false;
+            HideHealthBar();
+        }
 
         #endregion
     }
