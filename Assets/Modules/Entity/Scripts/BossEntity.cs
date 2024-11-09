@@ -43,17 +43,19 @@ namespace EntityModule.Entities
         [SerializeField]
         private GameObject barrierPrefab;
 
+        private Transform barrierParent;
+
         private IEnumerator SpawnArena()
         {
-            Transform parent = new GameObject()
+            barrierParent = new GameObject()
             {
                 name = this.name + " BARRIER",
             }.transform;
-            parent.transform.position = this.transform.position;
+            barrierParent.transform.position = this.transform.position;
 
             for (int i = 0; i < this.barrierCount; i++)
             {
-                GameObject piece = Instantiate(this.barrierPrefab, parent);
+                GameObject piece = Instantiate(this.barrierPrefab, barrierParent);
                 piece.transform.localPosition = new Vector3(
                     Mathf.Cos(Mathf.Deg2Rad * 360f * i / this.barrierCount),
                     0,
@@ -65,6 +67,18 @@ namespace EntityModule.Entities
             }
 
             this.hasSpawned = true;
+        }
+
+        private IEnumerator DespawnArena()
+        {
+            for (int i = barrierParent.childCount - 1; i >= 0; i--)
+            {
+                Destroy(barrierParent.GetChild(i).gameObject);
+                yield return new WaitForSeconds(3f / this.barrierCount);
+            }
+
+            Destroy(barrierParent.gameObject);
+            barrierParent = null;
         }
 
         #endregion
@@ -129,6 +143,7 @@ namespace EntityModule.Entities
             animator.SetTrigger("isDead");
             enabled = false;
             HideHealthBar();
+            StartCoroutine(this.DespawnArena());
         }
 
         #endregion
