@@ -1,3 +1,4 @@
+using DhafinFawwaz.AnimationUILib;
 using EntityModule;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,12 @@ namespace UIModule.Components
     public class HealthBar : MonoBehaviour
     {
         [SerializeField] private Slider healthBar;
+
+        [SerializeField]
+        private AnimationUI showAnimation;
+
+        [SerializeField]
+        private AnimationUI hideAnimation;
 
         public void InitializeBar(Entity boss)
         {
@@ -41,12 +48,12 @@ namespace UIModule.Components
 
         public void Show()
         {
-
+            this.showAnimation.Play();
         }
 
         public void Hide()
         {
-
+            this.hideAnimation.Play();
         }
     }
 }

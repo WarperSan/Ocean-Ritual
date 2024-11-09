@@ -12,8 +12,6 @@ namespace BossesModule.Golem
         public const string CURRENT_TARGET = "currentTarget";
         public const string WALK_SPEED = "walkSpeed";
 
-        public Transform target;
-
         #region IVisualizable
 
         private Node root;
@@ -31,12 +29,12 @@ namespace BossesModule.Golem
                 this.WalkSequence()
             );
 
-            _root.SetData(CURRENT_TARGET, this.target);
+            _root.SetData(CURRENT_TARGET, null);
             _root.SetData(WALK_SPEED, 1f);
 
-            this.golemAnimationEvents.throwTarget = this.target;
-
             this.root = _root.Alias("Root");
+
+            //TargetGeneral.Instance.Target
         }
 
         #endregion

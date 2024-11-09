@@ -10,7 +10,6 @@ namespace FishingModule
     public class ZoneManager : MonoBehaviour
     {
         private FishingBuoy Buoy;
-        private GameObject targetBoat;
 
         [HideInInspector]
         public FishingManager manager;
@@ -58,7 +57,7 @@ namespace FishingModule
             // If player is in the aggro zone
             if (distance <= this.aggroRadius)
             {
-                TargetGeneral.Instance.Target = targetBoat.transform;
+                TargetGeneral.Instance.Target = TargetGeneral.Instance.BoatTarget;
                 return;
             }
 
@@ -85,7 +84,6 @@ namespace FishingModule
         {
             this.Buoy = this.GetComponent<FishingBuoy>();
             this.startPosition = this.Buoy.transform.position;
-            this.targetBoat = GameObject.FindWithTag("Boat");
         }
 
         /// <inheritdoc/>
