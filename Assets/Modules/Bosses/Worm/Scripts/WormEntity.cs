@@ -1,8 +1,4 @@
-using BossesModule.Golem;
-using EntityModule;
 using EntityModule.Entities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -11,8 +7,6 @@ namespace BossesModule.Worm
     public class WormEntity : BossEntity
     {
         
-
-
     }
 }
 

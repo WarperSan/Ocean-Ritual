@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UtilsModule;
 
 public class TargetGeneral : Singleton<TargetGeneral>
 {
     public Transform Target;
+
+    public Transform BoatTarget;
 
     #region Singleton
 

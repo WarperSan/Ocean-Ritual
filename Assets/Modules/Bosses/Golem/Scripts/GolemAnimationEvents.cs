@@ -19,19 +19,18 @@ namespace BossesModule.Golem
         [SerializeField, Tooltip("Force applied to the projectile upon launch")]
         private Vector3 throwForce;
 
-        public Transform throwTarget;
-
         public void ExecuteThrow()
         {
             // If source is invalid, skip
             if (this.throwSource == null)
                 return;
 
+            Transform throwTarget = TargetGeneral.Instance.Target;
+
             // If target is invalid, skip
-            if (this.throwTarget == null)
+            if (throwTarget == null)
                 return;
 
-            // var obj = ObjectPools.ObjectPool.GetObject(this.throwProjectile);
             GameObject obj = this.tree.throwPool.Get(this.throwProjectile.name);
 
             if (obj == null)
@@ -41,14 +40,14 @@ namespace BossesModule.Golem
             obj.transform.position = this.throwSource.position;
 
             if (obj.TryGetComponent(out Rigidbody rb))
-                rb.velocity = GetLaunch(obj, this.throwTarget.position, 10);
+                rb.velocity = GetLaunch(obj, throwTarget.position, 10);
 
             if (obj.TryGetComponent(out Projectile projectile))
             {
                 projectile.ResetSelf();
                 projectile.Attribute(new Attack()
                 {
-                    Damage = 20,
+                    Damage = 3,
                     Type = AttackType.FIRE,
                     TargetType = ProjectileTarget.ALL
                 });
@@ -67,35 +66,12 @@ namespace BossesModule.Golem
                 return;
 
             animator.SetBool("isSpawning", false);
+            tree.GetRoot().SetData(GolemTree.CURRENT_TARGET, TargetGeneral.Instance.BoatTarget);
         }
 
         #endregion
 
         #region Projectiles
-
-        private static GameObject GetProjectile(GameObject prefab)
-        {
-            // If prefab invalid
-            if (prefab == null)
-                return null;
-
-            // OBJECT POOL MAGIC
-            GameObject newProjectile = Instantiate(prefab);
-            newProjectile.SetActive(true);
-
-            if (newProjectile.TryGetComponent(out LavaProjectile lavaProjectile))
-            {
-                lavaProjectile.ResetSelf();
-                lavaProjectile.Attribute(new EntityModule.Attack()
-                {
-                    Damage = 10,
-                    Type = EntityModule.AttackType.FIRE,
-                    TargetType = EntityModule.ProjectileTarget.PLAYER
-                });
-            }
-
-            return newProjectile;
-        }
 
         private static Vector3 GetLaunch(GameObject projectile, Vector3 target, float height, float? gravity = null)
         {
