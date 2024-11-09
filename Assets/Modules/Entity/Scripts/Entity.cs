@@ -19,6 +19,11 @@ namespace EntityModule
         public float Health { get; private set; }
 
         /// <summary>
+        /// Is this entity dead?
+        /// </summary>
+        public bool IsDead { get; private set; }
+
+        /// <summary>
         /// Determines if this entity can take damage
         /// </summary>
         public virtual bool TakeDamage => true;
@@ -61,6 +66,7 @@ namespace EntityModule
                 overDamage = Mathf.Abs(this.Health);
 
             this.OnDeath(overDamage);
+            this.IsDead = true;
         }
 
         /// <summary>

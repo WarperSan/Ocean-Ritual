@@ -73,10 +73,12 @@ namespace EntityModule.Entities
         {
             for (int i = barrierParent.childCount - 1; i >= 0; i--)
             {
-                Destroy(barrierParent.GetChild(i).gameObject);
+                if (barrierParent.GetChild(i).TryGetComponent(out Animator animator))
+                    animator.SetTrigger("hide");
                 yield return new WaitForSeconds(3f / this.barrierCount);
             }
 
+            yield return new WaitForSeconds(5f);
             Destroy(barrierParent.gameObject);
             barrierParent = null;
         }
@@ -115,7 +117,7 @@ namespace EntityModule.Entities
                 this.ShowHealthBar();
 
                 this.StartCoroutine(this.SpawnArena());
-                
+
                 return;
             }
 
@@ -132,7 +134,7 @@ namespace EntityModule.Entities
         }
 
         /// <inheritdoc/>
-        protected override void OnPostAttack(Projectile source) 
+        protected override void OnPostAttack(Projectile source)
         {
             animator.SetTrigger("isHit");
             UpdateHealthBar();
