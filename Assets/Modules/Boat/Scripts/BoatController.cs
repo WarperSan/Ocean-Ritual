@@ -1,5 +1,6 @@
 using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
+using MapModule;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -102,13 +103,9 @@ namespace ControllerModule.Controllers
         [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down")]
         private float movementDeceleration = 0.01f;
 
-        [SerializeField, Tooltip("Determines the offset of the boat from the wave height")]
-        private float waveOffset = 0;
-
         private Vector3 targetPosition;
 
         public float CurrentSpeed { get; private set; }
-
 
         //For player movememnt correction
         private Vector3 movement;
@@ -131,7 +128,7 @@ namespace ControllerModule.Controllers
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
-            this.targetPosition.y = this.waveOffset; //Singletons.OceanManager.GetHeight(this.targetPosition, this.waveOffset);
+            this.targetPosition.y = OceanManager.WATER_HEIGHT;
 
             // Lerps to the position
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
