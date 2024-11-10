@@ -140,6 +140,7 @@ namespace EntityModule.Entities
             UpdateHealthBar();
         }
 
+        /// <inheritdoc/>
         protected override void OnDeath(float overDamage)
         {
             animator.SetTrigger("isDead");

@@ -87,7 +87,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6670320451692012110}
   - component: {fileID: 5305911301833348661}
-  - component: {fileID: 4767587990048311389}
   - component: {fileID: 4383952385357882534}
   m_Layer: 29
   m_Name: Boat
@@ -132,39 +131,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookController: {fileID: 6424943920446149336}
   disableIfOut: 0
-  _rb: {fileID: 4767587990048311389}
+  _rb: {fileID: 2138984657141354460}
   _stats: {fileID: 8968435979656572663}
   aboardParent: {fileID: 3940337190006393580}
   movementAcceleration: 0.05
   movementDeceleration: 0.02
   waveOffset: 0.2
---- !u!54 &4767587990048311389
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323435050758231154}
-  serializedVersion: 4
-  m_Mass: 100
-  m_Drag: 0.1
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 116
-  m_CollisionDetection: 1
 --- !u!114 &4383952385357882534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2302,6 +2274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7558607017370167198}
+  - component: {fileID: 2138984657141354460}
   m_Layer: 29
   m_Name: Colliders
   m_TagString: Untagged
@@ -2326,6 +2299,33 @@ Transform:
   - {fileID: 8898293904147112388}
   m_Father: {fileID: 6670320451692012110}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2138984657141354460
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8127387494174492903}
+  serializedVersion: 4
+  m_Mass: 100
+  m_Drag: 0.1
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 116
+  m_CollisionDetection: 1
 --- !u!1 &8542323338046746472
 GameObject:
   m_ObjectHideFlags: 0
