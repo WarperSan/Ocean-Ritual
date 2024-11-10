@@ -6,13 +6,22 @@ namespace EntityModule
     {
         [SerializeField]
         private Transform respawnPoint;
+        [SerializeField] string music;
+        
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Death"))
                 this.transform.position = respawnPoint.position + new Vector3(0, 2, 0);
-        }
 
+            
+        }
+        private void Start()
+        {
+            Debug.Log(SoundManager.Instance.name);
+            SoundManager.Instance.PlaySound(music,SoundType.Music,true);
+        }
+        
         #region Entity
 
         /// <inheritdoc/>
