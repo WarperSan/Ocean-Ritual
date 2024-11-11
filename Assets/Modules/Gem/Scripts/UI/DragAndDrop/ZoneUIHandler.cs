@@ -1,11 +1,13 @@
+//using Microsoft.Unity.VisualStudio.Editor;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UtilsModule;
+using UnityEngine.UI;
 
 public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPointerExitHandler
 {
-  
+    [SerializeField] private Image imageZone;
     public int index =-1;
     public GemData GemActif = null;
     public GameObject GemObject = null;
@@ -24,6 +26,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     public void GiveRefInventorySlot(InventorySlot inventorySlot)
     {
         ActifInventorySlot = inventorySlot;
+        imageZone.raycastTarget = true;
     }
     public void DeletRefInventorySlot( )
     {
@@ -32,7 +35,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     // Appelé quand la souris quitte la zone de la cible
     public void OnPointerExit(PointerEventData eventData)
     {
-      
+   
         ChangeState(false); // Retourne à l'état initial
     }
 
@@ -43,6 +46,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     }
     public void RemoveGemSocleTOInventory()
     {
+        DesactivateRaycast();
         GemObject = null;
         GemToInventory = null;
     }
@@ -83,6 +87,14 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
         }
     }
   
+    public void activeRaycast()
+    {
+        imageZone.raycastTarget = true;
+    }
+    public void DesactivateRaycast()
+    {
+        imageZone.raycastTarget = false;
+    }
     private void GoToInventory(bool cancel = false)
     {
         
@@ -97,10 +109,10 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
             InventoryUI.UpdateSelf();
             GemToInventory.GemScript.LVL = -1;
             GemToInventory = null;
-
+            DesactivateRaycast();
         }
         // Code pour revenir à l'état initial
-        Debug.Log("État désactivé");
+       // Debug.Log("État désactivé");
     }
     protected override bool DestroyOnLoad => true;
     public void TrySpawnGemm(int index)
@@ -116,7 +128,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     }
     public void ResetGemme(bool reset = false)
     {
-        Debug.Log("reset");
+      //  Debug.Log("reset");
         GemActif = new();
         GemActif.LVL =-1;
         index = -1;
@@ -130,6 +142,7 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
     {
         if(GemActif.LVL != -1 || index != -1)
         {
+           
             ResetGemme();
         }
     }

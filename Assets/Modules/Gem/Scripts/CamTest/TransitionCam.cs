@@ -29,7 +29,7 @@ public class TransitionCam : Singleton<TransitionCam>
 
     public void SwitchToCamA()
     {
-        Debug.Log("a");
+        //Debug.Log("a");
         camA.Priority = 10;
         camB.Priority = 0;
     }

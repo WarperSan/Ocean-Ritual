@@ -136,7 +136,7 @@ public class PowerGemObject
         {
             GemmeList.Remove(theGem);
             GridGemme.RemoveObject(theGem.PositionX, theGem.PositionZ, theGem.form.GetForme());
-            Debug.Log("La gemme a été supprimée avec succès.");
+           // Debug.Log("La gemme a été supprimée avec succès.");
         }
         else
         {

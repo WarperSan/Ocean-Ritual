@@ -29,11 +29,11 @@ public class MouseWheelManager : MonoBehaviour
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
     [SerializeField] GameObject MenuActif;
 
-
+    [System.Obsolete]
     void Update()
     {
 
-        if(MenuActif.active)
+        if(this.MenuActif.active)
         MouseWheelControleur();
      
 
@@ -351,6 +351,7 @@ public class MouseWheelManager : MonoBehaviour
 
         return result;
     }
+
     void DetectAndSelectObject()
     {
         GameObject temp = DetectGemmeRC();
@@ -367,7 +368,7 @@ public class MouseWheelManager : MonoBehaviour
             // Vérifier si le parent existe
             if (parent != null)
             {
-
+                ZoneUIHandler.Instance.activeRaycast(); 
                 ZoneUIHandler.Instance.ReceiveGemSocleTOInventory(parent.gameObject);
                 Gemcomponent scriptGemme = parent.gameObject.GetComponent<Gemcomponent>();
                 // Vérifier si l'objet détecté est un CubeGemme (CG) ou un CubeVide (CV)
