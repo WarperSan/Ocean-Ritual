@@ -48,7 +48,7 @@ namespace EntityModule
 
         [Header("Collision")]
         [SerializeField]
-        private Collider _collider;
+        protected Collider _collider;
 
         public static int BOSS_LAYER = -1;
         public static int ENEMY_LAYER = -1;

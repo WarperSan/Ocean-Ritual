@@ -51,14 +51,6 @@ namespace WeaponModule.Weapons.Cannon
 
         #region Projectile
 
-        private Collider _collider;
-
-        /// <inheritdoc/>
-        protected override void OnStart()
-        {
-            this._collider = this.GetComponentInChildren<Collider>();
-        }
-
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
         {
