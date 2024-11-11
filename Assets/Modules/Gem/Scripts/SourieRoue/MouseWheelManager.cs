@@ -1,3 +1,5 @@
+using ControllerModule.Interfaces.UI;
+using UIModule;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +37,13 @@ public class MouseWheelManager : MonoBehaviour
         MouseWheelControleur();
      
 
+    }
+    public void resetSrinkObject()
+    {
+        SrinkGameObject.transform.localScale = new Vector3(1, 1, 1);
+        SelectionSocle();
+        SrinkGameObject.transform.position = Socle.transform.position;
+        SrinkGameObject.transform.rotation = Quaternion.identity;
     }
     public void TestSpawnGem(GemData gemdataREceive = null)
     {

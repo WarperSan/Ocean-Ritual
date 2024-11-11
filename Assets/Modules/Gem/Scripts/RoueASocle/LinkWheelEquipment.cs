@@ -10,6 +10,8 @@ public class LinkWheelEquipment : MonoBehaviour
     [SerializeField] List<GameObject> PlacementPoint;
     [SerializeField] List<componentPowerGemObject> listStand = new();
     [SerializeField] List<GameObject> PlacementpointBase = new List<GameObject>();
+    [SerializeField] GameObject Wheel;
+    [SerializeField] MouseWheelManager mouseWheelManager;
     [SerializeField] float SizeBase = 1;
     [SerializeField] float rotation = 0;
     [SerializeField] bool remove = false;
@@ -40,9 +42,23 @@ public class LinkWheelEquipment : MonoBehaviour
             RemoveStand();
         }
     }
+    public void ResetStand(componentGBN equipement)
+    {
+        Debug.Log("allo resetStand");
+        RemoveStand();
+        getNewEquipement(equipement);
+        PlaceStand();
+
+    }
+    public void getNewEquipement(componentGBN equipement)
+    {
+        this.equipment= equipement;
+    }
 
     public void PlaceStand()
     {
+
+        Wheel.transform.rotation = Quaternion.identity;
         listStand = equipment.GBNScript.SocleListe;
        PlacementpointBase = new List<GameObject>();
         equipment.GenerationSocle();
@@ -52,12 +68,13 @@ public class LinkWheelEquipment : MonoBehaviour
             PlacementpointBase.Add(socle.gameObject);
             PlacementpointBase[^1].transform.position = PlacementPoint[ PlacementpointBase.Count-1].transform.position;
             PlacementpointBase[^1].transform.SetParent(PlacementPoint[PlacementpointBase.Count - 1].transform);
-            PlacementpointBase[^1].transform.localScale = PlacementpointBase[^1].transform.localScale * SizeBase;
+            PlacementpointBase[^1].transform.localScale = new Vector3(SizeBase, SizeBase, SizeBase);
             PlacementpointBase[^1].transform.rotation = Quaternion.Euler(rotation, 0, 0);
             rotation += 45;
         }
 
-
+        stand = 0;
+        mouseWheelManager.resetSrinkObject();
     }
 
     public void RemoveStand()

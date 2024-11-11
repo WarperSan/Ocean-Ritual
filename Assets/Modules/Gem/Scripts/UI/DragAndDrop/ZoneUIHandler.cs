@@ -60,13 +60,13 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
                 {
                     if (!wheelSocket.IsRotating())
                     {
-                        Debug.Log("ALLO VRAI");
+                      
                         TrySpawnGemm(index);
                         DeletRefInventorySlot();
                     }
                     else
                     {
-                        Debug.Log("ALLO FAUX");
+                       
                         ResetGemme(true);
                     }
                   
@@ -74,11 +74,11 @@ public class ZoneUIHandler : Singleton<ZoneUIHandler>, IPointerEnterHandler, IPo
           
             }
             // Code pour l'état activé (survolé)
-            Debug.Log("État activé");
+           
         }
         else
         {
-            Debug.Log("ALLO CHANGE STAT");
+         
             GoToInventory();
         }
     }
