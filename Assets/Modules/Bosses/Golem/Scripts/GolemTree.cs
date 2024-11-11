@@ -30,7 +30,7 @@ namespace BossesModule.Golem
             );
 
             _root.SetData(CURRENT_TARGET, null);
-            _root.SetData(WALK_SPEED, 1f);
+            _root.SetData(WALK_SPEED, 3f);
 
             this.root = _root.Alias("Root");
 
@@ -195,10 +195,13 @@ namespace BossesModule.Golem
             if (target == null)
                 return NodeState.FAILURE;
 
+            Vector3 pos = target.position;
+            pos.y = this.transform.position.y; // Walk straight
+
             // Move self towards target
             float speed = n.GetData<float>(WALK_SPEED);
-            Vector3 direction = (target.position - this.transform.position).normalized;
-            this.transform.Translate(direction * speed * Time.deltaTime, Space.World);
+            Vector3 direction = (pos - this.transform.position).normalized;
+            this.transform.Translate(speed * Time.deltaTime * direction, Space.World);
             this.SetWalking(true);
 
             return NodeState.RUNNING;
