@@ -2,11 +2,12 @@ using BlacksmithModule;
 using ControllerModule.Interfaces.UI;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UIModule;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectionWheel : UIComponent, ITabable
+public class SelectionWheel : MonoBehaviour
 {
     [SerializeField] List<GameObject> listeForgeable;
     [SerializeField] GameObject boutonPrefab;
@@ -47,16 +48,15 @@ public class SelectionWheel : UIComponent, ITabable
                 boutonInstance.GetComponent<Button>().onClick.AddListener(() => CreatSocleFromLinkWheelEquipement(gbnComponent));
 
                
-                Text boutonText = boutonInstance.GetComponentInChildren<Text>();
+                TextMeshProUGUI boutonText = boutonInstance.GetComponentInChildren<TextMeshProUGUI>();
                 if (boutonText != null)
                 {
-                    boutonText.text = "gbnComponent.gameObject.name"; 
+                    boutonText.text = gbnComponent.gameObject.name; 
                 }
             }
         }
     }
-    public void OnTabNext() => throw new System.NotImplementedException();
-    public void OnTabPrevious() => throw new System.NotImplementedException();
+ 
 
 
     public void CreatSocleFromLinkWheelEquipement(componentGBN GBN)
@@ -64,15 +64,5 @@ public class SelectionWheel : UIComponent, ITabable
         linkWheelEquipment.ResetStand(GBN);
 
     }
-   
-
-    public void activate()
-    {
-
-    }
-    public void deactivate()
-    {
-
-
-    }
+ 
 }
