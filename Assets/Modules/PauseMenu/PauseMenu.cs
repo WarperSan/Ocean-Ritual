@@ -11,12 +11,17 @@ namespace UIModule.Menus
     {
         #region AnimatedMenu
 
+        [SerializeField] string openSound;
+        [SerializeField] string closeSound;
+
         /// <inheritdoc/>
         public override IEnumerator Open()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             //Time.timeScale = 0f;
+
+            SoundManager.Instance.PlaySound(openSound, SoundType.UI);
 
             yield return base.Open();
 
@@ -31,6 +36,8 @@ namespace UIModule.Menus
             this.resumeBtn.OnClick.RemoveListener(this.ResumeButton);
             this.mainMenuBtn.OnClick.RemoveListener(this.MainMenuButton);
             this.exitBtn.OnClick.RemoveListener(this.ExitButton);
+
+            SoundManager.Instance.PlaySound(closeSound, SoundType.UI);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

@@ -10,6 +10,8 @@ namespace UIModule.Menus
         public InventoryUI inventoryUI;
         public BlacksmithGemSlot gemSlot;
 
+        [SerializeField] string soundClosing;
+
         /// <inheritdoc/>
         public override IEnumerator Open()
         {
@@ -23,6 +25,7 @@ namespace UIModule.Menus
         /// <inheritdoc/>
         public override IEnumerator Close()
         {
+            SoundManager.Instance.PlaySound(soundClosing,SoundType.UI);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             yield return base.Close();

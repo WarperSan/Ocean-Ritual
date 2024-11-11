@@ -61,14 +61,19 @@ namespace FishingModule
 
         #region IInteractable
 
+        [SerializeField] string inSound;
+        [SerializeField] string outSound;
+
         public void OnInteraction()
         {
             if (this._buoy == null)
             {
+                SoundManager.Instance.PlaySound(inSound, SoundType.UI);
                 this.StartFishing();
             }
             else if (Vector3.Distance(this.transform.position, this._buoy.transform.position) <= 20f)
             {
+                SoundManager.Instance.PlaySound(outSound, SoundType.UI);
                 this.CollectBuoy();
             }
         }
