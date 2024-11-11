@@ -2,6 +2,7 @@ using BehaviourModule.Interfaces;
 using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
+using ExtensionsModule;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -11,6 +12,7 @@ namespace BossesModule.Worm
         public const string CURRENT_TARGET = "currentTarget";
         public const string CURRENT_WALK_TARGET = "currentWalkTarget";
         public const string WALK_SPEED = "walkSpeed";
+        public const string REQUEST_DIVE = "requestDive";
 
         #region Fields
 
@@ -34,6 +36,7 @@ namespace BossesModule.Worm
         public void RebuildRoot()
         {
             Selector _root = new();
+            _root += this.AttackSequence();
             _root += this.WalkSequence();
             _root += new Parallel(
                 this.RotateSequence()
@@ -41,11 +44,43 @@ namespace BossesModule.Worm
 
             _root.SetData(CURRENT_TARGET, null);
             _root.SetData(CURRENT_WALK_TARGET, this.transform.position);
-            _root.SetData(WALK_SPEED, 2f);
+            _root.SetData(REQUEST_DIVE, false);
+            _root.SetData(WALK_SPEED, 5f);
 
             this.root = _root.Alias("Root");
 
             //TargetGeneral.Instance.Target
+        }
+
+        #endregion
+
+        #region Attack
+
+        private Node AttackSequence()
+        {
+            Sequence root = new();
+
+            root += new CallbackNode((Node n) =>
+            {
+                Transform target = n.GetData<Transform>(CURRENT_TARGET);
+
+                if (target == null)
+                    return NodeState.FAILURE;
+
+                bool diveRequested = n.GetData<bool>(REQUEST_DIVE);
+
+                if (diveRequested)
+                    return NodeState.SUCCESS;
+
+                if (this.transform.Distance(target) > 40)
+                    return NodeState.FAILURE;
+
+                this.root.SetData(REQUEST_DIVE, true);
+                return NodeState.SUCCESS;
+            }).Alias("< TEMP >"); // TEMP
+            root += new CallbackNode(() => NodeState.FAILURE).Alias("ALWAYS FAILURE");
+
+            return root.Alias("Attack Sequence");
         }
 
         #endregion
@@ -59,6 +94,9 @@ namespace BossesModule.Worm
         {
             Sequence root = new();
 
+            // Check if requested dive
+            root += new CallbackNode((Node n) => n.GetData<bool>(REQUEST_DIVE) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Dive requested?");
+
             // Play diving animation
             this.diveBackNode = new AnimationNode(this.DiveBack);
             root += this.diveBackNode.Alias("Dive");
@@ -69,6 +107,9 @@ namespace BossesModule.Worm
             // Play emerge animation
             this.emergeNode = new AnimationNode(this.Emerge);
             root += this.emergeNode.Alias("Emerge");
+
+            // Clear dive request
+            root += new CallbackNode(this.ClearWalk);
 
             return root.Alias("Walk Sequence");
         }
@@ -90,6 +131,15 @@ namespace BossesModule.Worm
 
             // Enable collider
             this._collider.enabled = true;
+        }
+
+        private NodeState ClearWalk()
+        {
+            this.root.SetData(REQUEST_DIVE, false);
+            this.diveBackNode.ResetAnim();
+            this.emergeNode.ResetAnim();
+
+            return NodeState.SUCCESS;
         }
 
         public void OnDiveEnded() => this.diveBackNode.OnEnded();
