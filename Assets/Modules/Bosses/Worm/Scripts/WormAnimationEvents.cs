@@ -1,7 +1,3 @@
-using BossesModule.Golem;
-using EntityModule;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -20,6 +16,13 @@ namespace BossesModule.Worm
             animator.SetBool("isSpawning", false);
             tree.GetRoot().SetData(WormTree.CURRENT_TARGET, TargetGeneral.Instance.BoatTarget);
         }
+
+        #endregion
+
+        #region Underwater
+
+        public void DiveEnded() => this.tree.OnDiveEnded();
+        public void EmergeEnded() => this.tree.OnEmergeEnded();
 
         #endregion
     }
