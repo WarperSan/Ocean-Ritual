@@ -21,8 +21,8 @@ namespace BossesModule.Worm
 
         #region Underwater
 
-        public void DiveEnded() => this.tree.OnDiveEnded();
-        public void EmergeEnded() => this.tree.OnEmergeEnded();
+        public void DiveEnded() { }/* => this.tree.OnDiveEnded();*/
+        public void EmergeEnded() { }/*=> this.tree.OnEmergeEnded();*/
 
         #endregion
     }
