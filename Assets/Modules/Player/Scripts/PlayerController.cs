@@ -1,5 +1,8 @@
 using ControllerModule.Interfaces.Player;
 using InteractModule;
+using System.Collections;
+using TMPro;
+using UIModule.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +12,11 @@ namespace ControllerModule.Controllers
     /// Controller that manages how the player behaves
     /// </summary>
 
-    public class PlayerController : Controller, IMovable, IFirable, IJumpable
+    public class PlayerController : Controller, IMovable, IInteractionable, IJumpable
     {
-        #region Cursor 
+        #region Cursor
+
+        private const string INTERACT_TIP_TAG = "PLAYER_INTERACT";
 
         [Header("Cursor")]
         [SerializeField, Tooltip("Determines the sprite to use when an interaction is possible")]
@@ -23,11 +28,16 @@ namespace ControllerModule.Controllers
         [SerializeField, Tooltip("Image that represents the cursor")]
         private Image cursor;
 
+        [SerializeField, Tooltip("Text to show when the player can interact with something")]
+        private TextMeshProUGUI cursorText;
+
         [SerializeField, Min(0), Tooltip("Determines how far the player can interact with things")]
         private float interactRange;
 
         [SerializeField]
         private InteractionAsset defaultInteraction;
+
+        private bool isHoveringInteractable;
 
         /// <summary>
         /// Updates the cursor depending on the possible interactions
@@ -47,12 +57,48 @@ namespace ControllerModule.Controllers
                 InteractionAsset asset = interactable.InteractionAsset != null ? interactable.InteractionAsset : this.defaultInteraction;
                 this.cursor.sprite = asset != null ? asset.icon : null;
                 this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
+
+                this.isHoveringInteractable = true;
+                this.showKeyCoroutine ??= this.StartCoroutine(this.ShowTip());
+
+                this.cursorText.text = asset.tip;
             }
             else
             {
                 this.cursor.sprite = this.normalCursor;
                 this.cursor.rectTransform.sizeDelta = new Vector2(10, 10);
+
+                this.isHoveringInteractable = false;
+                this.discardTipCoroutine ??= this.StartCoroutine(this.DiscardTip());
+
+                this.cursorText.text = "";
             }
+
+            Vector2 textPos = this.cursorText.rectTransform.anchoredPosition;
+            textPos.y = -this.cursor.rectTransform.sizeDelta.y / 2;
+            this.cursorText.rectTransform.anchoredPosition = textPos;
+        }
+
+        private Coroutine discardTipCoroutine;
+        private IEnumerator DiscardTip()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            if (!this.isHoveringInteractable)
+                KeybindTip.DiscardTip(INTERACT_TIP_TAG);
+
+            this.discardTipCoroutine = null;
+        }
+
+        private Coroutine showKeyCoroutine;
+        private IEnumerator ShowTip()
+        {
+            yield return new WaitForSeconds(5);
+
+            if (this.isHoveringInteractable)
+                KeybindTip.ShowKey(KeyCode.E, INTERACT_TIP_TAG);
+
+            this.showKeyCoroutine = null;
         }
 
         /// <summary>
@@ -73,6 +119,7 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null)
                 return;
 
+            KeybindTip.UseTip(INTERACT_TIP_TAG);
             IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
         }
 
@@ -88,7 +135,9 @@ namespace ControllerModule.Controllers
         [SerializeField]
         BoatController boatController;
 
-        private Rigidbody _rigidbody;
+        private CharacterController _characterController;
+
+
         private Vector3 direction;
 
         /// <summary>
@@ -100,27 +149,24 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes == null || this._rigidbody == null)
+            if (this.Eyes == null || this._characterController == null)
                 return;
-
-            if (facing.x == 0 && facing.y == 0 && this.CheckGrounded())
-            {
-                this._rigidbody.velocity = Vector3.zero;
-            }
 
             Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
 
             // Modify the direction
             moveDir.y = 0;
 
-            // Move the character controller
-            moveDir *= speed * elapsed;
-            moveDir += this.transform.position;
+            moveDir = moveDir.normalized * speed;
 
+            // Add boat movement 
             if (boatController != null)
-                moveDir += boatController.MovementBoat;
+                moveDir += boatController.MovementBoat.normalized * boatController.CurrentSpeed;
 
-            this._rigidbody.MovePosition(moveDir);
+            // Move the character controller
+            this._characterController.Move(moveDir * elapsed);
+
+            //this._rigidbody.MovePosition(moveDir);
         }
 
         #endregion
@@ -138,10 +184,35 @@ namespace ControllerModule.Controllers
         private float GroundCheckRadius = 0.2f;
 
         private bool isGrounded;
+        private Vector3 velocity;
+
+        /// <summary>
+        /// Updates the gravity of the player
+        /// </summary>
+        /// <param name="elapsed">Time passed since the last frame</param>
+        private void UpdateGravity(float elapsed)
+        {
+            if (this.Feet == null || this._characterController == null)
+                return;
+
+            this.isGrounded = Physics.CheckSphere(
+                this.Feet.position,
+                this.GroundCheckRadius,
+                this.GroundLayers,
+                QueryTriggerInteraction.Ignore
+            );
+
+            if (this.isGrounded && this.velocity.y < 0)
+                this.velocity.y = 0;
+            this.velocity += Physics.gravity * elapsed;
+
+            this._characterController.Move(this.velocity * elapsed);
+        }
+
 
         private bool CheckGrounded()
         {
-            if (this.Feet == null || this._rigidbody == null)
+            if (this.Feet == null || this._characterController == null)
                 return false;
 
             this.isGrounded = Physics.CheckSphere(
@@ -162,7 +233,7 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            this._rigidbody = this.GetComponent<Rigidbody>();
+            this._characterController = this.GetComponent<CharacterController>();
 
             // Start with this controller
             ControllerManager.SwitchTo(this);
@@ -172,11 +243,14 @@ namespace ControllerModule.Controllers
         protected override void OnUpdate(float elapsed)
         {
             this.UpdateCursor();
+
+
         }
 
         protected override void OnFixedUpdate(float elapsed)
         {
             this.UpdateMove(this.direction, this.movementSpeed, elapsed);
+            this.UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
@@ -211,30 +285,28 @@ namespace ControllerModule.Controllers
 
         #endregion
 
-        #region IFirable
+        #region IInteractionable
 
         /// <inheritdoc/>
-        public void OnFireStart() => this.Interact();
+        public void OnInteract() => this.Interact();
 
-        /// <inheritdoc/>
-        public void OnFireEnd() { }
-
-        #endregion 
+        #endregion
 
         #region IJumpable
+
         [Header("Jump")]
         [SerializeField, Tooltip("Determines height of Jump")]
         private float jumpHeight = 1.0f;
+
         public void OnJump()
         {
-            //Debug.Log("Jump");
-            if (CheckGrounded())
-            {
-                //Debug.Log("grounded");
-                _rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+            if (!this.CheckGrounded())
+                return;
 
-            }
+            //_rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+            velocity += new Vector3(0, jumpHeight, 0);
         }
+
         #endregion
 
         #region MonoBehaviour

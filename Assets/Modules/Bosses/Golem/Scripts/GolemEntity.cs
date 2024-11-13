@@ -48,7 +48,7 @@ namespace BossesModule.Golem
         protected override void OnDeath(float overDamage)
         {
             this.healthBar.value = 0;
-            QuestManager.SomeoneDeath(this.name);
+            //QuestManager.SomeoneDeath(this.name);
             this.gameObject.SetActive(false);
         }
 

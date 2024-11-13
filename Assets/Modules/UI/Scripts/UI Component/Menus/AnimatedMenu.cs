@@ -1,4 +1,5 @@
 using DhafinFawwaz.AnimationUILib;
+using ExtensionsModule;
 using System.Collections;
 using UnityEngine;
 
@@ -18,34 +19,10 @@ namespace UIModule.Menus
         private AnimationUI closeAnimation;
 
         /// <inheritdoc/>
-        public override IEnumerator Open() 
-        {
-            bool hasAnimationEnded = false;
-            void callback() => hasAnimationEnded = true;
-            
-            this.openAnimation.OnAnimationEnded += callback;
-            this.openAnimation.Play();
-
-            while (!hasAnimationEnded)
-                yield return null;
-
-            this.openAnimation.OnAnimationEnded -= callback;
-        }
+        public override IEnumerator Open() => this.openAnimation.PlayAnimation();
 
         /// <inheritdoc/>
-        public override IEnumerator Close() 
-        {
-            bool hasAnimationEnded = false;
-            void callback() => hasAnimationEnded = true;
-            
-            this.closeAnimation.OnAnimationEnded += callback;
-            this.closeAnimation.Play();
-
-            while (!hasAnimationEnded)
-                yield return null;
-
-            this.closeAnimation.OnAnimationEnded -= callback;
-        }
+        public override IEnumerator Close() => this.closeAnimation.PlayAnimation();
     }
 }
 

@@ -6,8 +6,6 @@ namespace FishingModule
 {
     public class FishingManager : MonoBehaviour
     {
-        
-
         #region Fishing
 
         public void StartFishing()
@@ -29,18 +27,19 @@ namespace FishingModule
             //    Debug.Log(item.Key.name + ": " + item.Value + "%");
 
             this.StartBuoy(fishes, enemies);
+            this.SetFishingModel(true);
         }
 
         public void EndFishing()
         {
-            
+            this.SetFishingModel(false);
             bool isCollected = this._buoy != null && this._buoy.isCollected;
             SoundManager.Instance.StopSound(SoundType.Music);
             // <Success>
             if (isCollected)
             {
-              foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
-                    Inventory.Instance.AddItem(new FishData(fish.Key, (int) fish.Value));
+                foreach (KeyValuePair<FishSO, uint> fish in this._buoy.GetFishCaught())
+                    Inventory.Instance.AddItem(new FishData(fish.Key, (int)fish.Value));
             }
             else
             {
@@ -103,7 +102,7 @@ namespace FishingModule
             if (this._buoy == null)
             {
                 this._buoy = Instantiate(this.buoyPrefab).GetComponent<FishingBuoy>();
-                this._buoy.transform.position = this.GetTerritoryCheckOrigin() + new Vector3(0,5,0);
+                this._buoy.transform.position = this.GetTerritoryCheckOrigin() + new Vector3(0, 5, 0);
 
                 // Add callback
                 this._buoy.OnFishCaught += f => this.OnFishCaught?.Invoke(f);
@@ -155,17 +154,34 @@ namespace FishingModule
         private float territoryCheckRadius;
 
         [SerializeField]
-        private Vector3 territoryCheckOffset;
+        private float territoryCheckOffset;
 
         /// <returns>From where the territory check starts</returns>
         private Vector3 GetTerritoryCheckOrigin()
         {
-            Vector3 pos = this.transform.position + this.territoryCheckOffset;
+            Vector3 pos = this.transform.position + (this.transform.forward * this.territoryCheckOffset);
 
             // Remove Y
             pos.y = 0;
 
             return pos;
+        }
+
+        #endregion
+
+        #region 3D Model
+
+        [Header("3D Model")]
+        [SerializeField]
+        private GameObject activeFishingModel;
+
+        [SerializeField]
+        private GameObject inactiveFishingModel;
+
+        private void SetFishingModel(bool isFishingActive)
+        {
+            this.activeFishingModel.SetActive(isFishingActive);
+            this.inactiveFishingModel.SetActive(!isFishingActive);
         }
 
         #endregion
@@ -179,18 +195,6 @@ namespace FishingModule
             Handles.color = Color.cyan;
             Handles.DrawSolidDisc(this.GetTerritoryCheckOrigin(), Vector3.up, this.territoryCheckRadius);
         }
-
-        /// <inheritdoc/>
-        private void OnValidate()
-        {
-            // Prevent vertical offset
-            if (this.territoryCheckOffset.y != 0)
-            {
-                Debug.LogWarning("The territory check is executed at Y = 0. You cannot put a vertical offset.");
-                this.territoryCheckOffset.y = 0;
-            }
-        }
-
 #endif
 
         #endregion

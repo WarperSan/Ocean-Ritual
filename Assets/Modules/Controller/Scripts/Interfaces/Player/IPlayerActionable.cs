@@ -43,6 +43,10 @@ namespace ControllerModule.Interfaces.Player
             if (actionable is IJumpable jumpable)
                 input.OnJump += jumpable.OnJump;
 
+            // Player Interact
+            if (actionable is IInteractionable interactionable)
+                input.OnInteract += interactionable.OnInteract;
+
             return input;
         }
 
@@ -72,6 +76,10 @@ namespace ControllerModule.Interfaces.Player
             // Player jump
             if (actionable is IJumpable jumpable)
                 input.OnJump -= jumpable.OnJump;
+
+            // Player Interact
+            if (actionable is IInteractionable interactionable)
+                input.OnInteract -= interactionable.OnInteract;
 
             return input;
         }

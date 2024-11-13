@@ -98,7 +98,7 @@ namespace UIModule
                 Debug.LogWarning($"Tried to close a menu of type '{menu.GetType().Name}', but no instance of this menu is opened.");
                 return;
             }
-
+        
             // Close menu
             AddOperation(OperationType.CLOSE, menu);
         }

@@ -11,6 +11,7 @@ using BlacksmithModule;
 [System.Serializable]
 public class Inventory : Singleton<Inventory>
 {
+    public const string CASH_ICON = "stack_coins_icon";
     public int NbSlotInventory = 12 * 2; // 12 items per page for 2 pages
 
     [SerializeField] public List<ItemData> ItemList = new();
@@ -62,7 +63,8 @@ public class Inventory : Singleton<Inventory>
         {
             AddSlot();
         }
-        UpdateCashCost();
+        //à réactiver quand dans la main scene
+        //UpdateCashCost();
     }
 
     public void UpgradeInventory(int AddingStockage)
@@ -466,10 +468,10 @@ public class Inventory : Singleton<Inventory>
     public void UpdateCashCost()
     {
         if (textCostInventory)
-            textCostInventory.text = string.Format("<sprite name=stack_coins_icon> {0}", Cash);
+            textCostInventory.text = string.Format("<sprite name={0}> {1}", CASH_ICON, Cash);
 
         if (textCostInventoryBlacksmith)
-            textCostInventoryBlacksmith.text = string.Format("<sprite name=stack_coins_icon> {0}", Cash);
+            textCostInventoryBlacksmith.text = string.Format("<sprite name={0}> {1}", CASH_ICON, Cash);
         Blacksmith.Instance.InterfaceUpgrade();
     }
     public void AddCash(int AddingCash = 0)

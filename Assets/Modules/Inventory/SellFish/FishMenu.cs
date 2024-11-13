@@ -13,7 +13,7 @@ public class FishMenu : AnimatedMenu
     public void ShowMenu()
     {
         this.cash = Inventory.Instance.NumberOfCashFromSellingFish();
-        textMeshProUGUI.text = "Vendre votre poisson pour  : " + cash  + " d'or?"; 
+        textMeshProUGUI.text = string.Format("Voulez-vous vendre vos poissons pour <sprite name={0}> <color=#070>{1}</color>?", Inventory.CASH_ICON, cash);
     }
 
     public void Deny()
