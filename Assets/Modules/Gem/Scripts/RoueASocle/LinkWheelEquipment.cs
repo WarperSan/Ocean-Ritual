@@ -17,6 +17,7 @@ public class LinkWheelEquipment : MonoBehaviour
     [SerializeField] bool remove = false;
     [SerializeField] bool DoSocle = true;
     [SerializeField] int skippedSocle=0;
+    
     // Start is called before the first frame update
     void Start()
     {
