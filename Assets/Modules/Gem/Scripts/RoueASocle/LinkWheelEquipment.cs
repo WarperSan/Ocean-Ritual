@@ -45,7 +45,7 @@ public class LinkWheelEquipment : MonoBehaviour
     }
     public void ResetStand(componentGBN equipement)
     {
-        Debug.Log("allo resetStand");
+       // Debug.Log("allo resetStand");
         RemoveStand();
         getNewEquipement(equipement);
         PlaceStand();
