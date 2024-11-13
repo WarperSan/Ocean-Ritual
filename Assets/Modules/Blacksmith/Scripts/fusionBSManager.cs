@@ -11,6 +11,8 @@ public class fusionBSManager : MonoBehaviour
 
     [SerializeField] Sprite sprite;
 
+    [SerializeField] string coolSound;
+
     private void Awake()
     {
         FusionCase[] cases = this.GetComponentsInChildren<FusionCase>();
@@ -66,6 +68,8 @@ public class fusionBSManager : MonoBehaviour
             this.output.ReceiveGem(TheGemme);
             left.ClearGem();
             right.ClearGem();
+
+            SoundManager.Instance.PlaySound(coolSound, SoundType.UI);
 
             // Clear fill
             fill.EmptyFill();
