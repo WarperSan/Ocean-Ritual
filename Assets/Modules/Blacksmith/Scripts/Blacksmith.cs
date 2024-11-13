@@ -37,7 +37,14 @@ namespace BlacksmithModule
 
         private void GetAllUpgradeableItem()
         {
+            Debug.Log("Nombre d'objets forgeables trouvés : " + forgeableItems.Count);
             this.forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<IForgeable>().ToList();
+            Debug.Log("Nombre d'objets forgeables trouvés après recherche : " + forgeableItems.Count);
+
+            foreach (var item in forgeableItems)
+            {
+                Debug.Log("Nom de l'objet : " + ((MonoBehaviour)item).gameObject.name);
+            }
         }
 
         public componentGBN ShowSocleUpgradeForGBN(string name)
