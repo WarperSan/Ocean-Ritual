@@ -99,7 +99,10 @@ public class LinkWheelEquipment : MonoBehaviour
         Debug.Log("GetStand function liste null");
         return null;
     }
-
+    public bool IsAlone()
+    {
+        return listStand.Count == 1;
+    }
     public GameObject GetNextSocle()
     {
         // Vérifie si la liste contient des socles

@@ -107,6 +107,11 @@ public class MouseWheelManager : MonoBehaviour
         Socle = linkWheelEquipment.GetNextSocle();
      
     }
+    public bool IsAlone()
+    {
+        return linkWheelEquipment.IsAlone();
+
+    }
     public void GetPreviewSocle()
     {
         Socle = linkWheelEquipment.GetPreviewSocle();

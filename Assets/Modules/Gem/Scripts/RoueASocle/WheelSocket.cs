@@ -46,6 +46,12 @@ public class WheelSocket : MonoBehaviour
     }
    public void StartRotationUP()
     {
+        if (mouseWheelManager.IsAlone())
+        {
+            targetRotation= RotateObject.transform.rotation ;
+            StartTicWheel();
+            return;
+        }
         mouseWheelManager.StartRotation();
         isRotating = true;
         mouseWheelManager.GetNextSocle();
@@ -57,6 +63,12 @@ public class WheelSocket : MonoBehaviour
 
     public void StartRotationDown()
     {
+        if (mouseWheelManager.IsAlone())
+        {
+            targetRotation = RotateObject.transform.rotation;
+            StartTicWheel();
+            return;
+        }
         mouseWheelManager.StartRotation();
         isRotating = true;
         mouseWheelManager.GetPreviewSocle();
