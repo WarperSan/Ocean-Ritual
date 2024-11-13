@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LinkWheelEquipment : MonoBehaviour
 {
-
+    [SerializeField] SelectionWheel selectionWheel;
     [SerializeField] componentGBN equipment;
     [SerializeField] List<GameObject> PlacementPoint;
     [SerializeField] List<componentPowerGemObject> listStand = new();
@@ -47,6 +47,10 @@ public class LinkWheelEquipment : MonoBehaviour
 
     public void ResetStandFromUpgrade()
     {
+        if (equipment == null)
+        {
+          equipment = selectionWheel.listeForgeable[0].GetComponent<componentGBN>();
+        }
         ResetStand(equipment);
     }
     public void ResetStand(componentGBN equipement)

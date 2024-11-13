@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class SelectionWheel : MonoBehaviour
 {
-    [SerializeField] List<GameObject> listeForgeable = new();
+    [SerializeField] public List<GameObject> listeForgeable = new();
     [SerializeField] GameObject boutonPrefab;
     [SerializeField] GameObject Container;
     [SerializeField] LinkWheelEquipment linkWheelEquipment;
