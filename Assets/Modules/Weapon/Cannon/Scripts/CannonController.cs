@@ -11,13 +11,13 @@ namespace WeaponModule.Weapons.Cannon
     /// </summary>
     public class CannonController : WeaponController, IMovable
     {
+        #region Stats
+
+        [Header("Stats")]
+        [SerializeField]
         private CannonStats _stats;
 
-        protected override void OnStart()
-        {
-            _stats = GetComponent<CannonStats>();
-        }
-
+        #endregion
 
         #region Rotation
 
@@ -47,7 +47,7 @@ namespace WeaponModule.Weapons.Cannon
             direction = Vector3.Scale(direction, this.turningSpeed);
 
             this.handlesLC.UpdateRotation(new Vector2(direction.y, 0), Time.deltaTime);
-            this.cannonLC.UpdateRotation(new Vector2(-direction.x, 0), Time.deltaTime);
+            this.cannonLC.UpdateRotation(new Vector2(0, -direction.x), Time.deltaTime);
         }
 
         #endregion
@@ -55,9 +55,6 @@ namespace WeaponModule.Weapons.Cannon
         #region Shoot
 
         [Header("Cannon Shoot")]
-        [SerializeField, Tooltip("Prefab that the cannon will shoot")]
-        private GameObject ball;
-
         [SerializeField, Tooltip("Determines the origin and the direction of the shot")]
         private Transform origin;
 
@@ -74,9 +71,6 @@ namespace WeaponModule.Weapons.Cannon
         private AudioSource shootAudio;
 
         /// <inheritdoc/>
-        protected override GameObject GetBullet() => this.ball;
-
-        /// <inheritdoc/>
         protected override void SetupProjectile(Projectile projectile)
         {
             // Place projectile
@@ -84,7 +78,7 @@ namespace WeaponModule.Weapons.Cannon
             projectile.transform.up = this.origin.forward;
             
             // Set thrust
-            if (projectile is BeachBall beachBall)
+            if (projectile is CannonBall beachBall)
             {
                 beachBall.splashForce = this.thrustAmount;
                
@@ -223,7 +217,7 @@ namespace WeaponModule.Weapons.Cannon
             this.direction = Vector3.zero;
 
             // Updates the cannon's rotation
-            this.defaultRotation = this.transform.eulerAngles;
+            //this.defaultRotation = this.transform.eulerAngles;
             this.UpdateRotation(Vector3.zero);
         }
 
@@ -235,7 +229,7 @@ namespace WeaponModule.Weapons.Cannon
             this.EndThrust();
 
             // Put back the cannon at it's default rotation
-            this.transform.eulerAngles = this.defaultRotation;
+            //this.transform.eulerAngles = this.defaultRotation;
         }
 
         /// <inheritdoc/>
