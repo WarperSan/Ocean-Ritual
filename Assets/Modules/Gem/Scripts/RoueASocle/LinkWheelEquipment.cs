@@ -16,6 +16,7 @@ public class LinkWheelEquipment : MonoBehaviour
     [SerializeField] float rotation = 0;
     [SerializeField] bool remove = false;
     [SerializeField] bool DoSocle = true;
+    [SerializeField] int skippedSocle=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -101,26 +102,60 @@ public class LinkWheelEquipment : MonoBehaviour
 
     public GameObject GetNextSocle()
     {
-        // Décrémente Incrémente stand et boucle au début si la fin est atteinte
+        // Vérifie si la liste contient des socles
         if (listStand.Count > 0)
         {
+            // Décrémente stand et boucle au début si la fin est atteinte
+            int previousStand = stand;
             stand = (stand - 1 + listStand.Count) % listStand.Count;
+
+            // Calcule le nombre d'emplacements "sautés" uniquement si le saut s'effectue (lors du retour au début)
+            if (previousStand == 0 && stand == listStand.Count - 1)
+            {
+                skippedSocle = 8 - listStand.Count;
+                Debug.Log("Skipped slots (GetNextSocle): " + skippedSocle);
+            }
+            else
+            {
+                skippedSocle = 0;
+            }
+
             return listStand[stand].gameObject;
         }
+
         Debug.Log("GetNextSocle function liste vide");
         return null;
     }
 
     public GameObject GetPreviewSocle()
     {
-        // Incrémente stand et boucle à la fin si le début est atteint
+        // Vérifie si la liste contient des socles
         if (listStand.Count > 0)
         {
+            // Incrémente stand et boucle à la fin si le début est atteint
+            int previousStand = stand;
             stand = (stand + 1) % listStand.Count;
+
+            // Calcule le nombre d'emplacements "sautés" uniquement si le saut s'effectue (lors du retour à la fin)
+            if (previousStand == listStand.Count - 1 && stand == 0)
+            {
+                skippedSocle = 8 - listStand.Count;
+                Debug.Log("Skipped slots (GetPreviewSocle): " + skippedSocle);
+            }
+            else
+            {
+                skippedSocle = 0;
+            }
             return listStand[stand].gameObject;
         }
+
         Debug.Log("GetPreviewSocle function liste vide");
         return null;
+    }
+
+    public int  GetSkippedSocle()
+    {
+        return skippedSocle;
     }
     public void TransitionCam()
     {

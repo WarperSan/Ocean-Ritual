@@ -112,6 +112,10 @@ public class MouseWheelManager : MonoBehaviour
         Socle = linkWheelEquipment.GetPreviewSocle();
 
     }
+    public int getNumberforRotation()
+    {
+        return linkWheelEquipment.GetSkippedSocle();
+    }
     public void MouseWheelControleur()
     {
 

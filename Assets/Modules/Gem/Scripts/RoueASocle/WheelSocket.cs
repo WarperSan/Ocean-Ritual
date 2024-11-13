@@ -49,9 +49,10 @@ public class WheelSocket : MonoBehaviour
         mouseWheelManager.StartRotation();
         isRotating = true;
         mouseWheelManager.GetNextSocle();
+        int skip = mouseWheelManager.getNumberforRotation();
          rotationTimeElapsed = 0f;
         initialRotation = RotateObject.transform.rotation;
-        targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
+        targetRotation = initialRotation * Quaternion.Euler(rotationAmount + (skip * rotationAmount), 0f, 0f);
     }
 
     public void StartRotationDown()
@@ -59,9 +60,10 @@ public class WheelSocket : MonoBehaviour
         mouseWheelManager.StartRotation();
         isRotating = true;
         mouseWheelManager.GetPreviewSocle();
+        int skip = mouseWheelManager.getNumberforRotation();
         rotationTimeElapsed = 0f;
         initialRotation = RotateObject.transform.rotation;
-        targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);
+        targetRotation = initialRotation * Quaternion.Euler(-rotationAmount+(skip* -rotationAmount), 0f, 0f);
     }
 
     void RotateWheel()
