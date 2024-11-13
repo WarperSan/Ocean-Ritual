@@ -276,6 +276,7 @@ GameObject:
   - component: {fileID: 7537291407510166962}
   - component: {fileID: 3690722685471433515}
   - component: {fileID: 1058861139974392493}
+  - component: {fileID: 2957841298304595948}
   m_Layer: 29
   m_Name: Boat
   m_TagString: Boat
@@ -323,8 +324,6 @@ MonoBehaviour:
   disableIfOut: 0
   _rb: {fileID: 8827376533077435850}
   aboardParent: {fileID: 3567286561129488995}
-  turningSpeed: 10
-  movementSpeed: 4
   movementAcceleration: 0.05
   movementDeceleration: 0.02
   waveOffset: 0.2
@@ -369,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHeath: 100
   gameOverScreen: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: d54a54286cd0ff046862a8ce938a1244, type: 3}
 --- !u!114 &3690722685471433515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,6 +445,102 @@ MonoBehaviour:
   forgePercentage: 1
   lvlOfEquipment: 1
   costToUpgrade: 10
+--- !u!82 &2957841298304595948
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219113162198206845}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2273967157756141426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,7 +1707,7 @@ Transform:
   m_GameObject: {fileID: 9071429457206655723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 2.23, y: 1.85, z: -4.8}
+  m_LocalPosition: {x: 1.85, y: 1.85, z: -4.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1701,6 +1797,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382e0b347e2b7e6339ffda1130c0abe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inSound: in.wav
+  outSound: out.wav
+  music: Fishing.mp3
   buoyPrefab: {fileID: 4936839583539260942, guid: d148bb4f19308249ea55dfccc06a5105,
     type: 3}
   buoyHolder: {fileID: 7723082887125181950}
@@ -1708,7 +1807,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483648
   territoryCheckRadius: 2
-  territoryCheckOffset: {x: -3, y: 0, z: -8}
+  territoryCheckOffset: {x: 0, y: 0, z: 6}
 --- !u!114 &8512012994179856131
 MonoBehaviour:
   m_ObjectHideFlags: 0

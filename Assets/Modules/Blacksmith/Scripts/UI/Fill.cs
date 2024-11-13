@@ -32,7 +32,7 @@ public class Fill : MonoBehaviour
     {
 
         //son marteau
-        SoundManager.Instance.PlaySound(hammerSound, SoundType.UI);
+        SoundManager.Instance.PlaySound(hammerSound, SoundType.UI,false,true);
 
         // Si les c�t�s ne sont pas � 100%, on ajoute d'abord � fillAmountCote
         if (fillAmountCote < 1f)

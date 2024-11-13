@@ -31,13 +31,18 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(AudioClip sound, SoundType type, bool looped = false)
+    public void PlaySound(AudioClip sound, SoundType type, bool looped = false, bool waitForEnd = false)
     {
         switch (type)
         {
             case SoundType.Music:
-                if (musicSource.isPlaying) 
-                    StopSound(SoundType.Music); 
+                if (musicSource.isPlaying)
+                {
+                    if (waitForEnd)
+                        break;
+                    StopSound(SoundType.Music);
+                }
+                    
                 
                 musicSource.clip = sound;
                 musicSource.loop = looped;
@@ -45,15 +50,24 @@ public class SoundManager : Singleton<SoundManager>
                 break;
             case SoundType.Ambient:
                 if (ambientSource.isPlaying)
+                {
+                    if (waitForEnd)
+                        break;
                     StopSound(SoundType.Ambient);
-
+                }
+                    
                 ambientSource.clip = sound;
                 ambientSource.loop = looped;
                 ambientSource.Play();
                 break;
             case SoundType.UI:
                 if (uiSoundSource.isPlaying)
+                {
+                    if (waitForEnd)
+                        break;
                     StopSound(SoundType.UI);
+                }
+                    
 
                 uiSoundSource.clip = sound;   
                 uiSoundSource.loop = looped;
@@ -65,13 +79,20 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(string soundPath, SoundType type, bool looped = false)
+    public void PlaySound(string soundPath, SoundType type, bool looped = false, bool waitForEnd = false)
     {
         switch (type)
         {
             case SoundType.Music:
-                if (musicSource.isPlaying) 
+
+
+                if (musicSource.isPlaying)
+                {
+                    if (waitForEnd)
+                        break;
                     StopSound(SoundType.Music);
+                }
+                    
 
                 musicSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(musicPath + soundPath, typeof(AudioClip));
                 musicSource.loop = looped;
@@ -79,7 +100,12 @@ public class SoundManager : Singleton<SoundManager>
                 break;
             case SoundType.Ambient:
                 if (ambientSource.isPlaying)
+                {
+                    if (waitForEnd)
+                        break;
                     StopSound(SoundType.Ambient);
+                }
+                    
 
                 ambientSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(ambientPath + soundPath, typeof(AudioClip));
                 ambientSource.loop = looped;
@@ -87,7 +113,11 @@ public class SoundManager : Singleton<SoundManager>
                 break;
             case SoundType.UI:
                 if (uiSoundSource.isPlaying)
+                {
+                    if (waitForEnd) 
+                        break;
                     StopSound(SoundType.UI);
+                }
 
                 uiSoundSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(uiSoundPath + soundPath, typeof(AudioClip));
                 uiSoundSource.loop = looped;

@@ -15,6 +15,15 @@ namespace EntityModule.Enemies
         public const string WALK_SPEED = "walkSpeed";
         public Transform target;
         public NavMeshAgent agent;
+        private AudioSource source;
+        [SerializeField] AudioClip attackSound;
+
+
+        private void Start()
+        {
+            source = GetComponent<AudioSource>();
+            source.clip = attackSound;
+        }
 
         #region IVisualizable
 
@@ -98,7 +107,7 @@ namespace EntityModule.Enemies
                 return NodeState.RUNNING;
             }
 
-
+            source.Play();
             this.animator.SetBool("isAttacking", false);
             return NodeState.SUCCESS;
         }).Alias("Do Attack");

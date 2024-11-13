@@ -35,7 +35,7 @@ namespace FishingModule
         {
             
             bool isCollected = this._buoy != null && this._buoy.isCollected;
-
+            SoundManager.Instance.StopSound(SoundType.Music);
             // <Success>
             if (isCollected)
             {
@@ -63,17 +63,21 @@ namespace FishingModule
 
         [SerializeField] string inSound;
         [SerializeField] string outSound;
+        [SerializeField] string music;
+
 
         public void OnInteraction()
         {
             if (this._buoy == null)
             {
                 SoundManager.Instance.PlaySound(inSound, SoundType.UI);
+                SoundManager.Instance.PlaySound(music, SoundType.Music);
                 this.StartFishing();
             }
             else if (Vector3.Distance(this.transform.position, this._buoy.transform.position) <= 20f)
             {
                 SoundManager.Instance.PlaySound(outSound, SoundType.UI);
+                
                 this.CollectBuoy();
             }
         }
