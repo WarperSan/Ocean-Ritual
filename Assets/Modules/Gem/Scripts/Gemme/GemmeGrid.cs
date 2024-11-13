@@ -43,7 +43,7 @@ public class GemmeGrid : MonoBehaviour
     public bool CanUpgrade()
     {
         // Vérifie si les dimensions actuelles dépassent 6 après une amélioration
-        return (width < 6 && height < 6);
+        return (width < 5 && height < 5);
     }
     #endregion
 

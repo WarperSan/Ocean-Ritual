@@ -8,6 +8,7 @@ using UnityEngine;
 public class wheelTrigger : MonoBehaviour, IInteractable
 {
     [SerializeField] WheelMenu wheelMenu;
+    [SerializeField] LinkWheelEquipment Wheel;
 
     public InteractionAsset InteractionAsset => null;
 
@@ -18,8 +19,9 @@ public class wheelTrigger : MonoBehaviour, IInteractable
     public void openMenu()
     {
         TransitionCam.Instance.SwitchToCamB();
+    
         UIManager.Open<WheelMenu>();
-      
+        Wheel.ResetStandFromUpgrade();
 
     }
 

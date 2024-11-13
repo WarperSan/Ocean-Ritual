@@ -44,6 +44,11 @@ public class LinkWheelEquipment : MonoBehaviour
             RemoveStand();
         }
     }
+
+    public void ResetStandFromUpgrade()
+    {
+        ResetStand(equipment);
+    }
     public void ResetStand(componentGBN equipement)
     {
        // Debug.Log("allo resetStand");

@@ -5,8 +5,10 @@ using UtilsModule;
 
 namespace BlacksmithModule
 {
+    
     public class Blacksmith : Singleton<Blacksmith>
     {
+        
         private List<IForgeable> forgeableItems = new();
         private readonly List<UpgradeStats> ListStat = new();
 
@@ -37,9 +39,9 @@ namespace BlacksmithModule
 
         private void GetAllUpgradeableItem()
         {
-            Debug.Log("Nombre d'objets forgeables trouvés : " + forgeableItems.Count);
+            //Debug.Log("Nombre d'objets forgeables trouvés : " + forgeableItems.Count);
             this.forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<IForgeable>().ToList();
-            Debug.Log("Nombre d'objets forgeables trouvés après recherche : " + forgeableItems.Count);
+            //Debug.Log("Nombre d'objets forgeables trouvés après recherche : " + forgeableItems.Count);
 
             foreach (var item in forgeableItems)
             {
