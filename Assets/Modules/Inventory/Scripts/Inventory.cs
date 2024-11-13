@@ -63,7 +63,8 @@ public class Inventory : Singleton<Inventory>
         {
             AddSlot();
         }
-        UpdateCashCost();
+        //à réactiver quand dans la main scene
+        //UpdateCashCost();
     }
 
     public void UpgradeInventory(int AddingStockage)
