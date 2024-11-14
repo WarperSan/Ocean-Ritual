@@ -5,97 +5,51 @@ using UnityEngine;
 
 namespace BossesModule.Worm.Nodes
 {
-    public class RepositionNode : Sequence
+    public class RepositionNode : MovementNode
     {
         private const float COOLDOWN = 5f;
         private const string CURRENT_REPOSITION_TARGET = "currentRepositionTarget";
-        private const string SPEED = "speed";
+        private CooldownNode cooldown;
+        private readonly string isRepositioning;
 
-        private readonly AnimationNode startAnimation;
-        private readonly AnimationNode endAnimation;
-        private readonly CooldownNode cooldown;
-
-        // FIELDS
-        private readonly Transform self;
-        private readonly Animator animator;
-        private readonly Collider collider;
-        private readonly string IS_REPOSITIONING;
-
-        public RepositionNode(Transform self, Animator animator, Collider collider, string CURRENT_TARGET, string IS_REPOSITIONING)
+        public RepositionNode(WormEntity entity, Animator animator, Collider collider, string CURRENT_TARGET, string IS_REPOSITIONING)
+            : base(entity, animator, collider, CURRENT_TARGET, "Reposition Start Animation", "Reposition End Animation", IS_REPOSITIONING)
         {
-            this.self = self;
-            this.animator = animator;
-            this.collider = collider;
-            this.IS_REPOSITIONING = IS_REPOSITIONING;
+            this.isRepositioning = IS_REPOSITIONING;
+        }
 
+        private Node RepositionSelector()
+        {
             Selector repositionSelector = new();
-            // Distance check
-            repositionSelector += new CallbackNode((Node n) => n.GetData<bool>(IS_REPOSITIONING) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Repositioning");
+            repositionSelector += new CallbackNode((Node n) => n.GetData<bool>(isRepositioning) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Repositioning");
             cooldown = new CooldownNode(COOLDOWN);
-            repositionSelector += cooldown.Alias("Cooldown");
-            this.Attach(repositionSelector.Alias("Reposition Selector"));
+            repositionSelector += this.cooldown.Alias("Cooldown");
 
-            // Play diving animation
-            this.startAnimation = new AnimationNode(this.StartAnimation);
-            this.Attach(this.startAnimation.Alias("Reposition Start Animation"));
-
-            // Go towards target
-            this.Attach(new GoToTarget(this.self, CURRENT_REPOSITION_TARGET, SPEED));
-
-            // Play emerge animation
-            this.endAnimation = new AnimationNode(this.EndAnimation);
-            this.Attach(this.endAnimation.Alias("Reposition End Animation"));
-
-            this.Attach(new CallbackNode(() =>
-            {
-                this.startAnimation.ResetAnim();
-                this.endAnimation.ResetAnim();
-                this.cooldown.ResetCooldown();
-
-                return NodeState.SUCCESS;
-
-            }).Alias("Reset"));
-
-            this.SetData(SPEED, 10f);
-            this.SetData(IS_REPOSITIONING, false, -1);
+            return repositionSelector.Alias("Reposition Selector");
         }
 
-        private void StartAnimation()
+        protected override NodeState ResetSequence()
         {
-            this.SetData(IS_REPOSITIONING, true, -1);
+            this.SetData(isRepositioning, false, -1);
 
-            this.animator.SetBool("isUnderwater", true);
-            this.animator.SetInteger("diveAnimation", 1);
+            this.startAnimation.ResetAnim();
+            this.endAnimation.ResetAnim();
+            this.cooldown.ResetCooldown();
 
-            // Disable collider
-            this.collider.enabled = false;
-
-            // PICK RANDOM LOCATION
-            this.SetData(CURRENT_REPOSITION_TARGET, TargetGeneral.Instance.BoatTarget.position);
+            return NodeState.SUCCESS;
         }
+        
+        protected override string GetTargetDataKey() => CURRENT_REPOSITION_TARGET;
 
-        private void EndAnimation()
-        {
-            this.SetData(IS_REPOSITIONING, false, -1);
-
-            this.animator.SetBool("isUnderwater", false);
-            this.animator.SetInteger("emergeAnimation", 1);
-
-            // Enable collider
-            this.collider.enabled = true;
-        }
-
-        public void OnStartAnimationEnded() => this.startAnimation.OnEnded();
-        public void OnEndAnimationEnded()=> this.endAnimation.OnEnded();
+        protected override int GetDiveAnimationIndex() => 1;
+        protected override int GetEmergeAnimationIndex() => 1;
+        protected override Node[] GetPreNodes() => new Node[] { this.RepositionSelector() };
 
         #region Node
 
-        /// <inheritdoc/>
-        public override bool IsAutomaticallyHidden() => true;
-
-        /// <inheritdoc/>
-        public override string GetText() => "Reposition Sequence";
+        public override string GetText() => "Reposition Node";
 
         #endregion
     }
+
 }

@@ -10,6 +10,7 @@ namespace BossesModule.Worm
     public class WormTree : MonoBehaviour, IVisualizable
     {
         public const string CURRENT_TARGET = "currentTarget";
+        private const string IS_ESCAPING = "isEscaping";
         private const string IS_REPOSITIONING = "isRepositioning";
 
         #region Fields
@@ -42,11 +43,11 @@ namespace BossesModule.Worm
             //this._attackNode = new AttackNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
             //root += this._attackNode;
 
-            this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
+            this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ESCAPING, IS_REPOSITIONING);
             root += this._escapeNode;
 
-            //this._repositionNode = new RepositionNode(this.transform, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
-            //root += this._repositionNode;
+            this._repositionNode = new RepositionNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
+            root += this._repositionNode;
 
             root += this.Rotate();
 
