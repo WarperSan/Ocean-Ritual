@@ -3,7 +3,6 @@ using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
 using BossesModule.Worm.Nodes;
-using ExtensionsModule;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -11,6 +10,7 @@ namespace BossesModule.Worm
     public class WormTree : MonoBehaviour, IVisualizable
     {
         public const string CURRENT_TARGET = "currentTarget";
+        private const string IS_REPOSITIONING = "isRepositioning";
 
         #region Fields
 
@@ -21,6 +21,9 @@ namespace BossesModule.Worm
         [SerializeField]
         private Collider _collider;
 
+        [SerializeField]
+        private WormEntity _entity;
+       
         #endregion
 
         #region IVisualizable
@@ -36,11 +39,14 @@ namespace BossesModule.Worm
         {
             Selector root = new();
 
-            this._escapeNode = new EscapeNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
+            //this._attackNode = new AttackNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
+            //root += this._attackNode;
+
+            this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
             root += this._escapeNode;
 
-            this._repositionNode = new RepositionNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
-            root += this._repositionNode;
+            //this._repositionNode = new RepositionNode(this.transform, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
+            //root += this._repositionNode;
 
             root += this.Rotate();
 
@@ -48,6 +54,12 @@ namespace BossesModule.Worm
 
             this._root = root.Alias("Root");
         }
+
+        #endregion
+
+        #region Attack
+
+        private AttackNode _attackNode;
 
         #endregion
 

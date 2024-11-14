@@ -7,37 +7,38 @@ namespace BossesModule.Worm.Nodes
 {
     public class EscapeNode : Sequence
     {
-        private const float MIN_DISTANCE = 40f;
+        private const float MIN_TRIGGER_DISTANCE = 40f;
+        private const float MIN_TARGET_DISTANCE = 70f;
         public const string CURRENT_ESCAPE_TARGET = "currentEscapeTarget";
         private const string SPEED = "speed";
+        private const float RADIUS_OFFSET = 0.9f;
 
         private readonly AnimationNode startAnimation;
         private readonly AnimationNode endAnimation;
         private bool isEscaping = false;
 
         // FIELDS
-        private readonly Transform self;
+        private readonly WormEntity entity;
         private readonly Animator animator;
         private readonly Collider collider;
+        private readonly string currentTarget;
 
-        public EscapeNode(Transform self, Animator animator, Collider collider, string CURRENT_TARGET)
+        public EscapeNode(WormEntity entity, Animator animator, Collider collider, string CURRENT_TARGET, string IS_REPOSITIONING)
         {
-            this.self = self;
+            this.entity = entity;
             this.animator = animator;
             this.collider = collider;
+            this.currentTarget = CURRENT_TARGET;
 
             // Start/Continue conditions
-            Selector escapeSelector = new();
-            escapeSelector += new CallbackNode(() => isEscaping ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Escaping");
-            escapeSelector += new DistanceSmaller(this.self, CURRENT_TARGET, MIN_DISTANCE).Alias("Is Within Range");
-            this.Attach(escapeSelector.Alias("Escape Selector"));
+            this.Attach(EscapeSelector(IS_REPOSITIONING));
 
             // Play diving animation
             this.startAnimation = new AnimationNode(this.StartAnimation);
             this.Attach(this.startAnimation.Alias("Escape Start Animation"));
 
             // Go towards target
-            this.Attach(new GoToTarget(this.self, CURRENT_ESCAPE_TARGET, SPEED));
+            this.Attach(new GoToTarget(this.entity.transform, CURRENT_ESCAPE_TARGET, SPEED));
 
             // Play emerge animation
             this.endAnimation = new AnimationNode(this.EndAnimation);
@@ -46,14 +47,30 @@ namespace BossesModule.Worm.Nodes
             // Reset animations
             this.Attach(new CallbackNode(() =>
             {
+                isEscaping = false;
+
                 this.startAnimation.ResetAnim();
                 this.endAnimation.ResetAnim();
 
                 return NodeState.SUCCESS;
 
-            }).Alias("Reset Animations"));
+            }).Alias("Reset"));
 
-            this.SetData(SPEED, 5f);
+            this.SetData(SPEED, 100f);
+        }
+
+        private Node EscapeSelector(string IS_REPOSITIONING)
+        {
+            Selector escapeSelector = new();
+            escapeSelector += new CallbackNode(() => isEscaping ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Escaping");
+
+            Sequence conditionSequence = new();
+            conditionSequence += new CallbackNode((Node n) => n.GetData<bool>(IS_REPOSITIONING) ? NodeState.FAILURE : NodeState.SUCCESS).Alias("Is Not Repositioning");
+            conditionSequence += new DistanceSmaller(this.entity.transform, this.currentTarget, MIN_TRIGGER_DISTANCE).Alias("Is Within Range");
+
+            escapeSelector += conditionSequence.Alias("Condition Sequence");
+
+            return escapeSelector.Alias("Escape Selector");
         }
 
         private void StartAnimation()
@@ -66,14 +83,12 @@ namespace BossesModule.Worm.Nodes
             // Disable collider
             this.collider.enabled = false;
 
-            // PICK RANDOM LOCATION
-            this.SetData(CURRENT_ESCAPE_TARGET, TargetGeneral.Instance.BoatTarget.position);
+            // Get Random Position
+            this.SetData(CURRENT_ESCAPE_TARGET, GetRandomPosition());
         }
 
         private void EndAnimation()
         {
-            isEscaping = false;
-
             this.animator.SetBool("isUnderwater", false);
             this.animator.SetInteger("emergeAnimation", 0);
 
@@ -91,6 +106,30 @@ namespace BossesModule.Worm.Nodes
 
         /// <inheritdoc/>
         public override string GetText() => "Escape Sequence";
+
+        #endregion
+
+        #region Random Position
+
+        private Vector3 GetRandomPosition()
+        {
+            Vector3 arenaPos = this.entity.ArenaOrigin.position;
+            Vector3 targetPos = this.GetData<Vector3>(currentTarget);
+            Vector3 rndPos;
+
+            float maxRadius = this.entity.ArenaRadius * RADIUS_OFFSET;
+
+            while (true)
+            {
+                float radius = Random.Range(0, maxRadius);
+                rndPos = UtilsModule.Random.RandomOnCircumference(radius, arenaPos);
+
+                if (Vector3.Distance(rndPos, targetPos) >= MIN_TARGET_DISTANCE)
+                    break;
+            }
+
+            return rndPos;
+        }
 
         #endregion
     }

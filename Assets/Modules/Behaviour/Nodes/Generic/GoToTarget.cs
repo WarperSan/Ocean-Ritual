@@ -19,6 +19,7 @@ namespace BehaviourModule.Nodes.Generic
         /// <inheritdoc/>
         protected override NodeState OnEvaluate()
         {
+            Debug.Log(TARGET);
             Vector3 pos = this.GetData<Vector3>(TARGET);
             pos.y = this.self.position.y; // Walk straight
 

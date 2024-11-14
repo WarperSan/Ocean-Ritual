@@ -31,18 +31,18 @@ namespace EntityModule.Entities
 
         [Header("Arena")]
         [SerializeField, Min(0)]
-        private float detectionRange = 100;
+        protected float detectionRange = 100;
 
         [SerializeField, Min(0)]
-        private float barrierRange = 125;
+        protected float barrierRange = 125;
 
         [SerializeField, Min(1)]
-        private int barrierCount = 20;
+        protected int barrierCount = 20;
 
         [SerializeField]
-        private GameObject barrierPrefab;
+        protected GameObject barrierPrefab;
 
-        private Transform barrierParent;
+        protected Transform barrierParent;
 
         private IEnumerator SpawnArena()
         {
@@ -119,10 +119,6 @@ namespace EntityModule.Entities
 
                 return;
             }
-
-            // si combat commencer, updatetree
-            //this.UpdateTree();
-            // sinon spawn arene, show healthbar
         }
 
         /// <inheritdoc/>

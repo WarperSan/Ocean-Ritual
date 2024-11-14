@@ -13,25 +13,26 @@ namespace BossesModule.Worm.Nodes
 
         private readonly AnimationNode startAnimation;
         private readonly AnimationNode endAnimation;
-        private bool isRepositioning = false;
+        private readonly CooldownNode cooldown;
 
         // FIELDS
         private readonly Transform self;
         private readonly Animator animator;
         private readonly Collider collider;
+        private readonly string IS_REPOSITIONING;
 
-        public RepositionNode(Transform self, Animator animator, Collider collider, string CURRENT_TARGET)
+        public RepositionNode(Transform self, Animator animator, Collider collider, string CURRENT_TARGET, string IS_REPOSITIONING)
         {
             this.self = self;
             this.animator = animator;
             this.collider = collider;
-
-            this.isRepositioning = true;
+            this.IS_REPOSITIONING = IS_REPOSITIONING;
 
             Selector repositionSelector = new();
-            // Cooldown
             // Distance check
-            repositionSelector += new CallbackNode(() => isRepositioning ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Repositioning");
+            repositionSelector += new CallbackNode((Node n) => n.GetData<bool>(IS_REPOSITIONING) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Repositioning");
+            cooldown = new CooldownNode(COOLDOWN);
+            repositionSelector += cooldown.Alias("Cooldown");
             this.Attach(repositionSelector.Alias("Reposition Selector"));
 
             // Play diving animation
@@ -49,17 +50,19 @@ namespace BossesModule.Worm.Nodes
             {
                 this.startAnimation.ResetAnim();
                 this.endAnimation.ResetAnim();
+                this.cooldown.ResetCooldown();
 
                 return NodeState.SUCCESS;
 
-            }).Alias("Reset Animations"));
+            }).Alias("Reset"));
 
-            this.SetData(SPEED, 5f);
+            this.SetData(SPEED, 10f);
+            this.SetData(IS_REPOSITIONING, false, -1);
         }
 
         private void StartAnimation()
         {
-            isRepositioning = true;
+            this.SetData(IS_REPOSITIONING, true, -1);
 
             this.animator.SetBool("isUnderwater", true);
             this.animator.SetInteger("diveAnimation", 1);
@@ -73,7 +76,7 @@ namespace BossesModule.Worm.Nodes
 
         private void EndAnimation()
         {
-            isRepositioning = false;
+            this.SetData(IS_REPOSITIONING, false, -1);
 
             this.animator.SetBool("isUnderwater", false);
             this.animator.SetInteger("emergeAnimation", 1);
@@ -83,7 +86,7 @@ namespace BossesModule.Worm.Nodes
         }
 
         public void OnStartAnimationEnded() => this.startAnimation.OnEnded();
-        public void OnEndAnimationEnded() => this.endAnimation.OnEnded();
+        public void OnEndAnimationEnded()=> this.endAnimation.OnEnded();
 
         #region Node
 
