@@ -2,6 +2,7 @@ using BehaviourModule.Interfaces;
 using BehaviourModule.Nodes;
 using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
+using BossesModule.Worm.Nodes;
 using ExtensionsModule;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ namespace BossesModule.Worm
 
         private Node _root;
 
+
         /// <inheritdoc/>
         public Node GetRoot() => this._root;
 
@@ -33,6 +35,13 @@ namespace BossesModule.Worm
         public void RebuildRoot()
         {
             Selector root = new();
+
+            this._escapeNode = new EscapeNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
+            root += this._escapeNode;
+
+            this._repositionNode = new RepositionNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
+            root += this._repositionNode;
+
             root += this.Rotate();
 
             root.SetData(CURRENT_TARGET, null);
@@ -42,18 +51,31 @@ namespace BossesModule.Worm
 
         #endregion
 
+        #region Escape
+
+        private EscapeNode _escapeNode;
+
+        public void OnEscapeStartEnded() => this._escapeNode.OnStartAnimationEnded();
+        public void OnEscapeEndEnded() => this._escapeNode.OnEndAnimationEnded();
+
+        #endregion
+
+        #region Reposition
+
+        private RepositionNode _repositionNode;
+
+        public void OnRepositionStartEnded() => this._repositionNode.OnStartAnimationEnded();
+        public void OnRepositionEndEnded() => this._repositionNode.OnEndAnimationEnded();
+
+        #endregion
+
         #region Rotate
 
-        private Node Rotate()
-        {
-            CallbackNode rotate = new CallbackNode(RotateTowardsTarget);
+        private Node Rotate() => new CallbackNode(RotateTowardsTarget).Alias("Rotate");
 
-            return rotate.Alias("Rotate");
-        }
-
-        private NodeState RotateTowardsTarget()
+        private NodeState RotateTowardsTarget(Node n)
         {
-            Transform target = this._root.GetData<Transform>(CURRENT_TARGET);
+            Transform target = n.GetData<Transform>(CURRENT_TARGET);
 
             // If target is invalid, return fail
             if (target == null)

@@ -27,9 +27,12 @@ namespace BehaviourModule.Nodes
         /// <summary>
         /// Stores the given value at the given key
         /// </summary>
-        public void SetData(string key, object value, uint levels = 0)
+        public void SetData(string key, object value, int levels = 0)
         {
             Node node = this;
+
+            if (levels < 0)
+                levels = int.MaxValue;
 
             while (levels > 0)
             {
