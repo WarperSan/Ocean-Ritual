@@ -29,7 +29,7 @@ namespace BossesModule.Worm
 
         private IEnumerator IceStormCoroutine()
         {
-            const float TIME_BETWEEN_SPAWN = 2f;
+            const float TIME_BETWEEN_SPAWN = 0.3f;
             float time = IceStormNode.COOLDOWN;
 
             while (time > 0)
@@ -58,7 +58,7 @@ namespace BossesModule.Worm
                 // Place Objects
                 icicle.transform.position = new Vector3(
                     rndPos.x,
-                    40,
+                    340,
                     rndPos.z
                 );
 
@@ -71,6 +71,9 @@ namespace BossesModule.Worm
                 // Activate objects
                 icicle.SetActive(true);
                 aoe.SetActive(true);
+
+                if (aoe.TryGetComponent(out ParticleSystem particleSystem))
+                    particleSystem.Play();
 
                 yield return new WaitForSeconds(TIME_BETWEEN_SPAWN);
 
