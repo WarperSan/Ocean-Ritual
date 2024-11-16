@@ -40,8 +40,8 @@ namespace BossesModule.Worm
         {
             Selector root = new();
 
-            //this._attackNode = new AttackNode(this.transform, this.animator, this._collider, CURRENT_TARGET);
-            //root += this._attackNode;
+            this._attackNode = new AttackNode(this._entity, this.animator, this._collider, CURRENT_TARGET);
+            root += this._attackNode;
 
             this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ESCAPING, IS_REPOSITIONING);
             root += this._escapeNode;

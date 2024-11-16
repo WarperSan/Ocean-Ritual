@@ -28,5 +28,11 @@ namespace BossesModule.Worm
         public void RepositionEmergeEnded() => this.tree.OnRepositionEndEnded();
 
         #endregion
+
+        #region Attack
+
+        
+
+        #endregion
     }
 }

@@ -12,11 +12,11 @@ namespace BossesModule.Worm.Nodes
         private readonly string isEscaping;
         private readonly string isRepositioning;
 
-        public EscapeNode(WormEntity entity, Animator animator, Collider collider, string CURRENT_TARGET, string IS_ESCAPING, string IS_REPOSITIONING)
-            : base(entity, animator, collider, CURRENT_TARGET, "Escape Start Animation", "Escape End Animation", IS_ESCAPING)
+        public EscapeNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isEscaping, string isRepositioning)
+            : base(entity, animator, collider, currentTarget, "Escape Start Animation", "Escape End Animation", isEscaping)
         {
-            this.isEscaping = IS_ESCAPING;
-            this.isRepositioning = IS_REPOSITIONING;
+            this.isEscaping = isEscaping;
+            this.isRepositioning = isRepositioning;
         }
 
         private Node EscapeSelector()

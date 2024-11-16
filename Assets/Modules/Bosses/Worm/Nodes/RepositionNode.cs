@@ -12,10 +12,10 @@ namespace BossesModule.Worm.Nodes
         private CooldownNode cooldown;
         private readonly string isRepositioning;
 
-        public RepositionNode(WormEntity entity, Animator animator, Collider collider, string CURRENT_TARGET, string IS_REPOSITIONING)
-            : base(entity, animator, collider, CURRENT_TARGET, "Reposition Start Animation", "Reposition End Animation", IS_REPOSITIONING)
+        public RepositionNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isRepositioning)
+            : base(entity, animator, collider, currentTarget, "Reposition Start Animation", "Reposition End Animation", isRepositioning)
         {
-            this.isRepositioning = IS_REPOSITIONING;
+            this.isRepositioning = isRepositioning;
         }
 
         private Node RepositionSelector()
