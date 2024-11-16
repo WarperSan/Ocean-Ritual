@@ -21,7 +21,7 @@ namespace BossesModule.Worm.Projectiles
         }
 
         /// <inheritdoc/>
-        protected override void OnMove(float elapsed) => this.transform.position -= new Vector3(0, this.speed, 0) * elapsed;
+        protected override void OnMove(float elapsed) => this.transform.position -= this.speed * elapsed * this.transform.up;
 
         #endregion
     }

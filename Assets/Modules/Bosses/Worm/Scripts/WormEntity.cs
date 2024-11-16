@@ -30,6 +30,9 @@ namespace BossesModule.Worm
         private IEnumerator IceStormCoroutine()
         {
             const float TIME_BETWEEN_SPAWN = 0.3f;
+            const float SPAWN_HEIGHT = 340f;
+            const float defaultAngle = 90f * Mathf.Deg2Rad;
+
             float time = IceStormNode.COOLDOWN;
 
             while (time > 0)
@@ -40,6 +43,8 @@ namespace BossesModule.Worm
 
                 // Spawn Icicle
                 GameObject icicle = this.iceStormPool.Get(this.iceStorm_iciclePrefab.name);
+                float angle = 45f * Mathf.Deg2Rad;
+
 
                 if (icicle.TryGetComponent(out Projectile projectile))
                 {
@@ -58,9 +63,10 @@ namespace BossesModule.Worm
                 // Place Objects
                 icicle.transform.position = new Vector3(
                     rndPos.x,
-                    340,
-                    rndPos.z
+                    Mathf.Sin(defaultAngle + angle) * SPAWN_HEIGHT,
+                    rndPos.z - (Mathf.Cos(defaultAngle + angle) * SPAWN_HEIGHT)
                 );
+                icicle.transform.rotation = Quaternion.Euler(45, 0, 0);
 
                 aoe.transform.position = new Vector3(
                     rndPos.x,
