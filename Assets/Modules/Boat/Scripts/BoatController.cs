@@ -1,6 +1,7 @@
 using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace ControllerModule.Controllers
@@ -72,23 +73,34 @@ namespace ControllerModule.Controllers
         {
             // Skip if no turn
             if (this.direction.x == 0)
+            {
+                _rb.angularVelocity = Vector3.zero;
                 return;
+            }
+            
 
-            var eulerAngleVelocity = new Vector3();
-
+            //var eulerAngleVelocity = new Vector3();
+            
             //D�signe le sense de la rotation et la vitesse de rotation 
             if (this.direction.x > 0)
             {
-                eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
+                //eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
+                _rb.AddTorque(0, _stats.GetHandling() / 50, 0, ForceMode.Acceleration);
             }
             else if (this.direction.x < 0)
             {
-                eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
+                //eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
+                _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
             }
 
+           
+
             // Rotation RB
-            var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
-            _rb.MoveRotation(_rb.rotation * deltaRotation);
+            //var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
+            //_rb.MoveRotation(_rb.rotation * deltaRotation);
+
+            
+
         }
 
         #endregion
@@ -128,6 +140,7 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
+            
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
@@ -137,7 +150,11 @@ namespace ControllerModule.Controllers
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
             newPosition.y = this.transform.position.y;
 
-            _rb.MovePosition(newPosition);
+            Debug.Log("Current Speed : " + CurrentSpeed);
+            Debug.Log("Movement : " + this.transform.forward * CurrentSpeed);
+            Debug.Log("Velocity : " + _rb.velocity);
+            //_rb.MovePosition(newPosition);
+            _rb.AddForce(this.transform.forward * CurrentSpeed);
 
             // Update positions
             Vector3 diff = newPosition - this.transform.position;
