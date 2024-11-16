@@ -12,6 +12,7 @@ namespace BossesModule.Worm
         public const string CURRENT_TARGET = "currentTarget";
         private const string IS_ESCAPING = "isEscaping";
         private const string IS_REPOSITIONING = "isRepositioning";
+        private const string IS_ATTACKING = "isAttacking";
 
         #region Fields
 
@@ -24,13 +25,12 @@ namespace BossesModule.Worm
 
         [SerializeField]
         private WormEntity _entity;
-       
+
         #endregion
 
         #region IVisualizable
 
         private Node _root;
-
 
         /// <inheritdoc/>
         public Node GetRoot() => this._root;
@@ -40,7 +40,7 @@ namespace BossesModule.Worm
         {
             Selector root = new();
 
-            this._attackNode = new AttackNode(this._entity, this.animator, this._collider, CURRENT_TARGET);
+            this._attackNode = new AttackSequence(this, this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ATTACKING);
             root += this._attackNode;
 
             this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ESCAPING, IS_REPOSITIONING);
@@ -56,11 +56,21 @@ namespace BossesModule.Worm
             this._root = root.Alias("Root");
         }
 
+        public bool IsMoving()
+        {
+            if (this._root == null)
+                return false;
+
+            return this._root.GetData<bool>(IS_ESCAPING) || this._root.GetData<bool>(IS_REPOSITIONING);
+        }
+
         #endregion
 
         #region Attack
 
-        private AttackNode _attackNode;
+        private AttackSequence _attackNode;
+
+        public void OnAttackEnded() => this._attackNode.OnAnimationEnded();
 
         #endregion
 

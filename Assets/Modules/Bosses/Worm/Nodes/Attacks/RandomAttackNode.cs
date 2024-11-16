@@ -1,5 +1,4 @@
 ﻿using BehaviourModule.Nodes;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,25 +8,50 @@ namespace BossesModule.Worm.Nodes
     {
         public const string CURRENT_ATTACK_TARGET = "currentAttackTarget";
         public const float COOLDOWN = 10f;
-        private List<Attack> usedAttacks = new();
-        private List<Attack> notUsedAttacks;
-        public RandomAttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget)
+
+        public RandomAttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
         {
-            notUsedAttacks = new List<Attack>() {
-                new IceStormNode(entity, animator, collider, currentTarget, "Ice Storm Animation")
+            notUsedAttacks = new List<AttackNode>() {
+                new IceStormNode(entity, animator, collider, currentTarget, isAttacking)
             };
 
-            this.Attach(this.notUsedAttacks[0].Alias("Ice Storm Sequence"));
+#if UNITY_EDITOR
+            foreach (AttackNode atk in notUsedAttacks)
+                this.Attach(atk);
+#endif
+
+            this.ChooseNextAttack();
         }
 
-        protected override NodeState OnEvaluate() => throw new NotImplementedException();
+        #region Attack List
 
-        public NodeState ResetAttack(Attack attack)
+        private List<AttackNode> usedAttacks = new();
+        private List<AttackNode> notUsedAttacks;
+        private AttackNode currentAttack;
+
+        public void ChooseNextAttack()
         {
-            attack.ResetAttackAnimation();
+            this.currentAttack = this.notUsedAttacks[0];
+        }
 
+        public NodeState OnAnimationEnded()
+        {
+            this.currentAttack.OnAnimationEnded();
             return NodeState.SUCCESS;
         }
 
+        public void ResetAttack()
+        {
+            this.currentAttack.ResetAttack();
+        }
+
+        #endregion
+
+        #region Node
+
+        /// <inheritdoc/>
+        protected override NodeState OnEvaluate() => this.currentAttack?.Evaluate() ?? NodeState.FAILURE;
+
+        #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace BossesModule.Worm
 
         #region Attack
 
-        
+        public void IceStormAnimationEnded() => this.tree.OnAttackEnded();
 
         #endregion
     }

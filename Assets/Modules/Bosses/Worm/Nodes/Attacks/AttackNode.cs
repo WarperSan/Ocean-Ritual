@@ -5,42 +5,55 @@ using UnityEngine;
 
 namespace BossesModule.Worm.Nodes
 {
-    internal class AttackNode : Sequence
+    internal abstract class AttackNode : Sequence
     {
-        public const string CURRENT_ATTACK_TARGET = "currentAttackTarget";
-        public const float COOLDOWN = 10f;
-        CooldownNode cooldown;
-        RandomAttackNode rdmAttackNode;
-        Attack attack;
+        protected readonly WormEntity entity;
+        protected readonly Animator animator;
+        protected readonly Collider collider;
+        protected readonly string currentTarget;
+        private readonly string isAttacking;
 
-        public AttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget)
+        public AttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
         {
-            cooldown = new CooldownNode(COOLDOWN);
-            this.Attach(cooldown.Alias("Cooldown"));
+            this.entity = entity;
+            this.animator = animator;
+            this.collider = collider;
+            this.currentTarget = currentTarget;
+            this.isAttacking = isAttacking;
 
-            rdmAttackNode = new(entity, animator, collider, currentTarget);
-            this.Attach(rdmAttackNode.Alias("Random Attack"));
-
-            
-            this.Attach(new CallbackNode(this.ResetSequence).Alias("Reset"));
+            this.startAnimation = new AnimationNode(this.StartAnimation);
+            this.Attach(this.startAnimation.Alias("Start Animation"));
         }
 
-        private NodeState ResetSequence() 
+        #region Animation
+
+        protected readonly AnimationNode startAnimation;
+
+        protected abstract int GetAttackAnimationIndex();
+
+        protected void StartAnimation()
         {
-            this.rdmAttackNode.ResetAttack(attack);
-            cooldown.ResetCooldown();
+            this.animator.SetBool("isAttacking", true);
+            this.SetData(isAttacking, true, -1);
+            this.animator.SetInteger("attackAnimation", this.GetAttackAnimationIndex());
+        }
+
+        public void OnAnimationEnded()
+        {
+            this.animator.SetBool("isAttacking", false);
+            this.startAnimation.OnEnded();
+        }
+
+        public NodeState ResetAttack()
+        {
+            this.startAnimation.ResetAnim();
+            this.SetData(isAttacking, false, -1);
+            this.ResetSelf();
 
             return NodeState.SUCCESS;
         }
-        
 
-        #region Node
-
-        /// <inheritdoc/>
-        public override bool IsAutomaticallyHidden() => true;
-
-        /// <inheritdoc/>
-        public override string GetText() => "Attack Sequence";
+        protected virtual void ResetSelf() {}
 
         #endregion
     }
