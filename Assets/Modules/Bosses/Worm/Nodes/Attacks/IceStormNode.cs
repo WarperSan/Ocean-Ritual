@@ -4,7 +4,7 @@ namespace BossesModule.Worm.Nodes
 {
     internal class IceStormNode : AttackNode
     {
-        const float COOLDOWN = 20f;
+        public const float COOLDOWN = 20f;
         readonly CooldownNode cooldown;
 
         public IceStormNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
@@ -15,6 +15,8 @@ namespace BossesModule.Worm.Nodes
         }
 
         protected override int GetAttackAnimationIndex() => 0;
+
+        protected override void OnStartAnimation() => entity.StartIceStorm();
 
         protected override void ResetSelf()
         {

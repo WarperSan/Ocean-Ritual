@@ -118,7 +118,6 @@ namespace BossesModule.Worm
         }
 
         #endregion
-
     }
 }
 

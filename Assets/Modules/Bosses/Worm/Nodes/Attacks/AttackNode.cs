@@ -31,12 +31,16 @@ namespace BossesModule.Worm.Nodes
 
         protected abstract int GetAttackAnimationIndex();
 
-        protected void StartAnimation()
+        private void StartAnimation()
         {
             this.animator.SetBool("isAttacking", true);
             this.SetData(isAttacking, true, -1);
             this.animator.SetInteger("attackAnimation", this.GetAttackAnimationIndex());
+
+            this.OnStartAnimation();
         }
+
+        protected virtual void OnStartAnimation() { }
 
         public void OnAnimationEnded()
         {
