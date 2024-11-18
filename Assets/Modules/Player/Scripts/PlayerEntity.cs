@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EntityModule
@@ -6,11 +7,16 @@ namespace EntityModule
     {
         [SerializeField]
         private Transform respawnPoint;
+       
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Death"))
+            {
                 this.transform.position = respawnPoint.position + new Vector3(0, 2, 0);
+              
+            }
+       
         }
 
         #region Entity
