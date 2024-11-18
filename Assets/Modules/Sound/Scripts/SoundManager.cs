@@ -27,7 +27,7 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(AudioClip sound, SoundType type, bool looped = false, bool waitForEnd = false)
+    public void PlaySound(AudioClip sound, SoundType type, float volume = 0.8f, bool looped = false, bool waitForEnd = false)
     {
         switch (type)
         {
@@ -41,6 +41,7 @@ public class SoundManager : Singleton<SoundManager>
                     
                 
                 musicSource.clip = sound;
+                musicSource.volume = volume;
                 musicSource.loop = looped;
                 musicSource.Play();
                 break;
@@ -53,6 +54,7 @@ public class SoundManager : Singleton<SoundManager>
                 }
                     
                 ambientSource.clip = sound;
+                ambientSource.volume = volume;
                 ambientSource.loop = looped;
                 ambientSource.Play();
                 break;
@@ -66,6 +68,7 @@ public class SoundManager : Singleton<SoundManager>
                     
 
                 uiSoundSource.clip = sound;   
+                uiSoundSource.volume = volume;
                 uiSoundSource.loop = looped;
                 uiSoundSource.Play();
                 break;
@@ -75,7 +78,7 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(string soundPath, SoundType type, bool looped = false, bool waitForEnd = false)
+    public void PlaySound(string soundPath, SoundType type,float volume = 0.8f, bool looped = false, bool waitForEnd = false)
     {
         switch (type)
         {
@@ -89,8 +92,9 @@ public class SoundManager : Singleton<SoundManager>
                     StopSound(SoundType.Music);
                 }
                     
-
+                
                 musicSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(musicPath + soundPath, typeof(AudioClip));
+                musicSource.volume = volume;
                 musicSource.loop = looped;
                 musicSource.Play();
                 break;
@@ -104,6 +108,7 @@ public class SoundManager : Singleton<SoundManager>
                     
 
                 ambientSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(ambientPath + soundPath, typeof(AudioClip));
+                ambientSource.volume = volume;
                 ambientSource.loop = looped;
                 ambientSource.Play();
                 break;
@@ -116,6 +121,7 @@ public class SoundManager : Singleton<SoundManager>
                 }
 
                 uiSoundSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(uiSoundPath + soundPath, typeof(AudioClip));
+                uiSoundSource.volume = volume;
                 uiSoundSource.loop = looped;
                 uiSoundSource.Play();
                 break;

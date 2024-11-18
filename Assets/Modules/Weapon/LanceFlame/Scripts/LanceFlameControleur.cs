@@ -25,7 +25,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         base.OnStart();
 
         // --- STATS ---
-        ComponantGBN.GBNScript.GetStat();
+  
         this.UpdateStat();
         // ---
 
@@ -262,6 +262,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     /// <inheritdoc/>
     public void UpdateStat()
     {
+        ComponantGBN.GBNScript.GetStat();
         // Cr�ation de la liste des statistiques de base
         var baseStats = new List<TypeQuantity<TypeWeapon>>
         {

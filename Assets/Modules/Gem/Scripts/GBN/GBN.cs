@@ -131,20 +131,20 @@ using static EnumGeneral;
         {
             foreach (componentPowerGemObject socle in SocleListe)
             {
-                foreach (Gemcomponent gem in socle.PowerGemObjectScript.GemcomponentList)
+                foreach (Gem gem in socle.PowerGemObjectScript.GemmeList)
                 {
-                    Gem theGemmeScript = gem.GemScript;
+                   
 
                     switch (typeSocle)
                     {
                         case TypeOfSocle.Weapon:
-                            UpdateStatsFromGemmeList<TypeWeapon>(theGemmeScript, typeWeapon);
+                            UpdateStatsFromGemmeList<TypeWeapon>(gem, typeWeapon);
                             break;
                         case TypeOfSocle.Bateau:
-                            UpdateStatsFromGemmeList<TypeBoat>(theGemmeScript, typeBoat);
+                            UpdateStatsFromGemmeList<TypeBoat>(gem, typeBoat);
                             break;
                         case TypeOfSocle.Net:
-                            UpdateStatsFromGemmeList<TypeNet>(theGemmeScript, typeNet);
+                            UpdateStatsFromGemmeList<TypeNet>(gem, typeNet);
                             break;
                     }
                 }
@@ -166,8 +166,8 @@ using static EnumGeneral;
                 {
                     if (stat.Type.Equals(gemmeStat.Type))
                     {
-                    stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
-                   // stat.Quantite += gemmeStat.Quantite;
+                   // stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
+                    stat.Quantite += gemmeStat.Quantite;
                     }
                 }
             }
