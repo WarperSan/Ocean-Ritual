@@ -25,7 +25,7 @@ public class TpZone : MonoBehaviour
     {
         if (enter)
         {
-            SoundManager.Instance.PlaySound(MusicEnter,SoundType.Music,true);
+            SoundManager.Instance.PlaySound(MusicEnter,SoundType.Music,0.5f,true);
         }
         else if (exit)
         {
