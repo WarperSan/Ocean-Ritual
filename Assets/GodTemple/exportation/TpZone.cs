@@ -19,9 +19,9 @@ public class TpZone : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        collision.gameObject.transform.position = zoneTp.position;
+        // Déplace l'objet qui entre dans la zone de trigger
+        other.transform.position = zoneTp.position;
     }
-
 }
