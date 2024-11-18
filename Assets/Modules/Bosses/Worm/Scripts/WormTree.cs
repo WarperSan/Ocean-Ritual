@@ -72,6 +72,10 @@ namespace BossesModule.Worm
 
         public void OnAttackEnded() => this._attackNode.OnAnimationEnded();
 
+        public void IceWaveStart() => this._entity.StartIceWave();
+
+        public void IceWaveEnd() => this._entity.EndIceWave();
+
         #endregion
 
         #region Escape

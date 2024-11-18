@@ -3,6 +3,7 @@ using EntityModule;
 using EntityModule.Entities;
 using MapModule;
 using System.Collections;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -84,6 +85,64 @@ namespace BossesModule.Worm
                 yield return new WaitForSeconds(TIME_BETWEEN_SPAWN);
 
                 time -= TIME_BETWEEN_SPAWN;
+            }
+        }
+
+        #endregion
+
+        #region Ice Wave
+
+        [Header("Ice Wave")]
+        [SerializeField]
+        private ObjectPool iceWavePool;
+
+        [SerializeField]
+        private GameObject iceWave_iciclePrefab;
+
+        Coroutine iceWaveCoroutine;
+
+        public void StartIceWave() => iceWaveCoroutine = this.StartCoroutine(this.IceWaveCoroutine());
+        public void EndIceWave() => this.StopCoroutine(iceWaveCoroutine);
+
+        private IEnumerator IceWaveCoroutine()
+        {
+            const int SPAWN_QTY = 20;
+            const float SPAWN_ARCH = 180f;
+            const float SPAWN_RADIUS = 10f;
+
+            float time = IceWaveNode.COOLDOWN;
+            float timeBetweenSpawn = time / SPAWN_QTY;
+
+            while (time > 0)
+            {
+                // Spawn Icicle
+                GameObject icicle = this.iceWavePool.Get(this.iceWave_iciclePrefab.name);
+                float angle = 45f * Mathf.Deg2Rad;
+
+                if (icicle.TryGetComponent(out Projectile projectile))
+                {
+                    projectile.ResetSelf();
+                    projectile.Attribute(new Attack()
+                    {
+                        Damage = 1,
+                        Type = AttackType.ICE,
+                        TargetType = ProjectileTarget.BOAT
+                    });
+                }
+
+                // Place Objects
+                icicle.transform.position = new Vector3(
+                    Mathf.Cos(angle) * SPAWN_RADIUS + this.transform.position.x,
+                    OceanManager.WATER_HEIGHT,
+                    Mathf.Sin(angle) * SPAWN_RADIUS + this.transform.position.z
+                );
+
+                // Activate objects
+                icicle.SetActive(true);
+
+                yield return new WaitForSeconds(timeBetweenSpawn);
+
+                time -= timeBetweenSpawn;
             }
         }
 
