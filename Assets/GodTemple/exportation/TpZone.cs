@@ -7,7 +7,10 @@ public class TpZone : MonoBehaviour
 {
     private GameObject player; // Référence au GameObject Player
     [SerializeField] private Transform zoneTp; // Zone de téléportation
-
+    [SerializeField] bool enter = false;
+    [SerializeField] bool exit = false;
+    [SerializeField] AudioClip MusicEnter ;
+    [SerializeField] AudioClip Exit;
     private void Start()
     {
         // Trouve le GameObject avec le tag "Player" au démarrage
@@ -17,6 +20,18 @@ public class TpZone : MonoBehaviour
         {
             Debug.LogError("Aucun GameObject avec le tag 'Player' n'a été trouvé !");
         }
+    }
+    public void SoundFunction()
+    {
+        if (enter)
+        {
+            SoundManager.Instance.PlaySound(MusicEnter,SoundType.Music,true);
+        }
+        else if (exit)
+        {
+
+        }
+
     }
 
     private async void OnTriggerEnter(Collider other)
@@ -29,7 +44,7 @@ public class TpZone : MonoBehaviour
             {
                 // Désactiver le script
                 test.enabled = false;
-
+                SoundFunction();
                 // Téléporter le joueur
                 player.transform.position = zoneTp.position;
 
