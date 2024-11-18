@@ -5,42 +5,44 @@ using UnityEngine;
 using System.Threading.Tasks;
 public class TpZone : MonoBehaviour
 {
+    private GameObject player; // Référence au GameObject Player
+    [SerializeField] private Transform zoneTp; // Zone de téléportation
 
-   [SerializeField] Transform zoneTp;
-    [SerializeField] GameObject player;
-    [SerializeField] bool TpEnterGoodZone;
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        // Trouve le GameObject avec le tag "Player" au démarrage
+        player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogError("Aucun GameObject avec le tag 'Player' n'a été trouvé !");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private async void OnTriggerEnter(Collider other)
     {
-        PlayerController test = player.GetComponent<PlayerController>();
-
-        if (test != null)
+        if (player != null)
         {
-            // Désactiver le script
-            test.enabled = false;
+            PlayerController test = player.GetComponent<PlayerController>();
 
-            // Téléporter le joueur
-            player.transform.position = zoneTp.position;
+            if (test != null)
+            {
+                // Désactiver le script
+                test.enabled = false;
 
-            // Attendre 0.1 seconde avant de réactiver le script
-            await Task.Delay(100);
+                // Téléporter le joueur
+                player.transform.position = zoneTp.position;
 
-            // Réactiver le script
-            test.enabled = true;
-        }
-        else
-        {
-            Debug.LogWarning("PlayerController script introuvable sur l'objet.");
+                // Attendre 0.1 seconde avant de réactiver le script
+                await Task.Delay(100);
+
+                // Réactiver le script
+                test.enabled = true;
+            }
+            else
+            {
+                Debug.LogWarning("Le script PlayerController est introuvable sur le GameObject Player.");
+            }
         }
     }
 
