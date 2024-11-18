@@ -77,7 +77,7 @@ namespace ControllerModule.Controllers
                 //_rb.angularVelocity = Vector3.zero;
                 return;
             }
-
+            
 
             //var eulerAngleVelocity = new Vector3();
             //Debug.Log(!(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50));
@@ -150,7 +150,13 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
-            
+            Debug.Log(this.CurrentSpeed);
+            Debug.Log(_rb.velocity.magnitude);
+            if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
+            {
+                _rb.velocity = Vector3.zero;
+                return;
+            }
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
@@ -160,11 +166,6 @@ namespace ControllerModule.Controllers
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
             newPosition.y = this.transform.position.y;
 
-            //Debug.Log("Current Speed : " + CurrentSpeed);
-            //Debug.Log("Movement : " + this.transform.forward * CurrentSpeed);
-            //Debug.Log("Velocity sqr: " + _rb.velocity.sqrMagnitude);
-            //Debug.Log("Velocity : " + _rb.velocity.magnitude);
-
             //_rb.MovePosition(newPosition);
             _rb.AddForce(this.transform.forward * CurrentSpeed);
             _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _stats.GetSpeed());
@@ -173,8 +174,6 @@ namespace ControllerModule.Controllers
             Vector3 diff = newPosition - this.transform.position;
             movement = diff;
 
-            Debug.Log(_rb.velocity.normalized);
-            Debug.Log(this.transform.forward);
             // Update Aboard
             //this.UpdateAboardPosition(diff);
         }
