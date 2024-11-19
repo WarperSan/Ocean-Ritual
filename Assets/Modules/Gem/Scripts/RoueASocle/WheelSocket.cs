@@ -20,6 +20,7 @@ public class WheelSocket : MonoBehaviour
     private bool isTicActive = false;
     private float ticTimeElapsed = 0f;
     [SerializeField] MouseWheelManager mouseWheelManager;
+    [SerializeField] AudioClip MusicSpin;
 
     void Start()
     {
@@ -84,7 +85,7 @@ public class WheelSocket : MonoBehaviour
         float t = rotationTimeElapsed / rotationDuration;
 
         RotateObject.transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
-
+        SoundManager.Instance.PlaySound(MusicSpin, SoundType.UI, 1f, true,true);
         if (rotationTimeElapsed >= rotationDuration)
         {
             //isRotating = false;
@@ -95,6 +96,7 @@ public class WheelSocket : MonoBehaviour
 
     void StartTicWheel()
     {
+        SoundManager.Instance.StopSound(SoundType.UI);
         isTicActive = true;
         ticTimeElapsed = 0f;
     }
