@@ -22,7 +22,7 @@ public class MouseWheelManager : MonoBehaviour
     [SerializeField] GemData TestGemData ;
     [SerializeField] GemData gemData;
 
-
+    [SerializeField] AudioClip MusicPlaceGemme;
     [SerializeField] Button ButtonUp ;
 
     [SerializeField] Button ButtonDown;
@@ -321,6 +321,7 @@ public class MouseWheelManager : MonoBehaviour
                 {
                     MoveObject(objetMemory.transform, true);
                     notSelectObject();
+                    SoundManager.Instance.PlaySound(MusicPlaceGemme, SoundType.UI, 5f);
                 }
             }
             else
@@ -337,6 +338,8 @@ public class MouseWheelManager : MonoBehaviour
                     //  Debug.Log(coordone.z);
                     MoveObject(objetMemory.transform, true);
                     notSelectObject();
+                    SoundManager.Instance.PlaySound(MusicPlaceGemme, SoundType.UI, 5f);
+                    
                 }
             }
         }
@@ -399,7 +402,7 @@ public class MouseWheelManager : MonoBehaviour
                     Transform SocleParent = ClimbeUpParent(objetMemory.transform);
                 
                         SelectionSocle();
-                    
+                    SoundManager.Instance.PlaySound(MusicPlaceGemme, SoundType.UI, 5f);
                     LayerChange(objetMemory, 0); // Changer temporairement le layer
                     if (ShapeBoolMain == null)
                     {
