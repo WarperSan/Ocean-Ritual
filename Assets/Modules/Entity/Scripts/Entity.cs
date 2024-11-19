@@ -110,7 +110,7 @@ namespace EntityModule
         /// <summary>
         /// Called after this entity receives an non-fatal Attaque
         /// </summary>
-        protected virtual void OnPostAttack(Projectile source) { }
+        protected virtual void OnPostAttack(Projectile source = null) { }
 
         #endregion
 
