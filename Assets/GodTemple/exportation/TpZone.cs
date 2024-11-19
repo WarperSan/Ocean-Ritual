@@ -29,7 +29,7 @@ public class TpZone : MonoBehaviour
         }
         else if (exit)
         {
-
+            SoundManager.Instance.StopSound(SoundType.Music);
         }
 
     }
