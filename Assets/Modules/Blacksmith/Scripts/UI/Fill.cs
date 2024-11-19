@@ -33,7 +33,7 @@ public class Fill : MonoBehaviour
         // Si les c�t�s ne sont pas � 100%, on ajoute d'abord � fillAmountCote
         if (fillAmountCote < 1f)
         {
-            SoundManager.Instance.PlaySound(hammerSound, SoundType.UI, false, true);
+            SoundManager.Instance.PlaySound(hammerSound, SoundType.UI,0.5f, false, true);
             float spaceInCote = 1f - fillAmountCote;
             if (amount <= spaceInCote)
             {
