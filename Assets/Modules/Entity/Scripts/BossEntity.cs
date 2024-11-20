@@ -91,7 +91,6 @@ namespace EntityModule.Entities
                     animator.SetTrigger("hide");
                 yield return new WaitForSeconds(3f / this.barrierCount);
             }
-
             yield return new WaitForSeconds(5f);
             Destroy(barrierParent.gameObject);
             barrierParent = null;
@@ -103,7 +102,7 @@ namespace EntityModule.Entities
 
         private bool hasStarted = false;
         private bool hasSpawned = false;
-
+        [SerializeField] AudioClip bossMusic;
         private void Update()
         {
             // If spawned, update tree
@@ -126,7 +125,7 @@ namespace EntityModule.Entities
             {
                 this.hasStarted = true;
                 TargetGeneral.Instance.Target = target;
-
+                SoundManager.Instance.PlaySound(bossMusic,SoundType.Music,0.8f,true);
                 this.animator.SetBool("isSpawning", true);
                 this.ShowHealthBar();
 
@@ -157,6 +156,7 @@ namespace EntityModule.Entities
             enabled = false;
             HideHealthBar();
             StartCoroutine(this.DespawnArena());
+            SoundManager.Instance.StopSound(SoundType.Music);
         }
 
         #endregion

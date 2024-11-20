@@ -8980,7 +8980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &236397848
 Transform:
   m_ObjectHideFlags: 0
@@ -57161,18 +57161,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 168963049975355426}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1450513388 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9183303852889170546, guid: d5c32843ac5fea3259ddefc5c0a121aa,
-    type: 3}
-  m_PrefabInstance: {fileID: 168963049975355426}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55259af2ede728842b04bc79272e7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1451042101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66636,6 +66624,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4133709363793375258, guid: 8b1b5871cc4383c49b234f6388b29956,
+        type: 3}
+      propertyPath: _MaxHeath
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133709363793375258, guid: 8b1b5871cc4383c49b234f6388b29956,
+        type: 3}
+      propertyPath: bossMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: e99ac204408439b428b2ab49fdb412a4, type: 3}
     - target: {fileID: 5918590627414922390, guid: 8b1b5871cc4383c49b234f6388b29956,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -84299,11 +84297,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish section
       objectReference: {fileID: 0}
-    - target: {fileID: 8167347619976159354, guid: 6ba35754395e64c43b934269e4eb22d2,
-        type: 3}
-      propertyPath: InterfaceSeller
-      value: 
-      objectReference: {fileID: 1450513388}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
