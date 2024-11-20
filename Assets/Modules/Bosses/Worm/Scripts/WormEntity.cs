@@ -127,7 +127,7 @@ namespace BossesModule.Worm
                     });
                 }
 
-                float angle = angleStart + i * anglePerSpawn + 60;
+                float angle = angleStart + i * anglePerSpawn + 200;
 
                 Vector3 spawnPosition = new Vector3(
                     Mathf.Cos(angle * Mathf.Deg2Rad) * SPAWN_RADIUS,
