@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class SelectionWheel : MonoBehaviour
 {
+    [SerializeField] AudioClip popSound;
     [SerializeField] public List<GameObject> listeForgeable = new();
     [SerializeField] GameObject boutonPrefab;
     [SerializeField] GameObject Container;
@@ -47,7 +48,7 @@ public class SelectionWheel : MonoBehaviour
    
                 boutonInstance.GetComponent<Button>().onClick.AddListener(() => CreatSocleFromLinkWheelEquipement(gbnComponent));
 
-               
+                boutonInstance.GetComponent<Button>().onClick.AddListener(() => playSound());
                 TextMeshProUGUI boutonText = boutonInstance.GetComponentInChildren<TextMeshProUGUI>();
                 if (boutonText != null)
                 {
@@ -57,7 +58,11 @@ public class SelectionWheel : MonoBehaviour
         }
     }
  
-
+    public void playSound()
+    {
+        
+        SoundManager.Instance.PlaySound(popSound, SoundType.UI, 1f);
+    }
 
     public void CreatSocleFromLinkWheelEquipement(componentGBN GBN)
     {
