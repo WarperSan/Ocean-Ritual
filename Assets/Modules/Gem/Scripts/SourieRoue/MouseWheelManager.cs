@@ -93,6 +93,7 @@ public class MouseWheelManager : MonoBehaviour
         SrinkGameObject.transform.rotation = Quaternion.identity;
         ButtonUp.interactable = true;
         ButtonDown.interactable = true;
+        ActivateBouton();
     }
     public void DesactivateBouton()
     {
@@ -119,6 +120,7 @@ public class MouseWheelManager : MonoBehaviour
     }
     public void StartRotation()
     {
+        DesactivateBouton();
         ButtonUp.interactable = false;
         ButtonDown.interactable = false;
     }
