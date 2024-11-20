@@ -126,8 +126,12 @@ using UnityEngine.UI;
         {
             return;
         }
-        ZoneUIHandler.Instance.GiveRefInventorySlot(this);
+        if (WheelActif())
+        {
+            ZoneUIHandler.Instance.GiveRefInventorySlot(this);
             ZoneUIHandler.Instance.GiveIndex(slotIndex);
+        }
+       
             // Set up slot for drag
             this.originalParent = this.transform.parent;
             this.canvasGroup.blocksRaycasts = false;
@@ -144,16 +148,29 @@ using UnityEngine.UI;
             this.SetBackgroundAlpha(0f);
         }
 
+    public bool WheelActif()
+    {
+     GameObject  WheelObject = GameObject.FindGameObjectWithTag("Roue");
+        if(WheelObject == null|| !WheelObject.activeInHierarchy)
+        {
+           return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
         public void TransformIntoGem()
         {
-            Inventory.Instance.DropItem(this.slotIndex);
+        Debug.Log("transform gemme");
+        Inventory.Instance.DropItem(this.slotIndex);
             this.ClearSlot();
             this.ReturnToPosition();
             this.DragEnd();
         }
         public void Cancel()
         {
-
+        Debug.Log("allo");
         this.ClearSlotCancel();
         this.ReturnToPosition();
         this.DragEnd();
@@ -195,7 +212,11 @@ using UnityEngine.UI;
 
             this.canvasGroup.blocksRaycasts = true;
             this.SetBackgroundAlpha(1f);
-        ZoneUIHandler.Instance.NeedReset();
+        if (WheelActif())
+        {
+            ZoneUIHandler.Instance.NeedReset();
+        }
+        
         }
 
         public void ReturnToPosition()

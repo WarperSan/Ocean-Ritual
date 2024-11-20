@@ -85,15 +85,42 @@ public class MouseWheelManager : MonoBehaviour
         objetMemory.GetComponent<Gemcomponent>().GemScript = gem;
       return  scripSocle.PowerGemObjectScript.TryPlaceTemporaryGem(x, z);
     }
+
+    [SerializeField] GameObject boutonContainer;
     public void EndRotation()
     {
         SrinkGameObject.transform.position = Socle.transform.position;
         SrinkGameObject.transform.rotation = Quaternion.identity;
         ButtonUp.interactable = true;
         ButtonDown.interactable = true;
+        ActivateBouton();
+    }
+    public void DesactivateBouton()
+    {
+        // Récupérer tous les composants Button dans le conteneur
+        Button[] buttons = boutonContainer.GetComponentsInChildren<Button>();
+
+        // Désactiver l'interaction pour chaque bouton
+        foreach (Button button in buttons)
+        {
+            button.interactable = false;
+        }
+    }
+
+    public void ActivateBouton()
+    {
+        // Récupérer tous les composants Button dans le conteneur
+        Button[] buttons = boutonContainer.GetComponentsInChildren<Button>();
+
+        // Activer l'interaction pour chaque bouton
+        foreach (Button button in buttons)
+        {
+            button.interactable = true;
+        }
     }
     public void StartRotation()
     {
+        DesactivateBouton();
         ButtonUp.interactable = false;
         ButtonDown.interactable = false;
     }

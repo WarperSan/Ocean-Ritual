@@ -45,8 +45,10 @@ public class WheelSocket : MonoBehaviour
     {
         return isRotating;
     }
-   public void StartRotationUP()
+    [SerializeField] AudioClip popSound;
+    public void StartRotationUP()
     {
+        playSound();
         if (mouseWheelManager.IsAlone())
         {
             targetRotation= RotateObject.transform.rotation ;
@@ -61,9 +63,14 @@ public class WheelSocket : MonoBehaviour
         initialRotation = RotateObject.transform.rotation;
         targetRotation = initialRotation * Quaternion.Euler(rotationAmount + (skip * rotationAmount), 0f, 0f);
     }
-
+    public void playSound()
+    {
+       
+        SoundManager.Instance.PlaySound(popSound, SoundType.Ambient, 1f);
+    }
     public void StartRotationDown()
     {
+        playSound();
         if (mouseWheelManager.IsAlone())
         {
             targetRotation = RotateObject.transform.rotation;

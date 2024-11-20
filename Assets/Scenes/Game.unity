@@ -11134,6 +11134,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 24305474}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &286334482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3629943627612877050, guid: c2b80242c28eeae45987d621a08cd3ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1708517855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &287584182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4351150364461278502, guid: e5b2e2bfef8c89b4ea13821b8efccebb,
@@ -40949,6 +40955,11 @@ PrefabInstance:
       propertyPath: _MaxHeath
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 6387330875977748726, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: PowerGemObjectScript.GemcomponentList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6670320451692012110, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -66839,6 +66850,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6054337725002247667, guid: c2b80242c28eeae45987d621a08cd3ed,
         type: 3}
+      propertyPath: popSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 8dc03773435b79d44921125a214755ca, type: 3}
+    - target: {fileID: 6054337725002247667, guid: c2b80242c28eeae45987d621a08cd3ed,
+        type: 3}
       propertyPath: linkWheelEquipment
       value: 
       objectReference: {fileID: 370736968264677865}
@@ -66857,6 +66873,11 @@ PrefabInstance:
       propertyPath: listeForgeable.Array.data[1]
       value: 
       objectReference: {fileID: 351656018}
+    - target: {fileID: 6754196716729915886, guid: c2b80242c28eeae45987d621a08cd3ed,
+        type: 3}
+      propertyPath: m_TagString
+      value: Roue
+      objectReference: {fileID: 0}
     - target: {fileID: 7896970087378428852, guid: c2b80242c28eeae45987d621a08cd3ed,
         type: 3}
       propertyPath: m_Pivot.x
@@ -85061,6 +85082,7 @@ MonoBehaviour:
   ticDuration: 1
   mouseWheelManager: {fileID: 6266357167135907913}
   MusicSpin: {fileID: 8300000, guid: 76531deb6e9dc834db34ae839204ef56, type: 3}
+  popSound: {fileID: 8300000, guid: 8dc03773435b79d44921125a214755ca, type: 3}
 --- !u!1 &1900384987001483899
 GameObject:
   m_ObjectHideFlags: 0
@@ -103617,6 +103639,7 @@ MonoBehaviour:
   ButtonDown: {fileID: 289066970}
   linkWheelEquipment: {fileID: 370736968264677865}
   MenuActif: {fileID: 1762344284}
+  boutonContainer: {fileID: 286334482}
 --- !u!33 &6273442394126368453
 MeshFilter:
   m_ObjectHideFlags: 0
