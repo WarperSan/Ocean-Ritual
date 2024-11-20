@@ -13,7 +13,7 @@ namespace BossesModule.Worm.Nodes
         public RandomAttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
         {
             notUsedAttacks = new List<AttackNode>() {
-                new IceStormNode(entity, animator, collider, currentTarget, isAttacking),
+                //new IceStormNode(entity, animator, collider, currentTarget, isAttacking),
                 new IceWaveNode(entity, animator, collider, currentTarget, isAttacking)
             };
 

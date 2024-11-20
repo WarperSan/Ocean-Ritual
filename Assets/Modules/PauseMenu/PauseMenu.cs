@@ -19,8 +19,9 @@ namespace UIModule.Menus
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            //Time.timeScale = 0f;
-            SoundManager.Instance.PlaySound(openSound, SoundType.UI);
+
+            SoundManager.Instance?.PlaySound(openSound, SoundType.UI);
+
             yield return base.Open();
 
             this.resumeBtn.OnClick.AddListener(this.ResumeButton);
@@ -34,10 +35,12 @@ namespace UIModule.Menus
             this.resumeBtn.OnClick.RemoveListener(this.ResumeButton);
             this.mainMenuBtn.OnClick.RemoveListener(this.MainMenuButton);
             this.exitBtn.OnClick.RemoveListener(this.ExitButton);
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            //Time.timeScale = 1f;
-            SoundManager.Instance.PlaySound(closeSound, SoundType.UI);
+
+            SoundManager.Instance?.PlaySound(closeSound, SoundType.UI);
+
             yield return base.Close();
         }
 

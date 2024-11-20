@@ -107,8 +107,8 @@ namespace BossesModule.Worm
             const float SPAWN_ARCH = 180f;
             const float SPAWN_RADIUS = 30f;
 
-            float angleStart = this.transform.rotation.eulerAngles.y - SPAWN_ARCH / 2;
-            float anglePerSpawn = SPAWN_ARCH / SPAWN_QTY; 
+            float angleStart = this.transform.rotation.eulerAngles.y + (SPAWN_ARCH / 2);
+            float anglePerSpawn = SPAWN_ARCH / (SPAWN_QTY - 1); 
             Vector3 spawnOrigin = this.transform.position;
             spawnOrigin.y = OceanManager.WATER_HEIGHT;
 
@@ -127,12 +127,12 @@ namespace BossesModule.Worm
                     });
                 }
 
-                float angle = angleStart + i * anglePerSpawn + 200;
+                float angle = angleStart - (i * anglePerSpawn);
 
                 Vector3 spawnPosition = new Vector3(
-                    Mathf.Cos(angle * Mathf.Deg2Rad) * SPAWN_RADIUS,
+                    Mathf.Sin(angle * Mathf.Deg2Rad) * SPAWN_RADIUS,
                     0,
-                    Mathf.Sin(angle * Mathf.Deg2Rad) * SPAWN_RADIUS
+                    Mathf.Cos(angle * Mathf.Deg2Rad) * SPAWN_RADIUS
                 ) + spawnOrigin;
 
                 icicle.transform.position = spawnPosition;
@@ -142,7 +142,9 @@ namespace BossesModule.Worm
 
                 icicle.SetActive(true);
 
-                yield return null; 
+                yield return null;
+                yield return null;
+                yield return null;
             }
         }
 

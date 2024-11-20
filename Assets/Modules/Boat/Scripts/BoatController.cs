@@ -147,8 +147,6 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
-            Debug.Log(this.CurrentSpeed);
-            Debug.Log(_rb.velocity.magnitude);
             if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
             {
                 _rb.velocity = Vector3.zero;
