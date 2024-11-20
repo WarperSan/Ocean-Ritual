@@ -11,10 +11,17 @@ namespace EntityModule
 
         [Header("Health")]
         [SerializeField, Tooltip("Maximum health for this entity")]
-        protected float MaxHeath;
+        protected float _MaxHeath;
+        public float MaxHealth => this._MaxHeath;
+
         [SerializeField, Tooltip("Maximum health to heal for this entity")]
         protected float HealthTotal { get; private set; }
         public float Health { get; private set; }
+
+        /// <summary>
+        /// Is this entity dead?
+        /// </summary>
+        public bool IsDead { get; private set; }
 
         /// <summary>
         /// Determines if this entity can take damage
@@ -26,7 +33,7 @@ namespace EntityModule
         /// </summary>
         private void ResetHealth()
         {
-            this.Health = this.MaxHeath;
+            this.Health = this._MaxHeath;
         }
 
         /// <summary>
@@ -45,7 +52,7 @@ namespace EntityModule
                 return;
 
             this.ModifyHeal(heal);
-            this.Health = Mathf.Clamp(this.Health + heal.Amount, 0, this.MaxHeath);
+            this.Health = Mathf.Clamp(this.Health + heal.Amount, 0, this._MaxHeath);
         }
 
         /// <summary>
@@ -59,6 +66,7 @@ namespace EntityModule
                 overDamage = Mathf.Abs(this.Health);
 
             this.OnDeath(overDamage);
+            this.IsDead = true;
         }
 
         /// <summary>

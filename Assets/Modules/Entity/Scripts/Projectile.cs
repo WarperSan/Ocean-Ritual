@@ -48,7 +48,7 @@ namespace EntityModule
 
         [Header("Collision")]
         [SerializeField]
-        private Collider _collider;
+        protected Collider _collider;
 
         public static int BOSS_LAYER = -1;
         public static int ENEMY_LAYER = -1;
@@ -59,8 +59,6 @@ namespace EntityModule
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
         {
-
-
             // If hit non-entity, skip
             if (!other.TryGetComponent(out Entity entity) && other.GetComponentInParent<Entity>() == null)
                 return;
@@ -69,6 +67,9 @@ namespace EntityModule
             {
                 entity = other.GetComponentInParent<Entity>();
             }
+
+            if (entity.IsDead)
+                return;
 
             // If entity not targettable, skip
             if (!this.IsEntityTarget(entity))

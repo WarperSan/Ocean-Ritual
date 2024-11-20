@@ -12,8 +12,6 @@ namespace BossesModule.Golem
         public const string CURRENT_TARGET = "currentTarget";
         public const string WALK_SPEED = "walkSpeed";
 
-        public Transform target;
-
         #region IVisualizable
 
         private Node root;
@@ -31,12 +29,12 @@ namespace BossesModule.Golem
                 this.WalkSequence()
             );
 
-            _root.SetData(CURRENT_TARGET, this.target);
-            _root.SetData(WALK_SPEED, 1f);
-
-            this.golemAnimationEvents.throwTarget = this.target;
+            _root.SetData(CURRENT_TARGET, null);
+            _root.SetData(WALK_SPEED, 3f);
 
             this.root = _root.Alias("Root");
+
+            //TargetGeneral.Instance.Target
         }
 
         #endregion
@@ -197,10 +195,13 @@ namespace BossesModule.Golem
             if (target == null)
                 return NodeState.FAILURE;
 
+            Vector3 pos = target.position;
+            pos.y = this.transform.position.y; // Walk straight
+
             // Move self towards target
             float speed = n.GetData<float>(WALK_SPEED);
-            Vector3 direction = (target.position - this.transform.position).normalized;
-            this.transform.Translate(direction * speed * Time.deltaTime, Space.World);
+            Vector3 direction = (pos - this.transform.position).normalized;
+            this.transform.Translate(speed * Time.deltaTime * direction, Space.World);
             this.SetWalking(true);
 
             return NodeState.RUNNING;

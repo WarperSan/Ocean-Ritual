@@ -33,7 +33,7 @@ namespace BehaviourModule.Nodes.Abstract
             Transform _target = this.GetData<Transform>(this.target);
 
             if (_target == null)
-                return NodeState.SUCCESS;
+                return NodeState.FAILURE;
 
             // Get distance
             float distance = Vector3.Distance(this.self.position, _target.position);

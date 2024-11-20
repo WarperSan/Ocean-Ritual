@@ -1,4 +1,5 @@
 using EntityModule;
+using MapModule;
 using UnityEngine;
 
 namespace WeaponModule.Weapons.Cannon
@@ -58,18 +59,26 @@ namespace WeaponModule.Weapons.Cannon
                 return;
 
             Vector3 pos = this.transform.position;
-            float y = 0;//OceanManager.GetHeight(pos);
 
             // Skip if above water
-            if (y < pos.y)
+            if (OceanManager.WATER_HEIGHT < pos.y)
                 return;
 
             this.hasSplashed = true;
             this.CreateSplash();
+
+            if (this._collider != null)
+                this._collider.enabled = false;
         }
 
         /// <inheritdoc/>
-        protected override void OnReset() => this.hasSplashed = false;
+        protected override void OnReset()
+        {
+            this.hasSplashed = false;
+
+            if (this._collider != null)
+                this._collider.enabled = true;
+        }
 
         #endregion
     }

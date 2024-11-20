@@ -35,7 +35,14 @@ namespace EntityModule.Entities
         protected IVisualizable tree;
         private Node root;
 
-        protected NodeState UpdateTree() => this.root.Evaluate();
+        protected NodeState UpdateTree()
+        {
+            if (this.root == null)
+                return NodeState.FAILURE;
+
+            this.root.Reset();
+            return this.root.Evaluate();
+        }
 
         #endregion
 
