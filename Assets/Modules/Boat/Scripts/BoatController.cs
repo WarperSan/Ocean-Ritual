@@ -171,8 +171,8 @@ namespace ControllerModule.Controllers
             _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _stats.GetSpeed());
 
             // Update positions
-            Vector3 diff = newPosition - this.transform.position;
-            movement = diff;
+            //Vector3 diff = newPosition - this.transform.position;
+            movement = _rb.velocity;
 
             // Update Aboard
             //this.UpdateAboardPosition(diff);

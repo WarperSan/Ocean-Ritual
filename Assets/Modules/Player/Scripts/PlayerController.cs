@@ -161,7 +161,7 @@ namespace ControllerModule.Controllers
 
             // Add boat movement 
             if (boatController != null)
-                moveDir += boatController.MovementBoat.normalized * boatController.CurrentSpeed;
+                moveDir += boatController.MovementBoat.normalized * boatController.MovementBoat.magnitude;
 
             // Move the character controller
             this._characterController.Move(moveDir * elapsed);
