@@ -103,6 +103,7 @@ public class WheelSocket : MonoBehaviour
 
     void StartTicWheel()
     {
+        mouseWheelManager.StartRotation();
         SoundManager.Instance.StopSound(SoundType.UI);
         isTicActive = true;
         ticTimeElapsed = 0f;
