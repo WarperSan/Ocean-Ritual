@@ -13,6 +13,8 @@ public class BoatEntity : Entity
     {
         base.OnStart();
 
+        TargetGeneral.Instance.BoatTarget = this.transform;
+
         if (slider != null)
         {
             // Initialiser le slider avec la santé maximale

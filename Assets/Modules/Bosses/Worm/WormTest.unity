@@ -30942,12 +30942,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0feb32f73fae1247a7cecdc50361629, type: 3}
---- !u!4 &761784657 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6994705080398444210, guid: a0feb32f73fae1247a7cecdc50361629,
-    type: 3}
-  m_PrefabInstance: {fileID: 761784656}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &762463525 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6705836929202739995, guid: fb1cb0e0e3adf714cafe4f4e2e850117,
@@ -30988,7 +30982,7 @@ PrefabInstance:
         type: 3}
       propertyPath: respawnPoint
       value: 
-      objectReference: {fileID: 761784657}
+      objectReference: {fileID: 0}
     - target: {fileID: 2715670129809882491, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
       propertyPath: Cash
@@ -30998,6 +30992,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2992959849085054271, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2992959849085054271, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3375830425975481129, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
@@ -37936,6 +37940,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.07690301
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801753351233765457, guid: a16880fb55a6f1aa08a869373cd1b7a8,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801753351233765457, guid: a16880fb55a6f1aa08a869373cd1b7a8,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6904612692063458921, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
@@ -53095,6 +53109,8 @@ MonoBehaviour:
     typeNet: []
   lvlOfGemme: 1
   sprite: {fileID: 21300000, guid: 3ab3feb531f255245bc00bac555458e8, type: 3}
+  DeletAfterGiveGem: 0
+  MusicPickGemme: {fileID: 0}
 --- !u!65 &1379165069
 BoxCollider:
   m_ObjectHideFlags: 0
