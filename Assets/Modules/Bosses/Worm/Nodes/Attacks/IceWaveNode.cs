@@ -24,7 +24,7 @@ namespace BossesModule.Worm.Nodes
         #region Node
 
         /// <inheritdoc/>
-        public override string GetText() => "Ice Storm Sequence";
+        public override string GetText() => "Ice Wave Sequence";
 
         #endregion
     }
