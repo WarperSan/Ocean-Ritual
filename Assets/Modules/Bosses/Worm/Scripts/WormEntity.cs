@@ -3,7 +3,6 @@ using EntityModule;
 using EntityModule.Entities;
 using MapModule;
 using System.Collections;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 namespace BossesModule.Worm
@@ -148,6 +147,21 @@ namespace BossesModule.Worm
             }
         }
 
+
+        #endregion
+
+        #region BossEntity
+
+        /// <inheritdoc/>
+        protected override void OnDeath(float overDamage)
+        {
+            this.StopAllCoroutines();
+
+            this.iceStormPool.DisableAll(this.iceStorm_iciclePrefab.name);
+            this.iceWavePool.DisableAll(this.iceWave_iciclePrefab.name);
+
+            base.OnDeath(overDamage);
+        }
 
         #endregion
     }

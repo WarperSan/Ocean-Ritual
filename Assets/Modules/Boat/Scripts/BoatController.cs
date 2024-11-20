@@ -2,6 +2,7 @@ using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using MapModule;
 using System.Collections.Generic;
+using System.Net;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -91,26 +92,20 @@ namespace ControllerModule.Controllers
             {
                 //eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
                 _rb.AddTorque(0, _stats.GetHandling() / 50, 0, ForceMode.Acceleration);
-                
                 //comparer transform.forward à la vélocité normalized
-
-                _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
             }
             else if (this.direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50))
             {
                 //eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
                 _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
-                _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
             }
-
-           
-
             // Rotation RB
             //var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
             //_rb.MoveRotation(_rb.rotation * deltaRotation);
 
-            
+            _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
 
+            
         }
 
         #endregion
@@ -147,11 +142,14 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
+            
+
             if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
             {
                 _rb.velocity = Vector3.zero;
                 return;
             }
+
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
@@ -164,6 +162,7 @@ namespace ControllerModule.Controllers
             //_rb.MovePosition(newPosition);
             _rb.AddForce(this.transform.forward * CurrentSpeed);
             _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _stats.GetSpeed());
+
 
             // Update positions
             //Vector3 diff = newPosition - this.transform.position;
@@ -202,8 +201,6 @@ namespace ControllerModule.Controllers
 
         #region Controller
 
-        
-
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
@@ -238,32 +235,25 @@ namespace ControllerModule.Controllers
             if (!other.CompareTag("Player"))
                 return;
 
-            if (other.gameObject.TryGetComponent(out Rigidbody rb))
-            {
-                other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
-                this.aboardRbs.Add(rb);
-                return;
-            }
-
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
                 other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
-                
-                return;
+                cc.GetComponent<PlayerController>().boatController = this;
             }
         }
 
         /// <inheritdoc/>
         private void OnTriggerExit(Collider other)
         {
+            Debug.Log(other.gameObject.name);
+
             if (!other.CompareTag("Player"))
                 return;
 
-            if (other.gameObject.TryGetComponent(out Rigidbody rb))
+            if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
                 other.transform.SetParent(null);
-                this.aboardRbs.Remove(rb);
-                return;
+                cc.GetComponent<PlayerController>().boatController = null;
             }
         }
 

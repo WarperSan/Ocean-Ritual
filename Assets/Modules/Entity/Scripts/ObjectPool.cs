@@ -61,6 +61,20 @@ namespace EntityModule
             return obj;
         }
 
+        public void DisableAll(string prefabName)
+        {
+            // If not cached, skip
+            if (!cachedSettings.TryGetValue(prefabName, out Setting setting))
+            {
+                Debug.LogWarning($"The prefab '{prefabName}' was not pooled.");
+                return;
+            }
+
+            // Disable all instances
+            foreach (Transform child in setting.parent)
+                child.gameObject.SetActive(false);
+        }
+
         #endregion
 
         #region Creation

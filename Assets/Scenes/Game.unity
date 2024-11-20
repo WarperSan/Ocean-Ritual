@@ -45206,6 +45206,16 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4568037727517857886, guid: a16880fb55a6f1aa08a869373cd1b7a8,
+        type: 3}
+      propertyPath: barrierCount
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568037727517857886, guid: a16880fb55a6f1aa08a869373cd1b7a8,
+        type: 3}
+      propertyPath: barrierRange
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4583046861773330250, guid: a16880fb55a6f1aa08a869373cd1b7a8,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -66611,6 +66621,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4133709363793375258, guid: 8b1b5871cc4383c49b234f6388b29956,
+        type: 3}
+      propertyPath: _MaxHeath
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5918590627414922390, guid: 8b1b5871cc4383c49b234f6388b29956,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -75013,18 +75028,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73c0e51fb4df33a49bfa18b2fd6aff10, type: 3}
---- !u!114 &1907742990 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5305911301833348661, guid: a0feb32f73fae1247a7cecdc50361629,
-    type: 3}
-  m_PrefabInstance: {fileID: 1042482029}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f73141453e954003be9089c6391cc72c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1907742991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6670320451692012110, guid: a0feb32f73fae1247a7cecdc50361629,
@@ -79805,11 +79808,6 @@ PrefabInstance:
       propertyPath: jumpHeight
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1452363097933179278, guid: 7b655d86ce596bbb788ab4d59297500d,
-        type: 3}
-      propertyPath: boatController
-      value: 
-      objectReference: {fileID: 1907742990}
     - target: {fileID: 1562269883626511746, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
       propertyPath: m_IsActive
@@ -79890,6 +79888,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8041305232521379274, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: respawnPoint
+      value: 
+      objectReference: {fileID: 1907742991}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

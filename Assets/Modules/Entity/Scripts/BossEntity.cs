@@ -44,30 +44,6 @@ namespace EntityModule.Entities
 
         protected Transform barrierParent;
 
-        //private IEnumerator SpawnArena()
-        //{
-        //    barrierParent = new GameObject()
-        //    {
-        //        name = this.name + " BARRIER",
-        //    }.transform;
-        //    barrierParent.transform.position = this.transform.position;
-
-        //    for (int i = 0; i < this.barrierCount; i++)
-        //    {
-        //        GameObject piece = Instantiate(this.barrierPrefab, barrierParent);
-        //        piece.transform.localPosition = new Vector3(
-        //            Mathf.Cos(Mathf.Deg2Rad * 360f * i / this.barrierCount),
-        //            0,
-        //            Mathf.Sin(Mathf.Deg2Rad * 360f * i / this.barrierCount)
-        //        ) * this.barrierRange;
-        //        piece.transform.localRotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 180), 0);
-
-        //        yield return new WaitForSeconds(3f / this.barrierCount);
-        //    }
-
-        //    this.hasSpawned = true;
-        //}
-
         private IEnumerator SpawnArena()
         {
             barrierParent = new GameObject()
@@ -95,7 +71,7 @@ namespace EntityModule.Entities
 
             this.hasSpawned = true;
         }
-        // Fonction utilitaire pour réduire la duplication du code
+
         private void SpawnBarrierPiece(int index)
         {
             GameObject piece = Instantiate(this.barrierPrefab, barrierParent);

@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 7670487424783528657}
   - component: {fileID: 1567491398312768228}
   - component: {fileID: 6229246137485685803}
-  - component: {fileID: 2224597893432636464}
+  - component: {fileID: 8041305232521379274}
   m_Layer: 0
   m_Name: DeathPlane
   m_TagString: Death
@@ -999,27 +999,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a0080d3e170c5eea6919881d7f32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &2224597893432636464
-BoxCollider:
+--- !u!114 &8041305232521379274
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4450486061892788507}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10, y: 1, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034d9396a84b62947a58f775da41cbdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6283901322987064102}
+  respawnPoint: {fileID: 0}
 --- !u!1 &4699991921426566108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,7 +1208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MaxHeath: 0
-  respawnPoint: {fileID: 0}
 --- !u!136 &4604739862316055215
 CapsuleCollider:
   m_ObjectHideFlags: 0

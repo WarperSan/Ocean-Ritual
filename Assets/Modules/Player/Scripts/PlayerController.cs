@@ -132,8 +132,8 @@ namespace ControllerModule.Controllers
         private float movementSpeed = 20;
 
         //Used to move the character while on the boat
-        [SerializeField]
-        BoatController boatController;
+        
+        public BoatController boatController;
 
         private CharacterController _characterController;
 
@@ -234,18 +234,13 @@ namespace ControllerModule.Controllers
         {
             // Get components
             this._characterController = this.GetComponent<CharacterController>();
-
+            this._characterController.detectCollisions = false;
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }
 
         /// <inheritdoc/>
-        protected override void OnUpdate(float elapsed)
-        {
-            this.UpdateCursor();
-
-
-        }
+        protected override void OnUpdate(float elapsed) => this.UpdateCursor();
 
         protected override void OnFixedUpdate(float elapsed)
         {
