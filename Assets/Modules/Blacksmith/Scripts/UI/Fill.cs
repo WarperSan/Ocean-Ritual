@@ -16,6 +16,8 @@ public class Fill : MonoBehaviour
 
     [SerializeField] ForgeButton button;
     [SerializeField] public bool CanFuse = false;
+
+    [SerializeField] string hammerSound;
     void Update()
     {
         if (!button.isButtonHeld)
@@ -31,6 +33,7 @@ public class Fill : MonoBehaviour
         // Si les c�t�s ne sont pas � 100%, on ajoute d'abord � fillAmountCote
         if (fillAmountCote < 1f)
         {
+            SoundManager.Instance.PlaySound(hammerSound, SoundType.UI,0.5f, false, true);
             float spaceInCote = 1f - fillAmountCote;
             if (amount <= spaceInCote)
             {

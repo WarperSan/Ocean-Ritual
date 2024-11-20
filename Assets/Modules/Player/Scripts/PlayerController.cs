@@ -1,5 +1,8 @@
 using ControllerModule.Interfaces.Player;
 using InteractModule;
+using System.Collections;
+using TMPro;
+using UIModule.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +14,9 @@ namespace ControllerModule.Controllers
 
     public class PlayerController : Controller, IMovable, IInteractionable, IJumpable
     {
-        #region Cursor 
+        #region Cursor
+
+        private const string INTERACT_TIP_TAG = "PLAYER_INTERACT";
 
         [Header("Cursor")]
         [SerializeField, Tooltip("Determines the sprite to use when an interaction is possible")]
@@ -23,11 +28,16 @@ namespace ControllerModule.Controllers
         [SerializeField, Tooltip("Image that represents the cursor")]
         private Image cursor;
 
+        [SerializeField, Tooltip("Text to show when the player can interact with something")]
+        private TextMeshProUGUI cursorText;
+
         [SerializeField, Min(0), Tooltip("Determines how far the player can interact with things")]
         private float interactRange;
 
         [SerializeField]
         private InteractionAsset defaultInteraction;
+
+        private bool isHoveringInteractable;
 
         /// <summary>
         /// Updates the cursor depending on the possible interactions
@@ -47,12 +57,48 @@ namespace ControllerModule.Controllers
                 InteractionAsset asset = interactable.InteractionAsset != null ? interactable.InteractionAsset : this.defaultInteraction;
                 this.cursor.sprite = asset != null ? asset.icon : null;
                 this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
+
+                this.isHoveringInteractable = true;
+                this.showKeyCoroutine ??= this.StartCoroutine(this.ShowTip());
+
+                this.cursorText.text = asset.tip;
             }
             else
             {
                 this.cursor.sprite = this.normalCursor;
                 this.cursor.rectTransform.sizeDelta = new Vector2(10, 10);
+
+                this.isHoveringInteractable = false;
+                this.discardTipCoroutine ??= this.StartCoroutine(this.DiscardTip());
+
+                this.cursorText.text = "";
             }
+
+            Vector2 textPos = this.cursorText.rectTransform.anchoredPosition;
+            textPos.y = -this.cursor.rectTransform.sizeDelta.y / 2;
+            this.cursorText.rectTransform.anchoredPosition = textPos;
+        }
+
+        private Coroutine discardTipCoroutine;
+        private IEnumerator DiscardTip()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            if (!this.isHoveringInteractable)
+                KeybindTip.DiscardTip(INTERACT_TIP_TAG);
+
+            this.discardTipCoroutine = null;
+        }
+
+        private Coroutine showKeyCoroutine;
+        private IEnumerator ShowTip()
+        {
+            yield return new WaitForSeconds(5);
+
+            if (this.isHoveringInteractable)
+                KeybindTip.ShowKey(KeyCode.E, INTERACT_TIP_TAG);
+
+            this.showKeyCoroutine = null;
         }
 
         /// <summary>
@@ -73,6 +119,7 @@ namespace ControllerModule.Controllers
             if (this.Eyes == null)
                 return;
 
+            KeybindTip.UseTip(INTERACT_TIP_TAG);
             IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
         }
 
@@ -114,7 +161,7 @@ namespace ControllerModule.Controllers
 
             // Add boat movement 
             if (boatController != null)
-                moveDir += boatController.MovementBoat.normalized * boatController.CurrentSpeed;
+                moveDir += boatController.MovementBoat.normalized * boatController.MovementBoat.magnitude;
 
             // Move the character controller
             this._characterController.Move(moveDir * elapsed);

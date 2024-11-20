@@ -81,7 +81,7 @@ public class SocleGenerator : MonoBehaviour
                 {
                     Debug.Log("scritpGemme est null dans Socle générator fonction GenerateSocle");
                 }
-                instance.transform.position += position; // Adjust position
+                instance.transform.localPosition += position; // Adjust position
                 instance.transform.localScale += new Vector3(spaceBetweenCube - 2, 0, spaceBetweenCube - 2); // Adjust scale
             }
         }
@@ -95,7 +95,7 @@ public class SocleGenerator : MonoBehaviour
         {
             Vector3 position = new Vector3(i * spaceBetweenCube - spaceBetweenCube / 2, SpacebetweenRectangleAndCube, halfHeight - spaceBetweenCube / 2);
             GameObject sideInstance = Instantiate(sidePrefab, Conteneur.transform);
-            sideInstance.transform.position += position; // Adjust position
+            sideInstance.transform.localPosition += position; // Adjust position
             sideInstance.transform.localScale = new Vector3(1, 1, scriptGemmeGrid.height * spaceBetweenCube + spaceBetweenCube); // Adjust scale
         }
 
@@ -104,8 +104,8 @@ public class SocleGenerator : MonoBehaviour
         {
             Vector3 position = new Vector3(halfWidth - spaceBetweenCube / 2, SpacebetweenRectangleAndCube, j * spaceBetweenCube - spaceBetweenCube / 2);
             GameObject sideInstance = Instantiate(sidePrefab, Conteneur.transform);
-            sideInstance.transform.position += position; // Adjust position
-            sideInstance.transform.rotation *= Quaternion.Euler(0, 90, 0); // Rotate the side
+            sideInstance.transform.localPosition += position; // Adjust position
+            sideInstance.transform.localRotation *= Quaternion.Euler(0, 90, 0); // Rotate the side
             sideInstance.transform.localScale = new Vector3(1, 1, scriptGemmeGrid.width * spaceBetweenCube + spaceBetweenCube); // Adjust scale
         }
     }

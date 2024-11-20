@@ -88,7 +88,7 @@ public static class GemHelper
         GemData gemData = new GemData
         {
             // Copie des propri�t�s de Gem vers GemData
-           
+           sprite = gem.sprite,
             Shape = new FormBool(list, gem.form.width, gem.form.height), 
             GemColorsName = gem.GemColorsName,
             LVL = gem.LVL,
@@ -104,10 +104,11 @@ public static class GemHelper
     
         public static Gem ConvertGemDataToGem(GemData gemData)
         {
-            // Cr�ation d'un nouvel objet Gem
-            Gem gem = new Gem
-            {
-                // Copie des propri�t�s de GemData vers Gem
+        // Cr�ation d'un nouvel objet Gem
+        Gem gem = new Gem
+        {
+            // Copie des propri�t�s de GemData vers Gem
+                sprite  = gemData.sprite,
                 PositionX = 0,
                 PositionZ = 0,
                 form = gemData.Shape,  

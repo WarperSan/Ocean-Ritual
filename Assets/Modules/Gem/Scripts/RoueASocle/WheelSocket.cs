@@ -8,17 +8,19 @@ public class WheelSocket : MonoBehaviour
     public float rotationInterval = 10f;
     public float rotationDuration = 2f;
     public float rotationAmount = 45f;
-
+    [SerializeField] GameObject RotateObject;
     private bool isRotating = false;
     private Quaternion targetRotation;
     private Quaternion initialRotation;
     private float rotationTimeElapsed = 0f;
    // private bool rotateLeft = true;
-    [SerializeField] bool dejaTourner = true;
+   
     public float ticIntensity = 2f; 
     public float ticDuration = 0.5f; 
     private bool isTicActive = false;
     private float ticTimeElapsed = 0f;
+    [SerializeField] MouseWheelManager mouseWheelManager;
+    [SerializeField] AudioClip MusicSpin;
 
     void Start()
     {
@@ -27,16 +29,9 @@ public class WheelSocket : MonoBehaviour
 
     void Update()
     {
-        if (!isRotating && !isTicActive)
-        {
-            if (dejaTourner)
-            {
-                StartRotationLeft();
-                dejaTourner = false;
-            }
-        }
+      
 
-        if (isRotating)
+        if (isRotating&& !isTicActive)
         {
             RotateWheel();
         }
@@ -46,23 +41,42 @@ public class WheelSocket : MonoBehaviour
             CercleTic();
         }
     }
-
-    void StartRotationLeft()
+    public bool IsRotating()
     {
+        return isRotating;
+    }
+   public void StartRotationUP()
+    {
+        if (mouseWheelManager.IsAlone())
+        {
+            targetRotation= RotateObject.transform.rotation ;
+            StartTicWheel();
+            return;
+        }
+        mouseWheelManager.StartRotation();
         isRotating = true;
-       
-        rotationTimeElapsed = 0f;
-        initialRotation = transform.rotation;
-        targetRotation = initialRotation * Quaternion.Euler(rotationAmount, 0f, 0f);
+        mouseWheelManager.GetNextSocle();
+        int skip = mouseWheelManager.getNumberforRotation();
+         rotationTimeElapsed = 0f;
+        initialRotation = RotateObject.transform.rotation;
+        targetRotation = initialRotation * Quaternion.Euler(rotationAmount + (skip * rotationAmount), 0f, 0f);
     }
 
-    void StartRotationRight()
+    public void StartRotationDown()
     {
+        if (mouseWheelManager.IsAlone())
+        {
+            targetRotation = RotateObject.transform.rotation;
+            StartTicWheel();
+            return;
+        }
+        mouseWheelManager.StartRotation();
         isRotating = true;
- 
+        mouseWheelManager.GetPreviewSocle();
+        int skip = mouseWheelManager.getNumberforRotation();
         rotationTimeElapsed = 0f;
-        initialRotation = transform.rotation;
-        targetRotation = initialRotation * Quaternion.Euler(-rotationAmount, 0f, 0f);
+        initialRotation = RotateObject.transform.rotation;
+        targetRotation = initialRotation * Quaternion.Euler(-rotationAmount+(skip* -rotationAmount), 0f, 0f);
     }
 
     void RotateWheel()
@@ -70,18 +84,19 @@ public class WheelSocket : MonoBehaviour
         rotationTimeElapsed += Time.deltaTime;
         float t = rotationTimeElapsed / rotationDuration;
 
-        transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
-
+        RotateObject.transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
+        SoundManager.Instance.PlaySound(MusicSpin, SoundType.UI, 1f, true,true);
         if (rotationTimeElapsed >= rotationDuration)
         {
-            isRotating = false;
-            transform.rotation = targetRotation;
+            //isRotating = false;
+            RotateObject.transform.rotation = targetRotation;
             StartTicWheel();
         }
     }
 
     void StartTicWheel()
     {
+        SoundManager.Instance.StopSound(SoundType.UI);
         isTicActive = true;
         ticTimeElapsed = 0f;
     }
@@ -93,12 +108,14 @@ public class WheelSocket : MonoBehaviour
 
        
         float oscillation = Mathf.Sin(t * Mathf.PI * 2) * ticIntensity;
-        transform.rotation = targetRotation * Quaternion.Euler(oscillation, 0f, 0f);
+        RotateObject.transform.rotation = targetRotation * Quaternion.Euler(oscillation, 0f, 0f);
 
         if (ticTimeElapsed >= ticDuration)
         {
+            isRotating = false;
             isTicActive = false;
-            transform.rotation = targetRotation; 
+            RotateObject.transform.rotation = targetRotation;
+            mouseWheelManager.EndRotation();
         }
     }
 }

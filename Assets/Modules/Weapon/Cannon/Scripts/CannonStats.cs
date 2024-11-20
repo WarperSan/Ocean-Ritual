@@ -30,11 +30,12 @@ public class CannonStats : MonoBehaviour, Equipment
     public componentGBN componentGBN => ComponantGBN;
 
     
-
+    //
     /// <inheritdoc/>
     public void UpdateStat()
     {
         // Cr�ation de la liste des statistiques de base
+        ComponantGBN.GBNScript.GetStat();
         var baseStats = new List<TypeQuantity<TypeWeapon>>
         {
             BASE_RELOAD_SPEED,

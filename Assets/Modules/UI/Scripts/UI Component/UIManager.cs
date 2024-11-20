@@ -98,7 +98,7 @@ namespace UIModule
                 Debug.LogWarning($"Tried to close a menu of type '{menu.GetType().Name}', but no instance of this menu is opened.");
                 return;
             }
-
+        
             // Close menu
             AddOperation(OperationType.CLOSE, menu);
         }
@@ -118,7 +118,7 @@ namespace UIModule
             // If not found, skip
             if (menu == null)
             {
-                Debug.LogError($"Tried to toggle a menu of type '{nameof(T)}', but no instance of this menu is registered.");
+               // Debug.LogError($"Tried to toggle a menu of type '{nameof(T)}', but no instance of this menu is registered.");
                 return;
             }
 

@@ -2,6 +2,7 @@ using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using MapModule;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace ControllerModule.Controllers
@@ -73,23 +74,43 @@ namespace ControllerModule.Controllers
         {
             // Skip if no turn
             if (this.direction.x == 0)
+            {
+                //_rb.angularVelocity = Vector3.zero;
                 return;
+            }
+            
 
-            var eulerAngleVelocity = new Vector3();
-
+            //var eulerAngleVelocity = new Vector3();
+            //Debug.Log(!(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50));
+            //Debug.Log(_rb.angularVelocity.sqrMagnitude);
+            //Debug.Log(_stats.GetHandling());
+            
+            
             //D�signe le sense de la rotation et la vitesse de rotation 
-            if (this.direction.x > 0)
+            if (this.direction.x > 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50))
             {
-                eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
+                //eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
+                _rb.AddTorque(0, _stats.GetHandling() / 50, 0, ForceMode.Acceleration);
+                
+                //comparer transform.forward à la vélocité normalized
+
+                _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
             }
-            else if (this.direction.x < 0)
+            else if (this.direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50))
             {
-                eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
+                //eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
+                _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
+                _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
             }
+
+           
 
             // Rotation RB
-            var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
-            _rb.MoveRotation(_rb.rotation * deltaRotation);
+            //var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
+            //_rb.MoveRotation(_rb.rotation * deltaRotation);
+
+            
+
         }
 
         #endregion
@@ -117,6 +138,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
+            
             movement = Vector3.zero;
             float speed = GetSpeedMultiplier(this.direction) * _stats.GetSpeed();
 
@@ -125,6 +147,13 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
+            Debug.Log(this.CurrentSpeed);
+            Debug.Log(_rb.velocity.magnitude);
+            if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
+            {
+                _rb.velocity = Vector3.zero;
+                return;
+            }
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
@@ -134,12 +163,14 @@ namespace ControllerModule.Controllers
             Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
             newPosition.y = this.transform.position.y;
 
-            _rb.MovePosition(newPosition);
+            //_rb.MovePosition(newPosition);
+            _rb.AddForce(this.transform.forward * CurrentSpeed);
+            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _stats.GetSpeed());
 
             // Update positions
-            Vector3 diff = newPosition - this.transform.position;
-            movement = diff;
-            
+            //Vector3 diff = newPosition - this.transform.position;
+            movement = _rb.velocity;
+
             // Update Aboard
             //this.UpdateAboardPosition(diff);
         }

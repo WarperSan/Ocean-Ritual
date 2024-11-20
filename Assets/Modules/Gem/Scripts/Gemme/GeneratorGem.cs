@@ -112,7 +112,7 @@ public   class GeneratorGem: MonoBehaviour
     //si on appele cela inclu que a gemme est fusionn�
     public static GemData GenerateRandomGemme(int LVL, GemData gemHeritage )
     {
-
+        Debug.Log("nouveau lvl = " + LVL);
 
         GemData gemmeScript = new GemData();
 
@@ -122,16 +122,19 @@ public   class GeneratorGem: MonoBehaviour
             {
                 gemmeScript.quantityMax = 1;
                 gemmeScript.quantity = 1;
-                gemmeScript.Shape = GenerateForme(gemHeritage.Shape);
+                gemmeScript.Shape = LVL > gemHeritage.LVL ? GenerateForme(gemHeritage.Shape) : gemHeritage.Shape;
+
                 gemmeScript.GemColorsName = gemHeritage.GemColorsName;
                 gemmeScript.LVL = LVL;
                 gemmeScript.typeWeapon = GeneratesRandomlvlStat<TypeWeapon>(LVL);
                 gemmeScript.typeBoat = GeneratesRandomlvlStat<TypeBoat>(LVL);
                 gemmeScript.typeNet = GeneratesRandomlvlStat<TypeNet>(LVL);
+                Debug.Log("allo");
                 return gemmeScript;
             }
             else
             {
+                Debug.Log("");
                 gemmeScript.quantityMax = 1;
                 gemmeScript.quantity = 1;
                 gemmeScript.Shape =gemHeritage.Shape;
