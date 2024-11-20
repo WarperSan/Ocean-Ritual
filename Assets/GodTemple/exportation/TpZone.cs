@@ -12,7 +12,7 @@ public class TpZone : MonoBehaviour
     [SerializeField] bool exit = false;
     [SerializeField] AudioClip MusicEnter ;
     [SerializeField] AudioClip Exit;
-    
+    [SerializeField] AudioClip TpSound;
     private void Start()
     {
         // Trouve le GameObject avec le tag "Player" au démarrage
@@ -25,13 +25,20 @@ public class TpZone : MonoBehaviour
     }
     public void SoundFunction()
     {
+        Debug.Log("aaa");
+        SoundManager.Instance.PlaySound(TpSound, SoundType.Ambient, 1f);
+        if (TpSound == null)
+        {
+            Debug.LogError("TpSound n'est pas assigné !");
+            return;
+        }
         if (enter)
         {
             SoundManager.Instance.PlaySound(MusicEnter,SoundType.Music,0.5f,true);
         }
         else if (exit)
         {
-           // SoundManager.Instance.StopSound(SoundType.Music);
+            SoundManager.Instance.StopSound(SoundType.Music);
             SoundManager.Instance.PlaySound(Exit, SoundType.Music, 0.3f, true);
         }
 
