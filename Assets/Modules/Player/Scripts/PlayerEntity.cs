@@ -13,7 +13,7 @@ namespace EntityModule
         {
             if (other.CompareTag("Death"))
             {
-                this.transform.position = respawnPoint.position + new Vector3(0, 2, 0);
+                this.transform.position = respawnPoint.position + new Vector3(-1, 2, 0);
               
             }
        

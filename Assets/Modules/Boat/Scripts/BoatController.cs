@@ -75,7 +75,7 @@ namespace ControllerModule.Controllers
             // Skip if no turn
             if (this.direction.x == 0)
             {
-                //_rb.angularVelocity = Vector3.zero;
+                _rb.angularVelocity = Vector3.zero;
                 return;
             }
             
