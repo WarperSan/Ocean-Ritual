@@ -1,4 +1,5 @@
 ﻿using BehaviourModule.Nodes;
+using ExtensionsModule;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace BossesModule.Worm.Nodes
         public RandomAttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
         {
             notUsedAttacks = new List<AttackNode>() {
+                new IceStormNode(entity, animator, collider, currentTarget, isAttacking),
                 new IceWaveNode(entity, animator, collider, currentTarget, isAttacking)
             };
 
@@ -31,7 +33,15 @@ namespace BossesModule.Worm.Nodes
 
         public void ChooseNextAttack()
         {
-            this.currentAttack = this.notUsedAttacks[0];
+            if(notUsedAttacks.Count == 0)
+            {
+                notUsedAttacks.AddRange(this.usedAttacks);
+                usedAttacks.Clear();
+            }
+            
+            this.currentAttack = notUsedAttacks.Random(out int index);
+            notUsedAttacks.RemoveAt(index);
+            usedAttacks.Add(this.currentAttack);
         }
 
         public NodeState OnAnimationEnded()

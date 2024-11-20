@@ -1,6 +1,4 @@
 using EntityModule;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BossesModule.Worm.Projectiles
@@ -17,12 +15,8 @@ namespace BossesModule.Worm.Projectiles
 
         #region Projectile
 
-        protected override void OnStart()
-        {
-            this.ResetSelf();
-        }
-
         public override bool TakeDamage => true;
+        protected override void OnPostApply(Entity entity, Attack attack) => this.gameObject.SetActive(false);
 
         /// <inheritdoc/>
         protected override void OnMove(float elapsed) => this.transform.position -= this.speed * elapsed * this.transform.forward;

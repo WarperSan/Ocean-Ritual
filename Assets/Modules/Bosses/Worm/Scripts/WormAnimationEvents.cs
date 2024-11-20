@@ -35,7 +35,7 @@ namespace BossesModule.Worm
 
         public void IceWaveStart() => this.tree.IceWaveStart();
 
-        public void IceWaveEnd() => this.tree.IceWaveEnd();
+        public void IceWaveEnd() => this.tree.OnAttackEnded();
 
         #endregion
     }

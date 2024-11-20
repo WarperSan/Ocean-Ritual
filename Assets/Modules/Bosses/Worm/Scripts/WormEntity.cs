@@ -99,25 +99,22 @@ namespace BossesModule.Worm
         [SerializeField]
         private GameObject iceWave_iciclePrefab;
 
-        Coroutine iceWaveCoroutine;
-
-        public void StartIceWave() => iceWaveCoroutine = this.StartCoroutine(this.IceWaveCoroutine());
-        public void EndIceWave() => this.StopCoroutine(iceWaveCoroutine);
+        public void StartIceWave() => this.StartCoroutine(this.IceWaveCoroutine());
 
         private IEnumerator IceWaveCoroutine()
         {
             const int SPAWN_QTY = 20;
             const float SPAWN_ARCH = 180f;
-            const float SPAWN_RADIUS = 10f;
+            const float SPAWN_RADIUS = 30f;
 
-            float time = IceWaveNode.COOLDOWN;
-            float timeBetweenSpawn = time / SPAWN_QTY;
+            float angleStart = this.transform.rotation.eulerAngles.y - SPAWN_ARCH / 2;
+            float anglePerSpawn = SPAWN_ARCH / SPAWN_QTY; 
+            Vector3 spawnOrigin = this.transform.position;
+            spawnOrigin.y = OceanManager.WATER_HEIGHT;
 
-            while (time > 0)
+            for (int i = 0; i < SPAWN_QTY; i++)
             {
-                // Spawn Icicle
                 GameObject icicle = this.iceWavePool.Get(this.iceWave_iciclePrefab.name);
-                float angle = 45f * Mathf.Deg2Rad;
 
                 if (icicle.TryGetComponent(out Projectile projectile))
                 {
@@ -130,21 +127,25 @@ namespace BossesModule.Worm
                     });
                 }
 
-                // Place Objects
-                icicle.transform.position = new Vector3(
-                    Mathf.Cos(angle) * SPAWN_RADIUS + this.transform.position.x,
-                    OceanManager.WATER_HEIGHT,
-                    Mathf.Sin(angle) * SPAWN_RADIUS + this.transform.position.z
-                );
+                float angle = angleStart + i * anglePerSpawn + 60;
 
-                // Activate objects
+                Vector3 spawnPosition = new Vector3(
+                    Mathf.Cos(angle * Mathf.Deg2Rad) * SPAWN_RADIUS,
+                    0,
+                    Mathf.Sin(angle * Mathf.Deg2Rad) * SPAWN_RADIUS
+                ) + spawnOrigin;
+
+                icicle.transform.position = spawnPosition;
+
+                Vector3 direction = (spawnOrigin - spawnPosition).normalized;
+                icicle.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+
                 icicle.SetActive(true);
 
-                yield return new WaitForSeconds(timeBetweenSpawn);
-
-                time -= timeBetweenSpawn;
+                yield return null; 
             }
         }
+
 
         #endregion
     }
