@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using UIModule.Components;
 public class TpZone : MonoBehaviour
 {
     private GameObject player; // Référence au GameObject Player
@@ -11,6 +12,7 @@ public class TpZone : MonoBehaviour
     [SerializeField] bool exit = false;
     [SerializeField] AudioClip MusicEnter ;
     [SerializeField] AudioClip Exit;
+    
     private void Start()
     {
         // Trouve le GameObject avec le tag "Player" au démarrage
@@ -30,7 +32,7 @@ public class TpZone : MonoBehaviour
         else if (exit)
         {
            // SoundManager.Instance.StopSound(SoundType.Music);
-            SoundManager.Instance.PlaySound(Exit, SoundType.Music, 0.5f, true);
+            SoundManager.Instance.PlaySound(Exit, SoundType.Music, 0.3f, true);
         }
 
     }
