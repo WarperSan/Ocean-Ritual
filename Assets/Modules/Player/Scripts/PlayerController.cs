@@ -54,8 +54,8 @@ namespace ControllerModule.Controllers
 
             if (IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, out IInteractable interactable, this.interactRange))
             {
-                InteractionAsset asset = interactable.InteractionAsset != null ? interactable.InteractionAsset : this.defaultInteraction;
-                this.cursor.sprite = asset != null ? asset.icon : null;
+                InteractionAsset asset = interactable.InteractionAsset ?? this.defaultInteraction;
+                this.cursor.sprite = asset?.icon;
                 this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
 
                 this.isHoveringInteractable = true;
@@ -234,7 +234,7 @@ namespace ControllerModule.Controllers
         {
             // Get components
             this._characterController = this.GetComponent<CharacterController>();
-            this._characterController.detectCollisions = false;
+
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }

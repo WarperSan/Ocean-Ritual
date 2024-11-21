@@ -33,4 +33,6 @@ public class TransitionCam : Singleton<TransitionCam>
         camA.Priority = 10;
         camB.Priority = 0;
     }
+
+    protected override bool DestroyOnLoad => true;
 }

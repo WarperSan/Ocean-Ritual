@@ -28,11 +28,11 @@ namespace UtilsModule
 
             Instance = this.gameObject.GetComponent<T>();
 
-            if (!this.DestroyOnLoad)
-            {
+            if (!this.KeepParent)
                 this.transform.SetParent(null);
+
+            if (!this.DestroyOnLoad)
                 DontDestroyOnLoad(this.gameObject);
-            }
 
             this.OnAwake();
         }
@@ -45,6 +45,11 @@ namespace UtilsModule
         /// Defines if the singleton should be destroyed when loading a new scene
         /// </summary>
         protected virtual bool DestroyOnLoad => false;
+
+        /// <summary>
+        /// Defines if the singleton should keep it's current parent or not
+        /// </summary>
+        protected virtual bool KeepParent => false;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called

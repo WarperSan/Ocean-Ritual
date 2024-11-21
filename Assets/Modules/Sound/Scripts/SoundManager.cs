@@ -146,8 +146,8 @@ public class SoundManager : Singleton<SoundManager>
                 break;
         }
     }
-    
-    
+
+    protected override bool DestroyOnLoad => true;
 }
 
 public enum SoundType

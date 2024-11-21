@@ -27,37 +27,29 @@ namespace ControllerModule.Controllers
         [SerializeField]
         private Transform aboardParent;
 
-        private readonly List<Rigidbody> aboardRbs = new();
+        [SerializeField]
+        private Collider aboardCollider;
 
-        /// <summary>
-        /// Updates the position of all the items aboard
-        /// </summary>
-        private void UpdateAboardPosition(Vector3 movement)
+        private Transform player;
+
+        private void UpdatePlayerAboard()
         {
-            foreach (Rigidbody item in this.aboardRbs)
-            {
-                if (item == null)
-                    continue;
+            // If player not aboard, skip
+            if (this.player == null)
+                return;
 
-                item.velocity = Vector3.zero;
-                item.MovePosition(item.position + movement);
+            // If contains player, skip
+            if (this.aboardCollider.bounds.Contains(player.transform.position))
+                return;
+
+            if (this.player.TryGetComponent(out CharacterController cc))
+            {
+                this.player.SetParent(null);
+                cc.detectCollisions = true;
+                cc.GetComponent<PlayerController>().boatController = null;
             }
 
-        }
-
-        /// <summary>
-        /// Updates the rotation of all the items aboard
-        /// </summary>
-        private void UpdateAboardRotation(Quaternion rotationItem, Vector3 rotationCC)
-        {
-            foreach (Rigidbody item in this.aboardRbs)
-            {
-                if (item == null)
-                    continue;
-                item.velocity = Vector3.zero;
-
-                item.MoveRotation(item.rotation * rotationItem);
-            }
+            this.player = null;
         }
 
         #endregion
@@ -79,33 +71,21 @@ namespace ControllerModule.Controllers
                 _rb.angularVelocity = Vector3.zero;
                 return;
             }
-            
 
-            //var eulerAngleVelocity = new Vector3();
-            //Debug.Log(!(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50));
-            //Debug.Log(_rb.angularVelocity.sqrMagnitude);
-            //Debug.Log(_stats.GetHandling());
-            
-            
             //D�signe le sense de la rotation et la vitesse de rotation 
-            if (this.direction.x > 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50))
+            if (this.direction.x > 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
             {
                 //eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
                 _rb.AddTorque(0, _stats.GetHandling() / 50, 0, ForceMode.Acceleration);
                 //comparer transform.forward à la vélocité normalized
             }
-            else if (this.direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling()/50))
+            else if (this.direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
             {
                 //eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
                 _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
             }
-            // Rotation RB
-            //var deltaRotation = Quaternion.Euler(eulerAngleVelocity * elapsed);
-            //_rb.MoveRotation(_rb.rotation * deltaRotation);
 
             _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
-
-            
         }
 
         #endregion
@@ -133,7 +113,7 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
-            
+
             movement = Vector3.zero;
             float speed = GetSpeedMultiplier(this.direction) * _stats.GetSpeed();
 
@@ -142,14 +122,13 @@ namespace ControllerModule.Controllers
                 ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
                 : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
 
-            
+
 
             if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
             {
                 _rb.velocity = Vector3.zero;
                 return;
             }
-
 
             // Updates the wanted position
             this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
@@ -165,11 +144,7 @@ namespace ControllerModule.Controllers
 
 
             // Update positions
-            //Vector3 diff = newPosition - this.transform.position;
             movement = _rb.velocity;
-
-            // Update Aboard
-            //this.UpdateAboardPosition(diff);
         }
 
         public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
@@ -206,6 +181,7 @@ namespace ControllerModule.Controllers
         {
             this.UpdateMove(elapsed);
             this.UpdateTurn(elapsed);
+            this.UpdatePlayerAboard();
         }
 
         /// <inheritdoc/>
@@ -237,21 +213,11 @@ namespace ControllerModule.Controllers
 
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
-                other.transform.SetParent(this.aboardParent != null ? this.aboardParent : this.transform);
+                other.transform.SetParent(this.aboardParent ?? this.transform);
+                cc.detectCollisions = false;
                 cc.GetComponent<PlayerController>().boatController = this;
-            }
-        }
 
-        /// <inheritdoc/>
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag("Player"))
-                return;
-
-            if (other.gameObject.TryGetComponent(out CharacterController cc))
-            {
-                other.transform.SetParent(null);
-                cc.GetComponent<PlayerController>().boatController = null;
+                this.player = other.transform;
             }
         }
 
@@ -263,7 +229,5 @@ namespace ControllerModule.Controllers
         public void OnMove(Vector2 direction) => this.direction = direction;
 
         #endregion
-
-        
     }
 }
