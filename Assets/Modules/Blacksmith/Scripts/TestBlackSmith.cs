@@ -14,6 +14,7 @@ namespace BlacksmithModule
         [SerializeField] GemData GemData;
         [SerializeField] public bool canAddNewCase;
         [SerializeField] private ShowGemShape showGemShape;
+        [SerializeField] private StarsManager starsManager;
         public bool CasseOnlytrue;
         private int Cost;
         public void ConvertGemme()
@@ -30,6 +31,7 @@ namespace BlacksmithModule
                 GemData = null;
                 TemporaryGemData = null;
                 showGemShape.Clear();
+                starsManager.ClearStars();
                 this.RestoreOriginalTexts();
                 return;
             }
@@ -60,6 +62,7 @@ namespace BlacksmithModule
         public void UpdateUI()
         {
             showGemShape.Show(TemporaryGemData, GemData);
+            starsManager.CreateStars(GemData);
 
             // Initialisation des textes originaux seulement si ce n'est pas encore fait
             if (originalTexts == null)
@@ -98,9 +101,9 @@ namespace BlacksmithModule
         private void SetTexts(int totalCost, int missingCount, int modifiedCount)
         {
             // Mise � jour des textes avec les nouvelles valeurs, tout en sauvegardant les textes originaux
-            cost.text = Inventory.Instance.HaveEnoughtCash(Cost)
-                ? originalTexts[0] + " " + totalCost.ToString()
-                : originalTexts[0] + " <color=#FF0000>" + totalCost.ToString() + "</color>";
+            cost.text = originalTexts[0] + $" <sprite name={Inventory.CASH_ICON}> " + (Inventory.Instance.HaveEnoughtCash(Cost)
+                ? totalCost.ToString()
+                : "<color=#FF0000>" + totalCost.ToString() + "</color>");
             // Ajoute la valeur originale avec la nouvelle valeur du co�t
             MissingCase.text = originalTexts[1] + " " + missingCount.ToString();    // Ajoute la valeur originale avec le nombre de cases manquantes
             ModifiedCase.text = originalTexts[2] + " " + modifiedCount.ToString();  // Ajoute        nale avec le nombre de cases modifi�es

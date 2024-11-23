@@ -49,7 +49,7 @@ namespace UtilsModule
         /// <summary>
         /// Defines if the singleton should keep it's current parent or not
         /// </summary>
-        protected virtual bool KeepParent => false;
+        protected virtual bool KeepParent => this.DestroyOnLoad;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called

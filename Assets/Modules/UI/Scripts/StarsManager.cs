@@ -13,10 +13,12 @@ public class StarsManager : MonoBehaviour
 
     [SerializeField] int totalStars = 16;
 
-    public void CreateStars(GemData gemData)
-    {
-        int lvl = gemData.LVL;
+    public void ClearStars() => this.CreateStars(0);
 
+    public void CreateStars(GemData gemData) => this.CreateStars(gemData.LVL);
+
+    private void CreateStars(int lvl)
+    {
         // On vide d'abord le conteneur pour �viter les doublons
         foreach (Transform item in this.starContainers)
             item.RemoveAll();
