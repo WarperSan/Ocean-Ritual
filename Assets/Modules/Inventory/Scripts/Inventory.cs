@@ -477,8 +477,9 @@ public class Inventory : Singleton<Inventory>
     public void AddCash(int AddingCash = 0)
     {
 
-
+   
         Cash += AddingCash;
+        Debug.Log("addCash       " + Cash);
         UpdateCashCost();
     }
 
