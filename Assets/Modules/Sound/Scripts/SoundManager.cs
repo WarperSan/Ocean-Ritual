@@ -148,6 +148,7 @@ public class SoundManager : Singleton<SoundManager>
     }
 
     protected override bool DestroyOnLoad => true;
+    protected override bool KeepParent => false;
 }
 
 public enum SoundType
