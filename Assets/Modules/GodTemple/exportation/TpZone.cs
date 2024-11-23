@@ -26,7 +26,7 @@ public class TpZone : MonoBehaviour
     public void SoundFunction()
     {
         Debug.Log("aaa");
-        SoundManager.Instance.PlaySound(TpSound, SoundType.Ambient, 1f);
+        SoundManager.Instance.PlaySound(TpSound, SoundType.Ambient, 0.2f);
         if (TpSound == null)
         {
             Debug.LogError("TpSound n'est pas assigné !");

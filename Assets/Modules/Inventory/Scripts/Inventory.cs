@@ -457,7 +457,7 @@ public class Inventory : Singleton<Inventory>
                                     .Concat(gem)
                                     .ToList();
     }
-
+    
     #region Singleton
 
     /// <inheritdoc/>
