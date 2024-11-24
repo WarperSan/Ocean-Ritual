@@ -28,6 +28,8 @@ namespace FishingModule
 
             this.StartBuoy(fishes, enemies);
             this.SetFishingModel(true);
+
+            TargetGeneral.Instance.Target = TargetGeneral.Instance.BoatTarget;
         }
 
         public void EndFishing()
@@ -108,7 +110,9 @@ namespace FishingModule
                 // Set up SpawnManager
                 if (this._buoy.TryGetComponent(out SpawnManager spawnManager))
                 {
-                    spawnManager.SetUp(this._buoy.transform.position, enemies);
+                    Vector3 pos = this._buoy.transform.position;
+                    pos.y = 0;
+                    spawnManager.SetUp(pos, enemies);
                 }
             }
 
@@ -128,7 +132,7 @@ namespace FishingModule
             if (this._buoy == null)
                 return;
 
-            this._buoy.isCollected = true;
+            this._buoy.Collect();
             this._buoy.transform.SetParent(this.buoyHolder, false);
             this._buoy.transform.localPosition = Vector3.zero;
         }

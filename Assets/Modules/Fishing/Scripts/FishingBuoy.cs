@@ -85,6 +85,9 @@ namespace FishingModule
         [SerializeField]
         private GameObject fullIndicator;
 
+        [SerializeField]
+        private GameObject particules;
+
         public delegate void FishCaught(Dictionary<FishSO, uint> fishCaught);
         public event FishCaught OnFishCaught;
 
@@ -184,6 +187,12 @@ namespace FishingModule
         [Header("Collecting")]
         public bool KeepCollecting;
         public bool isCollected;
+
+        public void Collect()
+        {
+            this.particules.SetActive(false);
+            isCollected = true;
+        }
 
         /// <summary>
         /// Updates the process of collecting fishes
