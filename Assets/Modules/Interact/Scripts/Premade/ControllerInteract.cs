@@ -9,6 +9,7 @@ namespace InteractModule.Premade
     [RequireComponent(typeof(Collider))]
     public class ControllerInteract : MonoBehaviour, IInteractable
     {
+        
         public Controller Controller;
 
         /// <inheritdoc/>
@@ -20,7 +21,7 @@ namespace InteractModule.Premade
                 Debug.LogWarning("Tried to switch to an invalid controller.");
                 return;
             }
-
+      
             ControllerManager.SwitchTo(this.Controller);
         }
 

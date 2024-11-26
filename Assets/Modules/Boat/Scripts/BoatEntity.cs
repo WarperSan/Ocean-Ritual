@@ -27,6 +27,7 @@ public class BoatEntity : Entity
 
     protected override void OnPostAttack(Projectile source = null)
     {
+       
         base.OnPostAttack(source);
         UpdateHealthSlider();
     }
@@ -44,4 +45,5 @@ public class BoatEntity : Entity
             slider.value = Health; // Met à jour la valeur du slider
         }
     }
+  
 }

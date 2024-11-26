@@ -190,8 +190,10 @@ namespace ControllerModule.Controllers
             // Update cursor
             SetCursorLock(true);
             movementDeceleration *= 2;
+            sliderLife.SetActive(true);
         }
 
+        [SerializeField] GameObject sliderLife;
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
@@ -199,6 +201,8 @@ namespace ControllerModule.Controllers
             SetCursorLock(false);
             movementDeceleration /= 2;
             this.ShutdownBoatAcceleration();
+            sliderLife.SetActive(false);
+
         }
 
         #endregion
