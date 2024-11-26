@@ -6429,6 +6429,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cd01e234d293be489071787d1c9ac26, type: 3}
+--- !u!114 &168512277 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1568867712659846516, guid: 6ecf83e74d67b1a49b99c37455a44b6d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1858352631}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &170722339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9723,6 +9735,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1964135592}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &259145150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1321612091666426084, guid: 85b8e211a8c77c2328abf94f640c37c0,
+    type: 3}
+  m_PrefabInstance: {fileID: 495615349}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &260928536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20511,7 +20535,7 @@ Transform:
   m_GameObject: {fileID: 501830239}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.9, y: 0, z: 249.5}
+  m_LocalPosition: {x: 76.8, y: 0, z: 141.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20534,9 +20558,7 @@ MonoBehaviour:
     percent: 50
   - fish: {fileID: 11400000, guid: 20b4d7cbed0d75bf599025b095c782bf, type: 2}
     percent: 50
-  enemies:
-  - {fileID: 8269282008370612787, guid: afe8a9f6b26d10844b957d961fd8c843, type: 3}
-  - {fileID: 1218484418122100985, guid: c9dc2fe2cb4ac444b83450157e32ac55, type: 3}
+  enemies: []
 --- !u!65 &501830242
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40969,6 +40991,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxHeath
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5305911301833348661, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: movementAcceleration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5305911301833348661, guid: a0feb32f73fae1247a7cecdc50361629,
+        type: 3}
+      propertyPath: movementDeceleration
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6387330875977748726, guid: a0feb32f73fae1247a7cecdc50361629,
         type: 3}
@@ -66626,6 +66658,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4133709363793375258, guid: 8b1b5871cc4383c49b234f6388b29956,
+        type: 3}
+      propertyPath: _MaxHeath
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5918590627414922390, guid: 8b1b5871cc4383c49b234f6388b29956,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -79822,6 +79859,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1452363097933179278, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
+      propertyPath: movementSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1452363097933179278, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
       propertyPath: boatController
       value: 
       objectReference: {fileID: 1907742990}
@@ -79850,6 +79892,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3375830425975481129, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: textCostInventory
+      value: 
+      objectReference: {fileID: 168512277}
+    - target: {fileID: 3375830425975481129, guid: 7b655d86ce596bbb788ab4d59297500d,
+        type: 3}
+      propertyPath: textCostInventoryBlacksmith
+      value: 
+      objectReference: {fileID: 259145150}
     - target: {fileID: 6119720136535215692, guid: 7b655d86ce596bbb788ab4d59297500d,
         type: 3}
       propertyPath: m_Name
