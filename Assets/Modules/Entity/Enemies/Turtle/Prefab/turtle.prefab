@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9dbdbf370df1114c848c54166bfe618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHeath: 0
+  _MaxHeath: 0
   _collider: {fileID: 864791341549086520}
   mustMeetAllConditions: 1
   DPS: 20
@@ -294,7 +294,7 @@ MonoBehaviour:
   animationTime: 0.5
   animationVitesse: 15
   animationTimeLunch: 1
-  animationVitesseLunch: 5
+  animationVitesseLunch: 20
   RayonToHeal: 10
   HealPower: 10
   distanceDash: 5
@@ -314,9 +314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3cff80d1d9cba458030a1a627a6a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHeath: 0
+  _MaxHeath: 0
   sprite: {fileID: 0}
   chance: 20
   min: 1
   max: 4
-  dead: 1
