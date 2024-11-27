@@ -11,7 +11,7 @@ public class fusionBSManager : MonoBehaviour
 
     [SerializeField] Sprite sprite;
 
-    [SerializeField] string coolSound;
+    [SerializeField] AudioClip coolSound;
 
     private void Awake()
     {

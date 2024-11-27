@@ -78,55 +78,55 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(string soundPath, SoundType type,float volume = 0.8f, bool looped = false, bool waitForEnd = false)
-    {
-        switch (type)
-        {
-            case SoundType.Music:
+    //public void PlaySound(string soundPath, SoundType type,float volume = 0.8f, bool looped = false, bool waitForEnd = false)
+    //{
+    //    switch (type)
+    //    {
+    //        case SoundType.Music:
 
 
-                if (musicSource.isPlaying)
-                {
-                    if (waitForEnd)
-                        break;
-                    StopSound(SoundType.Music);
-                }
+    //            if (musicSource.isPlaying)
+    //            {
+    //                if (waitForEnd)
+    //                    break;
+    //                StopSound(SoundType.Music);
+    //            }
                     
                 
-                musicSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(musicPath + soundPath, typeof(AudioClip));
-                musicSource.volume = volume;
-                musicSource.loop = looped;
-                musicSource.Play();
-                break;
-            case SoundType.Ambient:
-                if (ambientSource.isPlaying)
-                {
-                    if (waitForEnd)
-                        break;
-                    StopSound(SoundType.Ambient);
-                }
+    //            musicSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(musicPath + soundPath, typeof(AudioClip));
+    //            musicSource.volume = volume;
+    //            musicSource.loop = looped;
+    //            musicSource.Play();
+    //            break;
+    //        case SoundType.Ambient:
+    //            if (ambientSource.isPlaying)
+    //            {
+    //                if (waitForEnd)
+    //                    break;
+    //                StopSound(SoundType.Ambient);
+    //            }
                     
 
-                ambientSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(ambientPath + soundPath, typeof(AudioClip));
-                ambientSource.volume = volume;
-                ambientSource.loop = looped;
-                ambientSource.Play();
-                break;
-            case SoundType.UI:
-                if (uiSoundSource.isPlaying)
-                {
-                    if (waitForEnd) 
-                        break;
-                    StopSound(SoundType.UI);
-                }
+    //            ambientSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(ambientPath + soundPath, typeof(AudioClip));
+    //            ambientSource.volume = volume;
+    //            ambientSource.loop = looped;
+    //            ambientSource.Play();
+    //            break;
+    //        case SoundType.UI:
+    //            if (uiSoundSource.isPlaying)
+    //            {
+    //                if (waitForEnd) 
+    //                    break;
+    //                StopSound(SoundType.UI);
+    //            }
 
-                uiSoundSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(uiSoundPath + soundPath, typeof(AudioClip));
-                uiSoundSource.volume = volume;
-                uiSoundSource.loop = looped;
-                uiSoundSource.Play();
-                break;
-        }
-    }
+    //            uiSoundSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(uiSoundPath + soundPath, typeof(AudioClip));
+    //            uiSoundSource.volume = volume;
+    //            uiSoundSource.loop = looped;
+    //            uiSoundSource.Play();
+    //            break;
+    //    }
+    //}
 
     /// <summary>
     /// Stops a sound on the given sound type's track

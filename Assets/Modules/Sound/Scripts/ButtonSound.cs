@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonSound : MonoBehaviour
 {
-    [SerializeField] string soundName;
+    [SerializeField] AudioClip soundName;
     public void OnClick()
     {
         SoundManager.Instance.PlaySound(soundName,SoundType.UI);

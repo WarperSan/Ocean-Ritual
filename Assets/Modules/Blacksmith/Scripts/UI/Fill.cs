@@ -17,7 +17,7 @@ public class Fill : MonoBehaviour
     [SerializeField] ForgeButton button;
     [SerializeField] public bool CanFuse = false;
 
-    [SerializeField] string hammerSound;
+    [SerializeField] AudioClip hammerSound;
     void Update()
     {
         if (!button.isButtonHeld)

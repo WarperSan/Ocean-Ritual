@@ -11,8 +11,8 @@ namespace UIModule.Menus
     {
         #region AnimatedMenu
 
-        [SerializeField] string openSound;
-        [SerializeField] string closeSound;
+        [SerializeField] AudioClip openSound;
+        [SerializeField] AudioClip closeSound;
 
         /// <inheritdoc/>
         public override IEnumerator Open()
