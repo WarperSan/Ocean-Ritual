@@ -8,7 +8,7 @@ namespace BossesModule.Worm.Nodes
     internal class AttackSequence : Sequence
     {
         public const string CURRENT_ATTACK_TARGET = "currentAttackTarget";
-        public const float COOLDOWN = 2f;//10f;
+        public const float COOLDOWN = 5f;
         CooldownNode cooldown;
 
         public AttackSequence(WormTree tree, WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
