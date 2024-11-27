@@ -7,7 +7,7 @@ namespace BossesModule.Worm.Nodes
 {
     public class RepositionNode : MovementNode
     {
-        private const float COOLDOWN = 5f;
+        private const float COOLDOWN = 10f;
         private const string CURRENT_REPOSITION_TARGET = "currentRepositionTarget";
         private CooldownNode cooldown;
         private readonly string isRepositioning;

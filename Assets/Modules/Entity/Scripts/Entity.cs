@@ -31,8 +31,9 @@ namespace EntityModule
         /// <summary>
         /// Resets the health of this entity
         /// </summary>
-        private void ResetHealth()
+        protected void ResetHealth()
         {
+            IsDead = false;
             this.Health = this._MaxHeath;
         }
 

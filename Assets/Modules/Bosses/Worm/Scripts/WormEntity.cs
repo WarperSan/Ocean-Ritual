@@ -51,7 +51,7 @@ namespace BossesModule.Worm
                     projectile.ResetSelf();
                     projectile.Attribute(new Attack()
                     {
-                        Damage = 1,
+                        Damage = 5,
                         Type = AttackType.ICE,
                         TargetType = ProjectileTarget.BOAT
                     });
@@ -120,7 +120,7 @@ namespace BossesModule.Worm
                     projectile.ResetSelf();
                     projectile.Attribute(new Attack()
                     {
-                        Damage = 1,
+                        Damage = 10,
                         Type = AttackType.ICE,
                         TargetType = ProjectileTarget.BOAT
                     });

@@ -184,6 +184,8 @@ namespace EntityModule
         /// </summary>
         public void ResetSelf()
         {
+            this.ResetHealth();   
+            
             // Clear values
             this.attack = null;
 
