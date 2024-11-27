@@ -34,7 +34,7 @@ namespace FishingModule.UI
         /// <summary>
         /// Fetches the text to show
         /// </summary>
-        private static string GetText() => "You just got\nx{0}";
+        private static string GetText() => "Vous avez \nreçu x{0}";
 
         public void Set(FishSO fish, uint amount)
         {
