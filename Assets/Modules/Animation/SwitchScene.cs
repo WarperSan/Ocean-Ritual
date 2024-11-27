@@ -3,9 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class SwitchScene : MonoBehaviour
 {
-    [SerializeField] private int numberOfTheScene; // Index de la scène à charger
+    [SerializeField] private int numberOfTheScene; // Index de la scï¿½ne ï¿½ charger
 
-    // Méthode appelée par le bouton pour changer de scène
+    // Mï¿½thode appelï¿½e par le bouton pour changer de scï¿½ne
     public void ChangeScene()
     {
         SceneManager.LoadScene(numberOfTheScene);
