@@ -85,7 +85,7 @@ namespace ControllerModule.Controllers
                 _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
             }
 
-            _rb.velocity = this.transform.forward * _rb.velocity.magnitude;
+            _rb.linearVelocity = this.transform.forward * _rb.linearVelocity.magnitude;
         }
 
         #endregion
@@ -124,9 +124,9 @@ namespace ControllerModule.Controllers
 
 
 
-            if (this.CurrentSpeed < 0 && _rb.velocity.magnitude >= 0 && _rb.velocity.magnitude < 1)
+            if (this.CurrentSpeed < 0 && _rb.linearVelocity.magnitude >= 0 && _rb.linearVelocity.magnitude < 1)
             {
-                _rb.velocity = Vector3.zero;
+                _rb.linearVelocity = Vector3.zero;
                 return;
             }
 
@@ -140,11 +140,11 @@ namespace ControllerModule.Controllers
 
             //_rb.MovePosition(newPosition);
             _rb.AddForce(this.transform.forward * CurrentSpeed);
-            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _stats.GetSpeed());
+            _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _stats.GetSpeed());
 
 
             // Update positions
-            movement = _rb.velocity;
+            movement = _rb.linearVelocity;
         }
 
         public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;

@@ -70,7 +70,7 @@ public class CoreMovement : MonoBehaviour
         Vector3 positionSpringForce = positionDifference * positionStiffness;
         rb.AddForce(positionSpringForce, ForceMode.Force);
         //Damper
-        Vector3 positionDamperForce = -rb.velocity * positionDamper;
+        Vector3 positionDamperForce = -rb.linearVelocity * positionDamper;
         rb.AddForce(positionDamperForce, ForceMode.Force);
 
         //Rotation

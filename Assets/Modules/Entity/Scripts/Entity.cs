@@ -14,7 +14,8 @@ namespace EntityModule
         protected float _MaxHeath;
         public float MaxHealth => this._MaxHeath;
 
-        [SerializeField, Tooltip("Maximum health to heal for this entity")]
+        [field: SerializeField]
+        [Tooltip("Maximum health to heal for this entity")]
         protected float HealthTotal { get; private set; }
         public float Health { get; private set; }
 

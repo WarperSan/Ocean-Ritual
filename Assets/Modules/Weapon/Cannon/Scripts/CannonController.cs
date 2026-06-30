@@ -91,7 +91,7 @@ namespace WeaponModule.Weapons.Cannon
             // Apply initial velocity
             if (bullet.TryGetComponent(out Rigidbody rb))
             {
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
                 rb.AddForce(bullet.transform.up * ((this.strength * this.thrustAmount) + this.baseStrength));
             }
 

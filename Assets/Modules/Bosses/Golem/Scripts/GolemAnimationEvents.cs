@@ -40,7 +40,7 @@ namespace BossesModule.Golem
             obj.transform.position = this.throwSource.position;
 
             if (obj.TryGetComponent(out Rigidbody rb))
-                rb.velocity = GetLaunch(obj, throwTarget.position, 10);
+                rb.linearVelocity = GetLaunch(obj, throwTarget.position, 10);
 
             if (obj.TryGetComponent(out Projectile projectile))
             {
