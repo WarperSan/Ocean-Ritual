@@ -10,6 +10,6 @@ namespace ControllerModule.Interfaces.Player
         /// <summary>
         /// Called when the player moves
         /// </summary>
-        public void OnMove(Vector2 direction);
+        void OnMove(Vector2 direction);
     }
 }

@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UtilsModule;
 
 public class SoundManager : Singleton<SoundManager>
 {
-    
-    AudioSource uiSoundSource;
-    AudioSource ambientSource;
-    AudioSource musicSource;
+    private AudioSource uiSoundSource;
+    private AudioSource ambientSource;
+    private AudioSource musicSource;
 
     private string uiSoundPath = "Assets/Resources/Sound/UI/";
     private string ambientPath = "Assets/Resources/Sound/Ambience/";
@@ -27,7 +23,13 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// Plays a sound on the given sound type's track
     /// </summary>
-    public void PlaySound(AudioClip sound, SoundType type, float volume = 0.8f, bool looped = false, bool waitForEnd = false)
+    public void PlaySound(
+        AudioClip sound,
+        SoundType type,
+        float     volume     = 0.8f,
+        bool      looped     = false,
+        bool      waitForEnd = false
+    )
     {
         switch (type)
         {
@@ -36,10 +38,10 @@ public class SoundManager : Singleton<SoundManager>
                 {
                     if (waitForEnd)
                         break;
+
                     StopSound(SoundType.Music);
                 }
-                    
-                
+
                 musicSource.clip = sound;
                 musicSource.volume = volume;
                 musicSource.loop = looped;
@@ -50,9 +52,10 @@ public class SoundManager : Singleton<SoundManager>
                 {
                     if (waitForEnd)
                         break;
+
                     StopSound(SoundType.Ambient);
                 }
-                    
+
                 ambientSource.clip = sound;
                 ambientSource.volume = volume;
                 ambientSource.loop = looped;
@@ -63,11 +66,11 @@ public class SoundManager : Singleton<SoundManager>
                 {
                     if (waitForEnd)
                         break;
+
                     StopSound(SoundType.UI);
                 }
-                    
 
-                uiSoundSource.clip = sound;   
+                uiSoundSource.clip = sound;
                 uiSoundSource.volume = volume;
                 uiSoundSource.loop = looped;
                 uiSoundSource.Play();
@@ -84,15 +87,13 @@ public class SoundManager : Singleton<SoundManager>
     //    {
     //        case SoundType.Music:
 
-
     //            if (musicSource.isPlaying)
     //            {
     //                if (waitForEnd)
     //                    break;
     //                StopSound(SoundType.Music);
     //            }
-                    
-                
+
     //            musicSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(musicPath + soundPath, typeof(AudioClip));
     //            musicSource.volume = volume;
     //            musicSource.loop = looped;
@@ -105,7 +106,6 @@ public class SoundManager : Singleton<SoundManager>
     //                    break;
     //                StopSound(SoundType.Ambient);
     //            }
-                    
 
     //            ambientSource.clip = (AudioClip)AssetDatabase.LoadAssetAtPath(ambientPath + soundPath, typeof(AudioClip));
     //            ambientSource.volume = volume;
@@ -148,10 +148,10 @@ public class SoundManager : Singleton<SoundManager>
     }
 
     protected override bool DestroyOnLoad => true;
-    protected override bool KeepParent => false;
+    protected override bool KeepParent    => false;
 }
 
 public enum SoundType
 {
-    UI, Ambient, Music
+    UI, Ambient, Music,
 }

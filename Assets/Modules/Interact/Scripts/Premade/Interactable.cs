@@ -12,11 +12,11 @@ namespace InteractModule.Premade
         public UnityEvent OnClick;
 
         /// <inheritdoc/>
-        void IInteractable.OnClick() => this.OnClick?.Invoke();
+        void IInteractable.OnClick() => OnClick?.Invoke();
 
         public InteractionAsset asset;
 
         /// <inheritdoc/>
-        public InteractionAsset InteractionAsset => this.asset;
+        public InteractionAsset InteractionAsset => asset;
     }
 }

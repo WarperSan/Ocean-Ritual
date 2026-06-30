@@ -8,6 +8,6 @@ namespace UIModule.Interfaces
     /// </summary>
     public interface IElementable : IUIActionable
     {
-        public RectTransform Rect { get; }
+        RectTransform Rect { get; }
     }
 }

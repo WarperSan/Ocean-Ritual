@@ -10,13 +10,16 @@ namespace FishingModule.UI
         #region UI Components
 
         [Header("UI Components")]
-        [SerializeField, Tooltip("Icon to show the new fish")]
+        [SerializeField]
+        [Tooltip("Icon to show the new fish")]
         private Image newFishIcon;
 
-        [SerializeField, Tooltip("Text to show the new fish")]
+        [SerializeField]
+        [Tooltip("Text to show the new fish")]
         private TextMeshProUGUI newFishTitle;
 
-        [SerializeField, Tooltip("RectTransfrom to animate")]
+        [SerializeField]
+        [Tooltip("RectTransfrom to animate")]
         private RectTransform animatedRect;
 
         #endregion
@@ -24,7 +27,8 @@ namespace FishingModule.UI
         #region Parameters
 
         [Header("Parameters")]
-        [SerializeField, Tooltip("Color used to show the amount. The maximum of the gradient is for 100.")]
+        [SerializeField]
+        [Tooltip("Color used to show the amount. The maximum of the gradient is for 100.")]
         private Gradient amountColor;
 
         #endregion
@@ -34,21 +38,21 @@ namespace FishingModule.UI
         /// <summary>
         /// Fetches the text to show
         /// </summary>
-        private static string GetText() => "Vous avez \nreçu x{0}";
+        private static string GetText() => "Vous avez \nreï¿½u x{0}";
 
         public void Set(FishSO fish, uint amount)
         {
             // TITLE
-            string colorTag = this.amountColor.Evaluate(amount / 100f).ToHexString();
+            string colorTag = amountColor.Evaluate(amount / 100f).ToHexString();
 
             string text = string.Format(
                 GetText(),
                 $"<color=#{colorTag}>{amount}</color>"
             );
-            this.newFishTitle.text = text;
+            newFishTitle.text = text;
 
             // ICON
-            this.newFishIcon.sprite = fish != null ? fish.Icon : null;
+            newFishIcon.sprite = fish != null ? fish.Icon : null;
         }
 
         #endregion

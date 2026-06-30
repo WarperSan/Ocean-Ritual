@@ -33,35 +33,49 @@ namespace BossesModule.Worm
         private Node _root;
 
         /// <inheritdoc/>
-        public Node GetRoot() => this._root;
+        public Node GetRoot() => _root;
 
         /// <inheritdoc/>
         public void RebuildRoot()
         {
             Selector root = new();
 
-            this._attackNode = new AttackSequence(this, this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ATTACKING);
-            root += this._attackNode;
+            _attackNode = new AttackSequence(this,
+                _entity,
+                animator,
+                _collider,
+                CURRENT_TARGET,
+                IS_ATTACKING);
+            root += _attackNode;
 
-            this._escapeNode = new EscapeNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_ESCAPING, IS_REPOSITIONING);
-            root += this._escapeNode;
+            _escapeNode = new EscapeNode(_entity,
+                animator,
+                _collider,
+                CURRENT_TARGET,
+                IS_ESCAPING,
+                IS_REPOSITIONING);
+            root += _escapeNode;
 
-            this._repositionNode = new RepositionNode(this._entity, this.animator, this._collider, CURRENT_TARGET, IS_REPOSITIONING);
-            root += this._repositionNode;
+            _repositionNode = new RepositionNode(_entity,
+                animator,
+                _collider,
+                CURRENT_TARGET,
+                IS_REPOSITIONING);
+            root += _repositionNode;
 
-            root += this.Rotate();
+            root += Rotate();
 
             root.SetData(CURRENT_TARGET, null);
 
-            this._root = root.Alias("Root");
+            _root = root.Alias("Root");
         }
 
         public bool IsMoving()
         {
-            if (this._root == null)
+            if (_root == null)
                 return false;
 
-            return this._root.GetData<bool>(IS_ESCAPING) || this._root.GetData<bool>(IS_REPOSITIONING);
+            return _root.GetData<bool>(IS_ESCAPING) || _root.GetData<bool>(IS_REPOSITIONING);
         }
 
         #endregion
@@ -70,9 +84,9 @@ namespace BossesModule.Worm
 
         private AttackSequence _attackNode;
 
-        public void OnAttackEnded() => this._attackNode.OnAnimationEnded();
+        public void OnAttackEnded() => _attackNode.OnAnimationEnded();
 
-        public void IceWaveStart() => this._entity.StartIceWave();
+        public void IceWaveStart() => _entity.StartIceWave();
 
         #endregion
 
@@ -80,8 +94,8 @@ namespace BossesModule.Worm
 
         private EscapeNode _escapeNode;
 
-        public void OnEscapeStartEnded() => this._escapeNode.OnStartAnimationEnded();
-        public void OnEscapeEndEnded() => this._escapeNode.OnEndAnimationEnded();
+        public void OnEscapeStartEnded() => _escapeNode.OnStartAnimationEnded();
+        public void OnEscapeEndEnded()   => _escapeNode.OnEndAnimationEnded();
 
         #endregion
 
@@ -89,8 +103,8 @@ namespace BossesModule.Worm
 
         private RepositionNode _repositionNode;
 
-        public void OnRepositionStartEnded() => this._repositionNode.OnStartAnimationEnded();
-        public void OnRepositionEndEnded() => this._repositionNode.OnEndAnimationEnded();
+        public void OnRepositionStartEnded() => _repositionNode.OnStartAnimationEnded();
+        public void OnRepositionEndEnded()   => _repositionNode.OnEndAnimationEnded();
 
         #endregion
 
@@ -107,14 +121,14 @@ namespace BossesModule.Worm
                 return NodeState.FAILURE;
 
             Vector3 targetPosition = new(
-                target.position.x - this.transform.position.x,
-                this.transform.position.y,
-                target.position.z - this.transform.position.z
+                target.position.x - transform.position.x,
+                transform.position.y,
+                target.position.z - transform.position.z
             );
 
             // Rotate self towards target
             var targetRotation = Quaternion.LookRotation(targetPosition);
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, targetRotation, 45 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 45 * Time.deltaTime);
 
             return NodeState.SUCCESS;
         }
@@ -122,4 +136,3 @@ namespace BossesModule.Worm
         #endregion
     }
 }
-

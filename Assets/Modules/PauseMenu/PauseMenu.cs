@@ -11,8 +11,11 @@ namespace UIModule.Menus
     {
         #region AnimatedMenu
 
-        [SerializeField] AudioClip openSound;
-        [SerializeField] AudioClip closeSound;
+        [SerializeField]
+        private AudioClip openSound;
+
+        [SerializeField]
+        private AudioClip closeSound;
 
         /// <inheritdoc/>
         public override IEnumerator Open()
@@ -24,17 +27,17 @@ namespace UIModule.Menus
 
             yield return base.Open();
 
-            this.resumeBtn.OnClick.AddListener(this.ResumeButton);
-            this.mainMenuBtn.OnClick.AddListener(this.MainMenuButton);
-            this.exitBtn.OnClick.AddListener(this.ExitButton);
+            resumeBtn.OnClick.AddListener(ResumeButton);
+            mainMenuBtn.OnClick.AddListener(MainMenuButton);
+            exitBtn.OnClick.AddListener(ExitButton);
         }
 
         /// <inheritdoc/>
         public override IEnumerator Close()
         {
-            this.resumeBtn.OnClick.RemoveListener(this.ResumeButton);
-            this.mainMenuBtn.OnClick.RemoveListener(this.MainMenuButton);
-            this.exitBtn.OnClick.RemoveListener(this.ExitButton);
+            resumeBtn.OnClick.RemoveListener(ResumeButton);
+            mainMenuBtn.OnClick.RemoveListener(MainMenuButton);
+            exitBtn.OnClick.RemoveListener(ExitButton);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -63,7 +66,7 @@ namespace UIModule.Menus
 
         private void ResumeButton() => UIManager.Close(this);
 
-        private void MainMenuButton() => this.mainMenuTransition.Play();
+        private void MainMenuButton() => mainMenuTransition.Play();
 
         private void ExitButton() => Application.Quit();
 
@@ -86,17 +89,16 @@ namespace UIModule.Menus
 
         public void OpenLetter()
         {
-            this.letterTop.SetAlpha(1f);
-            this.letterBottom.sprite = this.letterOpenBottom;
+            letterTop.SetAlpha(1f);
+            letterBottom.sprite = letterOpenBottom;
         }
 
         public void CloseLetter()
         {
-            this.letterTop.SetAlpha(0f);
-            this.letterBottom.sprite = this.letterCloseBottom;
+            letterTop.SetAlpha(0f);
+            letterBottom.sprite = letterCloseBottom;
         }
 
         #endregion
     }
 }
-

@@ -12,10 +12,10 @@ using static EnumGeneral;
 public enum LanceFlameModes
 {
     FIRE,
-    ICE
+    ICE,
 };
 
-public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes> 
+public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, IMultiMode<LanceFlameModes>
 {
     #region Controller
 
@@ -25,8 +25,8 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         base.OnStart();
 
         // --- STATS ---
-  
-        this.UpdateStat();
+
+        UpdateStat();
         // ---
 
         // --- OVERHEAT ---
@@ -34,7 +34,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
             initialScaleOverheatMeter = OverheatMeter.localScale;
         // ---
 
-        this.remainingBullets = this.GetClipSize();
+        remainingBullets = GetClipSize();
     }
 
     /// <inheritdoc/>
@@ -43,7 +43,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         SetCursorLock(true);
         Cursor.visible = false;
     }
-    
+
     /// <inheritdoc/>
     protected override void OnSwitchOut()
     {
@@ -56,7 +56,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     {
         base.OnUpdate(elapsed);
 
-        this.ParticuleControleurs.ControleParticule(this.CanShoot(), this.currentMode == LanceFlameModes.ICE);
+        ParticuleControleurs.ControleParticule(CanShoot(), currentMode == LanceFlameModes.ICE);
     }
 
     #endregion
@@ -67,7 +67,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     public override bool CanShoot()
     {
         // If the controller is disabled, skip
-        if (!this.IsEnabled)
+        if (!IsEnabled)
             return false;
 
         // Emp�che de tirer si l'arme est en surchauffe
@@ -75,7 +75,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
             return false;
 
         // Emp�che si il n'y a pas de munitions
-        if (this.remainingBullets <= 0)
+        if (remainingBullets <= 0)
             return false;
 
         // Emp�che de tirer si le temps de recharge est insuffisant
@@ -94,27 +94,27 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
 
         // Set properties
         balleLF.SetProperties(
-            this.GetBulletSpeed(),
-            this.GetRange()
+            GetBulletSpeed(),
+            GetRange()
         );
 
-        this.PlaceBullet(balleLF);
+        PlaceBullet(balleLF);
 
         timeSinceLastShot = 0f; // R�initialise le temps depuis le dernier tir
-        this.UpdateOverheatIndicator();
+        UpdateOverheatIndicator();
     }
 
     /// <inheritdoc/>
     protected override Attack GetAttack() => new()
     {
-        Damage = this.GetDamage(),
-        Type = this.currentMode switch
+        Damage = GetDamage(),
+        Type = currentMode switch
         {
             LanceFlameModes.FIRE => AttackType.FIRE,
-            LanceFlameModes.ICE => AttackType.ICE,
-            _ => AttackType.NORMAL,
+            LanceFlameModes.ICE  => AttackType.ICE,
+            _                    => AttackType.NORMAL,
         },
-        TargetType = ProjectileTarget.OPPONENTS
+        TargetType = ProjectileTarget.OPPONENTS,
     };
 
     #endregion
@@ -135,7 +135,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     }
 
     /// <inheritdoc/>
-    protected override void OnReload() => this.UpdateOverheatIndicator();
+    protected override void OnReload() => UpdateOverheatIndicator();
 
     /// <inheritdoc/>
     protected override void OnReloadCompleted()
@@ -150,14 +150,17 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
 
     [Header("IOverheatable")]
     [SerializeField]
-    private bool isOverheated = false;
+    private bool isOverheated;
 
     [SerializeField]
     private Transform OverheatMeter;
+
     private Vector3 initialScaleOverheatMeter;
 
     /// <inheritdoc/>
-    public void OnOverheat() { /* Fonction vide */ }
+    public void OnOverheat()
+    { /* Fonction vide */
+    }
 
     /// <inheritdoc/>
     public void UpdateOverheatIndicator()
@@ -166,7 +169,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
             return;
 
         // Calcule la proportion de balles restantes par rapport � la capacit� totale
-        float ammoRatio = this.remainingBullets / (float)this.GetClipSize();
+        float ammoRatio = remainingBullets / (float)GetClipSize();
         Vector3 initialScale = OverheatMeter.localScale;
 
         // R�duit l'�chelle sur l'axe Y en fonction du nombre de balles restantes
@@ -185,7 +188,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     }
 
     /// <inheritdoc/>
-    bool IOverheatable.IsOverheated() => this.isOverheated;
+    bool IOverheatable.IsOverheated() => isOverheated;
 
     #endregion
 
@@ -205,17 +208,17 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     private Renderer modeRenderer;
 
     /// <inheritdoc/>
-    public LanceFlameModes NextMode() => this.currentMode switch
+    public LanceFlameModes NextMode() => currentMode switch
     {
         LanceFlameModes.FIRE => LanceFlameModes.ICE,
-        LanceFlameModes.ICE => LanceFlameModes.FIRE,
-        _ => LanceFlameModes.ICE
+        LanceFlameModes.ICE  => LanceFlameModes.FIRE,
+        _                    => LanceFlameModes.ICE,
     };
 
     /// <inheritdoc/>
     public void SetMode(LanceFlameModes mode)
     {
-        this.currentMode = mode;
+        currentMode = mode;
 
         if (modeRenderer == null)
             return;
@@ -224,8 +227,8 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         modeRenderer.material = mode switch
         {
             LanceFlameModes.FIRE => feu,
-            LanceFlameModes.ICE => glace,
-            _ => feu
+            LanceFlameModes.ICE  => glace,
+            _                    => feu,
         };
     }
 
@@ -234,35 +237,64 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.Attaque, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Porter, 1f);
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
 
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.Attaque, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Porter, 1f);
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.Attaque, 1f);
 
-    [SerializeField] private componentGBN ComponantGBN;
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Porter, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.Attaque, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Porter, 1f);
+
+    [SerializeField]
+    private componentGBN ComponantGBN;
+
     public componentGBN componentGBN => ComponantGBN;
 
-    public int CostToUpgrade { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public int ForgePercentage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    public int LvlOfEquipment { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public int CostToUpgrade   { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int ForgePercentage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int LvlOfEquipment  { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public string Name => throw new System.NotImplementedException();
+    public string Name => throw new NotImplementedException();
 
     /// <inheritdoc/>
     public void UpdateStat()
     {
         ComponantGBN.GBNScript.GetStat();
+
         // Cr�ation de la liste des statistiques de base
         var baseStats = new List<TypeQuantity<TypeWeapon>>
         {
@@ -272,7 +304,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
             BASE_BULLET_SIZE,
             BASE_FIRERATE,
             BASE_AMMO_CAPACITY,
-            BASE_RANGE
+            BASE_RANGE,
         };
 
         // Cr�ation de la liste des statistiques boost�es
@@ -284,7 +316,7 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
             BOOSTED_BULLET_SIZE,
             BOOSTED_FIRERATE,
             BOOSTED_AMMO_CAPACITY,
-            BOOSTED_RANGE
+            BOOSTED_RANGE,
         };
 
         // Mise � jour des statistiques avec les boosts
@@ -294,20 +326,20 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
     /// <summary>
     /// Fetches the range of this weapon
     /// </summary>
-    public float GetRange(bool getBoosted = true) => getBoosted ? this.BOOSTED_RANGE.Quantite : this.BASE_RANGE.Quantite;
+    public float GetRange(bool getBoosted = true) => getBoosted ? BOOSTED_RANGE.Quantite : BASE_RANGE.Quantite;
 
     /// <summary>
     /// Fetches the bullet speed of this weapon
     /// </summary>
-    public float GetBulletSpeed(bool getBoosted = true) => getBoosted ? this.BOOSTED_BULLET_SPEED.Quantite : this.BASE_BULLET_SPEED.Quantite;
+    public float GetBulletSpeed(bool getBoosted = true) => getBoosted ? BOOSTED_BULLET_SPEED.Quantite : BASE_BULLET_SPEED.Quantite;
 
     /// <summary>
     /// Fetches the bullet damage of this weapon
     /// </summary>
-    public float GetDamage(bool getBoosted = true) => getBoosted ? this.BOOSTED_ATTACK.Quantite : this.BASE_ATTACK.Quantite;
+    public float GetDamage(bool getBoosted = true) => getBoosted ? BOOSTED_ATTACK.Quantite : BASE_ATTACK.Quantite;
 
     /// <inheritdoc/>
-    public uint GetAmmoCapacity(bool getBoosted = true) => (uint)(getBoosted ? this.BOOSTED_AMMO_CAPACITY.Quantite : this.BASE_AMMO_CAPACITY.Quantite);
+    public uint GetAmmoCapacity(bool getBoosted = true) => (uint)(getBoosted ? BOOSTED_AMMO_CAPACITY.Quantite : BASE_AMMO_CAPACITY.Quantite);
 
     #endregion
 
@@ -323,31 +355,28 @@ public class LanceFlameControleur : WeaponController, Equipment, IOverheatable, 
         Quaternion rotation = Quaternion.identity;
 
         // Assigner la position et la rotation de ZoneDeTire � la balle
-        if (this.shootOrigin != null)
+        if (shootOrigin != null)
         {
-            position = this.shootOrigin.position;
-            rotation = this.shootOrigin.rotation;
+            position = shootOrigin.position;
+            rotation = shootOrigin.rotation;
         }
 
         bullet.transform.SetPositionAndRotation(position, rotation);
     }
 
-    public void UpgradeEquipment() => throw new System.NotImplementedException();
-    public int GetCostForUpgrade() => throw new System.NotImplementedException();
-    public UpgradeStats GetStatToUpgradeAndCost() => throw new System.NotImplementedException();
+    public void         UpgradeEquipment()        => throw new NotImplementedException();
+    public int          GetCostForUpgrade()       => throw new NotImplementedException();
+    public UpgradeStats GetStatToUpgradeAndCost() => throw new NotImplementedException();
 
-    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum
-    {
-        return null;
-    }
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum => null;
 
+    #endregion
 
-        #endregion
-
-        #region Effects
+    #region Effects
 
     [Header("Effects")]
-    [SerializeField] private ParticuleControleur ParticuleControleurs;
+    [SerializeField]
+    private ParticuleControleur ParticuleControleurs;
 
     #endregion
 }

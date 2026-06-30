@@ -6,7 +6,7 @@ namespace DhafinFawwaz.AnimationUILib.EditorLib
 public class AnimationUICustomMenu
 {
     [MenuItem("GameObject/UI/Create AnimationUI")]
-    static void CreateAnimationUI(MenuCommand menuCommand)
+    private static void CreateAnimationUI(MenuCommand menuCommand)
     {
         GameObject selected = Selection.activeGameObject;
         GameObject createdGo = new GameObject("AnimationUI");

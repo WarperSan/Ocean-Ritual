@@ -13,17 +13,17 @@ namespace UtilsModule
         private Vector3 offset;
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (this.target == null)
+            if (target == null)
                 return;
 
-            Vector3 pos = this.target.position;
+            Vector3 pos = target.position;
 
-            pos = Vector3.Scale(pos, this.axis);
-            pos += this.offset;
+            pos = Vector3.Scale(pos, axis);
+            pos += offset;
 
-            this.transform.position = pos;
+            transform.position = pos;
         }
     }
 }

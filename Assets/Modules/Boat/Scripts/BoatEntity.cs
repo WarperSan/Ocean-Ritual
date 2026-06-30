@@ -1,23 +1,27 @@
 using EntityModule;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class BoatEntity : Entity
 {
-    [SerializeField] Slider slider;
+    [SerializeField]
+    private Slider slider;
+
     protected override void OnDeath(float overDamage)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScreen");
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
+
     protected override void OnStart()
     {
         base.OnStart();
 
-        TargetGeneral.Instance.BoatTarget = this.transform;
+        TargetGeneral.Instance.BoatTarget = transform;
 
         if (slider != null)
         {
-            // Initialiser le slider avec la santé maximale
+            // Initialiser le slider avec la santï¿½ maximale
             slider.maxValue = Health;
             slider.value = Health;
         }
@@ -27,23 +31,15 @@ public class BoatEntity : Entity
 
     protected override void OnPostAttack(Projectile source = null)
     {
-       
         base.OnPostAttack(source);
         UpdateHealthSlider();
     }
 
-    protected override void ModifyHeal(Heal heal)
-    {
-       
-        UpdateHealthSlider();
-    }
+    protected override void ModifyHeal(Heal heal) => UpdateHealthSlider();
 
     private void UpdateHealthSlider()
     {
         if (slider != null)
-        {
-            slider.value = Health; // Met à jour la valeur du slider
-        }
+            slider.value = Health; // Met ï¿½ jour la valeur du slider
     }
-  
 }

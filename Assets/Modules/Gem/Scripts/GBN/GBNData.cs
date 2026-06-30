@@ -11,6 +11,7 @@
 //}
 
 //[System.Serializable]
+
 public class GBNData
 {
     //[SerializeField] public string Name;
@@ -67,7 +68,4 @@ public class GBNData
 //    [SerializeField] public List<TypeQuantity<TypeNet>> typeNet;
 //    #endregion
 
-
 //}
-
-

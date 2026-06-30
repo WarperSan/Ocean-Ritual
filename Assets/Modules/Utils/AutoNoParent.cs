@@ -10,10 +10,10 @@ namespace UtilsModule
         /// <inheritdoc/>
         private void Awake()
         {
-            if (this.transform.parent != null)
+            if (transform.parent != null)
             {
-                this.name = this.transform.parent.name + " - " + this.name;
-                this.transform.parent = null;
+                name = transform.parent.name + " - " + name;
+                transform.parent = null;
             }
 
             Destroy(this);

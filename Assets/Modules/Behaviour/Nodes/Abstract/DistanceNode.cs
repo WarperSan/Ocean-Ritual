@@ -5,7 +5,7 @@ namespace BehaviourModule.Nodes.Abstract
     /// <summary>
     /// Nodes that calculates the distance between self and the target
     /// </summary>
-    public abstract class DistanceNode : Node 
+    public abstract class DistanceNode : Node
     {
         private readonly Transform self;
         private readonly string target;
@@ -23,23 +23,23 @@ namespace BehaviourModule.Nodes.Abstract
         #region Node
 
         /// <inheritdoc/>
-        protected override NodeState OnEvaluate() 
+        protected override NodeState OnEvaluate()
         {
             // If self is invalid, return failure
-            if (this.self == null)
+            if (self == null)
                 return NodeState.FAILURE;
 
             // If target is invalid, return success
-            Transform _target = this.GetData<Transform>(this.target);
+            Transform _target = GetData<Transform>(target);
 
             if (_target == null)
                 return NodeState.FAILURE;
 
             // Get distance
-            float distance = Vector3.Distance(this.self.position, _target.position);
+            float distance = Vector3.Distance(self.position, _target.position);
 
             // If close enough from target
-            return this.GetState(distance);
+            return GetState(distance);
         }
 
         #endregion

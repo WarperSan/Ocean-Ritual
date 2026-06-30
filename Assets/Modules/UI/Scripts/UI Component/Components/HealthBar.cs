@@ -1,7 +1,6 @@
 using DhafinFawwaz.AnimationUILib;
 using EntityModule;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,8 @@ namespace UIModule.Components
 {
     public class HealthBar : MonoBehaviour
     {
-        [SerializeField] private Slider healthBar;
+        [SerializeField]
+        private Slider healthBar;
 
         [SerializeField]
         private AnimationUI showAnimation;
@@ -19,16 +19,12 @@ namespace UIModule.Components
 
         public void InitializeBar(Entity boss)
         {
-            this.healthBar.minValue = 0;
-            this.healthBar.maxValue = boss.MaxHealth;
-            this.healthBar.value = boss.Health;
-
+            healthBar.minValue = 0;
+            healthBar.maxValue = boss.MaxHealth;
+            healthBar.value = boss.Health;
         }
 
-        public void UpdateBar(Entity boss)
-        {
-            StartCoroutine(AnimateHealthChange(boss.Health));
-        }
+        public void UpdateBar(Entity boss) => StartCoroutine(AnimateHealthChange(boss.Health));
 
         private IEnumerator AnimateHealthChange(float targetHealth)
         {
@@ -46,14 +42,8 @@ namespace UIModule.Components
             healthBar.value = targetHealth;
         }
 
-        public void Show()
-        {
-            this.showAnimation.Play();
-        }
+        public void Show() => showAnimation.Play();
 
-        public void Hide()
-        {
-            this.hideAnimation.Play();
-        }
+        public void Hide() => hideAnimation.Play();
     }
 }

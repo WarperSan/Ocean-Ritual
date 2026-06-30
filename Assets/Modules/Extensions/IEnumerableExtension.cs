@@ -21,7 +21,7 @@ namespace ExtensionsModule
                 return Enumerable.Empty<U>();
 
             HashSet<U> unique = new();
-            
+
             foreach (T item in array)
                 unique.Add(action.Invoke(item));
 

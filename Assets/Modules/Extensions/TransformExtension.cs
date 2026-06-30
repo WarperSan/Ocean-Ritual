@@ -45,9 +45,7 @@ namespace ExtensionsModule
             foreach (Transform item in self)
             {
                 if (predicate.Invoke(item))
-                {
                     UnityEngine.Object.Destroy(item.gameObject);
-                }
             }
         }
     }

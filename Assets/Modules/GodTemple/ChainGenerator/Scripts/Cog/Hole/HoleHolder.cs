@@ -17,7 +17,7 @@ namespace Chain
                 RestoreHoles();
         }
 
-        void RestoreHoles()
+        private void RestoreHoles()
         {
             if(holes.Count == assetHolder.HoleTypes.Count) return;
 
@@ -28,16 +28,14 @@ namespace Chain
             //print(assetHolder.HoleTypes.Count);
             DeleteAll();
             foreach (var hole in assetHolder.HoleTypes)
-            {
                 holes.Add(Instantiate(hole, transform));
-            }
 
             if(holes.Count > 0 && currentHoleId < holes.Count)
                 holes[currentHoleId].transform.localScale = lastScale;
             ShowHole(currentHoleId);
         }
 
-        void DeleteAll()
+        private void DeleteAll()
         {
             for (int i = holes.Count - 1; i >= 0; i--)
             {
@@ -48,7 +46,7 @@ namespace Chain
             }
         }
 
-        void DisableAll()
+        private void DisableAll()
         {
             holes.ForEach(h=>h.gameObject.SetActive(false));
         }

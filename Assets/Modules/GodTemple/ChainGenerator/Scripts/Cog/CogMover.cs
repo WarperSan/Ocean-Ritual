@@ -35,7 +35,7 @@ namespace Chain
             MachineryDirection = direction;
         }
 
-        void ProcessMotion()
+        private void ProcessMotion()
         {
             if(Data.WithoutTeeth) return;
             SetSpeedByTeeth();
@@ -46,9 +46,7 @@ namespace Chain
         private void SendLinearSpeed()
         {
             if (Data.ContactType == ChainEnums.CogContactType.ChainRelated)
-            {
                 ChainEvents.OnCogSpeedSet?.Invoke(_speed * Data.Radius, MachineryId);
-            }
         }
 
         public int ConvertedChainDirection()
@@ -62,8 +60,8 @@ namespace Chain
             };
             //return MachineryDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
         }
-        
-        void SetSpinDirection()
+
+        private void SetSpinDirection()
         {
             if (Data.ContactType == ChainEnums.CogContactType.ChainRelated)
                 Data.RotationDirection = ConvertedChainDirection();
@@ -80,10 +78,7 @@ namespace Chain
                     Data.RotationDirection = Data.relatedGearData.RotationDirection * -1;
 
                 else
-                {
                     Debug.LogWarning("2 'CogRelated' cogs can't work, change one of the cog's contact type!");
-                }
-                
             }
         }
         
@@ -93,7 +88,7 @@ namespace Chain
             _speed = MachinerySpeed / Data.TeethCount;
         }
 
-        IEnumerator SpinRoutine()
+        private IEnumerator SpinRoutine()
         {
             SetSpinDirection();
             var direction = Vector3.up * Data.RotationDirection;

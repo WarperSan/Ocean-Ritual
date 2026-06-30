@@ -1,9 +1,6 @@
 using ControllerModule.Interfaces.Player;
 using ExtensionsModule;
 using MapModule;
-using System.Collections.Generic;
-using System.Net;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace ControllerModule.Controllers
@@ -35,21 +32,21 @@ namespace ControllerModule.Controllers
         private void UpdatePlayerAboard()
         {
             // If player not aboard, skip
-            if (this.player == null)
+            if (player == null)
                 return;
 
             // If contains player, skip
-            if (this.aboardCollider.bounds.Contains(player.transform.position))
+            if (aboardCollider.bounds.Contains(player.transform.position))
                 return;
 
-            if (this.player.TryGetComponent(out CharacterController cc))
+            if (player.TryGetComponent(out CharacterController cc))
             {
-                this.player.SetParent(null);
+                player.SetParent(null);
                 cc.detectCollisions = true;
                 cc.GetComponent<PlayerController>().boatController = null;
             }
 
-            this.player = null;
+            player = null;
         }
 
         #endregion
@@ -66,26 +63,32 @@ namespace ControllerModule.Controllers
         private void UpdateTurn(float elapsed)
         {
             // Skip if no turn
-            if (this.direction.x == 0)
+            if (direction.x == 0)
             {
                 _rb.angularVelocity = Vector3.zero;
                 return;
             }
 
             //D�signe le sense de la rotation et la vitesse de rotation 
-            if (this.direction.x > 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
+            if (direction.x > 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
             {
                 //eulerAngleVelocity = new Vector3(0, _stats.GetHandling(), 0);
-                _rb.AddTorque(0, _stats.GetHandling() / 50, 0, ForceMode.Acceleration);
+                _rb.AddTorque(0,
+                    _stats.GetHandling() / 50,
+                    0,
+                    ForceMode.Acceleration);
                 //comparer transform.forward à la vélocité normalized
             }
-            else if (this.direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
+            else if (direction.x < 0 && !(_rb.angularVelocity.sqrMagnitude > _stats.GetHandling() / 50))
             {
                 //eulerAngleVelocity = new Vector3(0, -_stats.GetHandling(), 0);
-                _rb.AddTorque(0, -_stats.GetHandling() / 50, 0, ForceMode.Acceleration);
+                _rb.AddTorque(0,
+                    -_stats.GetHandling() / 50,
+                    0,
+                    ForceMode.Acceleration);
             }
 
-            _rb.linearVelocity = this.transform.forward * _rb.linearVelocity.magnitude;
+            _rb.linearVelocity = transform.forward * _rb.linearVelocity.magnitude;
         }
 
         #endregion
@@ -93,10 +96,14 @@ namespace ControllerModule.Controllers
         #region Move
 
         [Header("Move")]
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat speeds up")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Determines how fast the boat speeds up")]
         private float movementAcceleration = 0.01f;
 
-        [SerializeField, Min(0), Tooltip("Determines how fast the boat slows down")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Determines how fast the boat slows down")]
         private float movementDeceleration = 0.01f;
 
         private Vector3 targetPosition;
@@ -113,41 +120,37 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMove(float elapsed)
         {
-
             movement = Vector3.zero;
-            float speed = GetSpeedMultiplier(this.direction) * _stats.GetSpeed();
+            float speed = GetSpeedMultiplier(direction) * _stats.GetSpeed();
 
             // Lerp the current speed to the wanted speed
-            this.CurrentSpeed = this.CurrentSpeed < speed
-                ? Mathf.Clamp(this.CurrentSpeed + this.movementAcceleration, float.MinValue, speed)
-                : Mathf.Clamp(this.CurrentSpeed - this.movementDeceleration, speed, float.MaxValue);
+            CurrentSpeed = CurrentSpeed < speed
+                ? Mathf.Clamp(CurrentSpeed + movementAcceleration, float.MinValue, speed)
+                : Mathf.Clamp(CurrentSpeed - movementDeceleration, speed, float.MaxValue);
 
-
-
-            if (this.CurrentSpeed < 0 && _rb.linearVelocity.magnitude >= 0 && _rb.linearVelocity.magnitude < 1)
+            if (CurrentSpeed < 0 && _rb.linearVelocity.magnitude >= 0 && _rb.linearVelocity.magnitude < 1)
             {
                 _rb.linearVelocity = Vector3.zero;
                 return;
             }
 
             // Updates the wanted position
-            this.targetPosition = this.transform.position + (this.transform.forward * this.CurrentSpeed);
-            this.targetPosition.y = OceanManager.WATER_HEIGHT;
+            targetPosition = transform.position + transform.forward * CurrentSpeed;
+            targetPosition.y = OceanManager.WATER_HEIGHT;
 
             // Lerps to the position
-            Vector3 newPosition = this.transform.position.LerpAll(this.targetPosition, elapsed);
-            newPosition.y = this.transform.position.y;
+            Vector3 newPosition = transform.position.LerpAll(targetPosition, elapsed);
+            newPosition.y = transform.position.y;
 
             //_rb.MovePosition(newPosition);
-            _rb.AddForce(this.transform.forward * CurrentSpeed);
+            _rb.AddForce(transform.forward * CurrentSpeed);
             _rb.linearVelocity = Vector3.ClampMagnitude(_rb.linearVelocity, _stats.GetSpeed());
-
 
             // Update positions
             movement = _rb.linearVelocity;
         }
 
-        public void ShutdownBoatAcceleration() => this.direction = Vector2.zero;
+        public void ShutdownBoatAcceleration() => direction = Vector2.zero;
 
         /// <summary>
         /// Gets the speed multiplier depending of the direction of the movement
@@ -179,9 +182,9 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnFixedUpdate(float elapsed)
         {
-            this.UpdateMove(elapsed);
-            this.UpdateTurn(elapsed);
-            this.UpdatePlayerAboard();
+            UpdateMove(elapsed);
+            UpdateTurn(elapsed);
+            UpdatePlayerAboard();
         }
 
         /// <inheritdoc/>
@@ -193,16 +196,17 @@ namespace ControllerModule.Controllers
             sliderLife.SetActive(true);
         }
 
-        [SerializeField] GameObject sliderLife;
+        [SerializeField]
+        private GameObject sliderLife;
+
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
             // Update cursor
             SetCursorLock(false);
             movementDeceleration /= 2;
-            this.ShutdownBoatAcceleration();
+            ShutdownBoatAcceleration();
             sliderLife.SetActive(false);
-
         }
 
         #endregion
@@ -217,11 +221,11 @@ namespace ControllerModule.Controllers
 
             if (other.gameObject.TryGetComponent(out CharacterController cc))
             {
-                other.transform.SetParent(this.aboardParent ?? this.transform);
+                other.transform.SetParent(aboardParent ?? transform);
                 cc.detectCollisions = false;
                 cc.GetComponent<PlayerController>().boatController = this;
 
-                this.player = other.transform;
+                player = other.transform;
             }
         }
 

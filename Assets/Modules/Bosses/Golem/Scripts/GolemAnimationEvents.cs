@@ -10,19 +10,22 @@ namespace BossesModule.Golem
         #region Throw
 
         [Header("Throw")]
-        [SerializeField, Tooltip("Prefab to throw")]
+        [SerializeField]
+        [Tooltip("Prefab to throw")]
         private GameObject throwProjectile;
 
-        [SerializeField, Tooltip("Initial position of the projectile")]
+        [SerializeField]
+        [Tooltip("Initial position of the projectile")]
         private Transform throwSource;
 
-        [SerializeField, Tooltip("Force applied to the projectile upon launch")]
+        [SerializeField]
+        [Tooltip("Force applied to the projectile upon launch")]
         private Vector3 throwForce;
 
         public void ExecuteThrow()
         {
             // If source is invalid, skip
-            if (this.throwSource == null)
+            if (throwSource == null)
                 return;
 
             Transform throwTarget = TargetGeneral.Instance.Target;
@@ -31,13 +34,13 @@ namespace BossesModule.Golem
             if (throwTarget == null)
                 return;
 
-            GameObject obj = this.tree.throwPool.Get(this.throwProjectile.name);
+            GameObject obj = tree.throwPool.Get(throwProjectile.name);
 
             if (obj == null)
                 return;
 
             obj.SetActive(true);
-            obj.transform.position = this.throwSource.position;
+            obj.transform.position = throwSource.position;
 
             if (obj.TryGetComponent(out Rigidbody rb))
                 rb.linearVelocity = GetLaunch(obj, throwTarget.position, 10);
@@ -45,16 +48,17 @@ namespace BossesModule.Golem
             if (obj.TryGetComponent(out Projectile projectile))
             {
                 projectile.ResetSelf();
-                projectile.Attribute(new Attack()
+
+                projectile.Attribute(new Attack
                 {
                     Damage = 3,
                     Type = AttackType.FIRE,
-                    TargetType = ProjectileTarget.ALL
+                    TargetType = ProjectileTarget.ALL,
                 });
             }
         }
 
-        public void ThrowEnded() => this.tree.ThrowEnded();
+        public void ThrowEnded() => tree.ThrowEnded();
 
         #endregion
 
@@ -62,7 +66,7 @@ namespace BossesModule.Golem
 
         public void SetSpawning()
         {
-            if (!this.TryGetComponent(out Animator animator))
+            if (!TryGetComponent(out Animator animator))
                 return;
 
             animator.SetBool("isSpawning", false);
@@ -73,7 +77,12 @@ namespace BossesModule.Golem
 
         #region Projectiles
 
-        private static Vector3 GetLaunch(GameObject projectile, Vector3 target, float height, float? gravity = null)
+        private static Vector3 GetLaunch(
+            GameObject projectile,
+            Vector3    target,
+            float      height,
+            float?     gravity = null
+        )
         {
             // Get base gravity
             gravity ??= Physics.gravity.y;

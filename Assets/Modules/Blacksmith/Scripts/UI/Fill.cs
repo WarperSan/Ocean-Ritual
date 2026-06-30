@@ -2,28 +2,43 @@ using UnityEngine;
 
 public class Fill : MonoBehaviour
 {
-    [SerializeField] public RectTransform leftArmFill;       // Remplissage du bras gauche
-    [SerializeField] public RectTransform rightArmFill;      // Remplissage du bras droit
-    [SerializeField] public RectTransform centerFill;        // Remplissage central
+    [SerializeField]
+    public RectTransform leftArmFill; // Remplissage du bras gauche
 
-    [SerializeField] public float removingAmout = 10f;       // Quantit� � retirer
+    [SerializeField]
+    public RectTransform rightArmFill; // Remplissage du bras droit
 
-    [SerializeField] public float growthPer10Percent = 60f;  // Croissance des bras gauche et droit par tranche de 10%
-    [SerializeField] public float centerGrowthPer10Percent = 40f; // Croissance du centre par tranche de 10%
+    [SerializeField]
+    public RectTransform centerFill; // Remplissage central
 
-    [Range(0, 1)] public float fillAmountCote = 0f;          // Remplissage pour les c�t�s gauche et droit
-    [Range(0, 1)] public float fillAmountMilieu = 0f;        // Remplissage pour la partie centrale
+    [SerializeField]
+    public float removingAmout = 10f; // Quantit� � retirer
 
-    [SerializeField] ForgeButton button;
-    [SerializeField] public bool CanFuse = false;
+    [SerializeField]
+    public float growthPer10Percent = 60f; // Croissance des bras gauche et droit par tranche de 10%
 
-    [SerializeField] AudioClip hammerSound;
-    void Update()
+    [SerializeField]
+    public float centerGrowthPer10Percent = 40f; // Croissance du centre par tranche de 10%
+
+    [Range(0, 1)]
+    public float fillAmountCote; // Remplissage pour les c�t�s gauche et droit
+
+    [Range(0, 1)]
+    public float fillAmountMilieu; // Remplissage pour la partie centrale
+
+    [SerializeField]
+    private ForgeButton button;
+
+    [SerializeField]
+    public bool CanFuse;
+
+    [SerializeField]
+    private AudioClip hammerSound;
+
+    private void Update()
     {
         if (!button.isButtonHeld)
-        {
             RemovingFill();
-        }
 
         updateFillCase();
     }
@@ -33,12 +48,17 @@ public class Fill : MonoBehaviour
         // Si les c�t�s ne sont pas � 100%, on ajoute d'abord � fillAmountCote
         if (fillAmountCote < 1f)
         {
-            SoundManager.Instance.PlaySound(hammerSound, SoundType.UI,0.5f, false, true);
+            SoundManager.Instance.PlaySound(hammerSound,
+                SoundType.UI,
+                0.5f,
+                false,
+                true);
             float spaceInCote = 1f - fillAmountCote;
+
             if (amount <= spaceInCote)
             {
                 // Si la quantit� � ajouter rentre dans le c�t�
-                fillAmountCote += amount*2;
+                fillAmountCote += amount * 2;
             }
             else
             {
@@ -64,9 +84,7 @@ public class Fill : MonoBehaviour
         if (fillAmountCote < 1f || fillAmountMilieu < 1f)
         {
             if (fillAmountMilieu > 0f)
-            {
                 fillAmountMilieu = Mathf.Max(fillAmountMilieu - amountToRemove, 0f); // Limite � 0%
-            }
             else if (fillAmountCote > 0f)
             {
                 // Ensuite, on retire des c�t�s si le milieu est vide
@@ -77,16 +95,16 @@ public class Fill : MonoBehaviour
 
     public void EmptyFill()
     {
-        this.fillAmountCote = 0;
-        this.fillAmountMilieu = 0;
-        this.updateFillCase();
+        fillAmountCote = 0;
+        fillAmountMilieu = 0;
+        updateFillCase();
     }
 
     private void updateFillCase()
     {
         CanFuse = fillAmountCote >= 1f && fillAmountMilieu >= 1f;
         // Remplissage des c�t�s gauche et droit
-        float armGrowthFactor = fillAmountCote/2 * 10f * growthPer10Percent;
+        float armGrowthFactor = fillAmountCote / 2 * 10f * growthPer10Percent;
 
         // Ajuster la taille des bras gauche et droit
         leftArmFill.sizeDelta = new Vector2(armGrowthFactor, leftArmFill.sizeDelta.y);

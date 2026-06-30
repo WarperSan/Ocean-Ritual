@@ -8,6 +8,6 @@ namespace ControllerModule.Interfaces.Player
         /// <summary>
         /// Called when the player presses the 'Interact' button
         /// </summary>
-        public void OnInteract();
+        void OnInteract();
     }
 }

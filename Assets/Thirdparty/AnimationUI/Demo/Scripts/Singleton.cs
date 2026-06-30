@@ -2,47 +2,46 @@ using UnityEngine;
 
 namespace DhafinFawwaz.AnimationUILib.Demo
 {
-
-#if UNITY_EDITOR
-using UnityEditor;
-[ExecuteInEditMode]
-#endif
-public class Singleton : MonoBehaviour
-{
-    public AudioManager Audio;
-    public GameManager Game;
-    public static Singleton Instance => _instance;
-    static Singleton _instance;
-
-    /// <summary>
-    /// Nulls any existing instance and creates a new one. It makes sure no weird
-    /// things happen when you reload the scene in the editor. It's used in Main.cs
-    /// </summary>
-    public static void Initialize()
+    #if UNITY_EDITOR
+    [ExecuteInEditMode]
+    #endif
+    public class Singleton : MonoBehaviour
     {
-        if(_instance != null)
+        public AudioManager Audio;
+        public GameManager Game;
+        public static Singleton Instance => _instance;
+        private static Singleton _instance;
+
+        /// <summary>
+        /// Nulls any existing instance and creates a new one. It makes sure no weird
+        /// things happen when you reload the scene in the editor. It's used in Main.cs
+        /// </summary>
+        public static void Initialize()
         {
-            Destroy(_instance.gameObject);
-            _instance = null;
+            if (_instance != null)
+            {
+                Destroy(_instance.gameObject);
+                _instance = null;
+            }
+            Instantiate(Resources.Load("SINGLETON"));
         }
-        GameObject.Instantiate(Resources.Load("SINGLETON"));
+
+        private void Awake()
+        {
+            if (_instance == null)
+                _instance = this;
+
+            #if UNITY_EDITOR
+            else if (!Application.isPlaying)
+                DestroyImmediate(gameObject);
+            #endif
+            else
+                Destroy(gameObject);
+
+            #if UNITY_EDITOR
+            if (Application.isPlaying)
+                #endif
+                DontDestroyOnLoad(gameObject);
+        }
     }
-    
-    void Awake()
-    {
-        if(_instance == null)_instance = this;
-
-#if UNITY_EDITOR
-        else if(!Application.isPlaying)DestroyImmediate(gameObject);
-#endif
-        else Destroy(gameObject);
-
-#if UNITY_EDITOR
-        if(Application.isPlaying)
-#endif
-        DontDestroyOnLoad(gameObject);
-
-    }
-}
-
 }

@@ -7,10 +7,10 @@ namespace BossesModule.Worm.Nodes
     {
         private float cooldown;
         private readonly float initialCooldown;
-        
+
         public CooldownNode(float cooldown, bool startOnCooldown = true)
         {
-            this.initialCooldown = cooldown;
+            initialCooldown = cooldown;
 
             this.cooldown = startOnCooldown ? cooldown : 0;
         }
@@ -26,9 +26,6 @@ namespace BossesModule.Worm.Nodes
             return NodeState.FAILURE;
         }
 
-        public void ResetCooldown()
-        {
-            cooldown = initialCooldown;
-        }
+        public void ResetCooldown() => cooldown = initialCooldown;
     }
 }

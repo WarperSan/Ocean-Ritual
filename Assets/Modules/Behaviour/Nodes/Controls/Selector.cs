@@ -25,21 +25,21 @@ namespace BehaviourModule.Nodes.Controls
                 NodeState childState = child.Evaluate();
 
                 // If child failed, skip
-                if (childState == NodeState.FAILURE) 
+                if (childState == NodeState.FAILURE)
                     continue;
-                
+
                 // Exit
                 return childState;
             }
 
             return NodeState.FAILURE;
         }
-        
+
         /// <inheritdoc/>
         public override string GetText() => "OR";
 
         #endregion
-        
+
         #region Operator
 
         public static Selector operator +(Selector root, Node child)

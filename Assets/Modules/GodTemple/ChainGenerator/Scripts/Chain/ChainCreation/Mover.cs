@@ -2,17 +2,17 @@
 {
     public interface Mover
     {
-        public float MachinerySpeed { get; set; }
-        public int MachineryId { get; set; }
+        float MachinerySpeed { get; set; }
+        int   MachineryId    { get; set; }
 
-        public ChainEnums.ChainDirection MachineryDirection { get; set; }
+        ChainEnums.ChainDirection MachineryDirection { get; set; }
 
-        public void StartMotion();
+        void StartMotion();
 
-        public void StopMotion();
+        void StopMotion();
 
-        public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData data,
-            ChainEnums.ChainDirection direction)
+        void MachinerySetup(float                     machinerySpeed, int machineryId, IMachinePartData data,
+                            ChainEnums.ChainDirection direction)
         {
         }
     }

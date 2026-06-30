@@ -19,84 +19,92 @@ namespace BossesModule.Worm.Nodes
         protected readonly string currentTarget;
         protected readonly string movementTag;
 
-        protected MovementNode(WormEntity entity, Animator animator, Collider collider, string CURRENT_TARGET, string animationAliasStart, string animationAliasEnd, string movementTag)
+        protected MovementNode(
+            WormEntity entity,
+            Animator   animator,
+            Collider   collider,
+            string     CURRENT_TARGET,
+            string     animationAliasStart,
+            string     animationAliasEnd,
+            string     movementTag
+        )
         {
             this.entity = entity;
             this.animator = animator;
             this.collider = collider;
-            this.currentTarget = CURRENT_TARGET;
+            currentTarget = CURRENT_TARGET;
             this.movementTag = movementTag;
 
-            this.Attach(GetPreNodes());
+            Attach(GetPreNodes());
 
             // Play diving animation
-            this.startAnimation = new AnimationNode(this.StartAnimation);
-            this.Attach(this.startAnimation.Alias(animationAliasStart));
+            startAnimation = new AnimationNode(StartAnimation);
+            Attach(startAnimation.Alias(animationAliasStart));
 
             // Go towards target
-            this.Attach(new GoToTarget(this.entity.transform, GetTargetDataKey(), SPEED));
+            Attach(new GoToTarget(this.entity.transform, GetTargetDataKey(), SPEED));
 
             // Play emerge animation
-            this.endAnimation = new AnimationNode(this.EndAnimation);
-            this.Attach(this.endAnimation.Alias(animationAliasEnd));
+            endAnimation = new AnimationNode(EndAnimation);
+            Attach(endAnimation.Alias(animationAliasEnd));
 
             // Reset animations
-            this.Attach(new CallbackNode(this.ResetSequence).Alias("Reset"));
+            Attach(new CallbackNode(ResetSequence).Alias("Reset"));
 
-            this.SetData(SPEED, 200f);
+            SetData(SPEED, 200f);
         }
 
         protected abstract string GetTargetDataKey();
 
         protected void StartAnimation()
         {
-            this.SetData(this.movementTag, true, -1);
+            SetData(movementTag, true, -1);
 
-            this.animator.SetBool("isUnderwater", true);
-            this.animator.SetInteger("diveAnimation", GetDiveAnimationIndex());
+            animator.SetBool("isUnderwater", true);
+            animator.SetInteger("diveAnimation", GetDiveAnimationIndex());
 
             // Disable collider
-            this.collider.enabled = false;
+            collider.enabled = false;
 
             // Set random position
-            this.SetData(GetTargetDataKey(), GetRandomPosition());
+            SetData(GetTargetDataKey(), GetRandomPosition());
         }
 
         protected void EndAnimation()
         {
-            Transform target = this.GetData<Transform>(currentTarget);
+            Transform target = GetData<Transform>(currentTarget);
 
             // If target is valid, look at
             if (target != null)
             {
                 Vector3 targetPosition = new(
-                   target.position.x - this.entity.transform.position.x,
-                   this.entity.transform.position.y,
-                   target.position.z - this.entity.transform.position.z
-               );
+                    target.position.x - entity.transform.position.x,
+                    entity.transform.position.y,
+                    target.position.z - entity.transform.position.z
+                );
 
                 // Rotate self towards target
-                this.entity.transform.rotation = Quaternion.LookRotation(targetPosition);
+                entity.transform.rotation = Quaternion.LookRotation(targetPosition);
             }
 
-            this.animator.SetBool("isUnderwater", false);
-            this.animator.SetInteger("emergeAnimation", GetEmergeAnimationIndex());
+            animator.SetBool("isUnderwater", false);
+            animator.SetInteger("emergeAnimation", GetEmergeAnimationIndex());
 
             // Enable collider
-            this.collider.enabled = true;
+            collider.enabled = true;
         }
 
         protected abstract NodeState ResetSequence();
 
         protected Vector3 GetRandomPosition()
         {
-            Vector3 selfPos = this.entity.transform.position;
-            Vector3 arenaPos = this.entity.ArenaOrigin.position;
-            Transform target = this.GetData<Transform>(currentTarget);
+            Vector3 selfPos = entity.transform.position;
+            Vector3 arenaPos = entity.ArenaOrigin.position;
+            Transform target = GetData<Transform>(currentTarget);
             Vector3 targetPos = target != null ? target.position : selfPos;
             Vector3 rndPos;
 
-            float maxRadius = this.entity.ArenaRadius * RADIUS_OFFSET;
+            float maxRadius = entity.ArenaRadius * RADIUS_OFFSET;
 
             while (true)
             {
@@ -120,8 +128,8 @@ namespace BossesModule.Worm.Nodes
         protected abstract int GetDiveAnimationIndex();
         protected abstract int GetEmergeAnimationIndex();
 
-        public void OnStartAnimationEnded() => this.startAnimation.OnEnded();
-        public void OnEndAnimationEnded() => this.endAnimation.OnEnded();
+        public void OnStartAnimationEnded() => startAnimation.OnEnded();
+        public void OnEndAnimationEnded()   => endAnimation.OnEnded();
 
         protected virtual Node[] GetPreNodes() => null;
 

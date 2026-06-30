@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManage : MonoBehaviour
 {
-    [SerializeField] QuestUI questUI;
+    [SerializeField]
+    private QuestUI questUI;
 
-    void Start()
-    {
-        questUI.SetQuestUI();
-    }
+    private void Start() => questUI.SetQuestUI();
 }

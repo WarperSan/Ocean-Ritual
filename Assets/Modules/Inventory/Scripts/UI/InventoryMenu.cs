@@ -14,6 +14,7 @@ namespace UIModule.Menus
             Cursor.visible = true;
             inventoryUI.UpdateSelf();
             yield return base.Open();
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryUI.GetComponent<RectTransform>());
         }
 

@@ -13,7 +13,12 @@ namespace BehaviourModule.Nodes.Generic
 
         #region Constructor
 
-        public DistanceInBetween(Transform self, string target, float minDistance, float maxDistance) : base(self, target)
+        public DistanceInBetween(
+            Transform self,
+            string    target,
+            float     minDistance,
+            float     maxDistance
+        ) : base(self, target)
         {
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;
@@ -24,8 +29,8 @@ namespace BehaviourModule.Nodes.Generic
         #region DistanceNode
 
         /// <inheritdoc/>
-        protected override NodeState GetState(float distance) => distance <= this.maxDistance && distance >= this.minDistance 
-            ? NodeState.SUCCESS 
+        protected override NodeState GetState(float distance) => distance <= maxDistance && distance >= minDistance
+            ? NodeState.SUCCESS
             : NodeState.FAILURE;
 
         /// <inheritdoc/>

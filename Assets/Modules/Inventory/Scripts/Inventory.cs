@@ -8,41 +8,56 @@ using UtilsModule;
 using TMPro;
 using BlacksmithModule;
 
-[System.Serializable]
+[Serializable]
 public class Inventory : Singleton<Inventory>
 {
     public const string CASH_ICON = "stack_coins_icon";
     public int NbSlotInventory = 12 * 2; // 12 items per page for 2 pages
 
-    [SerializeField] public List<ItemData> ItemList = new();
-    [SerializeField] private int Cash = 0;
-    [SerializeField] List<FishData> poissons;
-    [SerializeField] List<GemData> gemmes;
+    [SerializeField]
+    public List<ItemData> ItemList = new();
 
-    [SerializeField] int CashToUpGradeSocle;
-    [SerializeField] TextMeshProUGUI textCostInventory;
-    [SerializeField] TextMeshProUGUI textCostInventoryBlacksmith;
+    [SerializeField]
+    private int Cash;
+
+    [SerializeField]
+    private List<FishData> poissons;
+
+    [SerializeField]
+    private List<GemData> gemmes;
+
+    [SerializeField]
+    private int CashToUpGradeSocle;
+
+    [SerializeField]
+    private TextMeshProUGUI textCostInventory;
+
+    [SerializeField]
+    private TextMeshProUGUI textCostInventoryBlacksmith;
     //bool InventaireOuvert = false;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() =>
         //AddFishTest();
         //AddTestGemme();
         //UpdateListeComplementary();
         InitiateList();
-    }
 
-    void AddTestGemme()
+    private void AddTestGemme()
     {
-        string[] gemColors = { "gems Rouge", "gems Bleue", "gems Verte" };
+        string[] gemColors =
+        {
+            "gems Rouge",
+            "gems Bleue",
+            "gems Verte",
+        };
 
         for (int i = 0; i < 6; i++)
         {
-            GemData gem = new GemData
+            var gem = new GemData
             {
                 GemColorsName = gemColors[i % gemColors.Length], // Alternance des couleurs Rouge, Bleue, Verte
-                LVL = i + 1 // Niveau croissant
+                LVL = i + 1,                                     // Niveau croissant
             };
             ItemList.Add(gem);
         }
@@ -60,9 +75,7 @@ public class Inventory : Singleton<Inventory>
 
         //// Tant que l'inventaire n'est pas plein, ajoute des null
         while (ItemList.Count < NbSlotInventory)
-        {
             AddSlot();
-        }
         //à réactiver quand dans la main scene
         //UpdateCashCost();
     }
@@ -70,19 +83,15 @@ public class Inventory : Singleton<Inventory>
     public void UpgradeInventory(int AddingStockage)
     {
         if (AddingStockage < 0)
-        {
             Debug.LogWarning($"AddingStockage is less than 0   :   {AddingStockage}     : upgrade fail");
-        }
         else
-        {
             NbSlotInventory += AddingStockage;
-        }
     }
 
     public (List<int>, List<int>) ItemInListExistingOrNull(ItemData item)
     {
         List<int> ListIndexAvailable = new(); // Index où l'objet peut être placé (vide)
-        List<int> ListIndexItemSame = new(); // Index d'objets identiques (même name/type)
+        List<int> ListIndexItemSame = new();  // Index d'objets identiques (même name/type)
 
         // Parcourt l'inventaire pour trouver des emplacements disponibles ou identiques
         for (int i = 0; i < ItemList.Count; i++)
@@ -99,9 +108,7 @@ public class Inventory : Singleton<Inventory>
                 {
                     // Vérifie que le name est identique et que la quantité max n'est pas atteinte
                     if (poissonInList.fish == poisson.fish && poissonInList.quantity < poissonInList.quantityMax)
-                    {
                         ListIndexItemSame.Add(i);
-                    }
                 }
                 // Si l'objet est une GemData, on ignore les emplacements contenant d'autres objets
                 else if (item is GemData)
@@ -114,10 +121,7 @@ public class Inventory : Singleton<Inventory>
         return (ListIndexItemSame, ListIndexAvailable);
     }
 
-    private void AddSlot()
-    {
-        ItemList.Add(null);
-    }
+    private void AddSlot() => ItemList.Add(null);
 
     public void CleanSlot()
     {
@@ -130,34 +134,24 @@ public class Inventory : Singleton<Inventory>
                 i--; // Ajuster l'index après suppression
             }
             else
-            {
                 break; // Arrêter la suppression dès qu'on trouve un élément non null
-            }
         }
 
         // Supprimer les éléments null à la fin
         for (int i = ItemList.Count - 1; i >= 0; i--)
         {
             if (ItemList[i] == null)
-            {
                 ItemList.RemoveAt(i);
-            }
             else
-            {
                 break; // Arrêter la suppression dès qu'on trouve un élément non null
-            }
         }
 
         // Ajouter un emplacement vide à la fin si nécessaire
         if (ItemList.Count == 0 || ItemList[^1] != null)
-        {
             AddSlot(); // Ajoute un emplacement vide
-        }
 
         UpdateListeComplementary();
     }
-
-
 
     public void SwapPlace(int index1, int index2)
     {
@@ -179,39 +173,29 @@ public class Inventory : Singleton<Inventory>
     {
         // Vérifie si l'index est dans les limites de la liste
         if (index >= 0 && index < ItemList.Count)
-        {
             ItemList[index] = null;
-        }
         else
         {
             // Avertit que l'index est invalide
             Debug.LogWarning($"Index invalide : {index}. Aucune suppression effectuée.");
         }
         UpdateListeComplementary();
-
     }
 
-    public ItemData GetItem(int index)
-    {
-        return ItemList[index];
-    }
+    public ItemData GetItem(int index) => ItemList[index];
+
     public void AddItem(ItemData item, int slot)
     {
         if (ItemList[slot] == null)
-        {
             ItemList[slot] = item;
-
-        }
         else
-        {
             AddItem(item);
-        }
-
     }
+
     public void AddItem(ItemData item)
     {
         // Récupère les emplacements d'objets similaires et disponibles
-        var (ListIndexAvailable, ListIndexVoid) = ItemInListExistingOrNull(item);
+        (List<int> ListIndexAvailable, List<int> ListIndexVoid) = ItemInListExistingOrNull(item);
 
         //// Calcul du nombre d'éléments déjà présents dans l'inventaire
         //int nombreItemsTotal = ItemList.Sum(item => item?.quantity ?? 0);
@@ -228,7 +212,7 @@ public class Inventory : Singleton<Inventory>
         // 1. Ajoute aux emplacements d'objets identiques si possible
         foreach (int index in ListIndexAvailable)
         {
-            var itemInList = ItemList[index];
+            ItemData itemInList = ItemList[index];
             int placeAvailable = itemInList.quantityMax - itemInList.quantity;
 
             if (quantityremaining <= placeAvailable)
@@ -248,11 +232,10 @@ public class Inventory : Singleton<Inventory>
         foreach (int index in ListIndexVoid)
         {
             if (quantityremaining == 0)
-            {
                 break;
-            }
 
             ItemList[index] = item;
+
             if (quantityremaining <= item.quantityMax)
             {
                 ItemList[index].quantity = quantityremaining;
@@ -349,8 +332,8 @@ public class Inventory : Singleton<Inventory>
     public void SortName()
     {
         // Séparer les fish et les gems
-        List<FishData> fish = ItemList.OfType<FishData>().ToList();
-        List<GemData> gem = ItemList.OfType<GemData>().ToList();
+        var fish = ItemList.OfType<FishData>().ToList();
+        var gem = ItemList.OfType<GemData>().ToList();
 
         // Trier les fish par name (supposant que FishData a un champ 'name')
         fish = fish.OrderBy(p => p.fish.DisplayName).ToList();
@@ -363,13 +346,11 @@ public class Inventory : Singleton<Inventory>
         Debug.Log("Liste triée par name de fish.");
     }
 
-
-
     public void SortType()
     {
         // Séparer les fish et les gems
-        List<FishData> fish = ItemList.OfType<FishData>().ToList();
-        List<GemData> gem = ItemList.OfType<GemData>().ToList();
+        var fish = ItemList.OfType<FishData>().ToList();
+        var gem = ItemList.OfType<GemData>().ToList();
 
         // Réorganiser l'inventaire avec les fish d'abord, puis les gems
         ItemList = new List<ItemData>();
@@ -390,8 +371,8 @@ public class Inventory : Singleton<Inventory>
     public void SortLVL()
     {
         // Séparer les fish et les gems
-        List<GemData> gem = ItemList.OfType<GemData>().ToList();
-        List<FishData> fish = ItemList.OfType<FishData>().ToList();
+        var gem = ItemList.OfType<GemData>().ToList();
+        var fish = ItemList.OfType<FishData>().ToList();
 
         // Trier uniquement les gems par niveau
         gem = gem.OrderByDescending(g => g.LVL).ToList();
@@ -407,17 +388,17 @@ public class Inventory : Singleton<Inventory>
     public void AutoMerge()
     {
         // On garde les gems intactes
-        List<ItemData> gem = ItemList.Where(item => item is GemData).ToList();
+        var gem = ItemList.Where(item => item is GemData).ToList();
 
         // On filtre les fish avec quantité > 0
-        List<FishData> fish = ItemList.OfType<FishData>()
-                                             .Where(poisson => poisson.quantity > 0)
-                                             .ToList();
+        var fish = ItemList.OfType<FishData>()
+                           .Where(poisson => poisson.quantity > 0)
+                           .ToList();
 
         // On crée un dictionnaire pour compter et fusionner les fish par name
-        Dictionary<FishSO, (int quantiteTotale, int quantiterMax)> fusionPoissons = new Dictionary<FishSO, (int, int)>();
+        Dictionary<FishSO, (int quantiteTotale, int quantiterMax)> fusionPoissons = new();
 
-        foreach (var poisson in fish)
+        foreach (FishData poisson in fish)
         {
             if (!fusionPoissons.ContainsKey(poisson.fish))
             {
@@ -432,9 +413,9 @@ public class Inventory : Singleton<Inventory>
         }
 
         // Nouvelle liste des fish fusionnés
-        List<FishData> poissonsFusionnes = new List<FishData>();
+        var poissonsFusionnes = new List<FishData>();
 
-        foreach (var entry in fusionPoissons)
+        foreach (KeyValuePair<FishSO, (int quantiteTotale, int quantiterMax)> entry in fusionPoissons)
         {
             int quantiteTotale = entry.Value.quantiteTotale;
             int quantiterMax = entry.Value.quantiterMax;
@@ -457,7 +438,7 @@ public class Inventory : Singleton<Inventory>
                                     .Concat(gem)
                                     .ToList();
     }
-    
+
     #region Singleton
 
     /// <inheritdoc/>
@@ -474,10 +455,9 @@ public class Inventory : Singleton<Inventory>
             textCostInventoryBlacksmith.text = string.Format("<sprite name={0}> {1}", CASH_ICON, Cash);
         Blacksmith.Instance.InterfaceUpgrade();
     }
+
     public void AddCash(int AddingCash = 0)
     {
-
-   
         Cash += AddingCash;
         Debug.Log("addCash       " + Cash);
         UpdateCashCost();
@@ -492,33 +472,22 @@ public class Inventory : Singleton<Inventory>
         }
     }
 
-    public void GetCashUpgradeSocleCost(int cash = 0)
-    {
-        CashToUpGradeSocle = cash;
-    }
-    public void RemoveCashSocleCost()
-    {
-        RemoveCash(CashToUpGradeSocle);
-    }
-    public bool HaveEnoughtCash(int CashNeed = 0)
-    {
+    public void GetCashUpgradeSocleCost(int cash = 0) => CashToUpGradeSocle = cash;
 
-        return Cash >= CashNeed;
-    }
+    public void RemoveCashSocleCost() => RemoveCash(CashToUpGradeSocle);
+
+    public bool HaveEnoughtCash(int CashNeed = 0) => Cash >= CashNeed;
 
     public int NumberOfCashFromSellingFish()
     {
         int CashFromSelling = 0;
-        List<FishData> fish = ItemList.OfType<FishData>()
-                                           .Where(poisson => poisson.quantity > 0)
-                                           .ToList();
+
+        var fish = ItemList.OfType<FishData>()
+                           .Where(poisson => poisson.quantity > 0)
+                           .ToList();
+
         foreach (FishData fishData in fish)
-        {
-
             CashFromSelling += fishData.fish.GetPrice() * fishData.quantity;
-
-        }
-
 
         return CashFromSelling;
     }
@@ -526,7 +495,6 @@ public class Inventory : Singleton<Inventory>
     public void sellingAllFish()
     {
         int totalCash = NumberOfCashFromSellingFish();
-
 
         ItemList.RemoveAll(item => item is FishData fishData);
         // Ajout du total obtenu à la variable Cash

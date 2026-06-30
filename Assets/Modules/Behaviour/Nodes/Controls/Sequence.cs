@@ -18,16 +18,16 @@ namespace BehaviourModule.Nodes.Controls
         #region Node
 
         /// <inheritdoc/>
-        protected override NodeState OnEvaluate() 
+        protected override NodeState OnEvaluate()
         {
             foreach (Node child in this)
             {
                 NodeState childState = child.Evaluate();
 
                 // If child succeed, skip
-                if (childState == NodeState.SUCCESS) 
+                if (childState == NodeState.SUCCESS)
                     continue;
-                
+
                 // Exit
                 return childState;
             }

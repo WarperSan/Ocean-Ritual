@@ -30,12 +30,12 @@ namespace Chain
         private List<Quaternion> _rotations = new();
         private List<Coroutine> runningCoroutines = new List<Coroutine>();
         
-        public float LinearSpeed = 0;
-        private int _counter = 0;
-        private float _totalCogSpeed = 0;
+        public float LinearSpeed;
+        private int _counter;
+        private float _totalCogSpeed;
         private float _rotationExtentPerLink;
         
-        private bool _speedSet = false;
+        private bool _speedSet;
         private float _speed;
 
         public bool pause;
@@ -82,21 +82,21 @@ namespace Chain
             SetSpeed();
         }
 
-        void ResetCogValues()
+        private void ResetCogValues()
         {
             _totalCogSpeed = 0;
             _counter = 0;
         }
-        
-        void SetSpeed()
+
+        private void SetSpeed()
         {
             LinearSpeed = _totalCogSpeed / _cogAmount / _links.Count; // * 1.3f; 
 
             _speedSet = true;
             ResetCogValues();
         }
-        
-        void GetPointsAndRotations()
+
+        private void GetPointsAndRotations()
         {
             _points.Clear();
             _rotations.Clear();
@@ -135,8 +135,8 @@ namespace Chain
 
             MoveChain();
         }
-        
-        void MoveChain()
+
+        private void MoveChain()
         {
             if (Data.motionDirection == ChainEnums.ChainDirection.None)
             {
@@ -155,8 +155,8 @@ namespace Chain
                 runningCoroutines.Add(coroutine);
             }
         }
-        
-        IEnumerator LinkMotionRoutine(int Index, float speed)
+
+        private IEnumerator LinkMotionRoutine(int Index, float speed)
         {
             int pointIndex = Index;
 
@@ -191,9 +191,7 @@ namespace Chain
                 }
 
                 if (!pause)
-                {
                     _links[Index].transform.localPosition = _points[pointIndex];
-                }
             }
         }
         

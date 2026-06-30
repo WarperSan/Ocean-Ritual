@@ -7,33 +7,28 @@ using UIModule.Interfaces;
 
 public class HoverManager : UIComponent
 {
-    private void Start()
-    {
-        this.hoverItems = this.GetComponentsInChildren<HoverItem>(true);
-    }
+    private void Start() => hoverItems = GetComponentsInChildren<HoverItem>(true);
 
     private void Update()
     {
-        IHoverable target = this.RaycastToUI();
+        IHoverable target = RaycastToUI();
 
         // Si aucun slot n'a �t� touch� (la souris n'est plus sur un InventorySlot), fermer les ressources
         if (target == null)
         {
-            this.HideHover();
+            HideHover();
             return;
         }
 
         // Met � jour l'item
-        if (target != this.hoveredObject)
+        if (target != hoveredObject)
         {
-            this.hoveredObject = target;
-            this.ShowHover(target.GetData());
+            hoveredObject = target;
+            ShowHover(target.GetData());
         }
         // G�rer les mouvements de l'interface
         else
-        {
-            this.MoveHover();
-        }
+            MoveHover();
     }
 
     private IHoverable RaycastToUI()
@@ -44,7 +39,7 @@ public class HoverManager : UIComponent
 
         var pointerEventData = new PointerEventData(EventSystem.current)
         {
-            position = Input.mousePosition
+            position = Input.mousePosition,
         };
 
         var results = new List<RaycastResult>();
@@ -65,11 +60,12 @@ public class HoverManager : UIComponent
     #region Movement
 
     private readonly Vector3[] corners = new Vector3[4];
+
     private void MoveHover()
     {
         Vector3 screenPosition = Input.mousePosition;
 
-        this.Rect.GetWorldCorners(corners);
+        Rect.GetWorldCorners(corners);
         float width = corners[2].x - corners[0].x;
         float height = corners[1].y - corners[0].y;
 
@@ -82,7 +78,7 @@ public class HoverManager : UIComponent
             screenPosition.y += height;
 
         // Met � jour la position de l'objet UI pour suivre la position de la souris
-        this.Rect.position = screenPosition;
+        Rect.position = screenPosition;
     }
 
     #endregion
@@ -94,16 +90,16 @@ public class HoverManager : UIComponent
 
     private bool ShowHover(ItemData itemData)
     {
-        foreach (HoverItem hover in this.hoverItems)
+        foreach (HoverItem hover in hoverItems)
         {
             // If can't show, skip
             if (!hover.CanShowData(itemData))
                 continue;
 
             hover.SetData(itemData);
-            this.Rect.sizeDelta = hover.Rect.sizeDelta; // Copy size
-            this.MoveHover(); // Update position
-            hover.gameObject.SetActive(true); // Set active
+            Rect.sizeDelta = hover.Rect.sizeDelta; // Copy size
+            MoveHover();                           // Update position
+            hover.gameObject.SetActive(true);      // Set active
             return true;
         }
 
@@ -112,12 +108,12 @@ public class HoverManager : UIComponent
 
     private void HideHover()
     {
-        if (this.hoveredObject == null)
+        if (hoveredObject == null)
             return;
 
-        this.hoveredObject = null; // Annuler la s�lection de l'item
+        hoveredObject = null; // Annuler la s�lection de l'item
 
-        foreach (HoverItem hover in this.hoverItems)
+        foreach (HoverItem hover in hoverItems)
             hover.gameObject.SetActive(false);
     }
 

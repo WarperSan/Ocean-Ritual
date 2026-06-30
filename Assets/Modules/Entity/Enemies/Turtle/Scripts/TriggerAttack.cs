@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerAttack : MonoBehaviour
 {
- [SerializeField]   TurtleBehaviorThree Three;
-
-
-   
-
+    [SerializeField]
+    private TurtleBehaviorThree Three;
 }

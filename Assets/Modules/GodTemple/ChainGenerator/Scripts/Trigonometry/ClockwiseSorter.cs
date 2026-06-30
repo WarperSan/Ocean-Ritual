@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Chain
 {
-     struct ItemAngleModel<T>
+    internal struct ItemAngleModel<T>
         {
             public T Item;
             public float Angle;
@@ -20,9 +20,9 @@ namespace Chain
      
     public class ClockwiseSorter<T>
     {
-        T[] _items;
+        private T[] _items;
         private Vector3[] _itemPositions;
-        List<ItemAngleModel<T>> itemAngleModels = new ();
+        private List<ItemAngleModel<T>> itemAngleModels = new ();
 
         private Vector3 center;
 
@@ -40,12 +40,12 @@ namespace Chain
             return _items;
         }
 
-        void GetCenter()
+        private void GetCenter()
         {
             center = TrigonometryHelper.Center(_itemPositions);
         }
 
-        void CalculateAngles()
+        private void CalculateAngles()
         {
             for (var i = 0; i < _itemPositions.Length; i++)
             {
@@ -55,17 +55,14 @@ namespace Chain
                 itemAngleModels.Add(new ItemAngleModel<T>(_items[i], angle, pos));
             }
         }
-        
 
-        void SortPointsByAngles()
+        private void SortPointsByAngles()
         {
             itemAngleModels = itemAngleModels.OrderByDescending(i => i.Angle).ToList();
             
             for (int i = 0; i < _items.Length; i++)
-            {
                 _items[i] = itemAngleModels[i].Item;
-                //Debug.Log(itemAngleModels[i].ItemPosition + " " + itemAngleModels[i].Angle);
-            }
+            //Debug.Log(itemAngleModels[i].ItemPosition + " " + itemAngleModels[i].Angle);
         }
     }
 }

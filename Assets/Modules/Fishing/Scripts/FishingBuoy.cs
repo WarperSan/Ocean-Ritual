@@ -9,10 +9,14 @@ namespace FishingModule
         #region Inventory
 
         [Header("Inventory")]
-        [SerializeField, Min(0), Tooltip("Maximum amount of fishes this buoy can hold")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Maximum amount of fishes this buoy can hold")]
         private int maxFishCount;
 
-        [SerializeField, Min(0), Tooltip("Determines how many fishes the buoy can catch at once")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Determines how many fishes the buoy can catch at once")]
         private Vector2Int maxFishAtOnce;
 
         private readonly Dictionary<FishSO, uint> fishesCaught = new();
@@ -30,7 +34,7 @@ namespace FishingModule
             for (; amount > 0; amount--)
             {
                 // Add fish
-                FishSO caught = this.GetRandom();
+                FishSO caught = GetRandom();
 
                 if (caught == null)
                     return;
@@ -45,16 +49,16 @@ namespace FishingModule
                 fishCaught[caught]++;
 
                 // If became full, enable indicator
-                if (this.IsFull())
+                if (IsFull())
                 {
-                    this.BecomeFull();
+                    BecomeFull();
                     break;
                 }
             }
 
             if (fishCaught.Count > 0)
             {
-                this.OnFishCaught?.Invoke(fishCaught);
+                OnFishCaught?.Invoke(fishCaught);
                 onCaughtEffects.Play();
             }
         }
@@ -64,15 +68,12 @@ namespace FishingModule
         /// </summary>
         private bool IsFull() => fishesCaught.Sum(f => f.Value) > maxFishCount;
 
-        private void BecomeFull()
-        {
-            fullIndicator.SetActive(true);
-        }
+        private void BecomeFull() => fullIndicator.SetActive(true);
 
         /// <summary>
         /// Obtains the fishes caught in this buoy
         /// </summary>
-        public Dictionary<FishSO, uint> GetFishCaught() => this.fishesCaught;
+        public Dictionary<FishSO, uint> GetFishCaught() => fishesCaught;
 
         #endregion
 
@@ -88,7 +89,7 @@ namespace FishingModule
         [SerializeField]
         private GameObject particules;
 
-        public delegate void FishCaught(Dictionary<FishSO, uint> fishCaught);
+        public delegate void    FishCaught(Dictionary<FishSO, uint> fishCaught);
         public event FishCaught OnFishCaught;
 
         #endregion
@@ -96,8 +97,10 @@ namespace FishingModule
         #region Delay
 
         [Header("Delay")]
-        [SerializeField, Tooltip("Determines how long the buoy has to wait between catch")]
+        [SerializeField]
+        [Tooltip("Determines how long the buoy has to wait between catch")]
         private Vector2 delayRange;
+
         private float delayRemaining;
 
         /// <summary>
@@ -124,8 +127,10 @@ namespace FishingModule
         #region Fishes
 
         [Header("Chance")]
-        [SerializeField, Min(1f)]
+        [SerializeField]
+        [Min(1f)]
         private float ChanceDividor = 1000f;
+
         private float ChanceFactor = 1;
 
         /// <summary>
@@ -136,25 +141,25 @@ namespace FishingModule
         /// </returns>
         public bool SetFishesAvailable(Dictionary<FishSO, float> fishes)
         {
-            this.fishesToCatch.Clear();
+            fishesToCatch.Clear();
 
             foreach (KeyValuePair<FishSO, float> item in fishes)
-                this.fishesToCatch.Add((item.Key, item.Value));
+                fishesToCatch.Add((item.Key, item.Value));
 
-            this.fishesToCatch = this.fishesToCatch.OrderBy(f => f.percent).ToList();
+            fishesToCatch = fishesToCatch.OrderBy(f => f.percent).ToList();
 
-            return this.fishesToCatch.Count > 0;
+            return fishesToCatch.Count > 0;
         }
 
         private FishSO GetRandom()
         {
-            float chance = UtilsModule.Random.RandomPercent() / this.ChanceFactor;
+            float chance = UtilsModule.Random.RandomPercent() / ChanceFactor;
 
-            for (int i = 0; i < this.fishesToCatch.Count; i++)
+            for (int i = 0; i < fishesToCatch.Count; i++)
             {
-                (FishSO fish, float percent) item = this.fishesToCatch[i];
+                (FishSO fish, float percent) item = fishesToCatch[i];
 
-                if (i != this.fishesToCatch.Count - 1 && item.percent < chance)
+                if (i != fishesToCatch.Count - 1 && item.percent < chance)
                 {
                     chance -= item.percent;
                     continue;
@@ -174,10 +179,10 @@ namespace FishingModule
         private void Update()
         {
             // If the buoy is already collected, skip the update
-            if (this.isCollected)
+            if (isCollected)
                 return;
 
-            this.UpdateCollecting(Time.deltaTime);
+            UpdateCollecting(Time.deltaTime);
         }
 
         #endregion
@@ -186,11 +191,12 @@ namespace FishingModule
 
         [Header("Collecting")]
         public bool KeepCollecting;
+
         public bool isCollected;
 
         public void Collect()
         {
-            this.particules.SetActive(false);
+            particules.SetActive(false);
             isCollected = true;
         }
 
@@ -200,23 +206,23 @@ namespace FishingModule
         private void UpdateCollecting(float elapsed)
         {
             // If the buoy should not keep collecting, skip the update
-            if (!this.KeepCollecting)
+            if (!KeepCollecting)
                 return;
 
             // If the buoy is full, skip the update
-            if (this.IsFull())
+            if (IsFull())
                 return;
 
             // Increase chance for rare fishes
-            this.ChanceFactor += elapsed / this.ChanceDividor;
+            ChanceFactor += elapsed / ChanceDividor;
 
             // If the delay is not finished, skip the update
-            if (!this.ProcessDelay(elapsed))
+            if (!ProcessDelay(elapsed))
                 return;
 
             // Catch a fish
-            this.ResetDelay();
-            this.CatchFish();
+            ResetDelay();
+            CatchFish();
         }
 
         #endregion

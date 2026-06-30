@@ -5,10 +5,8 @@ using UtilsModule;
 
 namespace BlacksmithModule
 {
-    
     public class Blacksmith : Singleton<Blacksmith>
     {
-        
         private List<IForgeable> forgeableItems = new();
         private readonly List<UpgradeStats> ListStat = new();
 
@@ -16,23 +14,24 @@ namespace BlacksmithModule
 
         public void InterfaceUpgrade()
         {
-            this.GetAllUpgradeableItem();
-            this.GetAllUpgrade();
+            GetAllUpgradeableItem();
+            GetAllUpgrade();
             UiBSGBN.Instance?.CreateUiGBNUpgrade(ListStat);
         }
+
         private void GetAllUpgrade()
         {
-            this.ListStat.Clear(); // Assurez-vous de vider la liste avant d'ajouter de nouveaux �l�ments
-            DictionaireComponentGBN = new();
+            ListStat.Clear(); // Assurez-vous de vider la liste avant d'ajouter de nouveaux �l�ments
+            DictionaireComponentGBN = new Dictionary<string, componentGBN>();
             // Parcours de chaque forgeable item
-         
-            foreach (IForgeable item in this.forgeableItems)
+
+            foreach (IForgeable item in forgeableItems)
             {
                 // R�cup�re les donn�es d'am�lioration
                 UpgradeStats upgradeData = item.GetStatToUpgradeAndCost();
 
                 // Ajoute les donn�es � ListStat
-                this.ListStat.Add(upgradeData);
+                ListStat.Add(upgradeData);
                 DictionaireComponentGBN.Add(upgradeData.name, item.componentGBN);
             }
         }
@@ -40,19 +39,14 @@ namespace BlacksmithModule
         private void GetAllUpgradeableItem()
         {
             //Debug.Log("Nombre d'objets forgeables trouvés : " + forgeableItems.Count);
-            this.forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<IForgeable>().ToList();
+            forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<IForgeable>().ToList();
             //Debug.Log("Nombre d'objets forgeables trouvés après recherche : " + forgeableItems.Count);
 
-            foreach (var item in forgeableItems)
-            {
+            foreach (IForgeable item in forgeableItems)
                 Debug.Log("Nom de l'objet : " + ((MonoBehaviour)item).gameObject.name);
-            }
         }
 
-        public componentGBN ShowSocleUpgradeForGBN(string name)
-        {
-            return DictionaireComponentGBN[name];
-        }
+        public componentGBN ShowSocleUpgradeForGBN(string name) => DictionaireComponentGBN[name];
 
         #region Singleton
 

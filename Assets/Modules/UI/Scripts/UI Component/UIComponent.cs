@@ -18,11 +18,11 @@ namespace UIModule
         {
             get
             {
-                if (this._rect != null)
-                    return this._rect;
+                if (_rect != null)
+                    return _rect;
 
-                this._rect = this.GetComponent<RectTransform>();
-                return this._rect;
+                _rect = GetComponent<RectTransform>();
+                return _rect;
             }
         }
 

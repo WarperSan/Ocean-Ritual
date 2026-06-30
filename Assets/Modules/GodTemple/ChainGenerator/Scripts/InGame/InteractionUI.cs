@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Chain;
 using UnityEngine;
@@ -10,7 +8,7 @@ namespace ChainInGame
     public class InteractionUI : MonoBehaviour
     {
         private Dropdown _dropdown;
-        List<string> _machineryNames = new();
+        private List<string> _machineryNames = new();
         private void OnEnable()
         {
             _dropdown = GetComponentInChildren<Dropdown>();
@@ -20,10 +18,8 @@ namespace ChainInGame
         private void SetupOptions(Machinery[] machineries)
         {
             foreach (var machinery in machineries)
-            {
                 _machineryNames.Add(machinery.name);
-            }
-            
+
             _dropdown.ClearOptions();
             _dropdown.AddOptions(_machineryNames);
             //_dropdown.value = 1;

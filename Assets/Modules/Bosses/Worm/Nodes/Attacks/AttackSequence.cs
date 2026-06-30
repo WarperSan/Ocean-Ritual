@@ -9,23 +9,37 @@ namespace BossesModule.Worm.Nodes
     {
         public const string CURRENT_ATTACK_TARGET = "currentAttackTarget";
         public const float COOLDOWN = 5f;
-        CooldownNode cooldown;
+        private CooldownNode cooldown;
 
-        public AttackSequence(WormTree tree, WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
+        public AttackSequence(
+            WormTree   tree,
+            WormEntity entity,
+            Animator   animator,
+            Collider   collider,
+            string     currentTarget,
+            string     isAttacking
+        )
         {
             cooldown = new CooldownNode(COOLDOWN);
-            this.Attach(cooldown.Alias("Cooldown"));
+            Attach(cooldown.Alias("Cooldown"));
 
             Selector conditionSelector = new();
-            conditionSelector += new CallbackNode((Node n) => n.GetData<bool>(isAttacking) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Already Attacking");
+
+            conditionSelector +=
+                new CallbackNode((Node n) => n.GetData<bool>(isAttacking) ? NodeState.SUCCESS : NodeState.FAILURE).Alias(
+                    "Is Already Attacking");
             conditionSelector += new CallbackNode(() => tree.IsMoving() ? NodeState.FAILURE : NodeState.SUCCESS).Alias("Is Not Moving");
 
-            this.Attach(conditionSelector.Alias("Condition Selector"));
+            Attach(conditionSelector.Alias("Condition Selector"));
 
-            rdmAttackNode = new RandomAttackNode(entity, animator, collider, currentTarget, isAttacking);
-            this.Attach(rdmAttackNode.Alias("Random Attack"));
+            rdmAttackNode = new RandomAttackNode(entity,
+                animator,
+                collider,
+                currentTarget,
+                isAttacking);
+            Attach(rdmAttackNode.Alias("Random Attack"));
 
-            this.Attach(new CallbackNode(this.ResetSequence).Alias("Reset"));
+            Attach(new CallbackNode(ResetSequence).Alias("Reset"));
         }
 
         private NodeState ResetSequence()
@@ -39,9 +53,9 @@ namespace BossesModule.Worm.Nodes
 
         #region Random Attack
 
-        RandomAttackNode rdmAttackNode;
+        private RandomAttackNode rdmAttackNode;
 
-        public void OnAnimationEnded() => this.rdmAttackNode.OnAnimationEnded();
+        public void OnAnimationEnded() => rdmAttackNode.OnAnimationEnded();
 
         #endregion
 

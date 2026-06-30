@@ -5,7 +5,7 @@ Shader "Custom/Perforated"
 
         _AlbedoColor ("Albedo Color", Color) = (1, 1, 1, 1) // later
         _MainTex ("Texture", 2D) = "white" {}
-        _Metallic ("Metallic", Range(0, 1)) = 0 
+        _Metallic ("Metallic", Range(0, 1)) = 0
         _Smoothness("Smoothness", Range(0, 1)) = 0
         _MaterialID ("Material ID", Float) = 0
     }

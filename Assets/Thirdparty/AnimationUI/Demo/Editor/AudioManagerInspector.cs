@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections.Generic;
 
 namespace DhafinFawwaz.AnimationUILib.Demo
 {
@@ -8,9 +7,9 @@ namespace DhafinFawwaz.AnimationUILib.Demo
 [CustomEditor(typeof(AudioManager))]
 public class AudioManagerInspector : Editor
 {
-    AudioManager _script;
+    private AudioManager _script;
 
-    void OnEnable()
+    private void OnEnable()
     {
         _script = (AudioManager)target;
     }

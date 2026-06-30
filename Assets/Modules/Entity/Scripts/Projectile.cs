@@ -7,16 +7,16 @@ namespace EntityModule
     [Flags]
     public enum ProjectileTarget
     {
-        NONE = 0, // No entity
+        NONE = 0,  // No entity
         ALL = -~0, // Every entity
 
         PLAYER = 1 << 0, // Only player
-        BOAT = 1 << 3, // Only Boat
+        BOAT = 1 << 3,   // Only Boat
         PLAYER_CONTROLLED = PLAYER | BOAT,
 
-        ENEMY = 1 << 1, // Only enemies
-        BOSS = 1 << 2, // Only bosses
-        OPPONENTS = ENEMY | BOSS // Enemies and Bosses
+        ENEMY = 1 << 1,           // Only enemies
+        BOSS = 1 << 2,            // Only bosses
+        OPPONENTS = ENEMY | BOSS, // Enemies and Bosses
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace EntityModule
     {
         #region Attack
 
-        private Attack attack = null;
+        private Attack attack;
 
         /// <summary>
         /// Attributes an Attaque to this projectile
@@ -34,7 +34,7 @@ namespace EntityModule
         public void Attribute(Attack attack)
         {
             this.attack = attack;
-            this.OnAttributed(this.attack);
+            OnAttributed(this.attack);
         }
 
         /// <summary>
@@ -55,7 +55,6 @@ namespace EntityModule
         public static int PLAYER_LAYER = -1;
         public static int BOAT_LAYER = -1;
 
-
         /// <inheritdoc/>
         private void OnTriggerEnter(Collider other)
         {
@@ -64,18 +63,16 @@ namespace EntityModule
                 return;
 
             if (other.GetComponentInParent<Entity>() != null)
-            {
                 entity = other.GetComponentInParent<Entity>();
-            }
 
             if (entity.IsDead)
                 return;
 
             // If entity not targettable, skip
-            if (!this.IsEntityTarget(entity))
+            if (!IsEntityTarget(entity))
                 return;
 
-            this.HitEntity(entity);
+            HitEntity(entity);
         }
 
         /// <summary>
@@ -86,28 +83,27 @@ namespace EntityModule
             int layer = entity.gameObject.layer;
 
             // If targeting none
-            if (this.attack.TargetType == ProjectileTarget.NONE)
+            if (attack.TargetType == ProjectileTarget.NONE)
                 return false;
 
             // If targeting anyone
-            if (this.attack.TargetType == ProjectileTarget.ALL)
+            if (attack.TargetType == ProjectileTarget.ALL)
                 return true;
 
             // If hit a player, but not targeting player
-            if (!this.attack.TargetType.HasFlag(ProjectileTarget.PLAYER) && layer == PLAYER_LAYER)
+            if (!attack.TargetType.HasFlag(ProjectileTarget.PLAYER) && layer == PLAYER_LAYER)
                 return false;
 
             // If hit boat, but not targeting boat
-            if (!this.attack.TargetType.HasFlag(ProjectileTarget.BOAT) && layer == BOAT_LAYER)
+            if (!attack.TargetType.HasFlag(ProjectileTarget.BOAT) && layer == BOAT_LAYER)
                 return false;
 
-
             // If hit an enemy, but not targeting enemies
-            if (!this.attack.TargetType.HasFlag(ProjectileTarget.ENEMY) && layer == ENEMY_LAYER)
+            if (!attack.TargetType.HasFlag(ProjectileTarget.ENEMY) && layer == ENEMY_LAYER)
                 return false;
 
             // If hit a boss, but not targeting bosses
-            if (!this.attack.TargetType.HasFlag(ProjectileTarget.BOSS) && layer == BOSS_LAYER)
+            if (!attack.TargetType.HasFlag(ProjectileTarget.BOSS) && layer == BOSS_LAYER)
                 return false;
 
             // Layer matches the target type
@@ -117,15 +113,15 @@ namespace EntityModule
         private void HitEntity(Entity entity)
         {
             // If Attaque invalid, skip
-            if (this.attack == null)
+            if (attack == null)
             {
-                Debug.LogWarning($"No Attaque was attributed when '{this.name}' hit the entity '{entity.name}'.");
+                Debug.LogWarning($"No Attaque was attributed when '{name}' hit the entity '{entity.name}'.");
                 return;
             }
 
-            this.OnPreApply(entity, this.attack);
-            entity.UseAttack(this.attack, this);
-            this.OnPostApply(entity, this.attack);
+            OnPreApply(entity, attack);
+            entity.UseAttack(attack, this);
+            OnPostApply(entity, attack);
         }
 
         /// <summary>
@@ -152,7 +148,8 @@ namespace EntityModule
         #region Conditions
 
         [Header("Conditions")]
-        [SerializeField, Tooltip("Determines if all the conditions must be met in order to keep this projectile alive")]
+        [SerializeField]
+        [Tooltip("Determines if all the conditions must be met in order to keep this projectile alive")]
         private bool mustMeetAllConditions = true;
 
         private ProjectileCondition[] conditions;
@@ -168,7 +165,7 @@ namespace EntityModule
             {
                 bool result = item.UpdateCondition(elapsed);
 
-                if (!result && this.mustMeetAllConditions)
+                if (!result && mustMeetAllConditions)
                     return false;
             }
 
@@ -184,15 +181,15 @@ namespace EntityModule
         /// </summary>
         public void ResetSelf()
         {
-            this.ResetHealth();   
-            
-            // Clear values
-            this.attack = null;
+            ResetHealth();
 
-            foreach (ProjectileCondition item in this.conditions)
+            // Clear values
+            attack = null;
+
+            foreach (ProjectileCondition item in conditions)
                 item.ResetCondition();
 
-            this.OnReset();
+            OnReset();
         }
 
         /// <summary>
@@ -208,7 +205,7 @@ namespace EntityModule
         public override bool TakeDamage => false;
 
         /// <inheritdoc/>
-        protected override void OnDeath(float overDamage) => this.gameObject.SetActive(false);
+        protected override void OnDeath(float overDamage) => gameObject.SetActive(false);
 
         #endregion
 
@@ -217,13 +214,13 @@ namespace EntityModule
         /// <inheritdoc/>
         private void Awake()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             if (!_collider.isTrigger)
             {
                 _collider.isTrigger = true;
-                Debug.LogWarning($"The projectile '{this.name}' has a collider that is not trigger. Please fix the collider.");
+                Debug.LogWarning($"The projectile '{name}' has a collider that is not trigger. Please fix the collider.");
             }
-#endif
+            #endif
 
             if (BOSS_LAYER == -1)
                 BOSS_LAYER = LayerMask.NameToLayer("Boss");
@@ -237,18 +234,18 @@ namespace EntityModule
             if (BOAT_LAYER == -1)
                 BOAT_LAYER = LayerMask.NameToLayer("Boat");
 
-            conditions = this.GetComponents<ProjectileCondition>();
+            conditions = GetComponents<ProjectileCondition>();
         }
 
         /// <inheritdoc/>
         private void Update()
         {
-            this.OnMove(Time.deltaTime);
-            this.OnUpdate(Time.deltaTime);
+            OnMove(Time.deltaTime);
+            OnUpdate(Time.deltaTime);
 
             // Kill projectile if necessary
-            if (!this.EvaluateConditions(Time.deltaTime))
-                this.Death();
+            if (!EvaluateConditions(Time.deltaTime))
+                Death();
         }
 
         /// <summary>

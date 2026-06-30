@@ -14,9 +14,7 @@ namespace Chain
         {
             HoleLabels = new string[HoleTypes.Count + 1];
             for (int i = 0; i < HoleTypes.Count; i++)
-            {
                 HoleLabels[i] = HoleTypes[i].name;
-            }
 
             HoleLabels[HoleLabels.Length - 1] = "Without Hole";
         }

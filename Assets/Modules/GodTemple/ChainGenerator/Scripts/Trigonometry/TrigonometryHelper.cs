@@ -1,4 +1,3 @@
-using Chain;
 using UnityEngine;
 
 namespace Chain
@@ -93,9 +92,7 @@ namespace Chain
         {
             Vector3 pos = Vector3.zero;
             foreach (var arcPart in arcParts)
-            {
                 pos += arcPart.cog.transform.position;
-            }
 
             return pos / arcParts.Length;
         }
@@ -104,9 +101,7 @@ namespace Chain
         {
             Vector3 pos = Vector3.zero;
             foreach (var point in points)
-            {
                 pos += point;
-            }
 
             return pos / points.Length;
         }

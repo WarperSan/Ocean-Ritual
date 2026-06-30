@@ -3,29 +3,50 @@ using static EnumGeneral;
 
 public class InventoryTest : MonoBehaviour
 {
-    [SerializeField] Inventory InventoryPlayer;
+    [SerializeField]
+    private Inventory InventoryPlayer;
 
-    [SerializeField] bool AddFish = false;
-    [SerializeField] bool AddGemme = false;
-    [SerializeField] bool clearInventaire = false;
-    [SerializeField] bool Sort = false;
-    [SerializeField] bool SwapPlace = false;
-    [SerializeField] bool drop = false;
-    [SerializeField] int index1;
-    [SerializeField] int index2;
-    [SerializeField] int indexDrop;
-    [SerializeField] FishData Fish;
-    [SerializeField] GemData gem;
-    [SerializeField] TypeOfSort TypeSort;
+    [SerializeField]
+    private bool AddFish;
+
+    [SerializeField]
+    private bool AddGemme;
+
+    [SerializeField]
+    private bool clearInventaire;
+
+    [SerializeField]
+    private bool Sort;
+
+    [SerializeField]
+    private bool SwapPlace;
+
+    [SerializeField]
+    private bool drop;
+
+    [SerializeField]
+    private int index1;
+
+    [SerializeField]
+    private int index2;
+
+    [SerializeField]
+    private int indexDrop;
+
+    [SerializeField]
+    private FishData Fish;
+
+    [SerializeField]
+    private GemData gem;
+
+    [SerializeField]
+    private TypeOfSort TypeSort;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        Inventory.Instance.InitiateList();
-    }
+    private void Start() => Inventory.Instance.InitiateList();
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (AddFish)
         {
@@ -42,7 +63,7 @@ public class InventoryTest : MonoBehaviour
             AddGemme = false; // Remplace ! par false pour ne pas inverser à chaque update
 
             // Crée une nouvelle instance de GemData
-            GemData NewGemme = new GemData()
+            var NewGemme = new GemData
             {
                 GemColorsName = gem.GemColorsName,
                 LVL = gem.LVL,

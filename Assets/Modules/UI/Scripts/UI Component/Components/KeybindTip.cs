@@ -18,6 +18,7 @@ namespace UIModule.Components
 
         [SerializeField]
         private Sprite[] images;
+
         private readonly Dictionary<string, Sprite> iconsForName = new();
 
         [SerializeField]
@@ -36,58 +37,56 @@ namespace UIModule.Components
 
         #region Key
 
-        private Coroutine showKeyCoroutine = null;
+        private Coroutine showKeyCoroutine;
 
         public static void ShowKey(KeyCode key, string tag) => Instance.ShowKeyInstance(key, tag);
 
         private void ShowKeyInstance(KeyCode key, string tag)
         {
-            if (this.usedTips.ContainsKey(tag))
+            if (usedTips.ContainsKey(tag))
                 return;
 
-            if (this.showKeyCoroutine != null)
-                this.StopCoroutine(this.showKeyCoroutine);
+            if (showKeyCoroutine != null)
+                StopCoroutine(showKeyCoroutine);
 
-            this.showKeyCoroutine = this.StartCoroutine(this.ShowKeyCoroutine(key, tag));
+            showKeyCoroutine = StartCoroutine(ShowKeyCoroutine(key, tag));
         }
 
         private IEnumerator ShowKeyCoroutine(KeyCode key, string tag)
         {
-            this.usedTips[tag] = false;
+            usedTips[tag] = false;
 
-            yield return this.OpenAnimation.PlayAnimation();
+            yield return OpenAnimation.PlayAnimation();
 
             bool pressed = true;
 
-            while (this.usedTips.ContainsKey(tag) && !this.usedTips[tag])
+            while (usedTips.ContainsKey(tag) && !usedTips[tag])
             {
                 yield return new WaitForSeconds(1f);
 
-                this.SetKey(key, pressed);
+                SetKey(key, pressed);
 
                 pressed = !pressed;
             }
 
-            yield return this.CloseAnimation.PlayAnimation();
+            yield return CloseAnimation.PlayAnimation();
 
-            this.showKeyCoroutine = null;
+            showKeyCoroutine = null;
         }
 
         private void SetKey(KeyCode key, bool isPressed)
         {
-            string inputMethod = this.IsKeyboard ? "keyboard" : "xbox";
+            string inputMethod = IsKeyboard ? "keyboard" : "xbox";
             string keyName = key.ToString().ToLower();
             string state = isPressed ? "_pressed" : "";
 
-            this.SetKey($"{inputMethod}_{keyName}{state}");
+            SetKey($"{inputMethod}_{keyName}{state}");
         }
 
         private void SetKey(string name)
         {
-            if (this.iconsForName.TryGetValue(name, out Sprite sprite))
-            {
-                this.icon.sprite = sprite;
-            }
+            if (iconsForName.TryGetValue(name, out Sprite sprite))
+                icon.sprite = sprite;
         }
 
         #endregion
@@ -120,8 +119,8 @@ namespace UIModule.Components
 
         protected override void OnAwake()
         {
-            foreach (Sprite item in this.images)
-                this.iconsForName.Add(item.name, item);
+            foreach (Sprite item in images)
+                iconsForName.Add(item.name, item);
         }
 
         #endregion

@@ -10,6 +10,6 @@ namespace FishingModule
         Rare = 200,
         Epic = 300,
         Legendary = 400,
-        Mythic = 500
+        Mythic = 500,
     }
 }

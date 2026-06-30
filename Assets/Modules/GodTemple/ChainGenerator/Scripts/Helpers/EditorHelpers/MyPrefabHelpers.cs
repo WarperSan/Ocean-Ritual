@@ -48,9 +48,7 @@ namespace ChainEditorHelper
             {
                 gameObject.transform.tag = "Untagged";
                 if (!IsPrefabInstance(gameObject))
-                {
                     gameObject.name = "Machinery Instance";
-                }
             }
         }
         

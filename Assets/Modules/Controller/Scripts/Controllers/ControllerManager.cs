@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 namespace ControllerModule.Controllers
 {
@@ -58,7 +56,7 @@ namespace ControllerModule.Controllers
 
             Controller prev = stack.Pop();
             prev.SwitchOut();
-            
+
             Controller cur = stack.Pop();
             SwitchTo(cur);
         }

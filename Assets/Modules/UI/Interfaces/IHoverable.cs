@@ -8,6 +8,6 @@ namespace UIModule.Interfaces
         /// <summary>
         /// Fetches the data to show in the hover
         /// </summary>
-        public ItemData GetData();
+        ItemData GetData();
     }
 }

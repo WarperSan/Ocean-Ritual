@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
@@ -11,7 +10,7 @@ namespace Chain
 {
     public interface CogComponent
     {
-        public int CogId { get; set; }
+        int CogId { get; set; }
     }
 
     [ExecuteInEditMode]
@@ -19,7 +18,7 @@ namespace Chain
     {
         [HideInInspector] public Cogwheel cogPrefab;
         public List<Cogwheel> cogs;
-        public int newCogIndex = 0;
+        public int newCogIndex;
         
 
         public void GetCogs(IEnumerable<Cogwheel> _cogs)
@@ -90,7 +89,7 @@ namespace Chain
             cogs.ForEach(c=>c.sortingOrder = machinerySortingOrder);
         }
 
-        Vector3 NewAddedCogPos(float radius)
+        private Vector3 NewAddedCogPos(float radius)
         {
             Vector3 newPos;
 
@@ -98,9 +97,7 @@ namespace Chain
 
             var cogPositions = new Vector3[cogs.Count];
             for (int i = 0; i < cogs.Count; i++)
-            {
                 cogPositions[i] = cogs[i].transform.localPosition;
-            }
 
             Vector3 center = TrigonometryHelper.Center(cogPositions);
             var outermostCog = cogs.OrderByDescending(c => Vector3.Distance(center, c.transform.localPosition)).First();

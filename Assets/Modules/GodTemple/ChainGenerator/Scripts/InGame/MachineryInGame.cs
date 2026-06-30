@@ -14,9 +14,7 @@ namespace ChainInGame
             _cogHolder = machinery.cogHolder;
 
             if (_machinery.chainGenerator.ChainData == null)
-            {
                 Debug.Log(machinery.name+" is not Chain Related");
-            }
         }
         
         public void AddToMachinery(InteractableGear interactableGear)
@@ -39,8 +37,8 @@ namespace ChainInGame
             
             Regenerate();
         }
-        
-        void GenerateChain()
+
+        private void GenerateChain()
         {
             _machinery.chainGenerator.GenerateChain(null, _machinery.cogHolder.GetChainRelatedCogs());
         }

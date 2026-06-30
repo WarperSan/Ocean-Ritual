@@ -54,23 +54,22 @@ namespace BlacksmithModule
 
             // Acc�der au bouton dans le StatContainer et lui ajouter un listener pour appeler ShowSocleUpgradeForGBN
             bool enough = Inventory.Instance.HaveEnoughtCash(stats.upgradeCost);
-            buttonText.text = string.Format("Upgrade: <sprite name=stack_coins_icon> <color={1}>{0}</color>", 
-            	stats.upgradeCost, 
-            	enough ? "#030" : "#700"
+
+            buttonText.text = string.Format("Upgrade: <sprite name=stack_coins_icon> <color={1}>{0}</color>",
+                stats.upgradeCost,
+                enough ? "#030" : "#700"
             );
             button.onClick.RemoveAllListeners();
 
-            string statName = stats.name;  // Capturer la variable locale
+            string statName = stats.name; // Capturer la variable locale
             button.onClick.AddListener(() => UpgradeStatItem(statName, stats.upgradeCost));
             button.interactable = enough;
         }
-        
+
         public void UpgradeStatItem(string statName, int cost)
         {
             UiBSGBN.Instance.ShowSocleUpgradeForGBN(statName);
             Inventory.Instance.GetCashUpgradeSocleCost(cost);
-
         }
     }
-   
 }

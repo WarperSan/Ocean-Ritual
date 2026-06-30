@@ -8,6 +8,6 @@ namespace ControllerModule.Interfaces.Player
         /// <summary>
         /// Called when the player jumps
         /// </summary>
-        public void OnJump();
+        void OnJump();
     }
 }

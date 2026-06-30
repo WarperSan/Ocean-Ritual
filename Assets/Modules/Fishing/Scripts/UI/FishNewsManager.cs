@@ -8,10 +8,12 @@ namespace FishingModule.UI
         #region Parameters
 
         [Header("Parameters")]
-        [SerializeField, Tooltip("Prefab of an entry")]
+        [SerializeField]
+        [Tooltip("Prefab of an entry")]
         private GameObject fishNewsEntryPrefab;
 
-        [SerializeField, Tooltip("Parent of the entries")]
+        [SerializeField]
+        [Tooltip("Parent of the entries")]
         private Transform entryContainer;
 
         #endregion
@@ -21,8 +23,8 @@ namespace FishingModule.UI
             foreach (KeyValuePair<FishSO, uint> item in fishes)
             {
                 GameObject newEntry = Instantiate(
-                    this.fishNewsEntryPrefab,
-                    this.entryContainer
+                    fishNewsEntryPrefab,
+                    entryContainer
                 );
 
                 // If missing script, delete and cancel
@@ -42,16 +44,16 @@ namespace FishingModule.UI
         /// <inheritdoc/>
         private void Awake()
         {
-            if (this.fishNewsEntryPrefab == null)
+            if (fishNewsEntryPrefab == null)
                 return;
 
-            if (this.entryContainer == null)
+            if (entryContainer == null)
                 return;
 
             FishingManager manager = FindObjectOfType<FishingManager>();
 
             if (manager != null)
-                manager.OnFishCaught += this.AddNews;
+                manager.OnFishCaught += AddNews;
         }
 
         #endregion

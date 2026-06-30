@@ -20,8 +20,7 @@ namespace Chain
         public Transform lastLinkPrefab;
         private IChainGenerator _chainGeneratorImplementation;
 
-
-        List<ChainLink> DrawChain()
+        private List<ChainLink> DrawChain()
         {
             _pointsCount = Data.ChainPoints.Count;
             CreateLinks();
@@ -34,8 +33,7 @@ namespace Chain
             return DrawChain();
         }
 
-
-        void CreateLinks()
+        private void CreateLinks()
         {
             if(Data.Pool.pool.Count < _pointsCount)
             {
@@ -57,7 +55,7 @@ namespace Chain
             
         }
 
-        void SetLookRotations(int i, ChainLink newLink)
+        private void SetLookRotations(int i, ChainLink newLink)
         {
             if (i < _pointsCount)
             {
@@ -69,14 +67,16 @@ namespace Chain
                 RotateLinks(i, newLink);
         }
 
-        void RotateLinks(int i, ChainLink link)
+        private void RotateLinks(int i, ChainLink link)
         {
             var rot = link.transform.localRotation;
             if (i % 2 == 0)
+            {
                 link.transform.localRotation =
                     Quaternion.Euler(rot.eulerAngles.x,
                         rot.eulerAngles.y,
                         rot.eulerAngles.z - 90);
+            }
         }
     }
 }

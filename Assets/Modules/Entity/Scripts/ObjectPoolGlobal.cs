@@ -36,7 +36,7 @@ namespace EntityModule
         protected override bool DestroyOnLoad => true;
 
         /// <inheritdoc/>
-        protected override void OnAwake() => Apply(this.Settings);
+        protected override void OnAwake() => Apply(Settings);
 
         #endregion
     }

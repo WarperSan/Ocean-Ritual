@@ -25,22 +25,22 @@ namespace BehaviourModule.Trees
         #region MonoBehaviour
 
         /// <inheritdoc cref="Start" />
-        private void Start() => this.RebuildRoot();
+        private void Start() => RebuildRoot();
 
         /// <inheritdoc cref="Update" />
         private void Update()
         {
             // Disable if root is invalid
-            if (this.root == null)
+            if (root == null)
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
-                Debug.LogError("The root was invalid for '" + this.name + "'.");
-                this.enabled = false;
+                Debug.LogError("The root was invalid for '" + name + "'.");
+                enabled = false;
                 return;
             }
 
-            this.root.Reset();
-            this.root.Evaluate();
+            root.Reset();
+            root.Evaluate();
         }
 
         #endregion
@@ -48,10 +48,10 @@ namespace BehaviourModule.Trees
         #region IVisualizable
 
         /// <inheritdoc/>
-        public Node GetRoot() => this.root;
+        public Node GetRoot() => root;
 
         /// <inheritdoc/>
-        public void RebuildRoot() => this.root = this.SetUpTree();
+        public void RebuildRoot() => root = SetUpTree();
 
         #endregion
     }

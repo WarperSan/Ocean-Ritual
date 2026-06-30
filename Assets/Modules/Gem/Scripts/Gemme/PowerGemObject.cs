@@ -1,32 +1,35 @@
-using static EnumGeneral;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [System.Serializable]
-public class PowerGemObject 
+public class PowerGemObject
 {
     #region Fields and Properties
 
     public GemmeGrid GridGemme;
     public GameObject SocleContainer;
-     public GameObject GemContainer;
+    public GameObject GemContainer;
 
     private Transform parentTransform;
     public List<Gemcomponent> GemcomponentList = new();
-    [SerializeField] public List<Gem> GemmeList = new();
-    [SerializeField] Gem TemporaryGem;
+
+    [SerializeField]
+    public List<Gem> GemmeList = new();
+
+    [SerializeField]
+    private Gem TemporaryGem;
+
     #endregion
+
     public void RemoveStand()
     {
         ClearAllChildren();
         GridGemme.resetGrid();
         ResestScale();
     }
-    public void ResestScale()
-    {
-        parentTransform.localScale = Vector3.one;
-    }
+
+    public void ResestScale() => parentTransform.localScale = Vector3.one;
+
     public void ClearAllChildren()
     {
         ClearChildren(SocleContainer);
@@ -35,113 +38,91 @@ public class PowerGemObject
 
     private void ClearChildren(GameObject container)
     {
-        // Crée une liste temporaire pour stocker les enfants à supprimer
-        List<GameObject> children = new List<GameObject>();
+        // Crï¿½e une liste temporaire pour stocker les enfants ï¿½ supprimer
+        var children = new List<GameObject>();
 
-        // Ajoute chaque enfant à la liste temporaire
+        // Ajoute chaque enfant ï¿½ la liste temporaire
         foreach (Transform child in container.transform)
-        {
             children.Add(child.gameObject);
-        }
 
-        // Supprime chaque enfant après la fin de l'itération
+        // Supprime chaque enfant aprï¿½s la fin de l'itï¿½ration
         foreach (GameObject child in children)
-        {
-           Object.Destroy(child);
-        }
+            Object.Destroy(child);
     }
 
-
-
-    public void GetParentTransform(Transform parent)
-    {
-        parentTransform = parent;
-    }
+    public void GetParentTransform(Transform parent) => parentTransform = parent;
 
     public void GetGemToScriptList()
     {
         GemmeList.Clear();
+
         foreach (Gemcomponent item in GemcomponentList)
-        {
             GemmeList.Add(item.GemScript);
-        }
-    
     }
+
     public Gem ReceiveGemData(GemData gemData)
     {
-        TemporaryGem = new(gemData);
+        TemporaryGem = new Gem(gemData);
         return TemporaryGem;
-
-
     }
-   
-    public void ReceiveGemData(Gem gemData)
-    {
-        TemporaryGem = gemData;
-    }
+
+    public void ReceiveGemData(Gem gemData) => TemporaryGem = gemData;
+
     #region Gemme Placement
+
     //   int AddSpace = 1;
     // Places gems in the grid and sets their position
     public void PlaceGem()
     {
         foreach (Gem Gemmes in GemmeList)
         {
-            if(GridGemme.PlaceObject(Gemmes.PositionX, Gemmes.PositionZ, Gemmes.form.GetForme()))
+            if (GridGemme.PlaceObject(Gemmes.PositionX, Gemmes.PositionZ, Gemmes.form.GetForme()))
             {
-               
                 GameObject theGemme = GeneratorGem.CreatGemmeObject(Gemmes, GemContainer.transform);
-               // theGemme.transform.position += new Vector3((Gemmes.GemScript.PositionX + AddSpace) * SocleGenerator.Instance.spaceBetweenCube, 0, (Gemmes.GemScript.PositionZ + AddSpace) * SocleGenerator.Instance.spaceBetweenCube);
+                // theGemme.transform.position += new Vector3((Gemmes.GemScript.PositionX + AddSpace) * SocleGenerator.Instance.spaceBetweenCube, 0, (Gemmes.GemScript.PositionZ + AddSpace) * SocleGenerator.Instance.spaceBetweenCube);
             }
-            
-           
-           
         }
     }
 
     #endregion
 
-    
-   public bool TryPlaceTemporaryGem(int x,int z)
+    public bool TryPlaceTemporaryGem(int x, int z)
     {
         //   Debug.Log(TemporaryGem.PositionX);
         //Debug.Log(TemporaryGem.PositionZ);
-        if (GridGemme.TryPlaceObjectOnGrid(x,z, TemporaryGem))
+        if (GridGemme.TryPlaceObjectOnGrid(x, z, TemporaryGem))
         {
-           // Debug.Log(TemporaryGem.PositionX);
-          // Debug.Log(TemporaryGem.PositionZ);
+            // Debug.Log(TemporaryGem.PositionX);
+            // Debug.Log(TemporaryGem.PositionZ);
             GemmeList.Add(TemporaryGem);
             //TemporaryGem = null;
-          // Debug.Log(GemmeList.Count);
-
+            // Debug.Log(GemmeList.Count);
 
             return true;
         }
-      //  Debug.Log("false TryPlaceTemporaryGem");
+        //  Debug.Log("false TryPlaceTemporaryGem");
         return false;
     }
-    public void  GivePositionRef(Gem gem)
+
+    public void GivePositionRef(Gem gem)
     {
-        gem.PositionX =  TemporaryGem.PositionX  ;
-        gem.PositionZ =  TemporaryGem.PositionZ ;
+        gem.PositionX = TemporaryGem.PositionX;
+        gem.PositionZ = TemporaryGem.PositionZ;
     }
 
     #region Gemme Management
 
-
     // Deletes a gems 
     public void DeletedGem(Gem theGem)
     {
-
         if (GemmeList.Contains(theGem))
         {
             GemmeList.Remove(theGem);
             GridGemme.RemoveObject(theGem.PositionX, theGem.PositionZ, theGem.form.GetForme());
-           // Debug.Log("La gemme a été supprimée avec succès.");
+            // Debug.Log("La gemme a ï¿½tï¿½ supprimï¿½e avec succï¿½s.");
         }
         else
-        {
-            Debug.LogWarning("La gemme spécifiée n'existe pas dans la liste.");
-        }
+            Debug.LogWarning("La gemme spï¿½cifiï¿½e n'existe pas dans la liste.");
     }
 
     #endregion

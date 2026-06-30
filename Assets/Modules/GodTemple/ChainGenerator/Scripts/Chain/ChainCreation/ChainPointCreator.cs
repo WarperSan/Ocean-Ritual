@@ -9,7 +9,8 @@ namespace Chain
     public interface IChainGenerator
     {
         ChainGeneratorData Data { get; set; }
-        public List<ChainLink> ExecutePhase();
+
+        List<ChainLink> ExecutePhase();
         //public dynamic ExecutePhase<T>() where T : new();
     }
 
@@ -30,7 +31,7 @@ namespace Chain
         private Arc[] _arcs;
         private int _arcCount;
         private int _linearPointAmount;
-        private bool _stopExecution = false;
+        private bool _stopExecution;
 
         public List<ChainLink> ExecutePhase()
         {
@@ -38,8 +39,8 @@ namespace Chain
             IChainGenerator chainDrawer = new ChainDrawer(Data);
             return chainDrawer.ExecutePhase();
         }
-        
-        void StartChain()
+
+        private void StartChain()
         {
             _stopExecution = false;
             Data.ChainPoints = new();
@@ -47,8 +48,7 @@ namespace Chain
             GenerateChainPoints();
         }
 
-
-        void GenerateChainPoints()
+        private void GenerateChainPoints()
         {
             CreateArcs();
             Setup();
@@ -56,7 +56,7 @@ namespace Chain
             BindPoints();
         }
 
-        void CreateArcs()
+        private void CreateArcs()
         {
             _arcCount = _cogs.Count;
             _arcs = new Arc[_arcCount];
@@ -67,20 +67,18 @@ namespace Chain
             }
         }
 
-        void Setup()
+        private void Setup()
         {
             OrderArcsClockwise();
             SetArcs();
             RelateArcs();
             for (int i = 0; i < _arcCount; i++)
-            {
                 CommonTangentAngles(i);
-            }
 
             //ChainEvents.OnMotionStateSet?.Invoke(ChainData.IsMoving);
         }
 
-        void CommonTangentAngles(int i)
+        private void CommonTangentAngles(int i)
         {
             Arc arc = _arcs[i];
             Arc relatedArc = _arcs[_arcs[i].relatedArcId];
@@ -104,7 +102,7 @@ namespace Chain
                     relatedArc.cog.transform.localPosition) + ChainData.Tension * relatedArc.radius;
         }
 
-        void CreateParts(int i)
+        private void CreateParts(int i)
         {
             CreateArcPoints(i);
             if (_stopExecution) return;
@@ -113,7 +111,7 @@ namespace Chain
             AddLinearPoints(i);
         }
 
-        void SetArcs()
+        private void SetArcs()
         {
             for (int i = 0; i < _arcCount; i++)
             {
@@ -126,26 +124,22 @@ namespace Chain
             }
         }
 
-        void OrderArcsClockwise()
+        private void OrderArcsClockwise()
         {
             var arcPositions = new Vector3[_arcs.Length];
             for (int i = 0; i < _arcs.Length; i++)
-            {
                 arcPositions[i] = _arcs[i].cog.transform.localPosition;
-            }
 
             _arcs = new ClockwiseSorter<Arc>(_arcs, arcPositions).SortItems();
         }
 
-        void RelateArcs()
+        private void RelateArcs()
         {
             for (int i = 0; i < _arcCount; i++)
-            {
                 _arcs[i].relatedArcId = (i + 1) % _arcCount;
-            }
         }
 
-        void CreateArcPoints(int i)
+        private void CreateArcPoints(int i)
         {
             var start = _arcs[i].edgeAngles.Start;
             var end = _arcs[i].edgeAngles.End;
@@ -184,8 +178,7 @@ namespace Chain
             _arcs[i].arcPoints[_arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
         }
 
-
-        Vector3 LastPointOffset(int i) //todo: add to trig helper
+        private Vector3 LastPointOffset(int i) //todo: add to trig helper
         {
             var lastPointAngle = TrigonometryHelper.AngleInCirclePoint(_arcs[i].arcPoints.Last(), Vector3.zero);
             var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - _arcs[i].edgeAngles.End);
@@ -197,13 +190,13 @@ namespace Chain
             return Vector3.zero + hypotenuse * direction;
         }
 
-        Vector3 PositionSinglePoint(Cogwheel cog, Vector3 point)
+        private Vector3 PositionSinglePoint(Cogwheel cog, Vector3 point)
         {
             var positionedPoint = cog.transform.localPosition + point; // + cog.transform.localRotation * point;
             return positionedPoint;
         }
 
-        void PositionPoints(int i)
+        private void PositionPoints(int i)
         {
             var arcPoints = _arcs[i].arcPoints;
             var cog = _arcs[i].cog;
@@ -215,7 +208,7 @@ namespace Chain
             }
         }
 
-        void SetNextArcPoint(int i)
+        private void SetNextArcPoint(int i)
         {
             var relatedArc = _arcs[_arcs[i].relatedArcId];
 
@@ -232,8 +225,7 @@ namespace Chain
             _arcs[i].nextArcPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
-
-        void AddLinearPoints(int i)
+        private void AddLinearPoints(int i)
         {
             _linearPointAmount =
                 TrigonometryHelper.LinearPointAmountByDistance(_arcs[i].nextArcPoint, _arcs[i].arcPoints.Last(),
@@ -245,9 +237,7 @@ namespace Chain
 
             var arcPoints = _arcs[i].arcPoints;
             for (int j = 0; j < _linearPointAmount; j++)
-            {
                 arcPoints.Add(arcPoints.Last() + unitDistance); //
-            }
 
             if (_arcs[i].relatedArcId == 0) return;
             Arc relatedArc = _arcs[_arcs[i].relatedArcId];
@@ -265,7 +255,7 @@ namespace Chain
             CreateParts(relatedArc.id);
         }
 
-        void BindPoints()
+        private void BindPoints()
         {
             int i = 0;
             while (true)

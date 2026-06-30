@@ -11,8 +11,8 @@ namespace WeaponModule
     {
         #region Shorthands
 
-        private IOverheatable _overheatable = null;
-        private IMultiMode _multiMode = null;
+        private IOverheatable _overheatable;
+        private IMultiMode _multiMode;
 
         /// <inheritdoc cref="IOverheatable.IsOverheated"/>
         private bool IsOverheated() => _overheatable?.IsOverheated() ?? false;
@@ -26,26 +26,26 @@ namespace WeaponModule
         /// </summary>
         public void Shoot()
         {
-            GameObject prefab = this.GetBullet();
+            GameObject prefab = GetBullet();
 
             // If no prefab set, skip
             if (prefab == null)
                 return;
 
-            GameObject bullet = this.CreateBullet(prefab);
+            GameObject bullet = CreateBullet(prefab);
 
             // If error occurred, skip
             if (bullet == null)
                 return;
 
             bullet.SetActive(true);
-            this.OnShoot(bullet);
+            OnShoot(bullet);
 
             // Consume one bullet
-            this.remainingBullets = Math.Max(0, this.remainingBullets - 1);
+            remainingBullets = Math.Max(0, remainingBullets - 1);
 
-            if (this.remainingBullets == 0)
-                this.OnReloadStart();
+            if (remainingBullets == 0)
+                OnReloadStart();
         }
 
         /// <summary>
@@ -65,17 +65,19 @@ namespace WeaponModule
 
         #region Cooldown
 
-        protected float timeSinceLastShot = 0f;
+        protected float timeSinceLastShot;
 
         #endregion
 
         #region Bullet
 
         [Header("Bullet")]
-        [SerializeField, Tooltip("Determines the object pool for this weapon")]
-        protected ObjectPool localObjectPool = null;
+        [SerializeField]
+        [Tooltip("Determines the object pool for this weapon")]
+        protected ObjectPool localObjectPool;
 
-        [SerializeField, Tooltip("Determines the prefab to use for the bullet")]
+        [SerializeField]
+        [Tooltip("Determines the prefab to use for the bullet")]
         private GameObject bulletPrefab;
 
         /// <summary>
@@ -87,7 +89,7 @@ namespace WeaponModule
             if (prefab == null)
                 return null;
 
-            GameObject bullet = this.FetchBulletInstance(prefab.name);
+            GameObject bullet = FetchBulletInstance(prefab.name);
 
             // If error occurred, skip
             if (bullet == null)
@@ -97,8 +99,8 @@ namespace WeaponModule
             if (bullet.TryGetComponent(out Projectile projectile))
             {
                 projectile.ResetSelf();
-                projectile.Attribute(this.GetAttack());
-                this.SetupProjectile(projectile);
+                projectile.Attribute(GetAttack());
+                SetupProjectile(projectile);
             }
 
             return bullet;
@@ -132,26 +134,26 @@ namespace WeaponModule
         /// <summary>
         /// Fetches the prefab to use for this shot
         /// </summary>
-        protected virtual GameObject GetBullet() => this.bulletPrefab;
+        protected virtual GameObject GetBullet() => bulletPrefab;
 
         #endregion
 
         #region Reload
 
         protected uint remainingBullets;
-        private float reloadTimer = 0;
+        private float reloadTimer;
 
         /// <summary>
         /// Updates the reload of this weapon
         /// </summary>
         protected void Reload(float elapsed)
         {
-            uint clipSize = this.GetClipSize();
+            uint clipSize = GetClipSize();
 
             // If already full, skip
-            if (this.remainingBullets >= clipSize)
+            if (remainingBullets >= clipSize)
             {
-                this.remainingBullets = clipSize;
+                remainingBullets = clipSize;
                 return;
             }
 
@@ -159,21 +161,21 @@ namespace WeaponModule
             reloadTimer += elapsed;
 
             // Calcule le temps n�cessaire pour recharger une balle
-            float timeToReloadOneBullet = 1f / this.GetReloadSpeed(); // secondes par balle
+            float timeToReloadOneBullet = 1f / GetReloadSpeed(); // secondes par balle
 
             while (reloadTimer >= timeToReloadOneBullet)
             {
                 reloadTimer -= timeToReloadOneBullet;
-                this.remainingBullets = (uint)Mathf.Max(0, this.remainingBullets + 1);
+                remainingBullets = (uint)Mathf.Max(0, remainingBullets + 1);
             }
 
-            this.OnReload();
+            OnReload();
 
             // Si les munitions sont compl�tement recharg�es, on d�sactive la surchauffe
-            if (this.remainingBullets >= clipSize)
+            if (remainingBullets >= clipSize)
             {
-                this.remainingBullets = clipSize;
-                this.OnReloadCompleted();
+                remainingBullets = clipSize;
+                OnReloadCompleted();
             }
         }
 
@@ -210,57 +212,57 @@ namespace WeaponModule
         protected override void OnStart()
         {
             if (this is IOverheatable overheated)
-                this._overheatable = overheated;
+                _overheatable = overheated;
 
             if (this is IMultiMode multiMode)
-                this._multiMode = multiMode;
+                _multiMode = multiMode;
         }
 
         /// <inheritdoc/>
         protected override void OnUpdate(float elapsed)
         {
             // Update the cooldown
-            this.timeSinceLastShot += elapsed;
+            timeSinceLastShot += elapsed;
 
             // If overheated
-            if (this.IsOverheated())
+            if (IsOverheated())
             {
-                this.Reload(elapsed);
+                Reload(elapsed);
                 return;
             }
 
             // Changer de mode avec le bouton molette
-            if (Input.GetMouseButtonDown(2) && this._multiMode != null)
+            if (Input.GetMouseButtonDown(2) && _multiMode != null)
             {
-                Enum nextMode = this._multiMode.NextMode();
-                this._multiMode.SetMode(nextMode);
+                Enum nextMode = _multiMode.NextMode();
+                _multiMode.SetMode(nextMode);
             }
 
             // If not firing, reload
-            if (!this.isFiring)
+            if (!isFiring)
             {
-                this.Reload(elapsed);
+                Reload(elapsed);
                 return;
             }
 
             // If can't shoot, skip
-            if (!this.CanShoot())
+            if (!CanShoot())
                 return;
 
-            this.Shoot();
+            Shoot();
         }
 
         #endregion
 
         #region IFirable
 
-        private bool isFiring = false;
+        private bool isFiring;
 
         /// <inheritdoc/>
         public void OnFireStart()
         {
-            this.isFiring = true;
-            this.OnFirePressed();
+            isFiring = true;
+            OnFirePressed();
         }
 
         /// <inheritdoc cref="IFirable.OnFireStart"/>
@@ -269,8 +271,8 @@ namespace WeaponModule
         /// <inheritdoc/>
         public void OnFireEnd()
         {
-            this.isFiring = false;
-            this.OnFireReleased();
+            isFiring = false;
+            OnFireReleased();
         }
 
         /// <inheritdoc cref="IFirable.OnFireEnd"/>

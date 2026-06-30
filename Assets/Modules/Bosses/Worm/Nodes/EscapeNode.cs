@@ -12,8 +12,21 @@ namespace BossesModule.Worm.Nodes
         private readonly string isEscaping;
         private readonly string isRepositioning;
 
-        public EscapeNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isEscaping, string isRepositioning)
-            : base(entity, animator, collider, currentTarget, "Escape Start Animation", "Escape End Animation", isEscaping)
+        public EscapeNode(
+            WormEntity entity,
+            Animator   animator,
+            Collider   collider,
+            string     currentTarget,
+            string     isEscaping,
+            string     isRepositioning
+        )
+            : base(entity,
+                animator,
+                collider,
+                currentTarget,
+                "Escape Start Animation",
+                "Escape End Animation",
+                isEscaping)
         {
             this.isEscaping = isEscaping;
             this.isRepositioning = isRepositioning;
@@ -22,11 +35,16 @@ namespace BossesModule.Worm.Nodes
         private Node EscapeSelector()
         {
             Selector escapeSelector = new();
-            escapeSelector += new CallbackNode((Node n) => n.GetData<bool>(isEscaping) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Escaping");
+
+            escapeSelector +=
+                new CallbackNode((Node n) => n.GetData<bool>(isEscaping) ? NodeState.SUCCESS : NodeState.FAILURE).Alias("Is Escaping");
 
             Sequence conditionSequence = new();
-            conditionSequence += new CallbackNode((Node n) => n.GetData<bool>(isRepositioning) ? NodeState.FAILURE : NodeState.SUCCESS).Alias("Is Not Repositioning");
-            conditionSequence += new DistanceSmaller(this.entity.transform, this.currentTarget, MIN_TRIGGER_DISTANCE).Alias("Is Within Range");
+
+            conditionSequence +=
+                new CallbackNode((Node n) => n.GetData<bool>(isRepositioning) ? NodeState.FAILURE : NodeState.SUCCESS).Alias(
+                    "Is Not Repositioning");
+            conditionSequence += new DistanceSmaller(entity.transform, currentTarget, MIN_TRIGGER_DISTANCE).Alias("Is Within Range");
 
             escapeSelector += conditionSequence.Alias("Condition Sequence");
 
@@ -35,19 +53,22 @@ namespace BossesModule.Worm.Nodes
 
         protected override NodeState ResetSequence()
         {
-            this.SetData(isEscaping, false, -1);
+            SetData(isEscaping, false, -1);
 
-            this.startAnimation.ResetAnim();
-            this.endAnimation.ResetAnim();
+            startAnimation.ResetAnim();
+            endAnimation.ResetAnim();
 
             return NodeState.SUCCESS;
         }
 
-        protected override string GetTargetDataKey() => CURRENT_ESCAPE_TARGET;
-        protected override int GetDiveAnimationIndex() => 0;
-        protected override int GetEmergeAnimationIndex() => 0;
+        protected override string GetTargetDataKey()        => CURRENT_ESCAPE_TARGET;
+        protected override int    GetDiveAnimationIndex()   => 0;
+        protected override int    GetEmergeAnimationIndex() => 0;
 
-        protected override Node[] GetPreNodes() => new Node[] { this.EscapeSelector() };
+        protected override Node[] GetPreNodes() => new Node[]
+        {
+            EscapeSelector(),
+        };
 
         #region Node
 
@@ -55,5 +76,4 @@ namespace BossesModule.Worm.Nodes
 
         #endregion
     }
-
 }

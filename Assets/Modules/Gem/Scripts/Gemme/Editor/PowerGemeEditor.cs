@@ -10,7 +10,8 @@ public class PowerGemmeEditor : UnityEditor.Editor
     private SerializedProperty SocleContainer;
     private SerializedProperty GemContainer;
     private SerializedProperty gridScript;
-    void OnEnable()
+
+    private void OnEnable()
     {
         powerGemObjectProp = serializedObject.FindProperty("PowerGemObjectScript");
         gridScript = powerGemObjectProp.FindPropertyRelative("GridGemme");
@@ -39,9 +40,7 @@ public class PowerGemmeEditor : UnityEditor.Editor
         EditorGUILayout.LabelField("Gem List", EditorStyles.boldLabel);
 
         if (GUILayout.Button("Add Gem"))
-        {
             listProperty.InsertArrayElementAtIndex(listProperty.arraySize);
-        }
 
         for (int i = 0; i < listProperty.arraySize; i++)
         {
@@ -51,9 +50,7 @@ public class PowerGemmeEditor : UnityEditor.Editor
             EditorGUILayout.PropertyField(element, GUIContent.none);
 
             if (GUILayout.Button("Remove"))
-            {
                 listProperty.DeleteArrayElementAtIndex(i);
-            }
 
             EditorGUILayout.EndHorizontal();
         }

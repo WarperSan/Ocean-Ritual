@@ -1,22 +1,18 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static EnumGeneral;
 
 namespace BlacksmithModule
 {
     public interface IForgeable
     {
-        int CostToUpgrade { get; set; }
-        int ForgePercentage { get; set; }
-        int LvlOfEquipment { get; set; }
-        componentGBN componentGBN { get; }
+        int          CostToUpgrade   { get; set; }
+        int          ForgePercentage { get; set; }
+        int          LvlOfEquipment  { get; set; }
+        componentGBN componentGBN    { get; }
 
-        public void UpgradeEquipment();
-        public int GetCostForUpgrade();
-        public UpgradeStats GetStatToUpgradeAndCost();
+        void         UpgradeEquipment();
+        int          GetCostForUpgrade();
+        UpgradeStats GetStatToUpgradeAndCost();
 
-        public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum;
+        UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum;
     }
 }

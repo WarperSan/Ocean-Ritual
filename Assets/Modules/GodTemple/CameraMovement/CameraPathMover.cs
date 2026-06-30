@@ -1,19 +1,31 @@
 using UnityEngine;
-using Cinemachine;
 using System.Collections;
 using InteractModule;
 using ControllerModule.Controllers;
+using Unity.Cinemachine;
 
 public class CameraPathMover : MonoBehaviour, IInteractable
 {
-    [SerializeField] private CinemachineDollyCart dollyCart; // Référence au Dolly Cart
-    [SerializeField] private CinemachineVirtualCamera virtualCamera; // Référence à la caméra Cinemachine
-    [SerializeField] private float speed = 5f; // Vitesse de déplacement
-    [SerializeField] private float startDelay = 1f; // Délai avant que la piste commence
-    [SerializeField] private float endPriority = 1; // Priorité après la fin
-    [SerializeField] private float activePriority = 20; // Priorité active pendant le trajet
-    private GameObject player; // Référence au GameObject Player
-    private bool isMoving = false;
+    [SerializeField]
+    private CinemachineDollyCart dollyCart; // Rï¿½fï¿½rence au Dolly Cart
+
+    [SerializeField]
+    private CinemachineVirtualCamera virtualCamera; // Rï¿½fï¿½rence ï¿½ la camï¿½ra Cinemachine
+
+    [SerializeField]
+    private float speed = 5f; // Vitesse de dï¿½placement
+
+    [SerializeField]
+    private float startDelay = 1f; // Dï¿½lai avant que la piste commence
+
+    [SerializeField]
+    private float endPriority = 1; // Prioritï¿½ aprï¿½s la fin
+
+    [SerializeField]
+    private float activePriority = 20; // Prioritï¿½ active pendant le trajet
+
+    private GameObject player; // Rï¿½fï¿½rence au GameObject Player
+    private bool isMoving;
 
     public InteractionAsset InteractionAsset => null;
 
@@ -22,39 +34,31 @@ public class CameraPathMover : MonoBehaviour, IInteractable
         player = GameObject.FindGameObjectWithTag("Player");
 
         if (player == null)
-        {
-            Debug.LogError("Aucun GameObject avec le tag 'Player' n'a été trouvé !");
-        }
-        // Assurez-vous que la caméra commence avec la priorité basse
+            Debug.LogError("Aucun GameObject avec le tag 'Player' n'a ï¿½tï¿½ trouvï¿½ !");
+
+        // Assurez-vous que la camï¿½ra commence avec la prioritï¿½ basse
         if (virtualCamera != null)
-        {
             virtualCamera.Priority = (int)endPriority;
-        }
     }
 
     private void Update()
     {
         if (isMoving && dollyCart != null)
         {
-            // Déplacement de la caméra sur le chemin
+            // Dï¿½placement de la camï¿½ra sur le chemin
             dollyCart.m_Position += speed * Time.deltaTime;
 
-            // Vérifie si la caméra a atteint la fin du chemin
+            // Vï¿½rifie si la camï¿½ra a atteint la fin du chemin
             if (dollyCart.m_Position >= dollyCart.m_Path.PathLength)
-            {
                 StopMovement();
-            }
         }
     }
 
-    public void OnClick()
-    {
-        StartCoroutine(StartCameraMovement());
-    }
+    public void OnClick() => StartCoroutine(StartCameraMovement());
 
     private IEnumerator StartCameraMovement()
     {
-        // Augmenter la priorité de la caméra
+        // Augmenter la prioritï¿½ de la camï¿½ra
         if (virtualCamera != null)
         {
             PlayerController script = player.GetComponent<PlayerController>();
@@ -65,23 +69,21 @@ public class CameraPathMover : MonoBehaviour, IInteractable
         // Attendre avant de commencer le mouvement
         yield return new WaitForSeconds(startDelay);
 
-        // Commence à bouger la caméra
+        // Commence ï¿½ bouger la camï¿½ra
         isMoving = true;
     }
 
     private void StopMovement()
     {
-        // Réduire la priorité de la caméra
+        // Rï¿½duire la prioritï¿½ de la camï¿½ra
         if (virtualCamera != null)
-        {
             virtualCamera.Priority = (int)endPriority;
-        }
         PlayerController script = player.GetComponent<PlayerController>();
         script.enabled = true;
-        // Arrêter le mouvement
+        // Arrï¿½ter le mouvement
         isMoving = false;
 
-        // Réinitialiser la position du chariot si nécessaire
+        // Rï¿½initialiser la position du chariot si nï¿½cessaire
         dollyCart.m_Position = 0;
     }
 }

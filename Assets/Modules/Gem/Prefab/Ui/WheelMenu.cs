@@ -1,17 +1,15 @@
-using BlacksmithModule;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+
 namespace UIModule.Menus
 {
     public class WheelMenu : AnimatedMenu
     {
         public InventoryUI inventoryUI;
 
-      
-        
         /// <inheritdoc/>
         public override IEnumerator Open()
         {
@@ -31,21 +29,23 @@ namespace UIModule.Menus
             TransitionCam.Instance.SwitchToCamA();
 
             yield return base.Close();
-            
         }
+
         private List<Equipment> forgeableItems = new();
+
         private void GetAllUpgradeableItem()
         {
-            //Debug.Log("Nombre d'objets forgeables trouvés : " + forgeableItems.Count);
-            this.forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<Equipment>().ToList();
-            //Debug.Log("Nombre d'objets forgeables trouvés après recherche : " + forgeableItems.Count);
+            //Debug.Log("Nombre d'objets forgeables trouvï¿½s : " + forgeableItems.Count);
+            forgeableItems = FindObjectsOfType<MonoBehaviour>().OfType<Equipment>().ToList();
+            //Debug.Log("Nombre d'objets forgeables trouvï¿½s aprï¿½s recherche : " + forgeableItems.Count);
 
-            foreach (var item in forgeableItems)
+            foreach (Equipment item in forgeableItems)
             {
                 item.UpdateStat();
                 Debug.Log("Nom de l'objet : " + ((MonoBehaviour)item).gameObject.name);
             }
         }
+
         public void CloseButton() => UIManager.Close<WheelMenu>();
 
         #region Page
@@ -54,7 +54,7 @@ namespace UIModule.Menus
         [SerializeField]
         private RectMask2D pageMask;
 
-        public void TogglePageMask(bool isEnable) => this.pageMask.enabled = isEnable;
+        public void TogglePageMask(bool isEnable) => pageMask.enabled = isEnable;
 
         #endregion
     }

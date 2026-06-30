@@ -15,7 +15,7 @@ namespace Chain
         public float HoleSize = 3f;
         public int HoleId;
         public bool IsMoving = true;
-        public bool WithoutTeeth = false;
+        public bool WithoutTeeth;
         public TeethPool TeethPoolPrefab;
         public GearData relatedGearData; //If CONTACT TYPE IS COG RELATED
 
@@ -24,7 +24,7 @@ namespace Chain
         public Vector3 toothScale = new Vector3(.6f, .5f, .5f);
         public float ToothGap = 45;
         public float MinGapLimit = 6;
-        public bool Equalize = false; //TODO: POSSİBLE BUG
+        public bool Equalize; //TODO: POSSİBLE BUG
         [HideInInspector] public int TeethCount;
         [HideInInspector] public float ToothUnit;
     }

@@ -18,25 +18,29 @@ namespace EntityModule.Entities
         #region Health Bar
 
         [Header("Health Bar")]
-        [SerializeField] private HealthBar healthBar;
+        [SerializeField]
+        private HealthBar healthBar;
 
-        private void UpdateHealthBar() => this.healthBar.UpdateBar(this);
+        private void UpdateHealthBar() => healthBar.UpdateBar(this);
 
-        private void ShowHealthBar() => this.healthBar.Show();
-        private void HideHealthBar() => this.healthBar.Hide();
+        private void ShowHealthBar() => healthBar.Show();
+        private void HideHealthBar() => healthBar.Hide();
 
         #endregion
 
         #region Arena
 
         [Header("Arena")]
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         protected float detectionRange = 100;
 
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         protected float barrierRange = 125;
 
-        [SerializeField, Min(1)]
+        [SerializeField]
+        [Min(1)]
         protected int barrierCount = 20;
 
         [SerializeField]
@@ -46,41 +50,42 @@ namespace EntityModule.Entities
 
         private IEnumerator SpawnArena()
         {
-            barrierParent = new GameObject()
+            barrierParent = new GameObject
             {
-                name = this.name + " BARRIER",
+                name = name + " BARRIER",
             }.transform;
-            barrierParent.transform.position = this.transform.position;
+            barrierParent.transform.position = transform.position;
 
-            int centerIndex = this.barrierCount / 2;
+            int centerIndex = barrierCount / 2;
 
             for (int offset = 0; offset <= centerIndex; offset++)
             {
-                if (centerIndex + offset < this.barrierCount)
+                if (centerIndex + offset < barrierCount)
                 {
                     SpawnBarrierPiece(centerIndex + offset);
-                    yield return new WaitForSeconds(1.5f / this.barrierCount);
+                    yield return new WaitForSeconds(1.5f / barrierCount);
                 }
 
-                if (centerIndex - offset >= 0 && offset != 0) 
+                if (centerIndex - offset >= 0 && offset != 0)
                 {
                     SpawnBarrierPiece(centerIndex - offset);
-                    yield return new WaitForSeconds(1.5f / this.barrierCount);
+                    yield return new WaitForSeconds(1.5f / barrierCount);
                 }
             }
 
-            this.hasSpawned = true;
+            hasSpawned = true;
         }
 
         private void SpawnBarrierPiece(int index)
         {
-            GameObject piece = Instantiate(this.barrierPrefab, barrierParent);
+            GameObject piece = Instantiate(barrierPrefab, barrierParent);
+
             piece.transform.localPosition = new Vector3(
-                Mathf.Cos(Mathf.Deg2Rad * 360f * index / this.barrierCount),
+                Mathf.Cos(Mathf.Deg2Rad * 360f * index / barrierCount),
                 0,
-                Mathf.Sin(Mathf.Deg2Rad * 360f * index / this.barrierCount)
-            ) * this.barrierRange;
-            piece.transform.localRotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 180), 0);
+                Mathf.Sin(Mathf.Deg2Rad * 360f * index / barrierCount)
+            ) * barrierRange;
+            piece.transform.localRotation = Quaternion.Euler(0, Random.Range(0, 180), 0);
         }
 
         private IEnumerator DespawnArena()
@@ -89,9 +94,10 @@ namespace EntityModule.Entities
             {
                 if (barrierParent.GetChild(i).TryGetComponent(out Animator animator))
                     animator.SetTrigger("hide");
-                yield return new WaitForSeconds(3f / this.barrierCount);
+                yield return new WaitForSeconds(3f / barrierCount);
             }
             yield return new WaitForSeconds(5f);
+
             Destroy(barrierParent.gameObject);
             barrierParent = null;
         }
@@ -100,15 +106,18 @@ namespace EntityModule.Entities
 
         #region EntityBehavior
 
-        private bool hasStarted = false;
-        private bool hasSpawned = false;
-        [SerializeField] AudioClip bossMusic;
+        private bool hasStarted;
+        private bool hasSpawned;
+
+        [SerializeField]
+        private AudioClip bossMusic;
+
         private void Update()
         {
             // If spawned, update tree
-            if (this.hasSpawned)
+            if (hasSpawned)
             {
-                this.UpdateTree();
+                UpdateTree();
                 return;
             }
 
@@ -118,18 +127,22 @@ namespace EntityModule.Entities
             if (target == null)
                 return;
 
-            if (this.transform.Distance(target) > this.detectionRange)
+            if (transform.Distance(target) > detectionRange)
                 return;
 
-            if (!this.hasStarted)
+            if (!hasStarted)
             {
-                this.hasStarted = true;
+                hasStarted = true;
                 TargetGeneral.Instance.Target = target;
-                SoundManager.Instance.PlaySound(bossMusic,SoundType.Music,0.8f,true);
-                this.animator.SetBool("isSpawning", true);
-                this.ShowHealthBar();
 
-                this.StartCoroutine(this.SpawnArena());
+                SoundManager.Instance.PlaySound(bossMusic,
+                    SoundType.Music,
+                    0.8f,
+                    true);
+                animator.SetBool("isSpawning", true);
+                ShowHealthBar();
+
+                StartCoroutine(SpawnArena());
 
                 return;
             }
@@ -155,11 +168,10 @@ namespace EntityModule.Entities
             animator.SetTrigger("isDead");
             enabled = false;
             HideHealthBar();
-            StartCoroutine(this.DespawnArena());
+            StartCoroutine(DespawnArena());
             SoundManager.Instance.StopSound(SoundType.Music);
         }
 
         #endregion
     }
 }
-

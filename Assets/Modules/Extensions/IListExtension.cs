@@ -34,7 +34,7 @@ namespace ExtensionsModule
         /// <param name="index">Index of the item fetched</param>
         /// <typeparam name="T">Type of item</typeparam>
         /// <returns>Item fetched</returns>
-        public static T Random<T>(this IList<T> array, out int index) 
+        public static T Random<T>(this IList<T> array, out int index)
         {
             int amount = array.Count;
 
@@ -42,7 +42,7 @@ namespace ExtensionsModule
             {
                 0 => -1,
                 1 => 0,
-                _ => UtilsModule.Random.RandomToMax(array.Count)
+                _ => UtilsModule.Random.RandomToMax(array.Count),
             };
 
             // If outside array, return default

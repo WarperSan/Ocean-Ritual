@@ -6,41 +6,39 @@ namespace ChainDemo
     public class PoleMotion : MonoBehaviour
     {
         public PoleData Data;
-    
-        float LimitUp { get; set; }
-        Vector2 Limits { get; set; }
+
+        private float   LimitUp { get; set; }
+        private Vector2 Limits  { get; set; }
     
         private float Height { get; set; }
-        int direction;
+        private int direction;
         private Vector3 startPos;
-    
-        void SetVariables()
+
+        private void SetVariables()
         {
             do
-            {
                 direction = Random.Range(-1, 1);
-            } while (direction == 0);
+            while (direction == 0);
     
             Height = Data.height * direction;
             
             SetLimits();
         }
-    
-    
-        void SetLimits()
+
+        private void SetLimits()
         {
             LimitUp = Random.Range(Data.limit - Data.randomAmount, Data.limit + Data.randomAmount);
             Limits = new(startPos.y - Data.limitDown, startPos.y + LimitUp);
         }
-    
-        void Start()
+
+        private void Start()
         {
             startPos = transform.localPosition;
             SetVariables();
             StartCoroutine(nameof(MoveRoutine));
         }
-    
-        IEnumerator MoveRoutine()
+
+        private IEnumerator MoveRoutine()
         {
             while (true)
             {

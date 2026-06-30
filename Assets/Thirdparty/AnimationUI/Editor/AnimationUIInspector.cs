@@ -23,31 +23,22 @@ public class AnimationUIInspector : Editor
         if(!animationUI.IsPlayingInEditMode)
         {
             if(GUILayout.Button("Preview Animation"))
-            {
                 animationUI.PreviewAnimation();
-            }
         }
         else 
         {
             Color defaultGUIColor = GUI.backgroundColor;
             GUI.backgroundColor = Color.red;
             if(GUILayout.Button("Stop Animation"))
-            {
                 animationUI.IsPlayingInEditMode = false;
-            }
             GUI.backgroundColor = defaultGUIColor;
         }
         GUILayout.BeginHorizontal();
             if(GUILayout.Button("Preview Start"))
-            {
                 animationUI.PreviewStart();
-                
-            }
             else if(GUILayout.Button("Preview End"))
-            {
                 animationUI.PreviewEnd();
-            }
-        GUILayout.EndHorizontal();
+            GUILayout.EndHorizontal();
 #endregion buttons
 
 #region timing
@@ -75,11 +66,9 @@ public class AnimationUIInspector : Editor
 
         DrawDefaultInspector();
         if(GUILayout.Button("Reverse Sequence"))
-        {
             System.Array.Reverse(animationUI.AnimationSequence);
-        }
 
-#endregion timing
+        #endregion timing
 
 #region List
         float _currentTime = 0;
@@ -154,38 +143,28 @@ public class AnimationUIInspector : Editor
                     {
                         if(sequence.TargetComp.transform != null)sequence.AtTime += " [Transform]";
                         else
-                        {
                             sequence.TargetComp = null;
-                        }
                     }
                     else if(sequence.TargetType == Sequence.ObjectType.CanvasGroup)
                     {
                         if(sequence.TargetComp.GetComponent<CanvasGroup>() != null)sequence.AtTime += " [CanvasGroup]";
                         else
-                        {
                             sequence.TargetComp = null;
-                        }
                     }
                     else if(sequence.TargetType == Sequence.ObjectType.Camera)
                     {
                         if(sequence.TargetComp.GetComponent<Camera>() != null)sequence.AtTime += " [Camera]";
                         else
-                        {
                             sequence.TargetComp = null;
-                        }
                     }
                     else if(sequence.TargetType == Sequence.ObjectType.TextMeshPro)
                     {
                         if(sequence.TargetComp.GetComponent<TMP_Text>() != null)sequence.AtTime += " [TextMeshPro]";
                         else
-                        {
                             sequence.TargetComp = null;
-                        }
                     }
                     else if(sequence.TargetType == Sequence.ObjectType.UnityEventDynamic)
-                    {
                         sequence.AtTime += " [UnityEvent]";
-                    }
                 }
                 else // if TargetComp isn't assigned in inspector
                 {
@@ -224,13 +203,9 @@ public class AnimationUIInspector : Editor
             {
                 sequence.Duration = 0;
                 if(sequence.Target != null)
-                {
                     sequence.AtTime += " ["+sequence.Target.name+"] [SetActive to "+sequence.IsActivating+"]";
-                }
                 else // if Target isn't assigned in inspector
-                {
                     sequence.AtTime += " [Unassigned] [SetActive to "+sequence.IsActivating+"]";
-                }
             }
             else if(sequence.SequenceType == Sequence.Type.SFX)
             {

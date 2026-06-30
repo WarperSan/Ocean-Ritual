@@ -10,19 +10,34 @@ namespace BossesModule.Worm.Nodes
         public const string CURRENT_ATTACK_TARGET = "currentAttackTarget";
         public const float COOLDOWN = 10f;
 
-        public RandomAttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
+        public RandomAttackNode(
+            WormEntity entity,
+            Animator   animator,
+            Collider   collider,
+            string     currentTarget,
+            string     isAttacking
+        )
         {
-            notUsedAttacks = new List<AttackNode>() {
-                new IceStormNode(entity, animator, collider, currentTarget, isAttacking),
-                new IceWaveNode(entity, animator, collider, currentTarget, isAttacking)
+            notUsedAttacks = new List<AttackNode>
+            {
+                new IceStormNode(entity,
+                    animator,
+                    collider,
+                    currentTarget,
+                    isAttacking),
+                new IceWaveNode(entity,
+                    animator,
+                    collider,
+                    currentTarget,
+                    isAttacking),
             };
 
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             foreach (AttackNode atk in notUsedAttacks)
-                this.Attach(atk);
-#endif
+                Attach(atk);
+            #endif
 
-            this.ChooseNextAttack();
+            ChooseNextAttack();
         }
 
         #region Attack List
@@ -33,34 +48,31 @@ namespace BossesModule.Worm.Nodes
 
         public void ChooseNextAttack()
         {
-            if(notUsedAttacks.Count == 0)
+            if (notUsedAttacks.Count == 0)
             {
-                notUsedAttacks.AddRange(this.usedAttacks);
+                notUsedAttacks.AddRange(usedAttacks);
                 usedAttacks.Clear();
             }
-            
-            this.currentAttack = notUsedAttacks.Random(out int index);
+
+            currentAttack = notUsedAttacks.Random(out int index);
             notUsedAttacks.RemoveAt(index);
-            usedAttacks.Add(this.currentAttack);
+            usedAttacks.Add(currentAttack);
         }
 
         public NodeState OnAnimationEnded()
         {
-            this.currentAttack.OnAnimationEnded();
+            currentAttack.OnAnimationEnded();
             return NodeState.SUCCESS;
         }
 
-        public void ResetAttack()
-        {
-            this.currentAttack.ResetAttack();
-        }
+        public void ResetAttack() => currentAttack.ResetAttack();
 
         #endregion
 
         #region Node
 
         /// <inheritdoc/>
-        protected override NodeState OnEvaluate() => this.currentAttack?.Evaluate() ?? NodeState.FAILURE;
+        protected override NodeState OnEvaluate() => currentAttack?.Evaluate() ?? NodeState.FAILURE;
 
         #endregion
     }

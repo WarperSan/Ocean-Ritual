@@ -7,17 +7,17 @@ namespace InteractModule
         /// <summary>
         /// Called when something interacted with this object
         /// </summary>
-        public void OnClick();
+        void OnClick();
 
-        public InteractionAsset InteractionAsset { get; }
+        InteractionAsset InteractionAsset { get; }
 
         #region Static Fields
 
         /// <summary>Layer index of the interactable layer</summary>
-        public static readonly int LAYER = LayerMask.NameToLayer("Interactable");
+        static readonly int LAYER = LayerMask.NameToLayer("Interactable");
 
         /// <summary>Layer mask containing the interactable layer</summary>
-        public static readonly int LAYER_MASK = 1 << LAYER;
+        static readonly int LAYER_MASK = 1 << LAYER;
 
         #endregion
 
@@ -39,10 +39,19 @@ namespace InteractModule
         /// Checks if the ray touches something to interact with
         /// </summary>
         /// <returns>Is there something to interact with?</returns>
-        public static bool CanInteract(Vector3 position, Vector3 direction, out IInteractable target, float maxDistance = float.MaxValue)
+        static bool CanInteract(
+            Vector3           position,
+            Vector3           direction,
+            out IInteractable target,
+            float             maxDistance = float.MaxValue
+        )
         {
             // If hit something
-            if (Physics.Raycast(position, direction, out RaycastHit hit, maxDistance, LAYER_MASK))
+            if (Physics.Raycast(position,
+                    direction,
+                    out RaycastHit hit,
+                    maxDistance,
+                    LAYER_MASK))
                 return hit.collider.TryGetComponent(out target);
 
             target = null;
@@ -52,10 +61,13 @@ namespace InteractModule
         /// <summary>
         /// Tries to find a target and interacts with it
         /// </summary>
-        public static IInteractable TryInteract(Vector3 position, Vector3 direction, float maxDistance = float.MaxValue)
+        static IInteractable TryInteract(Vector3 position, Vector3 direction, float maxDistance = float.MaxValue)
         {
             // Interact if possible
-            if (CanInteract(position, direction, out IInteractable target, maxDistance))
+            if (CanInteract(position,
+                    direction,
+                    out IInteractable target,
+                    maxDistance))
                 Interact(target);
 
             return target;

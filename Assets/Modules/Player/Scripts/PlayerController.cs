@@ -11,7 +11,6 @@ namespace ControllerModule.Controllers
     /// <summary>
     /// Controller that manages how the player behaves
     /// </summary>
-
     public class PlayerController : Controller, IMovable, IInteractionable, IJumpable
     {
         #region Cursor
@@ -19,19 +18,25 @@ namespace ControllerModule.Controllers
         private const string INTERACT_TIP_TAG = "PLAYER_INTERACT";
 
         [Header("Cursor")]
-        [SerializeField, Tooltip("Determines the sprite to use when an interaction is possible")]
+        [SerializeField]
+        [Tooltip("Determines the sprite to use when an interaction is possible")]
         private Sprite interactCursor;
 
-        [SerializeField, Tooltip("Determines the sprite to use when no interaction is available")]
+        [SerializeField]
+        [Tooltip("Determines the sprite to use when no interaction is available")]
         private Sprite normalCursor;
 
-        [SerializeField, Tooltip("Image that represents the cursor")]
+        [SerializeField]
+        [Tooltip("Image that represents the cursor")]
         private Image cursor;
 
-        [SerializeField, Tooltip("Text to show when the player can interact with something")]
+        [SerializeField]
+        [Tooltip("Text to show when the player can interact with something")]
         private TextMeshProUGUI cursorText;
 
-        [SerializeField, Min(0), Tooltip("Determines how far the player can interact with things")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Determines how far the player can interact with things")]
         private float interactRange;
 
         [SerializeField]
@@ -45,60 +50,65 @@ namespace ControllerModule.Controllers
         private void UpdateCursor()
         {
             // If cursor invalid, skip
-            if (this.cursor == null)
+            if (cursor == null)
                 return;
 
             // If eyes invalid, skip
-            if (this.Eyes == null)
+            if (Eyes == null)
                 return;
 
-            if (IInteractable.CanInteract(this.Eyes.position, this.Eyes.forward, out IInteractable interactable, this.interactRange))
+            if (IInteractable.CanInteract(Eyes.position,
+                    Eyes.forward,
+                    out IInteractable interactable,
+                    interactRange))
             {
-                InteractionAsset asset = interactable.InteractionAsset ?? this.defaultInteraction;
-                this.cursor.sprite = asset?.icon;
-                this.cursor.rectTransform.sizeDelta = new Vector2(50, 50);
+                InteractionAsset asset = interactable.InteractionAsset ?? defaultInteraction;
+                cursor.sprite = asset?.icon;
+                cursor.rectTransform.sizeDelta = new Vector2(50, 50);
 
-                this.isHoveringInteractable = true;
-                this.showKeyCoroutine ??= this.StartCoroutine(this.ShowTip());
+                isHoveringInteractable = true;
+                showKeyCoroutine ??= StartCoroutine(ShowTip());
 
-                this.cursorText.text = asset.tip;
+                cursorText.text = asset.tip;
             }
             else
             {
-                this.cursor.sprite = this.normalCursor;
-                this.cursor.rectTransform.sizeDelta = new Vector2(10, 10);
+                cursor.sprite = normalCursor;
+                cursor.rectTransform.sizeDelta = new Vector2(10, 10);
 
-                this.isHoveringInteractable = false;
-                this.discardTipCoroutine ??= this.StartCoroutine(this.DiscardTip());
+                isHoveringInteractable = false;
+                discardTipCoroutine ??= StartCoroutine(DiscardTip());
 
-                this.cursorText.text = "";
+                cursorText.text = "";
             }
 
-            Vector2 textPos = this.cursorText.rectTransform.anchoredPosition;
-            textPos.y = -this.cursor.rectTransform.sizeDelta.y / 2;
-            this.cursorText.rectTransform.anchoredPosition = textPos;
+            Vector2 textPos = cursorText.rectTransform.anchoredPosition;
+            textPos.y = -cursor.rectTransform.sizeDelta.y / 2;
+            cursorText.rectTransform.anchoredPosition = textPos;
         }
 
         private Coroutine discardTipCoroutine;
+
         private IEnumerator DiscardTip()
         {
             yield return new WaitForSeconds(0.5f);
 
-            if (!this.isHoveringInteractable)
+            if (!isHoveringInteractable)
                 KeybindTip.DiscardTip(INTERACT_TIP_TAG);
 
-            this.discardTipCoroutine = null;
+            discardTipCoroutine = null;
         }
 
         private Coroutine showKeyCoroutine;
+
         private IEnumerator ShowTip()
         {
             yield return new WaitForSeconds(5);
 
-            if (this.isHoveringInteractable)
+            if (isHoveringInteractable)
                 KeybindTip.ShowKey(KeyCode.E, INTERACT_TIP_TAG);
 
-            this.showKeyCoroutine = null;
+            showKeyCoroutine = null;
         }
 
         /// <summary>
@@ -107,20 +117,20 @@ namespace ControllerModule.Controllers
         /// <param name="visible">Will the cursor be visible or not?</param>
         private void SetCursor(bool visible)
         {
-            if (this.cursor == null)
+            if (cursor == null)
                 return;
 
-            this.cursor.enabled = visible;
+            cursor.enabled = visible;
         }
 
         private void Interact()
         {
             // If eyes invalid, skip
-            if (this.Eyes == null)
+            if (Eyes == null)
                 return;
 
             KeybindTip.UseTip(INTERACT_TIP_TAG);
-            IInteractable.TryInteract(this.Eyes.position, this.Eyes.forward, this.interactRange);
+            IInteractable.TryInteract(Eyes.position, Eyes.forward, interactRange);
         }
 
         #endregion
@@ -128,15 +138,15 @@ namespace ControllerModule.Controllers
         #region Move
 
         [Header("Move")]
-        [SerializeField, Tooltip("Determines how fast the player can move")]
+        [SerializeField]
+        [Tooltip("Determines how fast the player can move")]
         private float movementSpeed = 20;
 
         //Used to move the character while on the boat
-        
+
         public BoatController boatController;
 
         private CharacterController _characterController;
-
 
         private Vector3 direction;
 
@@ -149,10 +159,10 @@ namespace ControllerModule.Controllers
         private void UpdateMove(Vector3 facing, float speed, float elapsed)
         {
             // Skip if invalid movement
-            if (this.Eyes == null || this._characterController == null)
+            if (Eyes == null || _characterController == null)
                 return;
 
-            Vector3 moveDir = (this.Eyes.forward * facing.y) + (this.Eyes.right * facing.x);
+            Vector3 moveDir = Eyes.forward * facing.y + Eyes.right * facing.x;
 
             // Modify the direction
             moveDir.y = 0;
@@ -164,7 +174,7 @@ namespace ControllerModule.Controllers
                 moveDir += boatController.MovementBoat.normalized * boatController.MovementBoat.magnitude;
 
             // Move the character controller
-            this._characterController.Move(moveDir * elapsed);
+            _characterController.Move(moveDir * elapsed);
 
             //this._rigidbody.MovePosition(moveDir);
         }
@@ -174,13 +184,16 @@ namespace ControllerModule.Controllers
         #region Gravity
 
         [Header("Gravity")]
-        [SerializeField, Tooltip("Position where the player's feet are")]
+        [SerializeField]
+        [Tooltip("Position where the player's feet are")]
         private Transform Feet;
 
-        [SerializeField, Tooltip("Layers considered to be ground")]
+        [SerializeField]
+        [Tooltip("Layers considered to be ground")]
         private LayerMask GroundLayers;
 
-        [SerializeField, Tooltip("Radius of the check for the ground")]
+        [SerializeField]
+        [Tooltip("Radius of the check for the ground")]
         private float GroundCheckRadius = 0.2f;
 
         private bool isGrounded;
@@ -192,37 +205,36 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateGravity(float elapsed)
         {
-            if (this.Feet == null || this._characterController == null)
+            if (Feet == null || _characterController == null)
                 return;
 
-            this.isGrounded = Physics.CheckSphere(
-                this.Feet.position,
-                this.GroundCheckRadius,
-                this.GroundLayers,
+            isGrounded = Physics.CheckSphere(
+                Feet.position,
+                GroundCheckRadius,
+                GroundLayers,
                 QueryTriggerInteraction.Ignore
             );
 
-            if (this.isGrounded && this.velocity.y < 0)
-                this.velocity.y = 0;
-            this.velocity += Physics.gravity * elapsed;
+            if (isGrounded && velocity.y < 0)
+                velocity.y = 0;
+            velocity += Physics.gravity * elapsed;
 
-            this._characterController.Move(this.velocity * elapsed);
+            _characterController.Move(velocity * elapsed);
         }
-
 
         private bool CheckGrounded()
         {
-            if (this.Feet == null || this._characterController == null)
+            if (Feet == null || _characterController == null)
                 return false;
 
-            this.isGrounded = Physics.CheckSphere(
-                this.Feet.position,
-                this.GroundCheckRadius,
-                this.GroundLayers,
+            isGrounded = Physics.CheckSphere(
+                Feet.position,
+                GroundCheckRadius,
+                GroundLayers,
                 QueryTriggerInteraction.Ignore
             );
 
-            return this.isGrounded;
+            return isGrounded;
         }
 
         #endregion
@@ -233,41 +245,41 @@ namespace ControllerModule.Controllers
         protected override void OnStart()
         {
             // Get components
-            this._characterController = this.GetComponent<CharacterController>();
+            _characterController = GetComponent<CharacterController>();
 
             // Start with this controller
             ControllerManager.SwitchTo(this);
         }
 
         /// <inheritdoc/>
-        protected override void OnUpdate(float elapsed) => this.UpdateCursor();
+        protected override void OnUpdate(float elapsed) => UpdateCursor();
 
         protected override void OnFixedUpdate(float elapsed)
         {
-            this.UpdateMove(this.direction, this.movementSpeed, elapsed);
-            this.UpdateGravity(elapsed);
+            UpdateMove(direction, movementSpeed, elapsed);
+            UpdateGravity(elapsed);
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchIn()
         {
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
 
             // Update cursor
-            this.SetCursor(true);
+            SetCursor(true);
             SetCursorLock(true);
 
             // Reset direction
-            this.direction = Vector2.zero;
+            direction = Vector2.zero;
         }
 
         /// <inheritdoc/>
         protected override void OnSwitchOut()
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
 
             // Update cursor
-            this.SetCursor(false);
+            SetCursor(false);
             SetCursorLock(false);
         }
 
@@ -276,26 +288,27 @@ namespace ControllerModule.Controllers
         #region IMovable
 
         /// <inheritdoc/>
-        public void OnMove(Vector2 dir) => this.direction = dir;
+        public void OnMove(Vector2 dir) => direction = dir;
 
         #endregion
 
         #region IInteractionable
 
         /// <inheritdoc/>
-        public void OnInteract() => this.Interact();
+        public void OnInteract() => Interact();
 
         #endregion
 
         #region IJumpable
 
         [Header("Jump")]
-        [SerializeField, Tooltip("Determines height of Jump")]
+        [SerializeField]
+        [Tooltip("Determines height of Jump")]
         private float jumpHeight = 1.0f;
 
         public void OnJump()
         {
-            if (!this.CheckGrounded())
+            if (!CheckGrounded())
                 return;
 
             //_rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
@@ -306,22 +319,22 @@ namespace ControllerModule.Controllers
 
         #region MonoBehaviour
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
-            if (this.Eyes != null)
+            if (Eyes != null)
             {
                 Gizmos.color = Color.magenta;
-                Gizmos.DrawLine(this.Eyes.position, this.Eyes.position + (this.Eyes.forward * this.interactRange));
+                Gizmos.DrawLine(Eyes.position, Eyes.position + Eyes.forward * interactRange);
             }
 
-            if (this.Feet != null)
+            if (Feet != null)
             {
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawWireSphere(this.Feet.position, this.GroundCheckRadius);
+                Gizmos.DrawWireSphere(Feet.position, GroundCheckRadius);
             }
         }
-#endif
+        #endif
 
         #endregion
     }

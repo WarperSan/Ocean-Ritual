@@ -8,11 +8,11 @@ namespace ControllerModule.Interfaces.UI
         /// <summary>
         /// Called when the player asks to go to the next tab
         /// </summary>
-        public void OnTabNext();
+        void OnTabNext();
 
         /// <summary>
         /// Called when the player asks to go to the previous tag
         /// </summary>
-        public void OnTabPrevious();
+        void OnTabPrevious();
     }
 }

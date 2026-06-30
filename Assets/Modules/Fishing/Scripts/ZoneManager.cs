@@ -26,13 +26,16 @@ namespace FishingModule
         #region Rings
 
         [Header("Rings")]
-        [SerializeField, Tooltip("Determines the radius of the harvest zone")]
+        [SerializeField]
+        [Tooltip("Determines the radius of the harvest zone")]
         private float harvestRadius = 25f;
 
-        [SerializeField, Tooltip("Determines the radius of the aggressiveness zone")]
+        [SerializeField]
+        [Tooltip("Determines the radius of the aggressiveness zone")]
         private float aggroRadius = 50f;
 
-        [SerializeField, Tooltip("Determines the radius of the flee zone")]
+        [SerializeField]
+        [Tooltip("Determines the radius of the flee zone")]
         private float fleeRadius = 75f;
 
         private void CheckForRings(Vector3 origin, Vector3 target)
@@ -44,16 +47,16 @@ namespace FishingModule
             float distance = Vector3.Distance(origin, target);
 
             // If player is in the harvest zone
-            if (distance <= this.harvestRadius)
+            if (distance <= harvestRadius)
             {
-                this.Buoy.KeepCollecting = true;
+                Buoy.KeepCollecting = true;
                 return;
             }
 
-            this.Buoy.KeepCollecting = false;
+            Buoy.KeepCollecting = false;
 
             // If player is in the aggro zone
-            if (distance <= this.aggroRadius)
+            if (distance <= aggroRadius)
             {
                 TargetGeneral.Instance.Target = TargetGeneral.Instance.BoatTarget;
                 return;
@@ -62,7 +65,7 @@ namespace FishingModule
             // <Untarget player>
 
             // If player is in the flee zone
-            if (distance <= this.fleeRadius)
+            if (distance <= fleeRadius)
             {
                 // <Damage buoy>
                 TargetGeneral.Instance.Target = Buoy.transform;
@@ -70,7 +73,7 @@ namespace FishingModule
             }
 
             // End fishing as a failure
-            this.manager.EndFishing();
+            manager.EndFishing();
         }
 
         #endregion
@@ -80,58 +83,72 @@ namespace FishingModule
         /// <inheritdoc/>
         private void Start()
         {
-            this.Buoy = this.GetComponent<FishingBuoy>();
-            this.startPosition = this.Buoy.transform.position;
+            Buoy = GetComponent<FishingBuoy>();
+            startPosition = Buoy.transform.position;
         }
 
         /// <inheritdoc/>
         private void Update()
         {
             // If target invalid, skip
-            if (this.target == null)
+            if (target == null)
                 return;
 
-            this.CheckForRings(this.target.position, this.startPosition);
+            CheckForRings(target.position, startPosition);
         }
 
         #endregion
 
         #region Editor
-#if UNITY_EDITOR
+
+        #if UNITY_EDITOR
         /// <inheritdoc/>
         private void OnDrawGizmos()
         {
-            Vector3 origin = this.Buoy == null ? this.transform.position : this.Buoy.transform.position;
+            Vector3 origin = Buoy == null ? transform.position : Buoy.transform.position;
 
             // Draw harvest radius
             Handles.color = Color.green;
-            Handles.DrawWireDisc(origin, Vector3.up, this.harvestRadius, 5);
+
+            Handles.DrawWireDisc(origin,
+                Vector3.up,
+                harvestRadius,
+                5);
 
             // Draw aggro radius
             Handles.color = Color.red;
-            Handles.DrawWireDisc(origin, Vector3.up, this.aggroRadius, 5);
+
+            Handles.DrawWireDisc(origin,
+                Vector3.up,
+                aggroRadius,
+                5);
 
             // Draw flee radius
             Handles.color = Color.gray;
-            Handles.DrawWireDisc(origin, Vector3.up, this.fleeRadius, 5);
+
+            Handles.DrawWireDisc(origin,
+                Vector3.up,
+                fleeRadius,
+                5);
         }
 
         /// <inheritdoc/>
         private void OnValidate()
         {
-            if (this.harvestRadius >= this.aggroRadius)
+            if (harvestRadius >= aggroRadius)
             {
-                Debug.LogWarning($"The value for '{nameof(this.harvestRadius)}' has to be smaller than the value for {nameof(this.aggroRadius)}.");
-                this.harvestRadius = this.aggroRadius * 0.75f;
+                Debug.LogWarning($"The value for '{nameof(harvestRadius)}' has to be smaller than the value for {nameof(aggroRadius)}.");
+                harvestRadius = aggroRadius * 0.75f;
             }
 
-            if (this.aggroRadius >= this.fleeRadius)
+            if (aggroRadius >= fleeRadius)
             {
-                Debug.LogWarning($"The value for '{nameof(this.aggroRadius)}' has to be smaller than the value for {nameof(this.fleeRadius)}.");
-                this.aggroRadius = this.fleeRadius * 0.75f;
+                Debug.LogWarning($"The value for '{nameof(aggroRadius)}' has to be smaller than the value for {nameof(fleeRadius)}.");
+                aggroRadius = fleeRadius * 0.75f;
             }
         }
-#endif
+        #endif
+
         #endregion
     }
 }

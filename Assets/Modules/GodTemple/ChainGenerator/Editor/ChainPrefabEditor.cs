@@ -11,7 +11,7 @@ namespace ChainEditor
     {
         [SerializeField] private Cogwheel[] cogs;
         private string[] cogHolderLabels;
-        private int selectedIndex = 0;
+        private int selectedIndex;
 
         [SerializeField] private bool newChainData;
         private string chainDataName;
@@ -19,14 +19,15 @@ namespace ChainEditor
         [SerializeField] private GearData gearData;
         public Machinery machinery;
         private GUIStyle _narrowButton;
-        string cogDataName = "Gear Data Name";
-        private bool changeCogData = false;
-        private bool changeWithNewCogData = false;
+        private string cogDataName = "Gear Data Name";
+        private bool changeCogData;
+        private bool changeWithNewCogData;
         private GearData _otherGearData;
 
-        int gearIndex;
+        private int gearIndex;
 
-        [SerializeField] int cogToDestroyIndex;
+        [SerializeField]
+        private int cogToDestroyIndex;
 
         public override void OnInspectorGUI()
         {
@@ -177,16 +178,12 @@ namespace ChainEditor
                 if (machinery.isChainRelated)
                 {
                     if (machinery.chainGenerator.ChainData == null)
-                    {
                         Debug.LogWarning("Don't forget to Add Chain Data");
-                    }
                 }
                 else
                 {
                     if (machinery.chainGenerator.ChainData != null)
-                    {
                         machinery.chainGenerator.ResetLinks();
-                    }
                 }
             }
 
@@ -232,7 +229,7 @@ namespace ChainEditor
             EditorGUI.EndChangeCheck();
         }
 
-        void Save()
+        private void Save()
         {
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("SAVE CHANGES"))
@@ -243,7 +240,7 @@ namespace ChainEditor
             EditorGUILayout.EndHorizontal();
         }
 
-        void SetChainData()
+        private void SetChainData()
         {
             EditorGUILayout.LabelField("Set Chain Data: ", EditorStyles.boldLabel);
 
@@ -276,7 +273,7 @@ namespace ChainEditor
             }
         }
 
-        void ShowGizmosOnSelection()
+        private void ShowGizmosOnSelection()
         {
             EditorGUI.BeginChangeCheck();
             machinery.cogHolder.showGizmos =
@@ -291,8 +288,7 @@ namespace ChainEditor
             }
         }
 
-
-        void AddCog(bool isNew, string cogName = null)
+        private void AddCog(bool isNew, string cogName = null)
         {
             machinery.cogHolder.AddCog(isNew, gearData, cogName);
             cogs = machinery.cogHolder.RestoreCogsInEditor();
@@ -302,7 +298,7 @@ namespace ChainEditor
             Repaint();
         }
 
-        void RemoveCog()
+        private void RemoveCog()
         {
           
             machinery.cogHolder.RemoveCog(cogToDestroyIndex);
@@ -338,22 +334,19 @@ namespace ChainEditor
             Repaint();
         }
 
-
-        void GenerateChain()
+        private void GenerateChain()
         {
             if (!machinery.isChainRelated) return;
             machinery.chainGenerator.GenerateChain(SaveCogs, machinery.cogHolder.GetChainRelatedCogs());
         }
 
-        void SaveCogs()
+        private void SaveCogs()
         {
             foreach (var cog in cogs)
-            {
                 EditorUtility.SetDirty(cog.Data);
-            }
         }
 
-        void ChangeCogData(int i)
+        private void ChangeCogData(int i)
         {
             GUILayout.BeginHorizontal();
             changeCogData = EditorGUILayout.Toggle("Change With Other Data", changeCogData);
@@ -391,7 +384,7 @@ namespace ChainEditor
             }
         }
 
-        void FillCogData(int i)
+        private void FillCogData(int i)
         {
             GearData Data = cogs[i].Data;
 
@@ -420,9 +413,7 @@ namespace ChainEditor
             EditorGUILayout.Space();
 
             if (machinery.holeAssetHolder != null && machinery.holeAssetHolder.HoleTypes.Count != 0)
-            {
                 Data.HoleId = EditorGUILayout.Popup("Hole Type", Data.HoleId, machinery.holeAssetHolder.HoleLabels);
-            }
 
             Data.HoleSize = EditorGUILayout.Slider("Hole Size", Data.HoleSize, Data.Radius, 0);
             Data.HoleDepth = EditorGUILayout.FloatField("Hole Depth", Data.HoleDepth);
@@ -491,7 +482,7 @@ namespace ChainEditor
             }
         }
 
-        void SetupCogsWithSameData(int i)
+        private void SetupCogsWithSameData(int i)
         {
             Cogwheel selectedCog = cogs[i];
             foreach (var cog in cogs)
@@ -501,7 +492,7 @@ namespace ChainEditor
             }
         }
 
-        void AccidentalSetupCogsWithSameData(int i)
+        private void AccidentalSetupCogsWithSameData(int i)
         {
             Cogwheel selectedCog = cogs[i];
             foreach (var cog in cogs)
@@ -511,8 +502,7 @@ namespace ChainEditor
             }
         }
 
-
-        void FillChainData()
+        private void FillChainData()
         {
             ChainData chainData = machinery.chainGenerator.ChainData;
             //chainData.OnTesting = EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
@@ -557,13 +547,13 @@ namespace ChainEditor
                 GenerateChain();
         }
 
-        void HandleLinksPoolChange()
+        private void HandleLinksPoolChange()
         {
             machinery.DeleteLinkPool();
             GenerateChain();
         }
 
-        void HandleTeethPoolChange(int i)
+        private void HandleTeethPoolChange(int i)
         {
             machinery.DeleteTeethPool(i);
             SaveCogs();

@@ -8,11 +8,11 @@ namespace ControllerModule.Interfaces.Player
         /// <summary>
         /// Called when the player presses the 'Fire' button
         /// </summary>
-        public void OnFireStart();
+        void OnFireStart();
 
         /// <summary>
         /// Called when the player releases the 'Fire' button
         /// </summary>
-        public void OnFireEnd();
+        void OnFireEnd();
     }
 }

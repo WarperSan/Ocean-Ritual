@@ -22,7 +22,7 @@ namespace ChainDemo
            GetTransposables();
         }
 
-        void GetTransposables()
+        private void GetTransposables()
         {
             _transposables = FindObjectsOfType<BaseTransposable>();
             foreach (var transposable in _transposables)
@@ -32,15 +32,13 @@ namespace ChainDemo
             }
         }
 
-        void Move()
+        private void Move()
         {
             foreach (var transposable in _transposables)
-            {
                 transposable.Initialize();
-            }
         }
 
-        void Stop()
+        private void Stop()
         {
             for (var i = 0; i < _transposables.Length; i++)
             {

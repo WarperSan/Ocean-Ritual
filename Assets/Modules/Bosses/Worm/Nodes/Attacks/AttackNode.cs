@@ -13,7 +13,13 @@ namespace BossesModule.Worm.Nodes
         protected readonly string currentTarget;
         private readonly string isAttacking;
 
-        public AttackNode(WormEntity entity, Animator animator, Collider collider, string currentTarget, string isAttacking)
+        public AttackNode(
+            WormEntity entity,
+            Animator   animator,
+            Collider   collider,
+            string     currentTarget,
+            string     isAttacking
+        )
         {
             this.entity = entity;
             this.animator = animator;
@@ -21,8 +27,8 @@ namespace BossesModule.Worm.Nodes
             this.currentTarget = currentTarget;
             this.isAttacking = isAttacking;
 
-            this.startAnimation = new AnimationNode(this.StartAnimation);
-            this.Attach(this.startAnimation.Alias("Start Animation"));
+            startAnimation = new AnimationNode(StartAnimation);
+            Attach(startAnimation.Alias("Start Animation"));
         }
 
         #region Animation
@@ -33,31 +39,31 @@ namespace BossesModule.Worm.Nodes
 
         private void StartAnimation()
         {
-            this.animator.SetBool("isAttacking", true);
-            this.SetData(isAttacking, true, -1);
-            this.animator.SetInteger("attackAnimation", this.GetAttackAnimationIndex());
+            animator.SetBool("isAttacking", true);
+            SetData(isAttacking, true, -1);
+            animator.SetInteger("attackAnimation", GetAttackAnimationIndex());
 
-            this.OnStartAnimation();
+            OnStartAnimation();
         }
 
         protected virtual void OnStartAnimation() { }
 
         public void OnAnimationEnded()
         {
-            this.animator.SetBool("isAttacking", false);
-            this.startAnimation.OnEnded();
+            animator.SetBool("isAttacking", false);
+            startAnimation.OnEnded();
         }
 
         public NodeState ResetAttack()
         {
-            this.startAnimation.ResetAnim();
-            this.SetData(isAttacking, false, -1);
-            this.ResetSelf();
+            startAnimation.ResetAnim();
+            SetData(isAttacking, false, -1);
+            ResetSelf();
 
             return NodeState.SUCCESS;
         }
 
-        protected virtual void ResetSelf() {}
+        protected virtual void ResetSelf() { }
 
         #endregion
     }

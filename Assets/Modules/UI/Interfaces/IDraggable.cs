@@ -9,29 +9,29 @@ namespace UIModule.Interfaces
     /// </summary>
     public interface IDraggable : IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        public RectTransform Rect { get; }
+        RectTransform Rect { get; }
 
         /// <summary>
         /// Called when this object starts to being dragged
         /// </summary>
-        public void OnDragStart();
+        void OnDragStart();
 
         /// <summary>
         /// Called when this object stops being dragged
         /// </summary>
         /// <param name="receivable">First receiver of the drag</param>
         /// <param name="target">First object that receive the drag on</param>
-        public void OnDragEnd(IDragReceivable receivable, RectTransform target);
+        void OnDragEnd(IDragReceivable receivable, RectTransform target);
 
         #region IBeginDragHandler
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
             // If invalid, skip
-            if (this.Rect == null)
+            if (Rect == null)
                 return;
 
-            this.OnDragStart();
+            OnDragStart();
         }
 
         #endregion
@@ -41,10 +41,10 @@ namespace UIModule.Interfaces
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
             // If invalid, skip
-            if (this.Rect == null)
+            if (Rect == null)
                 return;
 
-            this.Rect.position = eventData.position;
+            Rect.position = eventData.position;
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace UIModule.Interfaces
             PointerEventData m_PointerEventData = new(EventSystem.current)
             {
                 // Set the Pointer Event Position to that of the game object
-                position = Input.mousePosition
+                position = Input.mousePosition,
             };
 
             // Create a list of Raycast Results
@@ -90,7 +90,7 @@ namespace UIModule.Interfaces
 
             firstReceivable?.OnDragReceive(this);
 
-            this.OnDragEnd(firstReceivable, firstTarget);
+            OnDragEnd(firstReceivable, firstTarget);
         }
 
         #endregion

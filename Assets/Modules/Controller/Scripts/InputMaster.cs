@@ -28,14 +28,14 @@ namespace ControllerModule.Controllers
 
         #region Events
 
-        public event LookEvent OnLook;
-        public event MoveEvent OnMove;
-        public event FireEvent OnFireStart;
-        public event FireEvent OnFireEnd;
-        public event JumpEvent OnJump;
-        public event TabEvent OnTabNext;
-        public event TabEvent OnTabPrevious;
-        public event EscapeEvent OnEscape;
+        public event LookEvent     OnLook;
+        public event MoveEvent     OnMove;
+        public event FireEvent     OnFireStart;
+        public event FireEvent     OnFireEnd;
+        public event JumpEvent     OnJump;
+        public event TabEvent      OnTabNext;
+        public event TabEvent      OnTabPrevious;
+        public event EscapeEvent   OnEscape;
         public event InteractEvent OnInteract;
 
         #endregion
@@ -52,28 +52,28 @@ namespace ControllerModule.Controllers
         {
             Vector2 direction = context.ReadValue<Vector2>();
 
-            this.OnLook?.Invoke(direction);
+            OnLook?.Invoke(direction);
         }
 
         public void Move(InputAction.CallbackContext context)
         {
             Vector2 direction = context.ReadValue<Vector2>();
 
-            this.OnMove?.Invoke(direction);
+            OnMove?.Invoke(direction);
         }
 
         public void Fire(InputAction.CallbackContext context)
         {
             if (context.started)
-                this.OnFireStart?.Invoke();
+                OnFireStart?.Invoke();
             else if (context.canceled)
-                this.OnFireEnd?.Invoke();
+                OnFireEnd?.Invoke();
         }
 
         public void Interact(InputAction.CallbackContext context)
         {
             if (context.started)
-                this.OnInteract?.Invoke();
+                OnInteract?.Invoke();
         }
 
         public void Unmount(InputAction.CallbackContext context)
@@ -85,34 +85,32 @@ namespace ControllerModule.Controllers
         public void Jump(InputAction.CallbackContext context)
         {
             if (context.started)
-                this.OnJump?.Invoke();
+                OnJump?.Invoke();
         }
 
         public void Inventory(InputAction.CallbackContext context)
         {
             if (context.started)
-            {
                 UIManager.Toggle<InventoryMenu>();
-            }
         }
 
         public void Tab(InputAction.CallbackContext context)
         {
             if (context.started)
             {
-                if (this.IsShift)
-                    this.OnTabPrevious?.Invoke();
+                if (IsShift)
+                    OnTabPrevious?.Invoke();
                 else
-                    this.OnTabNext?.Invoke();
+                    OnTabNext?.Invoke();
             }
         }
 
         public void Shift(InputAction.CallbackContext context)
         {
             if (context.started)
-                this.IsShift = true;
+                IsShift = true;
             else if (context.canceled)
-                this.IsShift = false;
+                IsShift = false;
         }
 
         public void Pause(InputAction.CallbackContext context)
@@ -124,7 +122,7 @@ namespace ControllerModule.Controllers
         public void Escape(InputAction.CallbackContext context)
         {
             if (context.started)
-                this.OnEscape?.Invoke();
+                OnEscape?.Invoke();
         }
 
         #endregion
@@ -187,10 +185,10 @@ namespace ControllerModule.Controllers
         /// <inheritdoc/>
         protected override void OnAwake()
         {
-            PlayerInput input = this.GetComponent<PlayerInput>();
-            this.PlayerMap = input.actions.FindActionMap("Player");
-            this.UIMap = input.actions.FindActionMap("UI");
-            this.transform.SetParent(null);
+            PlayerInput input = GetComponent<PlayerInput>();
+            PlayerMap = input.actions.FindActionMap("Player");
+            UIMap = input.actions.FindActionMap("UI");
+            transform.SetParent(null);
         }
 
         /// <inheritdoc/>

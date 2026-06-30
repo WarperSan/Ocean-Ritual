@@ -10,15 +10,15 @@ namespace Chain
         private Material _gearMat;
     
         private readonly int _materialID = Shader.PropertyToID("_MaterialID");
-        public bool isBackwards = false;
-    
-        void OnEnable()
+        public bool isBackwards;
+
+        private void OnEnable()
         {
             Setup();
             SetID();
         }
-        
-        void Setup()
+
+        private void Setup()
         {
             gear = GetComponent<Cogwheel>();
             if (gear == null) return;
@@ -26,7 +26,7 @@ namespace Chain
             _gearMat = gear.cogObject.GetComponentInChildren<MeshRenderer>().material;
         }
 
-        void SetID()
+        private void SetID()
         {
             var id = GetInstanceID();
             _gearMat.SetFloat(_materialID, id);

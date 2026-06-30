@@ -22,15 +22,15 @@ namespace Chain
         {
             SetPositionsAndRotation();
         }
-    
-        void SetConnectingGearAccordingly()
+
+        private void SetConnectingGearAccordingly()
         {
             // float speed;
             // speed = (machineryToFollow.machinerySpeed / gearToConnect.Data.TeethCount) * connectingGear.Data.TeethCount;
             mainMachinery.machinerySpeed = machineryToFollow.machinerySpeed;
         }
-    
-        IEnumerator FollowRoutine()
+
+        private IEnumerator FollowRoutine()
         {
             SetConnectingGearAccordingly();
             while (true)
@@ -39,8 +39,8 @@ namespace Chain
                 yield return new WaitForFixedUpdate();
             }
         }
-    
-        void SetPositionsAndRotation()
+
+        private void SetPositionsAndRotation()
         {
             transform.rotation = gearToConnect.transform.rotation * Quaternion.Euler(rotationOffset);
             transform.position = gearToConnect.transform.position + positionOffset;

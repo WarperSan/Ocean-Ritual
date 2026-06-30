@@ -8,20 +8,18 @@ namespace BossesModule.Worm.Projectiles
         #region Fields
 
         [Header("Fields")]
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         private float speed;
 
         #endregion
 
         #region Projectile
 
-        protected override void OnStart()
-        {
-            this.ResetSelf();
-        }
+        protected override void OnStart() => ResetSelf();
 
         /// <inheritdoc/>
-        protected override void OnMove(float elapsed) => this.transform.position -= this.speed * elapsed * this.transform.up;
+        protected override void OnMove(float elapsed) => transform.position -= speed * elapsed * transform.up;
 
         #endregion
     }

@@ -351,9 +351,7 @@ namespace BehaviourModule
             );
 
             if (hasTree)
-            {
                 this.DrawWithChildren(this.root);
-            }
             else
             {
                 GUI.Label(new Rect(0, 0, viewSize.x, viewSize.y), "No Tree Selected", new GUIStyle
@@ -438,9 +436,7 @@ namespace BehaviourModule
                 this.CheckForNew(this.trees[this.treeSelected]);
             }
             else
-            {
                 this.CheckForNew(Selection.activeGameObject);
-            }
         }
 
         #endregion

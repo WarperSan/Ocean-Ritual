@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using ChainEditorHelper;
 using ChainInGame;
 using UnityEditor;
@@ -47,9 +45,7 @@ namespace ChainEditor
                 GameObject instance = PrefabUtility.InstantiatePrefab(prefab, canvas.transform) as GameObject;
             }
             else
-            {
                 Debug.LogError("InGameChainHandler Prefab not found at the specified path.");
-            }
         }
     }
 }

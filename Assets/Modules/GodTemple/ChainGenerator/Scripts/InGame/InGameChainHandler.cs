@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Chain;
@@ -36,23 +34,21 @@ namespace ChainInGame
 
             _currentMachineryInGame = _machineriesInGame.First();
         }
-        
-        Ray RayFromCamera() => Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        private Ray RayFromCamera() => Camera.main.ScreenPointToRay(Input.mousePosition);
   
         private void Update()
         {
             ControlInputs();
         }
 
-        void SetInGameMachineries()
+        private void SetInGameMachineries()
         {
             foreach (var machinery in machineries)
-            {
                 _machineriesInGame.Add(new MachineryInGame(machinery));
-            }
         }
 
-        void CreateInteractables()
+        private void CreateInteractables()
         {
             foreach (var gear in gears)
             {
@@ -63,7 +59,7 @@ namespace ChainInGame
             }
         }
 
-        void ControlInputs()
+        private void ControlInputs()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -87,7 +83,7 @@ namespace ChainInGame
             }
         }
 
-        void SelectMachinery(int i)
+        private void SelectMachinery(int i)
         {
             _currentMachineryInGame = _machineriesInGame[i];
         }

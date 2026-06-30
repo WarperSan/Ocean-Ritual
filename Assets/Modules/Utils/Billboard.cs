@@ -6,7 +6,7 @@ namespace UtilsModule
     {
         public Vector3 modifier = Vector3.one;
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             Camera main = Camera.main;
 
@@ -14,10 +14,9 @@ namespace UtilsModule
                 return;
 
             Vector3 target = main.transform.position;
-            target.y = this.transform.position.y;
+            target.y = transform.position.y;
 
-            this.transform.forward = Vector3.Scale(target - this.transform.position, this.modifier);
+            transform.forward = Vector3.Scale(target - transform.position, modifier);
         }
     }
 }
-

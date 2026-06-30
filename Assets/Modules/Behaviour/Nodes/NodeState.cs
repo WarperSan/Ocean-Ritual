@@ -13,8 +13,8 @@ namespace BehaviourModule.Nodes
 
         /// <summary>The node is processing its task</summary>
         RUNNING = 2,
-        
+
         /// <summary>The node did not start its task</summary>
-        NONE = 3
+        NONE = 3,
     }
 }

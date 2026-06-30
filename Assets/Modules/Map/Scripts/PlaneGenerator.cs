@@ -8,22 +8,25 @@ namespace MapModule
     /// </summary>
     public class PlaneGenerator : MonoBehaviour
     {
-        [SerializeField, Tooltip("Determines how big the plane is")]
+        [SerializeField]
+        [Tooltip("Determines how big the plane is")]
         private Vector2 planeSize = Vector2.one;
 
-        [SerializeField, Min(0.1f), Tooltip("Determines how precised the mesh is")]
+        [SerializeField]
+        [Min(0.1f)]
+        [Tooltip("Determines how precised the mesh is")]
         private float resolution = 1;
 
         /// <inheritdoc cref="Start" />
         private void Start()
         {
-            if (!this.TryGetComponent(out MeshFilter meshFilter))
+            if (!TryGetComponent(out MeshFilter meshFilter))
             {
-                Debug.LogWarning($"No MeshFilter found in '{this.gameObject.name}'.");
+                Debug.LogWarning($"No MeshFilter found in '{gameObject.name}'.");
                 return;
             }
 
-            meshFilter.mesh = GenerateMesh(this.planeSize, this.resolution);
+            meshFilter.mesh = GenerateMesh(planeSize, resolution);
         }
 
         /// <summary>
@@ -41,27 +44,31 @@ namespace MapModule
                 Mathf.FloorToInt(size.y / resolution)
             );
 
-            Vector3[] vertices = GenerateVertices(scaledSize, resolution, new Vector3(
-                Mathf.FloorToInt(-scaledSize.x / 2f),
-                0,
-                Mathf.FloorToInt(-scaledSize.y / 2f)
-            ));
+            Vector3[] vertices = GenerateVertices(scaledSize,
+                resolution,
+                new Vector3(
+                    Mathf.FloorToInt(-scaledSize.x / 2f),
+                    0,
+                    Mathf.FloorToInt(-scaledSize.y / 2f)
+                ));
             int[] triangles = GenerateTriangles(scaledSize);
-            Vector2[] uvs = new Vector2[vertices.Length];
-
+            var uvs = new Vector2[vertices.Length];
 
             for (int y = 0; y < size.y; y++)
             {
                 for (int x = 0; x < size.x; x++)
                 {
-                    uvs[(int)(x + (y * size.x))] = new Vector2(
+                    uvs[(int)(x + y * size.x)] = new Vector2(
                         x / size.x,
                         y / size.y
                     );
                 }
             }
 
-            var mesh = new Mesh { name = name ?? $"Generated Plane ({scaledSize.x}x{scaledSize.y})" };
+            var mesh = new Mesh
+            {
+                name = name ?? $"Generated Plane ({scaledSize.x}x{scaledSize.y})",
+            };
 
             // Assign mesh
             mesh.Clear();
@@ -112,7 +119,7 @@ namespace MapModule
                 for (int x = 0; x < size.x; x++)
                 {
                     // Create triangles
-                    int i = x + ((size.x + 1) * y);
+                    int i = x + (size.x + 1) * y;
                     int sharedPoint = i + size.x + 1;
 
                     // First

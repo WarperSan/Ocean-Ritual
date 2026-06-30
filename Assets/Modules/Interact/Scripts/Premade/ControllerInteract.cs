@@ -9,25 +9,24 @@ namespace InteractModule.Premade
     [RequireComponent(typeof(Collider))]
     public class ControllerInteract : MonoBehaviour, IInteractable
     {
-        
         public Controller Controller;
 
         /// <inheritdoc/>
-        void IInteractable.OnClick() 
+        void IInteractable.OnClick()
         {
             // If invalid, skip
-            if (this.Controller == null)
+            if (Controller == null)
             {
                 Debug.LogWarning("Tried to switch to an invalid controller.");
                 return;
             }
-      
-            ControllerManager.SwitchTo(this.Controller);
+
+            ControllerManager.SwitchTo(Controller);
         }
 
         public InteractionAsset asset;
 
         /// <inheritdoc/>
-        public InteractionAsset InteractionAsset => this.asset;
+        public InteractionAsset InteractionAsset => asset;
     }
 }

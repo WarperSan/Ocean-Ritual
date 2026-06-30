@@ -12,17 +12,18 @@ namespace UIModule.Menus
     public abstract class AnimatedMenu : UIMenu
     {
         [Header("Animations")]
-        [SerializeField, Tooltip("Animation played when this menu is opened")]
+        [SerializeField]
+        [Tooltip("Animation played when this menu is opened")]
         private AnimationUI openAnimation;
 
-        [SerializeField, Tooltip("Animation played when this menu is closed")]
+        [SerializeField]
+        [Tooltip("Animation played when this menu is closed")]
         private AnimationUI closeAnimation;
 
         /// <inheritdoc/>
-        public override IEnumerator Open() => this.openAnimation.PlayAnimation();
+        public override IEnumerator Open() => openAnimation.PlayAnimation();
 
         /// <inheritdoc/>
-        public override IEnumerator Close() => this.closeAnimation.PlayAnimation();
+        public override IEnumerator Close() => closeAnimation.PlayAnimation();
     }
 }
-

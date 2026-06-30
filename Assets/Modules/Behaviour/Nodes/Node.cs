@@ -2,7 +2,6 @@ using BehaviourModule.Nodes.Generic;
 using BehaviourModule.Nodes.Controls;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace BehaviourModule.Nodes
 {
@@ -15,7 +14,7 @@ namespace BehaviourModule.Nodes
 
         public Node(params Node[] children)
         {
-            this.Attach(children);
+            Attach(children);
         }
 
         #endregion
@@ -55,14 +54,16 @@ namespace BehaviourModule.Nodes
         public T GetData<T>(string key)
         {
             // If key in self, return
-            if (this.dataContext.TryGetValue(key, out object value) && value is T t)
+            if (dataContext.TryGetValue(key, out object value) && value is T t)
                 return t;
 
             // Search in parent
-            Node node = this.parent;
+            Node node = parent;
+
             while (node != null)
             {
                 value = node.GetData<T>(key);
+
                 if (value is T v)
                     return v;
 
@@ -83,9 +84,9 @@ namespace BehaviourModule.Nodes
             while (node != null)
             {
                 // If has key, remove
-                if (this.dataContext.ContainsKey(key))
+                if (dataContext.ContainsKey(key))
                 {
-                    this.dataContext.Remove(key);
+                    dataContext.Remove(key);
                     return true;
                 }
 
@@ -111,8 +112,8 @@ namespace BehaviourModule.Nodes
         /// <returns>New state of the node</returns>
         public NodeState Evaluate()
         {
-            this.State = this.OnEvaluate();
-            return this.State;
+            State = OnEvaluate();
+            return State;
         }
 
         /// <summary>
@@ -126,7 +127,8 @@ namespace BehaviourModule.Nodes
         /// </summary>
         public void Reset()
         {
-            this.State = NodeState.NONE;
+            State = NodeState.NONE;
+
             foreach (Node child in this)
                 child.Reset();
         }
@@ -135,10 +137,10 @@ namespace BehaviourModule.Nodes
 
         #region Editor
 
-        private string _alias = null;
+        private string _alias;
 
-        public string GetAlias() => this._alias;
-        public virtual bool IsAutomaticallyHidden() => false;
+        public         string GetAlias()              => _alias;
+        public virtual bool   IsAutomaticallyHidden() => false;
 
         /// <summary>
         /// Shorthand to set the alias of this node
@@ -147,7 +149,7 @@ namespace BehaviourModule.Nodes
         /// <returns>Node with the alias</returns>
         public Node Alias(string alias)
         {
-            this._alias = alias;
+            _alias = alias;
             return this;
         }
 
@@ -155,7 +157,7 @@ namespace BehaviourModule.Nodes
         /// Fetches the display name of the node for the editor
         /// </summary>
         /// <returns>Text to display</returns>
-        public virtual string GetText() => this.GetType().Name;
+        public virtual string GetText() => GetType().Name;
 
         #endregion
 
@@ -167,7 +169,7 @@ namespace BehaviourModule.Nodes
         /// Obtains the parent of this node
         /// </summary>
         /// <returns>Parent of this node</returns>
-        protected Node GetParent() => this.parent?.GetParent();
+        protected Node GetParent() => parent?.GetParent();
 
         #endregion
 
@@ -184,19 +186,19 @@ namespace BehaviourModule.Nodes
             foreach (Node item in nodes)
             {
                 item.parent = this;
-                this.children.Add(item);
+                children.Add(item);
             }
         }
-            
+
         #endregion
 
         #region IEnumerable
 
         /// <inheritdoc/>
-        public IEnumerator<Node> GetEnumerator() => this.children.GetEnumerator();
+        public IEnumerator<Node> GetEnumerator() => children.GetEnumerator();
 
         /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
@@ -214,8 +216,7 @@ namespace BehaviourModule.Nodes
         /// <param name="key">Key to check</param>
         /// <typeparam name="T">Type of the data</typeparam>
         /// <returns>Exits with <see cref="NodeState.SUCCESS"/> if the key exists, otherwise exits with <see cref="NodeState.FAILURE"></returns>
-        public static Node Exists<T>(string key) => new CallbackNode(
-            n => n.GetData<T>(key) != null
+        public static Node Exists<T>(string key) => new CallbackNode(n => n.GetData<T>(key) != null
             ? NodeState.SUCCESS
             : NodeState.FAILURE
         ).Alias($"Check for '{key}'");
@@ -224,8 +225,7 @@ namespace BehaviourModule.Nodes
         /// Shorthand for a random bool
         /// </summary>
         /// <returns>Exits with <see cref="NodeState.SUCCESS"/> 50% of the time, otherwise exits with <see cref="NodeState.FAILURE"></returns>
-        public static Node RandomBool() => new CallbackNode(
-            n => UnityEngine.Random.Range(0, 2) == 0
+        public static Node RandomBool() => new CallbackNode(n => UnityEngine.Random.Range(0, 2) == 0
             ? NodeState.SUCCESS
             : NodeState.FAILURE
         ).Alias("Random 50%");

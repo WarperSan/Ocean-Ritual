@@ -7,7 +7,7 @@ namespace GemModule.UI
 {
     public class ChangeColorBasedOnBool : MonoBehaviour
     {
-        public bool isActive;  // Le bool�en qui va d�terminer la couleur
+        public bool isActive; // Le bool�en qui va d�terminer la couleur
 
         public bool start = true;
 
@@ -24,14 +24,10 @@ namespace GemModule.UI
 
         private void UpdateColor()
         {
-            if (this.isActive)
-            {
+            if (isActive)
                 select.SetAlpha(1);
-            }
-            else 
-            {
+            else
                 select.SetAlpha(0);
-            }
         }
 
         public void SwapState()
@@ -47,9 +43,9 @@ namespace GemModule.UI
         public void SetState(bool isActive, Color activeColor, Color backgroundColor)
         {
             this.isActive = isActive;
-            this.select.color = activeColor;
-            this.background.color = backgroundColor;
-            this.UpdateColor();
+            select.color = activeColor;
+            background.color = backgroundColor;
+            UpdateColor();
         }
     }
 }

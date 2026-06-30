@@ -13,15 +13,15 @@ namespace EntityModule
         private Setting[] Settings;
 
         /// <inheritdoc/>
-        private void Start() => this.Apply(this.Settings);
+        private void Start() => Apply(Settings);
 
         public void Apply(Setting[] settings)
         {
-            this.Settings = settings;
+            Settings = settings;
 
             // Create all settings
             foreach (Setting setting in settings)
-                this.CreateSetting(setting);
+                CreateSetting(setting);
         }
 
         #region Fetching
@@ -55,7 +55,7 @@ namespace EntityModule
             if (obj == null)
             {
                 Debug.LogWarning($"Consider increasing the initial amount of '{prefabName}'.");
-                obj = this.CreateObject(setting);
+                obj = CreateObject(setting);
             }
 
             return obj;
@@ -87,18 +87,18 @@ namespace EntityModule
         private void CreateSetting(Setting setting)
         {
             // Create the prefab parent
-            var newSetting = new GameObject()
+            var newSetting = new GameObject
             {
                 name = "[ " + setting.Prefab.name + " ]",
             };
 
-            newSetting.transform.parent = this.transform;
+            newSetting.transform.parent = transform;
             setting.parent = newSetting.transform;
-            this.cachedSettings[setting.Prefab.name] = setting;
+            cachedSettings[setting.Prefab.name] = setting;
 
             // Create every prefab
             for (int i = 0; i < setting.amount; i++)
-                this.CreateObject(setting);
+                CreateObject(setting);
         }
 
         /// <summary>
@@ -115,9 +115,9 @@ namespace EntityModule
             GameObject newObj = Instantiate(setting.Prefab, setting.parent);
             newObj.SetActive(false);
 
-#if UNITY_EDITOR
-            this.IncreaseEvaluate(setting.Prefab.name);
-#endif
+            #if UNITY_EDITOR
+            IncreaseEvaluate(setting.Prefab.name);
+            #endif
 
             return newObj;
         }
@@ -135,13 +135,14 @@ namespace EntityModule
             [Tooltip("GameObject to spawn")]
             public GameObject Prefab;
 
-            [Min(0), Tooltip("Amount of objects to create at the start")]
+            [Min(0)]
+            [Tooltip("Amount of objects to create at the start")]
             public uint amount;
 
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             [Tooltip("Amount of objects spawned since the start of the pool")]
             public uint spawned;
-#endif
+            #endif
 
             [HideInInspector]
             public Transform parent;
@@ -150,7 +151,8 @@ namespace EntityModule
         #endregion
 
         #region Evaluation
-#if UNITY_EDITOR
+
+        #if UNITY_EDITOR
         /// <summary>
         /// Increases the counter for <paramref name="prefabName"/>
         /// </summary>
@@ -158,14 +160,15 @@ namespace EntityModule
         private void IncreaseEvaluate(string prefabName)
         {
             // Skip if not cached
-            if (!this.cachedSettings.ContainsKey(prefabName))
+            if (!cachedSettings.ContainsKey(prefabName))
                 return;
 
-            Setting setting = this.cachedSettings[prefabName];
+            Setting setting = cachedSettings[prefabName];
             setting.spawned++;
-            this.cachedSettings[prefabName] = setting;
+            cachedSettings[prefabName] = setting;
         }
-#endif
+        #endif
+
         #endregion
     }
 }

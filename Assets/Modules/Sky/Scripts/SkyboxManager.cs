@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +13,14 @@ namespace SkyModule
         public float timePerCycle = 10;
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             float elapsed = Time.deltaTime;
             offset += elapsed;
 
             float scaledOffset = offset / timePerCycle;
 
-            foreach (Transform item in this.parallaxObjects)
+            foreach (Transform item in parallaxObjects)
             {
                 Vector3 rotation = item.rotation.eulerAngles;
                 rotation.y = scaledOffset * 360f;

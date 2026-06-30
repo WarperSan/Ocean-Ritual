@@ -4,15 +4,20 @@ public class GemmeGrid : MonoBehaviour
 {
     #region Fields and Properties
 
-    [SerializeField] public int width;
-    [SerializeField] public int height;
-    [SerializeField] public bool[,] Grid;
-  
+    [SerializeField]
+    public int width;
+
+    [SerializeField]
+    public int height;
+
+    [SerializeField]
+    public bool[,] Grid;
+
     #endregion
 
     #region Unity Methods
 
-    void Start()
+    private void Start()
     {
         //InitializeTab();
         // Exemple();
@@ -23,37 +28,30 @@ public class GemmeGrid : MonoBehaviour
     #region Initialization
 
     // Initializes the Grid with the specified width and height
-    public void InitializeTab()
-    {
-        Grid = new bool[width, height];
-    }
+    public void InitializeTab() => Grid = new bool[width, height];
+
     public void UpGrade()
     {
         Debug.Log("passeUpgrade");
-        if (CanUpgrade()) // Vérifie d'abord si une amélioration est possible
+
+        if (CanUpgrade()) // Vï¿½rifie d'abord si une amï¿½lioration est possible
         {
             width += 1;  // Augmente la largeur
             height += 1; // Augmente la hauteur
         }
         else
-        {
-            Debug.Log("Impossible d'améliorer : la largeur ou la hauteur dépasse déjà ou sont déja à 6.");
-        }
+            Debug.Log("Impossible d'amï¿½liorer : la largeur ou la hauteur dï¿½passe dï¿½jï¿½ ou sont dï¿½ja ï¿½ 6.");
     }
-    public bool CanUpgrade()
-    {
-        // Vérifie si les dimensions actuelles dépassent 6 après une amélioration
-        return (width < 5 && height < 5);
-    }
+
+    public bool CanUpgrade() =>
+        // Vï¿½rifie si les dimensions actuelles dï¿½passent 6 aprï¿½s une amï¿½lioration
+        width < 5 && height < 5;
+
     #endregion
 
     #region Object Placement
-    public void resetGrid()
-    {
-        Grid = new bool[width, height];
-    }
 
-
+    public void resetGrid() => Grid = new bool[width, height];
 
     //Checks if an object can be placed at the given coordinates
     public bool CanPlaceObject(int x, int y, bool[,] form)
@@ -65,7 +63,6 @@ public class GemmeGrid : MonoBehaviour
         int centerX = width / 2;
         int centerY = height / 2;
 
-
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -73,35 +70,44 @@ public class GemmeGrid : MonoBehaviour
                 int gridX = x + (i - centerX);
                 int gridY = y + (j - centerY);
 
-                // Vérification des limites de la grille et des conflits de placement
-                if (form[i, j] && (gridX < 0 || gridY < 0 || gridX >= this.width || gridY >= this.height || this.Grid[gridX, gridY]))
+                // Vï¿½rification des limites de la grille et des conflits de placement
+                if (form[i, j] && (gridX < 0 || gridY < 0 || gridX >= this.width || gridY >= this.height || Grid[gridX, gridY]))
                 {
-                    // Appel de la fonction de débogage en cas de problème de placement
-                   // DebugPlacementIssue(gridX, gridY, form, x, y);
-                  
+                    // Appel de la fonction de dï¿½bogage en cas de problï¿½me de placement
+                    // DebugPlacementIssue(gridX, gridY, form, x, y);
+
                     return false;
                 }
             }
         }
-      
+
         return true;
     }
 
-    // Fonction de débogage pour afficher les informations et les tableaux form et Grid
-    private void DebugPlacementIssue(int gridX, int gridY, bool[,] form, int startX, int startY)
+    // Fonction de dï¿½bogage pour afficher les informations et les tableaux form et Grid
+    private void DebugPlacementIssue(
+        int     gridX,
+        int     gridY,
+        bool[,] form,
+        int     startX,
+        int     startY
+    )
     {
-        Debug.LogError($"Problème de placement détecté à (x: {gridX}, y: {gridY})");
+        Debug.LogError($"Problï¿½me de placement dï¿½tectï¿½ ï¿½ (x: {gridX}, y: {gridY})");
 
         // Affichage du tableau form
         string formString = "Tableau form :\n" + BoolArrayToString(form);
         Debug.Log(formString);
 
-        // Affichage de la sous-partie de Grid correspondant à la taille de form
-        string gridString = "Tableau Grid (zone de vérification) :\n" + ExtractGridSectionToString(startX, startY, form.GetLength(0), form.GetLength(1));
+        // Affichage de la sous-partie de Grid correspondant ï¿½ la taille de form
+        string gridString = "Tableau Grid (zone de vï¿½rification) :\n" + ExtractGridSectionToString(startX,
+            startY,
+            form.GetLength(0),
+            form.GetLength(1));
         Debug.Log(gridString);
     }
 
-    // Convertit un tableau booléen en chaîne de caractères pour affichage
+    // Convertit un tableau boolï¿½en en chaï¿½ne de caractï¿½res pour affichage
     private string BoolArrayToString(bool[,] array)
     {
         int rows = array.GetLength(0);
@@ -111,9 +117,7 @@ public class GemmeGrid : MonoBehaviour
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
-            {
                 result += array[i, j] ? "1 " : "0 ";
-            }
             result += "\n";
         }
 
@@ -121,7 +125,12 @@ public class GemmeGrid : MonoBehaviour
     }
 
     // Extrait une section de Grid autour de (startX, startY) de la taille de form
-    private string ExtractGridSectionToString(int startX, int startY, int width, int height)
+    private string ExtractGridSectionToString(
+        int startX,
+        int startY,
+        int width,
+        int height
+    )
     {
         string result = "";
 
@@ -129,18 +138,14 @@ public class GemmeGrid : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                int gridX = startX + i - (width / 2);
-                int gridY = startY + j - (height / 2);
+                int gridX = startX + i - width / 2;
+                int gridY = startY + j - height / 2;
 
                 // Affichage de la valeur de Grid ou d'un espace vide si en dehors des limites
                 if (gridX >= 0 && gridY >= 0 && gridX < this.width && gridY < this.height)
-                {
-                    result += this.Grid[gridX, gridY] ? "1 " : "0 ";
-                }
+                    result += Grid[gridX, gridY] ? "1 " : "0 ";
                 else
-                {
                     result += ". "; // Symbole pour indiquer une zone hors de la grille
-                }
             }
             result += "\n";
         }
@@ -157,8 +162,8 @@ public class GemmeGrid : MonoBehaviour
             int largeurForme = form.GetLength(0);
             int height = form.GetLength(1);
 
-                int centerX = largeurForme / 2;
-                int centerY = height / 2;
+            int centerX = largeurForme / 2;
+            int centerY = height / 2;
 
             for (int i = 0; i < largeurForme; i++)
             {
@@ -172,12 +177,13 @@ public class GemmeGrid : MonoBehaviour
                     }
                 }
             }
-     
+
             return true;
         }
 
         return false;
     }
+
     public void RemoveObject(int x, int y, bool[,] form)
     {
         //Debug.Log(x);
@@ -221,15 +227,21 @@ public class GemmeGrid : MonoBehaviour
                 {
                     int gridX = x + (i - centerX);
                     int gridY = y + (j - centerY);
-                  
-                  
+
                     Grid[gridX, gridY] = true;
                 }
             }
         }
     }
+
     // Attempts to place an object on the grid and updates the grid accordingly
-    public bool TryPlaceObjectOnGrid(int x, int y, bool[,] form, Gem gemmeToPlace, bool[,] formBoolPrincipal)
+    public bool TryPlaceObjectOnGrid(
+        int     x,
+        int     y,
+        bool[,] form,
+        Gem     gemmeToPlace,
+        bool[,] formBoolPrincipal
+    )
     {
         // Find the previous position of the gems and remove it
         RemoveObject(gemmeToPlace.PositionX, gemmeToPlace.PositionZ, formBoolPrincipal);
@@ -251,50 +263,60 @@ public class GemmeGrid : MonoBehaviour
             return false;
         }
     }
+
     //appeler si on tente de placer une gemme qui n'est pas sur la grid (de l'inventaire)
     public bool TryPlaceObjectOnGrid(int x, int y, Gem gemmeToPlace)
     {
+        bool[,] form = gemmeToPlace.form.GetForme();
 
-       bool[,] form = gemmeToPlace.form.GetForme();
         if (CanPlaceObject(x, y, form))
         {
             UpdateGrid(x, y, form);
-           // Debug.Log(x);
-         //   Debug.Log(y);
+            // Debug.Log(x);
+            //   Debug.Log(y);
             // Update the gems's position
             gemmeToPlace.PositionX = x;
             gemmeToPlace.PositionZ = y;
-           // Debug.Log("true TryPlaceObjectOnGrid");
+            // Debug.Log("true TryPlaceObjectOnGrid");
             return true;
         }
         //Debug.Log("false TryPlaceObjectOnGrid");
-            
-            return false;
-        
+
+        return false;
     }
+
     #endregion
 
     #region Example Usage
 
     // Example method to demonstrate placing an object
-    void Exemple()
+    private void Exemple()
     {
         bool[,] formeT = new bool[,]
         {
-            { false, false, true },
-            { true, true, true },
-            { false, false, true }
+            {
+                false,
+                false,
+                true,
+            },
+            {
+                true,
+                true,
+                true,
+            },
+            {
+                false,
+                false,
+                true,
+            },
         };
 
         bool placeReussi = PlaceObject(2, 1, formeT);
+
         if (placeReussi)
-        {
             Debug.Log("Object placed successfully!");
-        }
         else
-        {
             Debug.Log("Failed to place the object.");
-        }
     }
 
     #endregion

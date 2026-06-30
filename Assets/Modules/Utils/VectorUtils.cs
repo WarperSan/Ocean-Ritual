@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace UtilsModule
 {
@@ -13,25 +10,19 @@ namespace UtilsModule
         public static bool CompareVectorSigns(Vector3 vectorA, Vector3 vectorB)
         {
             bool xDiff = false;
-            
+
             bool zDiff = false;
 
-            if ( vectorA.x >0 && vectorB.x < 0 || vectorA.x < 0 && vectorB.x > 0)
-            {
+            if (vectorA.x > 0 && vectorB.x < 0 || vectorA.x < 0 && vectorB.x > 0)
                 xDiff = true;
-            }
+
             if (vectorA.z > 0 && vectorB.z < 0 || vectorA.z < 0 && vectorB.z > 0)
-            {
                 zDiff = true;
-            }
 
             if (xDiff && zDiff)
-            {
                 return true;
-            }
+
             return false;
-            
         }
     }
 }
-

@@ -98,7 +98,7 @@ namespace UIModule
                 Debug.LogWarning($"Tried to close a menu of type '{menu.GetType().Name}', but no instance of this menu is opened.");
                 return;
             }
-        
+
             // Close menu
             AddOperation(OperationType.CLOSE, menu);
         }
@@ -118,7 +118,7 @@ namespace UIModule
             // If not found, skip
             if (menu == null)
             {
-               // Debug.LogError($"Tried to toggle a menu of type '{nameof(T)}', but no instance of this menu is registered.");
+                // Debug.LogError($"Tried to toggle a menu of type '{nameof(T)}', but no instance of this menu is registered.");
                 return;
             }
 
@@ -158,7 +158,7 @@ namespace UIModule
         }
 
         private static readonly Queue<(OperationType operation, UIMenu menu)> operationsInProcess = new();
-        private Coroutine currentProcess = null;
+        private Coroutine currentProcess;
 
         private static void AddOperation(OperationType operation, UIMenu menu)
         {
@@ -185,12 +185,14 @@ namespace UIModule
                 {
                     // Open menu
                     case OperationType.OPEN:
-                        yield return this.OpenMenu(menu);
+                        yield return OpenMenu(menu);
+
                         openedMenus.Push(menu);
                         break;
                     // Close menu
                     case OperationType.CLOSE:
                         UIMenu cur;
+
                         do
                         {
                             cur = CurrentMenu;
@@ -199,13 +201,15 @@ namespace UIModule
                             if (cur == null)
                                 break;
 
-                            yield return this.CloseMenu(cur);
+                            yield return CloseMenu(cur);
+
                             openedMenus.Pop();
                         } while (cur != menu);
                         break;
                     default:
                         Debug.LogWarning($"The operation '{operation}' called by '{menu.name}' is not supported.");
                         yield return null;
+
                         break;
                 }
 
@@ -215,18 +219,19 @@ namespace UIModule
                     InputMaster.StartMenu();
             }
 
-            this.currentProcess = null;
+            currentProcess = null;
         }
 
         private IEnumerator OpenMenu(UIMenu menu)
         {
             ControllerManager.SwitchTo(menu); // Desactivate previous inputs
-            yield return menu.Open(); // Wait for animation
+            yield return menu.Open();         // Wait for animation
         }
 
         private IEnumerator CloseMenu(UIMenu menu)
         {
             yield return menu.Close(); // Wait for animation
+
             ControllerManager.BackTo(); // Activate previous inputs
         }
 

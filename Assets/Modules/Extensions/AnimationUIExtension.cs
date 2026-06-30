@@ -8,8 +8,9 @@ namespace ExtensionsModule
         public static IEnumerator PlayAnimation(this AnimationUI animation)
         {
             bool hasAnimationEnded = false;
+
             void callback() => hasAnimationEnded = true;
-            
+
             animation.OnAnimationEnded += callback;
             animation.Play();
 

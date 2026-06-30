@@ -5,16 +5,13 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    float spawnRadius = 50f;
-    float spawnInterval = 15f;
-    Vector3 spawnPosition;
-    Dictionary<GameObject, float> enemies;
-    List<GameObject> spawnedEnemies = new();
+    private float spawnRadius = 50f;
+    private float spawnInterval = 15f;
+    private Vector3 spawnPosition;
+    private Dictionary<GameObject, float> enemies;
+    private List<GameObject> spawnedEnemies = new();
 
-    private void Start()
-    {
-        StartCoroutine(SpawnEnemiesAtIntervals());
-    }
+    private void Start() => StartCoroutine(SpawnEnemiesAtIntervals());
 
     #region Spawn
 
@@ -66,9 +63,9 @@ public class SpawnManager : MonoBehaviour
 
     public void SetUp(Vector3 position, Dictionary<GameObject, float> enemies)
     {
-        this.spawnPosition = position;
+        spawnPosition = position;
         this.enemies = enemies;
     }
 
-    #endregion 
+    #endregion
 }

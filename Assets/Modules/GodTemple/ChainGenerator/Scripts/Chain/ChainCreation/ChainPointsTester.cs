@@ -21,7 +21,7 @@ namespace Chain
             enabled = Data.OnTesting;
         }
 
-        void DestroyTestObjects()
+        private void DestroyTestObjects()
         {
             for (int i = testCubes.Count - 1; i >= 0; i--)
             {
@@ -30,12 +30,12 @@ namespace Chain
             }
         }
 
-        void LinearPointsTesting(Arc arc)
+        private void LinearPointsTesting(Arc arc)
         {
             testCubes.Add(Instantiate(testCube2Pb, arc.arcPoints.Last(), Quaternion.identity));
         }
-        
-        void DebugTangentPoints( Vector3 tangent0, Vector3 tangent1)
+
+        private void DebugTangentPoints( Vector3 tangent0, Vector3 tangent1)
         {
             // if (testSphere != null)
             // {

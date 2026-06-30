@@ -10,7 +10,7 @@ namespace BossesModule.Worm
 
         public void SetSpawning()
         {
-            if (!this.TryGetComponent(out Animator animator))
+            if (!TryGetComponent(out Animator animator))
                 return;
 
             animator.SetBool("isSpawning", false);
@@ -21,21 +21,21 @@ namespace BossesModule.Worm
 
         #region Underwater
 
-        public void EscapeDiveEnded() => this.tree.OnEscapeStartEnded();
-        public void EscapeEmergeEnded() => this.tree.OnEscapeEndEnded();
+        public void EscapeDiveEnded()   => tree.OnEscapeStartEnded();
+        public void EscapeEmergeEnded() => tree.OnEscapeEndEnded();
 
-        public void RepositionDiveEnded() => this.tree.OnRepositionStartEnded();
-        public void RepositionEmergeEnded() => this.tree.OnRepositionEndEnded();
+        public void RepositionDiveEnded()   => tree.OnRepositionStartEnded();
+        public void RepositionEmergeEnded() => tree.OnRepositionEndEnded();
 
         #endregion
 
         #region Attack
 
-        public void IceStormAnimationEnded() => this.tree.OnAttackEnded();
+        public void IceStormAnimationEnded() => tree.OnAttackEnded();
 
-        public void IceWaveStart() => this.tree.IceWaveStart();
+        public void IceWaveStart() => tree.IceWaveStart();
 
-        public void IceWaveEnd() => this.tree.OnAttackEnded();
+        public void IceWaveEnd() => tree.OnAttackEnded();
 
         #endregion
     }

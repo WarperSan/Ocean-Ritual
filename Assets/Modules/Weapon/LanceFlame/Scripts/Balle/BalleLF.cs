@@ -7,13 +7,14 @@ public class BalleLF : Projectile
     #region Properties
 
     [Header("Properties")]
-    [SerializeField] private float speed = 10f;
+    [SerializeField]
+    private float speed = 10f;
 
     public void SetProperties(float speed, float range)
     {
         this.speed = speed;
 
-        if (this.TryGetComponent(out DistanceCondition distance))
+        if (TryGetComponent(out DistanceCondition distance))
             distance.Set(this.speed, range);
     }
 
@@ -37,7 +38,7 @@ public class BalleLF : Projectile
             return;
 
         // Grossit l'enfant en utilisant la valeur de ValeurGrossissement
-        float scaleIncrement = this.growingSpeed * this.speed * elapsed;
+        float scaleIncrement = growingSpeed * speed * elapsed;
         growingTarget.localScale += new Vector3(0, scaleIncrement, scaleIncrement);
     }
 
@@ -49,10 +50,10 @@ public class BalleLF : Projectile
     protected override void OnMove(float elapsed)
     {
         // Calculer la distance que la balle a parcourue depuis la derni�re frame
-        float distanceThisFrame = this.speed * elapsed;
+        float distanceThisFrame = speed * elapsed;
 
         // D�placer la balle vers l'avant
-        this.transform.Translate(Vector3.forward * distanceThisFrame);
+        transform.Translate(Vector3.forward * distanceThisFrame);
     }
 
     /// <inheritdoc/>
@@ -66,8 +67,8 @@ public class BalleLF : Projectile
     /// <inheritdoc/>
     protected override void OnUpdate(float elapsed)
     {
-        if (this.isGrowing)
-            this.Grow(elapsed);
+        if (isGrowing)
+            Grow(elapsed);
     }
 
     #endregion

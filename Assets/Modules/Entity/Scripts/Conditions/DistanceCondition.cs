@@ -15,16 +15,16 @@ namespace EntityModule.Conditions
         /// <inheritdoc/>
         public override bool UpdateCondition(float elapsed)
         {
-            this.totalDistance += this.speed * elapsed;
-            return this.totalDistance < this.range;
+            totalDistance += speed * elapsed;
+            return totalDistance < range;
         }
 
         /// <inheritdoc/>
         public override void ResetCondition()
         {
-            this.speed = 0;
-            this.range = 0;
-            this.totalDistance = 0;
+            speed = 0;
+            range = 0;
+            totalDistance = 0;
         }
     }
 }

@@ -10,11 +10,11 @@ namespace BehaviourModule.Interfaces
         /// <summary>
         /// Fetches the root of this object
         /// </summary>
-        public Node GetRoot();
+        Node GetRoot();
 
         /// <summary>
         /// Rebuilds the root of this object
         /// </summary>
-        public void RebuildRoot();
+        void RebuildRoot();
     }
 }

@@ -8,20 +8,20 @@ namespace BossesModule.Worm.Projectiles
         #region Fields
 
         [Header("Fields")]
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         private float speed;
 
         #endregion
 
         #region Projectile
 
-        public override bool TakeDamage => true;
-        protected override void OnPostApply(Entity entity, Attack attack) => this.gameObject.SetActive(false);
+        public override    bool TakeDamage                                => true;
+        protected override void OnPostApply(Entity entity, Attack attack) => gameObject.SetActive(false);
 
         /// <inheritdoc/>
-        protected override void OnMove(float elapsed) => this.transform.position -= this.speed * elapsed * this.transform.forward;
+        protected override void OnMove(float elapsed) => transform.position -= speed * elapsed * transform.forward;
 
         #endregion
     }
-
 }

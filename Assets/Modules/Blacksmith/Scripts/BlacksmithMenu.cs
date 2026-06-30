@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UIModule.Menus
 {
-    public class BlacksmithMenu : AnimatedMenu  
+    public class BlacksmithMenu : AnimatedMenu
     {
         public InventoryUI inventoryUI;
         public BlacksmithGemSlot gemSlot;
@@ -26,6 +26,7 @@ namespace UIModule.Menus
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             yield return base.Close();
+
             gemSlot.ClearGem(true);
         }
 
@@ -37,7 +38,7 @@ namespace UIModule.Menus
         [SerializeField]
         private RectMask2D pageMask;
 
-        public void TogglePageMask(bool isEnable) => this.pageMask.enabled = isEnable;
+        public void TogglePageMask(bool isEnable) => pageMask.enabled = isEnable;
 
         #endregion
     }

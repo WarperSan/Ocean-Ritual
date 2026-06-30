@@ -3,44 +3,49 @@ using UnityEngine;
 
 public class fusionBSManager : MonoBehaviour
 {
-    [SerializeField] Fill fill;
-    [SerializeField] GameObject button;
+    [SerializeField]
+    private Fill fill;
+
+    [SerializeField]
+    private GameObject button;
 
     private FusionCase[] inputs;
     private FusionCase output;
 
-    [SerializeField] Sprite sprite;
+    [SerializeField]
+    private Sprite sprite;
 
-    [SerializeField] AudioClip coolSound;
+    [SerializeField]
+    private AudioClip coolSound;
 
     private void Awake()
     {
-        FusionCase[] cases = this.GetComponentsInChildren<FusionCase>();
+        FusionCase[] cases = GetComponentsInChildren<FusionCase>();
 
-        this.output = cases.FirstOrDefault(c => c.role == CaseRole.OUTPUT);
-        this.inputs = cases.Where(c => c.role == CaseRole.INPUT).ToArray();
+        output = cases.FirstOrDefault(c => c.role == CaseRole.OUTPUT);
+        inputs = cases.Where(c => c.role == CaseRole.INPUT).ToArray();
 
-        if (this.output == null)
+        if (output == null)
         {
             Debug.LogError($"'{nameof(fusionBSManager)}' expected an output.");
-            this.enabled = false;
+            enabled = false;
             return;
         }
 
-        if (this.inputs.Length < 2)
+        if (inputs.Length < 2)
         {
             Debug.LogError($"'{nameof(fusionBSManager)}' expected at least two inputs.");
-            this.enabled = false;
+            enabled = false;
             return;
         }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         bool buttonActive = true;
 
-        foreach (FusionCase item in this.inputs)
+        foreach (FusionCase item in inputs)
         {
             if (item.gem == null)
             {
@@ -59,13 +64,13 @@ public class fusionBSManager : MonoBehaviour
 
         if (fill.CanFuse)
         {
-            FusionCase left = this.inputs[0];
-            FusionCase right = this.inputs[1];
+            FusionCase left = inputs[0];
+            FusionCase right = inputs[1];
 
             int lvl = GemHelper.fusionGemTab(left.gem.LVL, right.gem.LVL);
             GemData TheGemme = GeneratorGem.GenerateRandomGemme(lvl, left.gem);
             TheGemme.sprite = sprite;
-            this.output.ReceiveGem(TheGemme);
+            output.ReceiveGem(TheGemme);
             left.ClearGem();
             right.ClearGem();
 

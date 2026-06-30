@@ -17,22 +17,23 @@ namespace ControllerModule.Controllers
         /// <summary>
         /// Point from which the player sees the world
         /// </summary>
-        public Transform Eyes => this.lookController?.cameraAnchor;
-        
+        public Transform Eyes => lookController?.cameraAnchor;
+
         private Vector3 camDirection;
 
         /// <summary>
         /// Called when the player requests a rotation
         /// </summary>
         /// <param name="direction">Direction of the rotation</param>
-        public virtual void OnLook(Vector2 direction) => this.camDirection = direction;
+        public virtual void OnLook(Vector2 direction) => camDirection = direction;
 
         #endregion
 
         #region Switch
 
         [Header("Switch")]
-        [SerializeField, Tooltip("Determines if, when this controller switches out, it disables itself")]
+        [SerializeField]
+        [Tooltip("Determines if, when this controller switches out, it disables itself")]
         private bool disableIfOut = true;
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace ControllerModule.Controllers
         /// <remarks>
         /// This allows a controller to receive certain updates while being "disabled"
         /// </remarks>
-        protected bool IsEnabled { get; private set; } = false;
+        protected bool IsEnabled { get; private set; }
 
         /// <summary>
         /// Starts using this controller
@@ -52,13 +53,13 @@ namespace ControllerModule.Controllers
             InputMaster.Instance += this;
 
             // Update enable states
-            this.IsEnabled = true;
-            this.enabled = true;
+            IsEnabled = true;
+            enabled = true;
 
             // Call callback
-            this.OnSwitchIn();
+            OnSwitchIn();
         }
-        
+
         /// <summary>
         /// Called when this controller is starting to be used
         /// </summary>
@@ -73,15 +74,16 @@ namespace ControllerModule.Controllers
             InputMaster.Instance -= this;
 
             // Update enable states
-            this.IsEnabled = false;
-            if (this.disableIfOut)
-                this.enabled = false;
+            IsEnabled = false;
+
+            if (disableIfOut)
+                enabled = false;
 
             // Resets the direction
-            this.camDirection = Vector3.zero;
+            camDirection = Vector3.zero;
 
             // Call callback
-            this.OnSwitchOut();
+            OnSwitchOut();
         }
 
         /// <summary>
@@ -94,7 +96,7 @@ namespace ControllerModule.Controllers
         #region MonoBehaviour
 
         /// <inheritdoc cref="Start" />
-        public void Start() => this.OnStart();
+        public void Start() => OnStart();
 
         /// <summary>
         /// Called when this controller is being started
@@ -104,8 +106,8 @@ namespace ControllerModule.Controllers
         /// <inheritdoc cref="Update" />
         private void Update()
         {
-            this.OnUpdate(Time.deltaTime);
-            this.lookController?.UpdateRotation(this.camDirection, Time.deltaTime);
+            OnUpdate(Time.deltaTime);
+            lookController?.UpdateRotation(camDirection, Time.deltaTime);
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace ControllerModule.Controllers
         protected virtual void OnUpdate(float elapsed) { }
 
         /// <inheritdoc cref="FixedUpdate" />
-        private void FixedUpdate() => this.OnFixedUpdate(Time.fixedDeltaTime);
+        private void FixedUpdate() => OnFixedUpdate(Time.fixedDeltaTime);
 
         /// <summary>
         /// Called when this controller is being updated
@@ -127,10 +129,8 @@ namespace ControllerModule.Controllers
         private void OnDestroy()
         {
             // Switch out before destroying
-            if (this.IsEnabled)
-            {
-                this.SwitchOut();
-            }
+            if (IsEnabled)
+                SwitchOut();
         }
 
         #endregion

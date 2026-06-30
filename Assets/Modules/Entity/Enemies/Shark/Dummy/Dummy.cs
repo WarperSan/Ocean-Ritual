@@ -12,7 +12,7 @@ namespace EntityModule.Enemies
         public override bool TakeDamage => false;
 
         /// <inheritdoc/>
-        protected override void OnPreAttack(Projectile source) => this.animator.SetTrigger("Hit");
+        protected override void OnPreAttack(Projectile source) => animator.SetTrigger("Hit");
 
         #endregion
     }

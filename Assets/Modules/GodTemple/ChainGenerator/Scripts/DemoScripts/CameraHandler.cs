@@ -23,8 +23,8 @@ namespace Chain
 
     private Vector3 _startCamPos;
     private Quaternion _startCamRot;
-    
-    void Start()
+
+    private void Start()
     {
        GetTransforms();
     }
@@ -53,13 +53,13 @@ namespace Chain
 
     }
 
-    void SetMainCam(Transform _transform)
+    private void SetMainCam(Transform _transform)
     {
         mainCam.transform.position =_transform.position;
         mainCam.transform.rotation =_transform.rotation;
     }
-    
-    IEnumerator MoveCam(int i)
+
+    private IEnumerator MoveCam(int i)
     {
         while (true)
         {
@@ -79,7 +79,7 @@ namespace Chain
         }
     }
 
-    IEnumerator LabelAnimation()
+    private IEnumerator LabelAnimation()
     {
         _labelImage.transform.localScale = Vector3.zero;
         label.gameObject.SetActive(true);
@@ -99,9 +99,7 @@ namespace Chain
         {
             var buttons = FindObjectsOfType<Button>();
             foreach (var button in buttons)
-            {
                 button.gameObject.SetActive(false);
-            }
             Play();
         }
             

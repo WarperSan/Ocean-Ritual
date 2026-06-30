@@ -31,10 +31,10 @@ namespace FishingModule.UI
         protected override void SetData(FishData data)
         {
             FishSO fish = data.fish;
-            this.Icon.sprite = fish.Icon;
-            this.Name.text = fish.GetColoredName();
-            this.Rarity.text = fish.Rarity.ToString();
-            this.Description.text = fish.Description;
+            Icon.sprite = fish.Icon;
+            Name.text = fish.GetColoredName();
+            Rarity.text = fish.Rarity.ToString();
+            Description.text = fish.Description;
         }
     }
 }

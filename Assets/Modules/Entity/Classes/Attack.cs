@@ -27,6 +27,6 @@ namespace EntityModule
         NORMAL,
         FIRE,
         ICE,
-        MAGIC
+        MAGIC,
     }
 }

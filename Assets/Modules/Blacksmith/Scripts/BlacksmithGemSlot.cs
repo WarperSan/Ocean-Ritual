@@ -13,7 +13,7 @@ namespace BlacksmithModule
         private GemData gem;
         private int slotIndex = -1;
 
-        private void Start() => this.canvasParent = this.GetComponentInParent<Canvas>().transform;
+        private void Start() => canvasParent = GetComponentInParent<Canvas>().transform;
 
         #region Fields
 
@@ -43,29 +43,25 @@ namespace BlacksmithModule
         public void ReceiveGem(GemData gem)
         {
             this.gem = gem;
-            this.Icon.sprite = gem.sprite;
-            this.Icon.SetAlpha(1);
-            this.enabled = true;
+            Icon.sprite = gem.sprite;
+            Icon.SetAlpha(1);
+            enabled = true;
 
             TestBlackSmith.Instance.SetData(gem);
         }
-        public void Confirm()
-        {
-            TestBlackSmith.Instance.ConfirmChoice();
-        }
+
+        public void Confirm() => TestBlackSmith.Instance.ConfirmChoice();
 
         public void ClearGem(bool returnToInventory)
         {
-            if (returnToInventory && this.gem != null)
-            {
-                Inventory.Instance.AddItem(this.gem, this.slotIndex);
-            }
+            if (returnToInventory && gem != null)
+                Inventory.Instance.AddItem(gem, slotIndex);
 
-            this.gem = null;
-            this.Icon.sprite = null;
-            this.Icon.SetAlpha(0);
-            this.enabled = false;
-            this.slotIndex = -1;
+            gem = null;
+            Icon.sprite = null;
+            Icon.SetAlpha(0);
+            enabled = false;
+            slotIndex = -1;
 
             TestBlackSmith.Instance.SetData(null);
         }
@@ -81,19 +77,19 @@ namespace BlacksmithModule
         /// <inheritdoc/>
         public void OnDragStart()
         {
-            this.originalParent = this.transform.parent;
-            this.canvasGroup.blocksRaycasts = false;
+            originalParent = transform.parent;
+            canvasGroup.blocksRaycasts = false;
 
-            this.fillingChild = Instantiate(this.gameObject, this.transform.parent);
+            fillingChild = Instantiate(gameObject, transform.parent);
 
-            if (this.fillingChild.TryGetComponent(out CanvasGroup childCanvasGroup))
+            if (fillingChild.TryGetComponent(out CanvasGroup childCanvasGroup))
                 childCanvasGroup.alpha = 0.3f;
 
-            this.fillingChild.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+            fillingChild.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
-            this.transform.SetParent(this.canvasParent);
-            this.background.SetAlpha(0f);
-            this.frame.SetAlpha(0f);
+            transform.SetParent(canvasParent);
+            background.SetAlpha(0f);
+            frame.SetAlpha(0f);
         }
 
         /// <inheritdoc/>
@@ -103,21 +99,21 @@ namespace BlacksmithModule
             {
                 if (target.TryGetComponent(out InventorySlot slot))
                 {
-                    Inventory.Instance.AddItem(this.gem, slot.slotIndex);
-                    this.menu.inventoryUI.UpdateSelf();
-                    this.ClearGem(false);
+                    Inventory.Instance.AddItem(gem, slot.slotIndex);
+                    menu.inventoryUI.UpdateSelf();
+                    ClearGem(false);
                 }
 
-                this.transform.SetParent(this.originalParent);
-                this.transform.SetSiblingIndex(this.slotIndex);
+                transform.SetParent(originalParent);
+                transform.SetSiblingIndex(slotIndex);
             }
 
-            if (this.fillingChild != null)
-                Destroy(this.fillingChild);
+            if (fillingChild != null)
+                Destroy(fillingChild);
 
-            this.canvasGroup.blocksRaycasts = true;
-            this.background.SetAlpha(1f);
-            this.frame.SetAlpha(1f);
+            canvasGroup.blocksRaycasts = true;
+            background.SetAlpha(1f);
+            frame.SetAlpha(1f);
         }
 
         #endregion
@@ -132,12 +128,12 @@ namespace BlacksmithModule
 
             Inventory.Instance.DropItem(slot.slotIndex);
 
-            if (this.slotIndex != -1)
+            if (slotIndex != -1)
                 Inventory.Instance.AddItem(this.gem, slot.slotIndex);
 
-            this.ReceiveGem(gem);
-            this.slotIndex = slot.slotIndex;
-            this.menu.inventoryUI.UpdateSelf();
+            ReceiveGem(gem);
+            slotIndex = slot.slotIndex;
+            menu.inventoryUI.UpdateSelf();
             TestBlackSmith.Instance.UpdateUI();
             slot.DragEnd();
             Destroy(slot.gameObject);

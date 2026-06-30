@@ -21,15 +21,15 @@ namespace BehaviourModule.Nodes.Controls
         protected override NodeState OnEvaluate()
         {
             bool anyRunning = false;
-            
+
             foreach (Node child in this)
             {
                 NodeState childState = child.Evaluate();
 
                 // Exit if failed
-                if (childState == NodeState.FAILURE) 
+                if (childState == NodeState.FAILURE)
                     return NodeState.FAILURE;
-                
+
                 anyRunning |= childState == NodeState.RUNNING;
             }
 
@@ -37,7 +37,7 @@ namespace BehaviourModule.Nodes.Controls
         }
 
         #endregion
-        
+
         #region Operator
 
         public static Parallel operator +(Parallel root, Node child)

@@ -9,10 +9,10 @@ namespace DhafinFawwaz.AnimationUILib.EditorLib
 [CustomPropertyDrawer(typeof(Sequence))]
 public class SequenceDrawer : PropertyDrawer
 {
-    float _height = EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
-    float _buttonWidth = 38;
+    private float _height = EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
+    private float _buttonWidth = 38;
 
-    Rect _backgroundRectExtra = new Rect(19, -3, 33, 2);
+    private Rect _backgroundRectExtra = new Rect(19, -3, 33, 2);
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -178,15 +178,14 @@ public class SequenceDrawer : PropertyDrawer
 #endregion label
         #region preview button
         if(sequenceType != Sequence.Type.LoadScene)
-        if(GUI.Button(new Rect(position.x+position.width-_buttonWidth*2, position.y-3, _buttonWidth, _height), "Start"))
         {
-            property.FindPropertyRelative("TriggerStart").boolValue = true;
+            if(GUI.Button(new Rect(position.x+position.width-_buttonWidth*2, position.y-3, _buttonWidth, _height), "Start"))
+                property.FindPropertyRelative("TriggerStart").boolValue = true;
+            else if(GUI.Button(new Rect(position.x+position.width-_buttonWidth, position.y-3, _buttonWidth, _height), "End"))
+                property.FindPropertyRelative("TriggerEnd").boolValue = true;
         }
-        else if(GUI.Button(new Rect(position.x+position.width-_buttonWidth, position.y-3, _buttonWidth, _height), "End"))
-        {
-            property.FindPropertyRelative("TriggerEnd").boolValue = true;
-        }
-#endregion preview button
+
+        #endregion preview button
 
         if(!property.FindPropertyRelative("IsUnfolded").boolValue)return;
 
@@ -255,20 +254,41 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "AnchoredPosition")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchoredPosition;
-                        else if(name == "LocalScale")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localScale;
-                        else if(name == "LocalEulerAngles")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localEulerAngles;
-                        else if(name == "SizeDelta")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().sizeDelta;
-                        else if(name == "AnchorMin")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMin;
-                        else if(name == "AnchorMax")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMax;
-                        else if(name == "Pivot")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().pivot;
+                        if(name == "AnchoredPosition")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchoredPosition;
+                        }
+                        else if(name == "LocalScale")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localScale;
+                        }
+                        else if(name == "LocalEulerAngles")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localEulerAngles;
+                        }
+                        else if(name == "SizeDelta")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().sizeDelta;
+                        }
+                        else if(name == "AnchorMin")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMin;
+                        }
+                        else if(name == "AnchorMax")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMax;
+                        }
+                        else if(name == "Pivot")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().pivot;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -278,20 +298,41 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "AnchoredPosition")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchoredPosition;
-                        else if(name == "LocalScale")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localScale;
-                        else if(name == "LocalEulerAngles")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localEulerAngles;
-                        else if(name == "SizeDelta")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().sizeDelta;
-                        else if(name == "AnchorMin")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMin;
-                        else if(name == "AnchorMax")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMax;
-                        else if(name == "Pivot")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().pivot;
+                        if(name == "AnchoredPosition")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchoredPosition;
+                        }
+                        else if(name == "LocalScale")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localScale;
+                        }
+                        else if(name == "LocalEulerAngles")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().localEulerAngles;
+                        }
+                        else if(name == "SizeDelta")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().sizeDelta;
+                        }
+                        else if(name == "AnchorMin")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMin;
+                        }
+                        else if(name == "AnchorMax")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().anchorMax;
+                        }
+                        else if(name == "Pivot")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().pivot;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -321,12 +362,21 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "LocalPosition")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localPosition;
-                        else if(name == "LocalScale")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localScale;
-                        else if(name == "LocalEulerAngles")property.FindPropertyRelative(name+"Start").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localEulerAngles;
+                        if(name == "LocalPosition")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localPosition;
+                        }
+                        else if(name == "LocalScale")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localScale;
+                        }
+                        else if(name == "LocalEulerAngles")
+                        {
+                            property.FindPropertyRelative(name+"Start").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localEulerAngles;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -336,12 +386,21 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "LocalPosition")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localPosition;
-                        else if(name == "LocalScale")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localScale;
-                        else if(name == "LocalEulerAngles")property.FindPropertyRelative(name+"End").vector3Value = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localEulerAngles;
+                        if(name == "LocalPosition")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localPosition;
+                        }
+                        else if(name == "LocalScale")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localScale;
+                        }
+                        else if(name == "LocalEulerAngles")
+                        {
+                            property.FindPropertyRelative(name+"End").vector3Value = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().localEulerAngles;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -367,10 +426,16 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "Color")property.FindPropertyRelative(name+"Start").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().color;
-                        else if(name == "FillAmount")property.FindPropertyRelative(name+"Start").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().fillAmount;
+                        if(name == "Color")
+                        {
+                            property.FindPropertyRelative(name+"Start").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().color;
+                        }
+                        else if(name == "FillAmount")
+                        {
+                            property.FindPropertyRelative(name+"Start").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().fillAmount;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -380,10 +445,16 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "Color")property.FindPropertyRelative(name+"End").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().color;
-                        else if(name == "FillAmount")property.FindPropertyRelative(name+"End").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().fillAmount;
+                        if(name == "Color")
+                        {
+                            property.FindPropertyRelative(name+"End").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().color;
+                        }
+                        else if(name == "FillAmount")
+                        {
+                            property.FindPropertyRelative(name+"End").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<Image>().fillAmount;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -408,8 +479,11 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "Alpha")property.FindPropertyRelative(name+"Start").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<CanvasGroup>().alpha;
+                        if(name == "Alpha")
+                        {
+                            property.FindPropertyRelative(name+"Start").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<CanvasGroup>().alpha;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -419,8 +493,11 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "Alpha")property.FindPropertyRelative(name+"End").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<CanvasGroup>().alpha;
+                        if(name == "Alpha")
+                        {
+                            property.FindPropertyRelative(name+"End").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<RectTransform>().GetComponent<CanvasGroup>().alpha;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -444,10 +521,16 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "BackgroundColor")property.FindPropertyRelative(name+"Start").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().backgroundColor;
-                        else if(name == "OrthographicSize")property.FindPropertyRelative(name+"Start").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().orthographicSize;
+                        if(name == "BackgroundColor")
+                        {
+                            property.FindPropertyRelative(name+"Start").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().backgroundColor;
+                        }
+                        else if(name == "OrthographicSize")
+                        {
+                            property.FindPropertyRelative(name+"Start").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().orthographicSize;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -457,10 +540,16 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "BackgroundColor")property.FindPropertyRelative(name+"End").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().backgroundColor;
-                        else if(name == "OrthographicSize")property.FindPropertyRelative(name+"End").floatValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().orthographicSize;
+                        if(name == "BackgroundColor")
+                        {
+                            property.FindPropertyRelative(name+"End").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().backgroundColor;
+                        }
+                        else if(name == "OrthographicSize")
+                        {
+                            property.FindPropertyRelative(name+"End").floatValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<Camera>().orthographicSize;
+                        }
                     }
                     EditorGUI.PropertyField(
                         new Rect(nextPosition.x+nextPosition.width/4, nextPosition.y, nextPosition.width*3/4, _height),
@@ -484,8 +573,11 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set Start"))
                     {
-                        if(name == "TextMeshProColor")property.FindPropertyRelative(name+"Start").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().color;
+                        if(name == "TextMeshProColor")
+                        {
+                            property.FindPropertyRelative(name+"Start").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().color;
+                        }
                         else if(name == "MaxVisibleCharacters")
                         {
                             int maxVisibleCharactersStart = property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().maxVisibleCharacters;
@@ -501,8 +593,11 @@ public class SequenceDrawer : PropertyDrawer
                     nextPosition.y += _height;
                     if(GUI.Button(new Rect(nextPosition.x, nextPosition.y, nextPosition.width/4-5, _height),"Set End"))
                     {
-                        if(name == "TextMeshProColor")property.FindPropertyRelative(name+"End").colorValue = 
-                            property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().color;
+                        if(name == "TextMeshProColor")
+                        {
+                            property.FindPropertyRelative(name+"End").colorValue = 
+                                property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().color;
+                        }
                         else if(name == "MaxVisibleCharacters")
                         {
                             int maxVisibleCharactersEnd = property.FindPropertyRelative("TargetComp").GetSerializedValue<Transform>().GetComponent<TMP_Text>().maxVisibleCharacters;

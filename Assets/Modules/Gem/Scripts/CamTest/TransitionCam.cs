@@ -1,6 +1,4 @@
-using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UtilsModule;
 
@@ -8,19 +6,22 @@ public class TransitionCam : Singleton<TransitionCam>
 {
     public CinemachineVirtualCamera camA;
     public CinemachineVirtualCamera camB;
-    [SerializeField] bool switchToCamA = false;
-    [SerializeField] bool switchToCamB = false;
+
+    [SerializeField]
+    private bool switchToCamA;
+
+    [SerializeField]
+    private bool switchToCamB;
+
     public void Update()
     {
         if (switchToCamA)
-        {
             SwitchToCamA();
-        }
+
         if (switchToCamB)
-        {
             SwitchToCamB();
-        }
     }
+
     public void SwitchToCamB()
     {
         camA.Priority = 0;

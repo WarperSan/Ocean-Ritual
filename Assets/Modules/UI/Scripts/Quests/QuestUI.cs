@@ -1,25 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class QuestUI : MonoBehaviour
 {
-    [SerializeField] List<string> listQuest = new();
+    [SerializeField]
+    private List<string> listQuest = new();
 
-    [SerializeField] GameObject slot;
+    [SerializeField]
+    private GameObject slot;
 
-    [SerializeField] Transform parent;
+    [SerializeField]
+    private Transform parent;
 
     public void SetQuestUI()
     {
-        if(listQuest.Count > 0)
+        if (listQuest.Count > 0)
         {
             for (int i = 0; i < listQuest.Count; i++)
             {
                 string quest = listQuest[i];
 
-                this.CreateSlot(quest, i);
+                CreateSlot(quest, i);
             }
         }
     }

@@ -4,8 +4,6 @@ using BehaviourModule.Nodes.Controls;
 using BehaviourModule.Nodes.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
-using static Unity.VisualScripting.Member;
 
 namespace EntityModule.Enemies
 {
@@ -21,7 +19,7 @@ namespace EntityModule.Enemies
         protected Node root;
 
         /// <inheritdoc/>
-        public Node GetRoot() => this.root;
+        public Node GetRoot() => root;
 
         /// <inheritdoc/>
         public void RebuildRoot()
@@ -32,26 +30,28 @@ namespace EntityModule.Enemies
 
             Sequence _root = new();
 
-            _root += this.MovementSequence();
+            _root += MovementSequence();
+
             _root += new Parallel(
-                  this.AttackSequence()
+                AttackSequence()
             );
 
-            _root.SetData(AGENT, this.agent);
+            _root.SetData(AGENT, agent);
             _root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
 
-            this.root = _root;
+            root = _root;
         }
 
         #endregion
 
         #region Attack
+
         private float attackCooldown = 5;
         public float attackMinRange;
         public float attackMaxRange;
         public Collider hitboxCollider;
         public float attackDuration;
-        private float durationTimer = 0;
+        private float durationTimer;
         public sharkHitboxProjectile projectile;
 
         public Animator animator;
@@ -61,21 +61,22 @@ namespace EntityModule.Enemies
             Sequence attackSequence = new();
 
             Sequence attack = new();
-            attack += this.AttackCooldown();
-            attack += new DistanceInBetween(this.transform, CURRENT_TARGET, attackMinRange, attackMaxRange);
+            attack += AttackCooldown();
 
+            attack += new DistanceInBetween(transform,
+                CURRENT_TARGET,
+                attackMinRange,
+                attackMaxRange);
 
-
-            attack += this.DoAttack();
+            attack += DoAttack();
             //faire l'attaque + animation
             attackSequence += attack;
 
-
             Sequence attackReset = new();
             //attackReset += this.SetAttackCooldown();
-            attackReset += this.ResetHitbox();
+            attackReset += ResetHitbox();
 
-            attackReset += this.SetAttackCooldown();
+            attackReset += SetAttackCooldown();
             attackSequence += attackReset.Alias("Attack Reset");
             //reset animation
 
@@ -84,22 +85,19 @@ namespace EntityModule.Enemies
 
         private Node DoAttack() => new CallbackNode(() =>
         {
-
             if (!hitboxCollider.enabled)
             {
                 hitboxCollider.enabled = true;
                 projectile.ResetSelf();
-                this.animator.SetBool("isAttacking", true);
+                animator.SetBool("isAttacking", true);
             }
             durationTimer += Time.deltaTime;
+
             //Debug.Log(projectile.hitPlayer);
             if (!projectile.hitPlayer)
-            {
                 return NodeState.RUNNING;
-            }
 
-
-            this.animator.SetBool("isAttacking", false);
+            animator.SetBool("isAttacking", false);
             return NodeState.SUCCESS;
         }).Alias("Do Attack");
 
@@ -112,18 +110,18 @@ namespace EntityModule.Enemies
 
         private Node AttackCooldown() => new CallbackNode(() =>
         {
-            this.attackCooldown -= Time.deltaTime;
+            attackCooldown -= Time.deltaTime;
 
-            return this.attackCooldown > 0 ? NodeState.RUNNING : NodeState.SUCCESS;
+            return attackCooldown > 0 ? NodeState.RUNNING : NodeState.SUCCESS;
         }).Alias("Attack Cooldown");
+
         private Node SetAttackCooldown() => new CallbackNode(() =>
         {
-            this.attackCooldown = 5f;
+            attackCooldown = 5f;
             durationTimer = 0;
 
             return NodeState.SUCCESS;
         }).Alias("Reset Attack Cooldown");
-
 
         #endregion
 
@@ -132,13 +130,11 @@ namespace EntityModule.Enemies
         private Node MovementSequence()
         {
             Sequence movementSequence = new();
-            movementSequence += this.Move();
+            movementSequence += Move();
             return movementSequence.Alias("Movement Sequence");
         }
 
-
         public const string AGENT = "agent";
-
 
         private Node Move() => new CallbackNode(() =>
         {
@@ -156,13 +152,11 @@ namespace EntityModule.Enemies
             // D�finir la destination de l'agent sur la position de la cible
             agent.SetDestination(target.position);
 
-
             // V�rifier si l'agent est arriv� � destination
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 //  Debug.Log("succe");
                 return NodeState.SUCCESS; // Retourne succ�s si l'agent est arriv�
-
             }
             // Debug.Log("en cour");
             return NodeState.SUCCESS; // Retourne en cours si l'agent est encore en mouvement
@@ -171,10 +165,11 @@ namespace EntityModule.Enemies
         #endregion
 
         #region Rotation
+
         private Node RotateSequence()
         {
             Sequence rotateSequence = new();
-            rotateSequence += new CallbackNode(this.RotateTowardsTarget).Alias("Rotate towards target");
+            rotateSequence += new CallbackNode(RotateTowardsTarget).Alias("Rotate towards target");
 
             return rotateSequence.Alias("Rotate Sequence");
         }
@@ -184,32 +179,33 @@ namespace EntityModule.Enemies
             root.SetData(CURRENT_TARGET, TargetGeneral.Instance.Target);
             Transform target = n.GetData<Transform>(CURRENT_TARGET);
             Debug.Log("Rotate");
+
             // If target is invalid, return fail
             if (target == null)
                 return NodeState.FAILURE;
 
             Vector3 targetPosition = new(
-                target.position.x - this.transform.position.x,
-                this.transform.position.y,
-                target.position.z - this.transform.position.z
+                target.position.x - transform.position.x,
+                transform.position.y,
+                target.position.z - transform.position.z
             );
 
             // Rotate self towards target
             var targetRotation = Quaternion.LookRotation(targetPosition);
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, targetRotation, 45 * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 45 * Time.deltaTime);
 
             return NodeState.SUCCESS;
         }
-        #endregion
 
+        #endregion
 
         private void OnDrawGizmos()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             UnityEditor.Handles.color = Color.blue;
-            UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMinRange);
-            UnityEditor.Handles.DrawWireDisc(this.transform.position, this.transform.up, this.attackMaxRange);
-#endif
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, attackMinRange);
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, attackMaxRange);
+            #endif
         }
 
         //private void OnTriggerEnter(Collider other)
@@ -220,6 +216,5 @@ namespace EntityModule.Enemies
         //        Debug.Log("Hit Player");
         //    }
         //}
-
     }
 }

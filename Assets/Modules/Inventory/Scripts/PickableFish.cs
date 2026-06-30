@@ -5,8 +5,13 @@ using UnityEngine;
 public class PickableFish : MonoBehaviour, IInteractable
 {
     public FishSO fishToAdd;
-    [SerializeField] int MaxQuantity;
-    [SerializeField] int Quantity;
+
+    [SerializeField]
+    private int MaxQuantity;
+
+    [SerializeField]
+    private int Quantity;
+
     public InteractionAsset InteractionAsset => null;
 
     public void OnClick()
@@ -15,7 +20,7 @@ public class PickableFish : MonoBehaviour, IInteractable
         {
             quantity = Quantity,
             quantityMax = MaxQuantity,
-            fish = fishToAdd
+            fish = fishToAdd,
         };
         Inventory.Instance.AddItem(poisson);
     }

@@ -39,7 +39,7 @@ namespace GemModule.UI
 
         private const string DATA_PATH = "Inventory";
 
-        private static Dictionary<string, GameObject> data = null;
+        private static Dictionary<string, GameObject> data;
 
         // R�cup�rer les objets GameObject � partir du dictionnaire
         private static void FetchData() => data = DictionaryGenerator.DictionaryGameObjectGenerator(DATA_PATH);
@@ -51,21 +51,15 @@ namespace GemModule.UI
         {
             // Ajouter les stats pour les armes
             if (Gem.typeWeapon != null && Gem.typeWeapon.Count > 0)
-            {
-                this.PopulateStatUI(Gem.typeWeapon, this.Gun, Gem.LVL);
-            }
+                PopulateStatUI(Gem.typeWeapon, Gun, Gem.LVL);
 
             // Ajouter les stats pour les bateaux
             if (Gem.typeBoat != null && Gem.typeBoat.Count > 0)
-            {
-                this.PopulateStatUI(Gem.typeBoat, this.Boat, Gem.LVL);
-            }
+                PopulateStatUI(Gem.typeBoat, Boat, Gem.LVL);
 
             // Ajouter les stats pour les filets
             if (Gem.typeNet != null && Gem.typeNet.Count > 0)
-            {
-                this.PopulateStatUI(Gem.typeNet, this.Net, Gem.LVL);
-            }
+                PopulateStatUI(Gem.typeNet, Net, Gem.LVL);
         }
 
         // M�thode g�n�rique pour remplir les UI en fonction des types (arme, bateau, filet)
@@ -73,9 +67,7 @@ namespace GemModule.UI
         {
             // Efface les enfants pr�c�dents s'il y en a
             foreach (Transform child in parent.transform)
-            {
                 Destroy(child.gameObject);
-            }
 
             // Instancie et remplit les �l�ments horizontaux
             for (int i = 0; i < list.Count; i += 1) // Pour chaque paire d'�l�ments
@@ -90,23 +82,22 @@ namespace GemModule.UI
                 // Instancie le prefab de "horizontale" sous le parent correspondant (Gun, Boat, Net)
                 GameObject horizontalInstance = Instantiate(prefab, parent.transform);
 
-              
-                    int index = i ;
-                    if (index < list.Count)
+                int index = i;
+
+                if (index < list.Count)
+                {
+                    Transform child = horizontalInstance.transform.GetChild(0);            // R�cup�re l'enfant (0 ou 1)
+                    TextMeshProUGUI txt = child.GetComponentInChildren<TextMeshProUGUI>(); // R�cup�re le composant Text
+
+                    if (txt != null)
                     {
-                        Transform child = horizontalInstance.transform.GetChild(0); // R�cup�re l'enfant (0 ou 1)
-                        TextMeshProUGUI txt = child.GetComponentInChildren<TextMeshProUGUI>(); // R�cup�re le composant Text
+                        // D�finit le texte avec le nom de l'enum et la quantit�
+                        txt.text = $"{list[index].Type} : {list[index].Quantite}";
 
-                        if (txt != null)
-                        {
-                            // D�finit le texte avec le nom de l'enum et la quantit�
-                            txt.text = $"{list[index].Type} : {list[index].Quantite}";
-
-                            // Applique la couleur du texte bas�e sur le ratio
-                            txt.color = GetTextColorForRatio(list[index].Quantite / lvl);
-                        }
+                        // Applique la couleur du texte bas�e sur le ratio
+                        txt.color = GetTextColorForRatio(list[index].Quantite / lvl);
                     }
-                
+                }
             }
         }
 
@@ -143,10 +134,10 @@ namespace GemModule.UI
 
             //this.Icon.sprite = gem.sprite;
             //this.Level.text = $"Level of the gems :  {gem.LVL}";
-            this.ChangeInfoStat(gem);
-            this.Form.Show(gem, gem);
-            this.Stars.CreateStars(gem);
-            this.navBar.Select(0);
+            ChangeInfoStat(gem);
+            Form.Show(gem, gem);
+            Stars.CreateStars(gem);
+            navBar.Select(0);
         }
 
         #endregion
@@ -158,10 +149,10 @@ namespace GemModule.UI
         private NavBar navBar;
 
         /// <inheritdoc/>
-        public void OnTabNext() => this.navBar.Next();
+        public void OnTabNext() => navBar.Next();
 
         /// <inheritdoc/>
-        public void OnTabPrevious() => this.navBar.Previous();
+        public void OnTabPrevious() => navBar.Previous();
 
         #endregion
     }

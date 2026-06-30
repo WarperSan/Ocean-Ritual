@@ -11,8 +11,10 @@ namespace ControllerModule.Controllers
     {
         private const float LERP_THRESHOLD = 0.5f;
 
-        [SerializeField, Tooltip("Determines how fast the camera moves")] 
+        [SerializeField]
+        [Tooltip("Determines how fast the camera moves")]
         private float camSpeed = 1.0f;
+
         private Transform trackedObject;
         private bool isLerping = true;
 
@@ -22,33 +24,33 @@ namespace ControllerModule.Controllers
         /// <param name="elapsed">Time passed since the last frame</param>
         private void UpdateMovement(float elapsed)
         {
-            if (this.trackedObject == null)
+            if (trackedObject == null)
                 return;
 
-            float duration = this.isLerping ? this.camSpeed * elapsed : 1;
+            float duration = isLerping ? camSpeed * elapsed : 1;
 
-            if (this.isLerping && Vector3.Distance(this.transform.position, this.trackedObject.position) < LERP_THRESHOLD)
-                this.isLerping = false;
+            if (isLerping && Vector3.Distance(transform.position, trackedObject.position) < LERP_THRESHOLD)
+                isLerping = false;
 
-            this.transform.LerpToTarget(this.trackedObject, duration);
+            transform.LerpToTarget(trackedObject, duration);
         }
 
         /// <summary>
         /// Updates the controller to follow
         /// </summary>
-        public void SetController(Controller controller, bool teleportToTarget = true) 
+        public void SetController(Controller controller, bool teleportToTarget = true)
         {
-            this.trackedObject = controller.Eyes;
-            this.isLerping = !teleportToTarget;
-            this.transform.SetParent(this.trackedObject);
+            trackedObject = controller.Eyes;
+            isLerping = !teleportToTarget;
+            transform.SetParent(trackedObject);
 
-            this.UpdateMovement(0);
+            UpdateMovement(0);
         }
 
         #region MonoBehaviour
 
         /// <inheritdoc cref="Update" />
-        private void Update() => this.UpdateMovement(Time.deltaTime);
+        private void Update() => UpdateMovement(Time.deltaTime);
 
         #endregion
 

@@ -1,5 +1,4 @@
 using System.Linq;
-using ChainInGame;
 #if UNITY_EDITOR
 using ChainEditorHelper;
 #endif
@@ -12,7 +11,7 @@ namespace Chain
     [ExecuteAlways]
     public class Machinery : MonoBehaviour
     {
-        [HideInInspector] public bool isChainRelated = false;
+        [HideInInspector] public bool isChainRelated;
         [HideInInspector] public float machinerySpeed = 10;
 
         [HideInInspector] public ChainGenerator chainGenerator;
@@ -21,9 +20,9 @@ namespace Chain
         private Mover[] _movers;
         private IMachinePart[] _machineParts;
         public HoleAssetHolder holeAssetHolder;
-        [HideInInspector] public int sortingOrder = 0;
+        [HideInInspector] public int sortingOrder;
         
-        private bool _isMoving = false;
+        private bool _isMoving;
         public bool movingAtStart = true;
 
         
@@ -57,8 +56,10 @@ namespace Chain
                 foreach (var mover in _movers)
                 {
                     if (mover is ChainMover)
+                    {
                         if (!isChainRelated)
                             continue;
+                    }
 
                     mover.StartMotion();
                 }
@@ -71,9 +72,7 @@ namespace Chain
         {
             if(!_isMoving) return;
             foreach (var mover in _movers)
-            {
                 mover.StopMotion();
-            }
 
             _isMoving = false;
         }
@@ -84,7 +83,7 @@ namespace Chain
             transform.rotation = Quaternion.Euler(90, 0, 0);
         }
 
-        void GetObjects()
+        private void GetObjects()
         {
             _machineParts = GetComponentsInChildren<IMachinePart>();
             cogHolder = GetComponentInChildren<CogHolder>();

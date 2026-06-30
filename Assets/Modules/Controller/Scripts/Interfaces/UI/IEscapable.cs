@@ -8,6 +8,6 @@ namespace ControllerModule.Interfaces.UI
         /// <summary>
         /// Called when the player requests to close the UI
         /// </summary>
-        public void OnEscape();
+        void OnEscape();
     }
 }

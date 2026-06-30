@@ -15,17 +15,18 @@ namespace EntityModule.Entities
         /// <inheritdoc/>
         protected override void OnStart()
         {
-            this.tree = this.GetComponent<IVisualizable>();
+            tree = GetComponent<IVisualizable>();
 
-            this.root = this.tree.GetRoot();
-            if (this.root != null)
+            root = tree.GetRoot();
+
+            if (root != null)
             {
-                Debug.LogWarning($"The tree for {this.name} was built from another source. Please don't build it manually.");
+                Debug.LogWarning($"The tree for {name} was built from another source. Please don't build it manually.");
                 return;
             }
 
-            this.tree.RebuildRoot();
-            this.root = this.tree.GetRoot();
+            tree.RebuildRoot();
+            root = tree.GetRoot();
         }
 
         #endregion
@@ -37,11 +38,11 @@ namespace EntityModule.Entities
 
         protected NodeState UpdateTree()
         {
-            if (this.root == null)
+            if (root == null)
                 return NodeState.FAILURE;
 
-            this.root.Reset();
-            return this.root.Evaluate();
+            root.Reset();
+            return root.Evaluate();
         }
 
         #endregion
@@ -49,7 +50,7 @@ namespace EntityModule.Entities
         #region MonoBehaviour
 
         /// <inheritdoc/>
-        private void Update() => this.UpdateTree();
+        private void Update() => UpdateTree();
 
         #endregion
     }

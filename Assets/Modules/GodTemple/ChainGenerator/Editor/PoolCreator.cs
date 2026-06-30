@@ -1,4 +1,3 @@
-using Chain;
 using ChainEditorHelper;
 using GenericHelper;
 using UnityEditor;
@@ -26,14 +25,12 @@ namespace ChainEditor
             objectPrefab = (U) EditorGUILayout.ObjectField("Object Prefab", objectPrefab, typeof(U), false);
             
             if (GUILayout.Button("Create Pool"))
-            {
                 CreatePoolPrefab();
-            }
-            
+
             EditorGUI.EndChangeCheck();
         }
 
-        void CreatePoolPrefab()
+        private void CreatePoolPrefab()
         {
             GameObject go = new GameObject(poolName);
 
@@ -46,8 +43,8 @@ namespace ChainEditor
 
             DestroyImmediate(go);
         }
-        
-        void InitializePool()
+
+        private void InitializePool()
         {
             _pool.CreatePool(amount, _pool.transform, objectPrefab);
         }

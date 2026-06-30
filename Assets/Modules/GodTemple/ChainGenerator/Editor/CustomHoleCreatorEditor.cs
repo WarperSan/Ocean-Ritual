@@ -55,7 +55,7 @@ namespace ChainEditor
             EditorGUILayout.Space();
         }
 
-        void CreateHole()
+        private void CreateHole()
         {
             GameObject go = new GameObject(holeName);
             go.AddComponent<Hole>();
@@ -69,7 +69,7 @@ namespace ChainEditor
             DestroyImmediate(go);
         }
 
-        void CreateHoleModel()
+        private void CreateHoleModel()
         {
             _holeModel = Instantiate(holeModelPrefab, _hole.transform);
             _holeModel.transform.GetChild(0).GetComponentInChildren<MeshRenderer>().material =
@@ -77,7 +77,7 @@ namespace ChainEditor
             //_holeModel.transform.localRotation = Quaternion.Euler(-90, 0, 0);
         }
 
-        void WarningMessage()
+        private void WarningMessage()
         {
             _messages[0] = "Warning: The hole model must include two parts!"; // \n  \n 
             _messages[1] = "    The first part for the hole surface";

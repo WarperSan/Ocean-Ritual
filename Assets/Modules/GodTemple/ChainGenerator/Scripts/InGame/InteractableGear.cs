@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Chain;
 using UnityEngine;
 
@@ -16,13 +13,13 @@ namespace ChainInGame
             AddCollider();
             SetSize();
         }
-    
-        void AddCollider()
+
+        private void AddCollider()
         {
             _collider = gameObject.AddComponent<BoxCollider>();
         }
 
-        void SetSize()
+        private void SetSize()
         {
             float size = _gear.Data.Radius * 1.5f;
             _collider.size = new Vector3(size, 1, size);

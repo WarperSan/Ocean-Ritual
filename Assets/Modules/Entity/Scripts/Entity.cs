@@ -10,13 +10,16 @@ namespace EntityModule
         #region Health
 
         [Header("Health")]
-        [SerializeField, Tooltip("Maximum health for this entity")]
+        [SerializeField]
+        [Tooltip("Maximum health for this entity")]
         protected float _MaxHeath;
-        public float MaxHealth => this._MaxHeath;
+
+        public float MaxHealth => _MaxHeath;
 
         [field: SerializeField]
         [Tooltip("Maximum health to heal for this entity")]
         protected float HealthTotal { get; private set; }
+
         public float Health { get; private set; }
 
         /// <summary>
@@ -35,7 +38,7 @@ namespace EntityModule
         protected void ResetHealth()
         {
             IsDead = false;
-            this.Health = this._MaxHeath;
+            Health = _MaxHeath;
         }
 
         /// <summary>
@@ -50,11 +53,11 @@ namespace EntityModule
         public void UseHeal(Heal heal)
         {
             // If immuned to damage, skip
-            if (!this.TakeDamage)
+            if (!TakeDamage)
                 return;
 
-            this.ModifyHeal(heal);
-            this.Health = Mathf.Clamp(this.Health + heal.Amount, 0, this._MaxHeath);
+            ModifyHeal(heal);
+            Health = Mathf.Clamp(Health + heal.Amount, 0, _MaxHeath);
         }
 
         /// <summary>
@@ -64,18 +67,18 @@ namespace EntityModule
         {
             float overDamage = 0;
 
-            if (this.Health < 0)
-                overDamage = Mathf.Abs(this.Health);
+            if (Health < 0)
+                overDamage = Mathf.Abs(Health);
 
-            this.OnDeath(overDamage);
-            this.IsDead = true;
+            OnDeath(overDamage);
+            IsDead = true;
         }
 
         /// <summary>
         /// Called when this entity dies
         /// </summary>
         /// <param name="overDamage">Extra damage dealt</param>
-        protected virtual void OnDeath(float overDamage) => Destroy(this.gameObject);
+        protected virtual void OnDeath(float overDamage) => Destroy(gameObject);
 
         #endregion
 
@@ -86,25 +89,25 @@ namespace EntityModule
         /// </summary>
         public void UseAttack(Attack attack, Projectile source)
         {
-            this.OnPreAttack(source);
+            OnPreAttack(source);
 
             // If immuned to damage, skip
-            if (!this.TakeDamage)
+            if (!TakeDamage)
                 return;
 
-            this.ModifyAttack(attack);
+            ModifyAttack(attack);
 
-            this.Health -= attack.Damage;
+            Health -= attack.Damage;
 
             // If not dead, skip
-            if (this.Health > 0)
+            if (Health > 0)
             {
-                this.OnPostAttack(source);
+                OnPostAttack(source);
                 return;
             }
 
             // Cause death
-            this.Death();
+            Death();
         }
 
         /// <summary>
@@ -129,8 +132,8 @@ namespace EntityModule
         /// <inheritdoc/>
         private void Start()
         {
-            this.ResetHealth();
-            this.OnStart();
+            ResetHealth();
+            OnStart();
         }
 
         /// <summary>

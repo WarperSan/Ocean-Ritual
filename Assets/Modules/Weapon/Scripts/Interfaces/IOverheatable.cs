@@ -8,16 +8,16 @@ namespace WeaponModule.Interfaces
         /// <summary>
         /// Called when this weapon overheats
         /// </summary>
-        public void OnOverheat();
+        void OnOverheat();
 
         /// <summary>
         /// Updates this weapon's overheat indicator
         /// </summary>
-        public void UpdateOverheatIndicator();
+        void UpdateOverheatIndicator();
 
         /// <summary>
         /// Determines if this weapon is overheated
         /// </summary>
-        public bool IsOverheated();
+        bool IsOverheated();
     }
 }

@@ -1,47 +1,63 @@
 using ControllerModule.Controllers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using UIModule.Components;
+
 public class TpZone : MonoBehaviour
 {
-    private GameObject player; // Référence au GameObject Player
-    [SerializeField] private Transform zoneTp; // Zone de téléportation
-    [SerializeField] bool enter = false;
-    [SerializeField] bool exit = false;
-    [SerializeField] AudioClip MusicEnter ;
-    [SerializeField] AudioClip Exit;
-    [SerializeField] AudioClip TpSound;
+    private GameObject player; // Rï¿½fï¿½rence au GameObject Player
+
+    [SerializeField]
+    private Transform zoneTp; // Zone de tï¿½lï¿½portation
+
+    [SerializeField]
+    private bool enter;
+
+    [SerializeField]
+    private bool exit;
+
+    [SerializeField]
+    private AudioClip MusicEnter;
+
+    [SerializeField]
+    private AudioClip Exit;
+
+    [SerializeField]
+    private AudioClip TpSound;
+
     private void Start()
     {
-        // Trouve le GameObject avec le tag "Player" au démarrage
+        // Trouve le GameObject avec le tag "Player" au dï¿½marrage
         player = GameObject.FindGameObjectWithTag("Player");
 
         if (player == null)
-        {
-            Debug.LogError("Aucun GameObject avec le tag 'Player' n'a été trouvé !");
-        }
+            Debug.LogError("Aucun GameObject avec le tag 'Player' n'a ï¿½tï¿½ trouvï¿½ !");
     }
+
     public void SoundFunction()
     {
         Debug.Log("aaa");
         SoundManager.Instance.PlaySound(TpSound, SoundType.Ambient, 0.2f);
+
         if (TpSound == null)
         {
-            Debug.LogError("TpSound n'est pas assigné !");
+            Debug.LogError("TpSound n'est pas assignï¿½ !");
             return;
         }
+
         if (enter)
-        {
-            SoundManager.Instance.PlaySound(MusicEnter,SoundType.Music,0.5f,true);
-        }
+            SoundManager.Instance.PlaySound(MusicEnter,
+                SoundType.Music,
+                0.5f,
+                true);
         else if (exit)
         {
             SoundManager.Instance.StopSound(SoundType.Music);
-            SoundManager.Instance.PlaySound(Exit, SoundType.Music, 0.3f, true);
-        }
 
+            SoundManager.Instance.PlaySound(Exit,
+                SoundType.Music,
+                0.3f,
+                true);
+        }
     }
 
     private async void OnTriggerEnter(Collider other)
@@ -52,23 +68,20 @@ public class TpZone : MonoBehaviour
 
             if (test != null)
             {
-                // Désactiver le script
+                // Dï¿½sactiver le script
                 test.enabled = false;
                 SoundFunction();
-                // Téléporter le joueur
+                // Tï¿½lï¿½porter le joueur
                 player.transform.position = zoneTp.position;
 
-                // Attendre 0.1 seconde avant de réactiver le script
+                // Attendre 0.1 seconde avant de rï¿½activer le script
                 await Task.Delay(100);
 
-                // Réactiver le script
+                // Rï¿½activer le script
                 test.enabled = true;
             }
             else
-            {
                 Debug.LogWarning("Le script PlayerController est introuvable sur le GameObject Player.");
-            }
         }
     }
-
 }

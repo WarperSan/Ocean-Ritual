@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
@@ -8,36 +7,41 @@ public class GemData : ItemData
 {
     #region Data
 
-
     // Shape of the gems (2D boolean array)
     [SerializeField]
     public FormBool Shape;
 
     // Name of the gems's color
-    [SerializeField] public string GemColorsName;
+    [SerializeField]
+    public string GemColorsName;
 
     // Level of the gems
-    [SerializeField] public int LVL = 0;
+    [SerializeField]
+    public int LVL;
 
     // List of weapon types with quantities
-    [SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon;
+    [SerializeField]
+    public List<TypeQuantity<TypeWeapon>> typeWeapon;
 
     // List of boat types with quantities
-    [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat;
+    [SerializeField]
+    public List<TypeQuantity<TypeBoat>> typeBoat;
 
     // List of net types with quantities
-    [SerializeField] public List<TypeQuantity<TypeNet>> typeNet;
+    [SerializeField]
+    public List<TypeQuantity<TypeNet>> typeNet;
+
     #endregion
 
     public GemData() { }
+
     public GemData(GemData copy)
     {
-        this.Shape = new FormBool(copy.Shape.flatForme, copy.Shape.width, copy.Shape.height);
-        this.GemColorsName = copy.GemColorsName;
-        this.LVL = copy.LVL;
-        this.typeWeapon = new(copy.typeWeapon);
-        this.typeBoat = new(copy.typeBoat);
-        this.typeNet = new(copy.typeNet);
+        Shape = new FormBool(copy.Shape.flatForme, copy.Shape.width, copy.Shape.height);
+        GemColorsName = copy.GemColorsName;
+        LVL = copy.LVL;
+        typeWeapon = new List<TypeQuantity<TypeWeapon>>(copy.typeWeapon);
+        typeBoat = new List<TypeQuantity<TypeBoat>>(copy.typeBoat);
+        typeNet = new List<TypeQuantity<TypeNet>>(copy.typeNet);
     }
-
 }

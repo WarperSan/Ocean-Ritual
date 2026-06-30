@@ -17,7 +17,7 @@ namespace UIModule.Menus
         /// </summary>
         public virtual IEnumerator Open()
         {
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
             yield return null;
         }
 
@@ -26,15 +26,12 @@ namespace UIModule.Menus
         /// </summary>
         public virtual IEnumerator Close()
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
             yield return null;
         }
 
         /// <inheritdoc/>
-        private void OnDestroy()
-        {
-            UIManager.Unregister(this);
-        }
+        private void OnDestroy() => UIManager.Unregister(this);
 
         #region IElementable
 
@@ -46,10 +43,7 @@ namespace UIModule.Menus
         #region Controller
 
         /// <inheritdoc/>
-        protected override void OnStart()
-        {
-            this.Rect = this.GetComponent<RectTransform>();
-        }
+        protected override void OnStart() => Rect = GetComponent<RectTransform>();
 
         #endregion
 
@@ -61,4 +55,3 @@ namespace UIModule.Menus
         #endregion
     }
 }
-

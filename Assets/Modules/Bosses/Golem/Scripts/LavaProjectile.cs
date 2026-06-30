@@ -5,6 +5,6 @@ namespace BossesModule.Golem
     public class LavaProjectile : Projectile
     {
         /// <inheritdoc/>
-        protected override void OnPostApply(Entity entity, Attack attack) => this.gameObject.SetActive(false);
+        protected override void OnPostApply(Entity entity, Attack attack) => gameObject.SetActive(false);
     }
 }

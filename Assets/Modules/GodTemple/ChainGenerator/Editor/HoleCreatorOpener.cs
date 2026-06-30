@@ -1,4 +1,3 @@
-using Chain;
 using ChainEditorHelper;
 using UnityEditor;
 using UnityEngine;

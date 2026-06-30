@@ -12,7 +12,7 @@ namespace Chain
 {
     public interface IMachinePart
     {
-        public IMachinePartData GetMoverData();
+        IMachinePartData GetMoverData();
     }
     public class ChainGenerator : MonoBehaviour, IMachinePart
     {
@@ -52,9 +52,8 @@ namespace Chain
             }
 
             foreach (var cog in chainRelatedCogs)
-            {
                 cog.Data.IsMoving = ChainData.IsMoving;
-            }
+
             if(saveCogs != null)
                 saveCogs(); 
 
@@ -97,8 +96,8 @@ namespace Chain
             linksPool = Instantiate(ChainData.LinksPoolPrefab, transform);
             return linksPool;
         }
-        
-        bool PoolNull()
+
+        private bool PoolNull()
         {
             if (linksPool == null)
             {

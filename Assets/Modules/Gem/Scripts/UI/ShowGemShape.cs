@@ -8,29 +8,32 @@ namespace GemModule.UI
 {
     public class ShowGemShape : UIComponent
     {
-        string casePath = "BlacksmithUi/Ui";
-        Dictionary<string, GameObject> data;  // Dictionnaire contenant les prefabs charg�s
-        [SerializeField] GemData Gem;
+        private string casePath = "BlacksmithUi/Ui";
+        private Dictionary<string, GameObject> data; // Dictionnaire contenant les prefabs charg�s
+
+        [SerializeField]
+        private GemData Gem;
 
         #region Colors
 
         [Header("Colors")]
-        [SerializeField, Tooltip("Color used when a case is filled")]
+        [SerializeField]
+        [Tooltip("Color used when a case is filled")]
         private Color activeColor = Color.green;
 
-        [SerializeField, Tooltip("Color used when a case is empty, but was previously filled")]
+        [SerializeField]
+        [Tooltip("Color used when a case is empty, but was previously filled")]
         private Color wasActiveColor = Color.black;
 
-        [SerializeField, Tooltip("Color used when a case is empty")]
+        [SerializeField]
+        [Tooltip("Color used when a case is empty")]
         private Color inactiveColor = Color.gray;
 
         #endregion
 
-        public void GetResource()
-        {
+        public void GetResource() =>
             // R�cup�rer les objets GameObject � partir du dictionnaire
             data = DictionaryGenerator.DictionaryGameObjectGenerator(casePath);
-        }
 
         public void Show(GemData gem, GemData original)
         {
@@ -38,9 +41,7 @@ namespace GemModule.UI
             bool[,] originalGrid = original.Shape.GetForme();
 
             if (data == null)
-            {
                 GetResource();
-            }
 
             // ShowTab(grid);  // Affichage dans la console pour d�bogage, comme dans ShowTab
 
@@ -55,17 +56,17 @@ namespace GemModule.UI
 
             // Calcul du facteur d'�chelle pour ajuster les dimensions des cases
             float scalingFactor = Mathf.Min(
-                this.Rect.sizeDelta.x / grid.GetLength(1),
-                this.Rect.sizeDelta.y / grid.GetLength(0)
+                Rect.sizeDelta.x / grid.GetLength(1),
+                Rect.sizeDelta.y / grid.GetLength(0)
             );
 
             // Suppression des �l�ments pr�c�dents
-            this.Clear();
+            Clear();
 
             // Inversion de l'ordre des lignes
             for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverse les lignes comme dans ShowTab
             {
-                GameObject rowInstance = Instantiate(rowPrefab, this.transform);
+                GameObject rowInstance = Instantiate(rowPrefab, transform);
                 RectTransform rowRect = rowInstance.GetComponent<RectTransform>();
                 rowRect.sizeDelta = new Vector2(grid.GetLength(1) * scalingFactor, scalingFactor);
                 rowRect.anchoredPosition = new Vector2(0, (grid.GetLength(0) - 1 - i) * scalingFactor); // Positionnement correct des lignes
@@ -79,45 +80,39 @@ namespace GemModule.UI
 
                     // R�cup�rer le script Position et assigner X et Y
                     if (caseInstance.TryGetComponent(out Position posScript))
-                    {
-                        posScript.SetPoition(j, i);  // Assigner les coordonn�es de la case
-                    }
+                        posScript.SetPoition(j, i); // Assigner les coordonn�es de la case
 
                     // R�cup�rer le script pour changer l'�tat de la case
                     ChangeColorBasedOnBool CasScript = caseInstance.GetComponent<ChangeColorBasedOnBool>();
 
                     // Inverser l'indexation des lignes et colonnes dans grid
                     bool isActive = grid[i, j];
-                    CasScript.SetState(isActive, this.activeColor, originalGrid[i, j] ? this.wasActiveColor : this.inactiveColor);
+                    CasScript.SetState(isActive, activeColor, originalGrid[i, j] ? wasActiveColor : inactiveColor);
                 }
             }
         }
 
-        public void Clear()
-        {
+        public void Clear() =>
             // Suppression des �l�ments pr�c�dents
-            this.transform.RemoveAll();
-        }
+            transform.RemoveAll();
 
         #region Editor
 
         private void ShowTab(bool[,] grid)
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             var sb = new StringBuilder();
 
             for (int i = grid.GetLength(0) - 1; i >= 0; i--) // Inverser l'ordre des lignes pour correspondre � l'affichage
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
-                {
                     sb.Append(grid[j, i] ? "[X]" : "[   ]"); // Utiliser [X] pour true et [ ] pour false
-                }
 
                 sb.AppendLine(); // Passer � la ligne suivante apr�s chaque ligne du tableau
             }
 
             Debug.Log(sb.ToString()); // Afficher le r�sultat dans la console
-#endif
+            #endif
         }
 
         #endregion

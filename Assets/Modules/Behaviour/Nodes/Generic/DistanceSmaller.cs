@@ -14,7 +14,7 @@ namespace BehaviourModule.Nodes.Generic
 
         public DistanceSmaller(Transform self, string target, float distance) : base(self, target)
         {
-            this._distance = distance;
+            _distance = distance;
         }
 
         #endregion
@@ -22,7 +22,7 @@ namespace BehaviourModule.Nodes.Generic
         #region DistanceNode
 
         /// <inheritdoc/>
-        protected override NodeState GetState(float distance) => distance <= this._distance ? NodeState.SUCCESS : NodeState.FAILURE;
+        protected override NodeState GetState(float distance) => distance <= _distance ? NodeState.SUCCESS : NodeState.FAILURE;
 
         /// <inheritdoc/>
         public override string GetText() => "Smaller distance";

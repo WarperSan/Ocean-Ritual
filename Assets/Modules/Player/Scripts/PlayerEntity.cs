@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace EntityModule
 {
     public class PlayerEntity : Entity
@@ -13,4 +10,3 @@ namespace EntityModule
         #endregion
     }
 }
-

@@ -1,6 +1,4 @@
-﻿using BlacksmithModule;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
@@ -10,32 +8,60 @@ public class CannonStats : MonoBehaviour, Equipment
     #region IEquipement
 
     [Header("IEquipement")]
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.Attaque, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Porter, 1f);
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
 
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.Attaque, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
-    [SerializeField] private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Porter, 1f);
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_ATTACK = new(TypeWeapon.Attaque, 1f);
 
-    [SerializeField] private componentGBN ComponantGBN;
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BASE_RANGE = new(TypeWeapon.Porter, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_RELOAD_SPEED = new(TypeWeapon.VitesseRechargement, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_ATTACK = new(TypeWeapon.Attaque, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SPEED = new(TypeWeapon.VitesseBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_BULLET_SIZE = new(TypeWeapon.TailleDeBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_FIRERATE = new(TypeWeapon.VitesseDeTire, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_AMMO_CAPACITY = new(TypeWeapon.CapaciterDeBall, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BOOSTED_RANGE = new(TypeWeapon.Porter, 1f);
+
+    [SerializeField]
+    private componentGBN ComponantGBN;
+
     public componentGBN componentGBN => ComponantGBN;
 
-    
     //
     /// <inheritdoc/>
     public void UpdateStat()
     {
         // Cr�ation de la liste des statistiques de base
         ComponantGBN.GBNScript.GetStat();
+
         var baseStats = new List<TypeQuantity<TypeWeapon>>
         {
             BASE_RELOAD_SPEED,
@@ -44,7 +70,7 @@ public class CannonStats : MonoBehaviour, Equipment
             BASE_BULLET_SIZE,
             BASE_FIRERATE,
             BASE_AMMO_CAPACITY,
-            BASE_RANGE
+            BASE_RANGE,
         };
 
         // Cr�ation de la liste des statistiques boost�es
@@ -56,7 +82,7 @@ public class CannonStats : MonoBehaviour, Equipment
             BOOSTED_BULLET_SIZE,
             BOOSTED_FIRERATE,
             BOOSTED_AMMO_CAPACITY,
-            BOOSTED_RANGE
+            BOOSTED_RANGE,
         };
 
         // Mise � jour des statistiques avec les boosts
@@ -66,32 +92,30 @@ public class CannonStats : MonoBehaviour, Equipment
     /// <summary>
     /// Fetches the range of this weapon
     /// </summary>
-    public float GetRange(bool getBoosted = true) => getBoosted ? this.BOOSTED_RANGE.Quantite : this.BASE_RANGE.Quantite;
+    public float GetRange(bool getBoosted = true) => getBoosted ? BOOSTED_RANGE.Quantite : BASE_RANGE.Quantite;
 
     /// <summary>
     /// Fetches the bullet speed of this weapon
     /// </summary>
-    public float GetBulletSpeed(bool getBoosted = true) => getBoosted ? this.BOOSTED_BULLET_SPEED.Quantite : this.BASE_BULLET_SPEED.Quantite;
+    public float GetBulletSpeed(bool getBoosted = true) => getBoosted ? BOOSTED_BULLET_SPEED.Quantite : BASE_BULLET_SPEED.Quantite;
 
     /// <summary>
     /// Fetches the bullet damage of this weapon
     /// </summary>
-    public float GetDamage(bool getBoosted = true) => getBoosted ? this.BOOSTED_ATTACK.Quantite : this.BASE_ATTACK.Quantite;
+    public float GetDamage(bool getBoosted = true) => getBoosted ? BOOSTED_ATTACK.Quantite : BASE_ATTACK.Quantite;
 
     /// <inheritdoc/>
-    public uint GetAmmoCapacity(bool getBoosted = true) => (uint)(getBoosted ? this.BOOSTED_AMMO_CAPACITY.Quantite : this.BASE_AMMO_CAPACITY.Quantite);
+    public uint GetAmmoCapacity(bool getBoosted = true) => (uint)(getBoosted ? BOOSTED_AMMO_CAPACITY.Quantite : BASE_AMMO_CAPACITY.Quantite);
 
     #endregion
 
     #region Upgrades
-    
-    [SerializeField] public string Name;
 
-    string Equipment.Name
-    {
-        get { return Name; }
-    }
-    
+    [SerializeField]
+    public string Name;
+
+    string Equipment.Name => Name;
+
     [SerializeField]
     private int forgePercentage;
 
@@ -125,14 +149,13 @@ public class CannonStats : MonoBehaviour, Equipment
         var baseStats = new List<UpgradeNameData>
         {
             new((int)BASE_RELOAD_SPEED.Quantite, BASE_RELOAD_SPEED.Type.ToString()),
-            new ((int)BASE_ATTACK.Quantite, BASE_ATTACK.Type.ToString()),
-            new ((int)BASE_BULLET_SPEED.Quantite, BASE_BULLET_SPEED.Type.ToString()),
-            new ((int)BASE_BULLET_SIZE.Quantite, BASE_BULLET_SIZE.Type.ToString()),
-            new ((int)BASE_FIRERATE.Quantite, BASE_FIRERATE.Type.ToString()),
-            new ((int)BASE_AMMO_CAPACITY.Quantite, BASE_AMMO_CAPACITY.Type.ToString()),
-            new ((int)BASE_RANGE.Quantite, BASE_RANGE.Type.ToString())
+            new((int)BASE_ATTACK.Quantite, BASE_ATTACK.Type.ToString()),
+            new((int)BASE_BULLET_SPEED.Quantite, BASE_BULLET_SPEED.Type.ToString()),
+            new((int)BASE_BULLET_SIZE.Quantite, BASE_BULLET_SIZE.Type.ToString()),
+            new((int)BASE_FIRERATE.Quantite, BASE_FIRERATE.Type.ToString()),
+            new((int)BASE_AMMO_CAPACITY.Quantite, BASE_AMMO_CAPACITY.Type.ToString()),
+            new((int)BASE_RANGE.Quantite, BASE_RANGE.Type.ToString()),
         };
-
 
         var previewStats = new List<UpgradeNameData>
         {
@@ -142,14 +165,17 @@ public class CannonStats : MonoBehaviour, Equipment
             AfterUpgradPreviewStat(BASE_BULLET_SIZE),
             AfterUpgradPreviewStat(BASE_FIRERATE),
             AfterUpgradPreviewStat(BASE_AMMO_CAPACITY),
-            AfterUpgradPreviewStat(BASE_RANGE)
+            AfterUpgradPreviewStat(BASE_RANGE),
         };
 
-        return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(), Name);
+        return new UpgradeStats(baseStats,
+            previewStats,
+            GetCostForUpgrade(),
+            Name);
     }
 
     // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData
-    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T: Enum
+    public UpgradeNameData AfterUpgradPreviewStat<T>(TypeQuantity<T> statToUpgrade) where T : Enum
     {
         float newValue = statToUpgrade.Quantite * (1 + ForgePercentage / 100f);
         int roundedValue = Mathf.CeilToInt(newValue);
@@ -169,9 +195,7 @@ public class CannonStats : MonoBehaviour, Equipment
         LvlOfEquipment++;
     }
 
-    public int GetCostForUpgrade()
-    {
-        return LvlOfEquipment * costToUpgrade;
-    }
+    public int GetCostForUpgrade() => LvlOfEquipment * costToUpgrade;
+
     #endregion
 }

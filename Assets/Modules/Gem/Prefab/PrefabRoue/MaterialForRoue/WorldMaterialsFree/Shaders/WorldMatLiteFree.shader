@@ -2,59 +2,61 @@
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "WorldMatLite"
 {
-	Properties
-	{
-		_ColorTint("Color Tint", Color) = (1,1,1,0)
-		_Albedo("Albedo", 2D) = "white" {}
-		_Normal("Normal", 2D) = "bump" {}
-		_NormalScale("Normal Scale", Range( 0 , 3)) = 1
-		_Metallic("Metallic", 2D) = "white" {}
-		_MetallicStrength("Metallic Strength", Range( 0 , 1)) = 0
-		_Smoothness("Smoothness", 2D) = "white" {}
-		_SmoothnessStrength("Smoothness Strength", Range( 0 , 2)) = 1
-		_Tile("Tile", Range( 1 , 10)) = 1
-		[HideInInspector] _texcoord( "", 2D ) = "white" {}
-		[HideInInspector] __dirty( "", Int ) = 1
-	}
+    Properties
+    {
+        _ColorTint("Color Tint", Color) = (1,1,1,0)
+        _Albedo("Albedo", 2D) = "white" {}
+        _Normal("Normal", 2D) = "bump" {}
+        _NormalScale("Normal Scale", Range( 0 , 3)) = 1
+        _Metallic("Metallic", 2D) = "white" {}
+        _MetallicStrength("Metallic Strength", Range( 0 , 1)) = 0
+        _Smoothness("Smoothness", 2D) = "white" {}
+        _SmoothnessStrength("Smoothness Strength", Range( 0 , 2)) = 1
+        _Tile("Tile", Range( 1 , 10)) = 1
+        [HideInInspector] _texcoord( "", 2D ) = "white" {}
+        [HideInInspector] __dirty( "", Int ) = 1
+    }
 
-	SubShader
-	{
-		Tags{ "RenderType" = "Opaque"  "Queue" = "Geometry+0" }
-		Cull Back
-		CGPROGRAM
-		#include "UnityStandardUtils.cginc"
-		#pragma target 3.0
-		#pragma surface surf Standard keepalpha addshadow fullforwardshadows 
-		struct Input
-		{
-			float2 uv_texcoord;
-		};
+    SubShader
+    {
+        Tags
+        {
+            "RenderType" = "Opaque" "Queue" = "Geometry+0"
+        }
+        Cull Back
+        CGPROGRAM
+        #include "UnityStandardUtils.cginc"
+        #pragma target 3.0
+        #pragma surface surf Standard keepalpha addshadow fullforwardshadows
+        struct Input
+        {
+            float2 uv_texcoord;
+        };
 
-		uniform float _NormalScale;
-		uniform sampler2D _Normal;
-		uniform float _Tile;
-		uniform sampler2D _Albedo;
-		uniform float4 _ColorTint;
-		uniform sampler2D _Metallic;
-		uniform float _MetallicStrength;
-		uniform sampler2D _Smoothness;
-		uniform float _SmoothnessStrength;
+        uniform float _NormalScale;
+        uniform sampler2D _Normal;
+        uniform float _Tile;
+        uniform sampler2D _Albedo;
+        uniform float4 _ColorTint;
+        uniform sampler2D _Metallic;
+        uniform float _MetallicStrength;
+        uniform sampler2D _Smoothness;
+        uniform float _SmoothnessStrength;
 
-		void surf( Input i , inout SurfaceOutputStandard o )
-		{
-			float2 temp_cast_0 = (_Tile).xx;
-			float2 uv_TexCoord2 = i.uv_texcoord * temp_cast_0;
-			o.Normal = UnpackScaleNormal( tex2D( _Normal, uv_TexCoord2 ), _NormalScale );
-			o.Albedo = ( tex2D( _Albedo, uv_TexCoord2 ) * _ColorTint ).rgb;
-			o.Metallic = ( tex2D( _Metallic, uv_TexCoord2 ) * _MetallicStrength ).r;
-			o.Smoothness = ( tex2D( _Smoothness, uv_TexCoord2 ) * _SmoothnessStrength ).r;
-			o.Alpha = 1;
-		}
-
-		ENDCG
-	}
-	Fallback "Diffuse"
-	CustomEditor "ASEMaterialInspector"
+        void surf(Input i, inout SurfaceOutputStandard o)
+        {
+            float2 temp_cast_0 = (_Tile).xx;
+            float2 uv_TexCoord2 = i.uv_texcoord * temp_cast_0;
+            o.Normal = UnpackScaleNormal(tex2D(_Normal, uv_TexCoord2), _NormalScale);
+            o.Albedo = (tex2D(_Albedo, uv_TexCoord2) * _ColorTint).rgb;
+            o.Metallic = (tex2D(_Metallic, uv_TexCoord2) * _MetallicStrength).r;
+            o.Smoothness = (tex2D(_Smoothness, uv_TexCoord2) * _SmoothnessStrength).r;
+            o.Alpha = 1;
+        }
+        ENDCG
+    }
+    Fallback "Diffuse"
+    CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=16400

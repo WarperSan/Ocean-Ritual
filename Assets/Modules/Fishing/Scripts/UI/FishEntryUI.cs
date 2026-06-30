@@ -22,11 +22,8 @@ namespace FishingModule.UI
             _percent.text = percent + "%";
         }
 
-
         public FishSO test;
         public float percent;
-        private void Start() {
-            this.Show(test, percent);
-        }
+        private void Start() => Show(test, percent);
     }
 }

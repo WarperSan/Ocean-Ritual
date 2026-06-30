@@ -19,7 +19,7 @@ namespace Chain
             _transform = transform;
         }
 
-        float SetIntervalAngle()
+        private float SetIntervalAngle()
         {
             var _intervalAngle = Data.ToothGap / (Data.Radius);
             if (Data.Equalize)
@@ -62,8 +62,8 @@ namespace Chain
             
             return teeth;
         }
-        
-        void GetInverseScale()
+
+        private void GetInverseScale()
         {
             inverseParentScale = new Vector3(1f / _transform.localScale.x, 1f / _transform.localScale.y,
                 1f / _transform.localScale.z);

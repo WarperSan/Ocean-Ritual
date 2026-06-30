@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,23 +7,28 @@ public class CoreMovement : MonoBehaviour
 
     [Header("Transition/Physics stuff")]
     public Transform target;
+
     public CoreAction currentAction = CoreAction.Nothing;
+
     [Header("Springs")]
-    [SerializeField] float positionStiffness;
-    [SerializeField] float positionDamper;
-    [SerializeField] float rotationStiffness, rotationDamper;
+    [SerializeField]
+    private float positionStiffness;
+
+    [SerializeField]
+    private float positionDamper;
+
+    [SerializeField]
+    private float rotationStiffness, rotationDamper;
+
     [Header("Transition")]
     public float transitionTime;
 
-    Rigidbody rb;
-    float transitionTimer;
-    Vector3 originalPosition;
-    Quaternion originalRotation;
+    private Rigidbody rb;
+    private float transitionTimer;
+    private Vector3 originalPosition;
+    private Quaternion originalRotation;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    private void Awake() => rb = GetComponent<Rigidbody>();
 
     private void FixedUpdate()
     {
@@ -42,6 +45,7 @@ public class CoreMovement : MonoBehaviour
                 break;
         }
     }
+
     private void Update()
     {
         switch (currentAction)
@@ -56,7 +60,7 @@ public class CoreMovement : MonoBehaviour
         }
     }
 
-    void FixedGoToTarget()
+    private void FixedGoToTarget()
     {
         if (target == null)
             return;
@@ -77,6 +81,7 @@ public class CoreMovement : MonoBehaviour
         //Spring
         Quaternion rotationChange = target.rotation * Quaternion.Inverse(rb.rotation);
         rotationChange.ToAngleAxis(out float angle, out Vector3 axis);
+
         if (angle > 180)
             angle -= 360;
 
@@ -93,7 +98,7 @@ public class CoreMovement : MonoBehaviour
         rb.AddTorque(rotationDamperForce, ForceMode.Force);
     }
 
-    void Transition()
+    private void Transition()
     {
         if (target == null)
             return;
@@ -111,6 +116,7 @@ public class CoreMovement : MonoBehaviour
         transform.rotation = Quaternion.Lerp(originalRotation, target.rotation, transitionTimer / transitionTime);
 
         transitionTimer += Time.deltaTime;
+
         if (transitionTimer >= transitionTime)
         {
             currentAction = CoreAction.GoToTarget;
@@ -118,5 +124,4 @@ public class CoreMovement : MonoBehaviour
             rb.isKinematic = false;
         }
     }
-
 }

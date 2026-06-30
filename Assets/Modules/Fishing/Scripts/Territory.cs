@@ -10,24 +10,29 @@ namespace FishingModule
         private Collider _collider;
 
         [SerializeField]
-        private FishPercent[] _fishes = new FishPercent[] { };
+        private FishPercent[] _fishes = new FishPercent[]
+        {
+        };
+
         [SerializeField]
-        private GameObject[] enemies = new GameObject[] { };
+        private GameObject[] enemies = new GameObject[]
+        {
+        };
 
         private void Start()
         {
-            _collider = this.GetComponent<Collider>();
+            _collider = GetComponent<Collider>();
 
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             if (!_collider.isTrigger)
             {
-                Debug.LogWarning($"The object '{this.name}' has a collider that is not trigger. Please mark the collider as trigger.");
+                Debug.LogWarning($"The object '{name}' has a collider that is not trigger. Please mark the collider as trigger.");
                 _collider.isTrigger = true;
             }
 
-            if (this.transform.position.y != 0)
+            if (transform.position.y != 0)
                 Debug.LogWarning($"The territory '{name}' is not located on the Y = 0. Please put it's Y position as 0.");
-#endif
+            #endif
         }
 
         [System.Serializable]
@@ -93,7 +98,7 @@ namespace FishingModule
             // Rectifie amounts
             for (int i = 0; i < fishes.Keys.Count; i++)
             {
-                FishSO key  = fishes.Keys.ElementAt(i);
+                FishSO key = fishes.Keys.ElementAt(i);
 
                 fishes[key] = fishes[key] / total * 100;
             }
@@ -113,17 +118,17 @@ namespace FishingModule
             foreach (Territory territory in territories)
             {
                 foreach (GameObject item in territory.enemies)
-                {
                     enemies[item] = 1;
-                }
             }
 
             return enemies;
         }
+
         #endregion
 
         #region Editor
-#if UNITY_EDITOR
+
+        #if UNITY_EDITOR
 
         /// <inheritdoc/>
         private void OnValidate()
@@ -143,18 +148,19 @@ namespace FishingModule
                 Debug.LogWarning($"The territory '{name}' does not add up to {total}. Please remove the missing '{total - sum}'.");
 
             // Check for position
-            if (this.transform.position.y != 0)
+            if (transform.position.y != 0)
             {
-                this.transform.position = new Vector3(
-                    this.transform.position.x,
+                transform.position = new Vector3(
+                    transform.position.x,
                     0,
-                    this.transform.position.z
+                    transform.position.z
                 );
                 Debug.LogWarning("A territory cannot be on a Y different from 0.");
             }
         }
 
-#endif
+        #endif
+
         #endregion
     }
 }

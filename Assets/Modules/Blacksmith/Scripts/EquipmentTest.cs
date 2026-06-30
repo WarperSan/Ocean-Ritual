@@ -4,26 +4,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EnumGeneral;
 
-public class EquipmentTest : MonoBehaviour,Equipment
+public class EquipmentTest : MonoBehaviour, Equipment
 {
-    [SerializeField] TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.VitesseRechargement, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.Attaque, 1f);
-    [SerializeField] public TypeQuantity<TypeWeapon> BulletSpeed = new(TypeWeapon.VitesseBalle, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> BulletSize = new(TypeWeapon.TailleDeBalle, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.VitesseDeTire, 1f);
-    [SerializeField] TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.CapaciterDeBall, 1f);
-    [SerializeField] public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Porter, 1f);
-    [SerializeField] public componentGBN componentGBN;
-    [SerializeField] public string Name;
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> ReloadSpeed = new(TypeWeapon.VitesseRechargement, 1f);
 
-    string Equipment.Name
-    {
-        get { return Name; }
-    }
-    componentGBN IForgeable.componentGBN
-    {
-        get { return componentGBN; } 
-    }
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> Attack = new(TypeWeapon.Attaque, 1f);
+
+    [SerializeField]
+    public TypeQuantity<TypeWeapon> BulletSpeed = new(TypeWeapon.VitesseBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> BulletSize = new(TypeWeapon.TailleDeBalle, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> FireRate = new(TypeWeapon.VitesseDeTire, 1f);
+
+    [SerializeField]
+    private TypeQuantity<TypeWeapon> AmmoCapacity = new(TypeWeapon.CapaciterDeBall, 1f);
+
+    [SerializeField]
+    public TypeQuantity<TypeWeapon> Range = new(TypeWeapon.Porter, 1f);
+
+    [SerializeField]
+    public componentGBN componentGBN;
+
+    [SerializeField]
+    public string Name;
+
+    string Equipment.Name => Name;
+
+    componentGBN IForgeable.componentGBN => componentGBN;
+
     [SerializeField]
     private int forgePercentage;
 
@@ -57,14 +70,13 @@ public class EquipmentTest : MonoBehaviour,Equipment
         var baseStats = new List<UpgradeNameData>
         {
             new((int)ReloadSpeed.Quantite, ReloadSpeed.Type.ToString()),
-            new ((int)Attack.Quantite, Attack.Type.ToString()),
-            new ((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
-            new ((int)BulletSize.Quantite, BulletSize.Type.ToString()),
-            new ((int)FireRate.Quantite, FireRate.Type.ToString()),
-            new ((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
-            new ((int)Range.Quantite, Range.Type.ToString())
+            new((int)Attack.Quantite, Attack.Type.ToString()),
+            new((int)BulletSpeed.Quantite, BulletSpeed.Type.ToString()),
+            new((int)BulletSize.Quantite, BulletSize.Type.ToString()),
+            new((int)FireRate.Quantite, FireRate.Type.ToString()),
+            new((int)AmmoCapacity.Quantite, AmmoCapacity.Type.ToString()),
+            new((int)Range.Quantite, Range.Type.ToString()),
         };
-
 
         var previewStats = new List<UpgradeNameData>
         {
@@ -74,10 +86,13 @@ public class EquipmentTest : MonoBehaviour,Equipment
             AfterUpgradPreviewStat(BulletSize),
             AfterUpgradPreviewStat(FireRate),
             AfterUpgradPreviewStat(AmmoCapacity),
-            AfterUpgradPreviewStat(Range)
+            AfterUpgradPreviewStat(Range),
         };
 
-        return new UpgradeStats(baseStats, previewStats, GetCostForUpgrade(),Name);
+        return new UpgradeStats(baseStats,
+            previewStats,
+            GetCostForUpgrade(),
+            Name);
     }
 
     // Mise à jour de la méthode AfterUpgradPreviewStat pour retourner un UpgradeNameData
@@ -101,12 +116,9 @@ public class EquipmentTest : MonoBehaviour,Equipment
         LvlOfEquipment++;
     }
 
-    public int GetCostForUpgrade()
-    {
-        return LvlOfEquipment * costToUpgrade;
-    }
+    public int GetCostForUpgrade() => LvlOfEquipment * costToUpgrade;
 
-    public void UpdateStat() => throw new System.NotImplementedException();
-   
+    public void UpdateStat() => throw new NotImplementedException();
+
     public TypeQuantity<Enum> AfterUpgradPreviewStat(TypeQuantity<Enum> statToUpgrade) => throw new NotImplementedException();
 }

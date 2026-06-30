@@ -1,4 +1,3 @@
-using Chain;
 using ChainEditorHelper;
 using UnityEditor;
 using UnityEngine;
@@ -22,9 +21,7 @@ namespace ChainEditor
                 instance.name = "Machinery Instance";
             }
             else
-            {
                 Debug.LogError("Machinery Prefab not found at the specified path.");
-            }
         }
     }
 }

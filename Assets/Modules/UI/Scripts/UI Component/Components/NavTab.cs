@@ -1,5 +1,4 @@
 using DhafinFawwaz.AnimationUILib;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -13,7 +12,8 @@ namespace UIModule.Components
     [RequireComponent(typeof(Button))]
     public class NavTab : UIComponent, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField, Tooltip("Content that will be toggled by this tab")]
+        [SerializeField]
+        [Tooltip("Content that will be toggled by this tab")]
         private GameObject Content;
 
         [SerializeField]
@@ -25,28 +25,30 @@ namespace UIModule.Components
         #region Select
 
         [Header("Select")]
-        [SerializeField, Tooltip("Animation played when this tab is selected or hovered")]
+        [SerializeField]
+        [Tooltip("Animation played when this tab is selected or hovered")]
         private AnimationUI selectAnimation;
 
-        [SerializeField, Tooltip("Animation played when this tab is unselected")]
+        [SerializeField]
+        [Tooltip("Animation played when this tab is unselected")]
         private AnimationUI unselectAnimation;
 
-        private bool isSelected = false;
+        private bool isSelected;
 
         private void Select()
         {
-            if (this.gameObject.activeInHierarchy && this.selectAnimation != null)
-                this.selectAnimation.Play();
+            if (gameObject.activeInHierarchy && selectAnimation != null)
+                selectAnimation.Play();
 
-            this.isSelected = true;
+            isSelected = true;
         }
 
         private void UnSelect()
         {
-            if (this.gameObject.activeInHierarchy && this.unselectAnimation != null)
-                this.unselectAnimation.Play();
+            if (gameObject.activeInHierarchy && unselectAnimation != null)
+                unselectAnimation.Play();
 
-            this.isSelected = false;
+            isSelected = false;
         }
 
         #endregion
@@ -56,12 +58,12 @@ namespace UIModule.Components
         /// </summary>
         public void Open()
         {
-            this.Content.SetActive(true);
+            Content.SetActive(true);
 
-            if (!this.isSelected)
-                this.Select();
+            if (!isSelected)
+                Select();
 
-            this.OnOpen?.Invoke();
+            OnOpen?.Invoke();
         }
 
         /// <summary>
@@ -69,21 +71,21 @@ namespace UIModule.Components
         /// </summary>
         public void Close()
         {
-            this.Content.SetActive(false);
+            Content.SetActive(false);
 
-            if (this.isSelected)
-                this.UnSelect();
+            if (isSelected)
+                UnSelect();
 
-            this.OnClose?.Invoke();
+            OnClose?.Invoke();
         }
 
         #region Hover
 
         /// <inheritdoc/>
-        public void OnPointerEnter(PointerEventData eventData) => this.Select();
+        public void OnPointerEnter(PointerEventData eventData) => Select();
 
         /// <inheritdoc/>
-        public void OnPointerExit(PointerEventData eventData) => this.UnSelect();
+        public void OnPointerExit(PointerEventData eventData) => UnSelect();
 
         #endregion
 
@@ -92,22 +94,23 @@ namespace UIModule.Components
         /// <inheritdoc/>
         private void Start()
         {
-            if (this.Content == null)
+            if (Content == null)
             {
-                this.enabled = false;
-                Debug.LogError($"Please add a content for the '{nameof(NavTab)}' named '{this.name}'.");
+                enabled = false;
+                Debug.LogError($"Please add a content for the '{nameof(NavTab)}' named '{name}'.");
                 return;
             }
 
-            NavBar navBar = this.GetComponentInParent<NavBar>();
+            NavBar navBar = GetComponentInParent<NavBar>();
+
             if (navBar == null)
             {
-                this.enabled = false;
+                enabled = false;
                 Debug.LogWarning($"Tried to add a '{nameof(NavTab)}' without parenting a '{nameof(NavBar)}'.");
                 return;
             }
 
-            Button button = this.GetComponent<Button>();
+            Button button = GetComponent<Button>();
             button.onClick.AddListener(() => navBar.SelectTab(this));
         }
 

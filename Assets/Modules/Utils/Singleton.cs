@@ -21,20 +21,20 @@ namespace UtilsModule
             // Keep only one
             if (Instance != null)
             {
-                Debug.LogWarning($"Another instance of {this.GetType().Name} has been found.");
-                Destroy(this.gameObject);
+                Debug.LogWarning($"Another instance of {GetType().Name} has been found.");
+                Destroy(gameObject);
                 return;
             }
 
-            Instance = this.gameObject.GetComponent<T>();
+            Instance = gameObject.GetComponent<T>();
 
-            if (!this.KeepParent)
-                this.transform.SetParent(null);
+            if (!KeepParent)
+                transform.SetParent(null);
 
-            if (!this.DestroyOnLoad)
-                DontDestroyOnLoad(this.gameObject);
+            if (!DestroyOnLoad)
+                DontDestroyOnLoad(gameObject);
 
-            this.OnAwake();
+            OnAwake();
         }
 
         #endregion MonoBehaviour
@@ -49,7 +49,7 @@ namespace UtilsModule
         /// <summary>
         /// Defines if the singleton should keep it's current parent or not
         /// </summary>
-        protected virtual bool KeepParent => this.DestroyOnLoad;
+        protected virtual bool KeepParent => DestroyOnLoad;
 
         /// <summary>
         /// Called when <see cref="Awake"/> is called

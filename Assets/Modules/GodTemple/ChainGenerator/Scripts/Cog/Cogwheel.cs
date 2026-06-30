@@ -9,14 +9,15 @@ namespace Chain
     public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart
     {
         public GearData Data;
-        public bool drawGizmos = false;
+        public bool drawGizmos;
         public Transform cogObject;
         public Hole hole;
         public HoleHolder holeHolder;
-        public int sortingOrder = 0;
+        public int sortingOrder;
 
 
-        [SerializeField] List<Tooth> teeth = new();
+        [SerializeField]
+        private List<Tooth> teeth = new();
         [SerializeField] private TeethPool pool;
         public int CogId { get; set; }
 
@@ -50,9 +51,8 @@ namespace Chain
         {
             SetHoleSizeAndType(); //burda teethle ve chainle işimiz yok
         }
-        
 
-        void SetCogRadius()
+        private void SetCogRadius()
         {
             var radius = Data.Radius;
             if (radius == 0) return;
@@ -62,27 +62,22 @@ namespace Chain
             cogObject.transform.localScale = scale;
         }
 
-        void SetCogVolume()
+        private void SetCogVolume()
         {
             var scale = cogObject.transform.localScale;
             scale.y = Data.Volume;
             cogObject.transform.localScale = scale;
         }
 
-
-        Hole GetHolesById(int id)
+        private Hole GetHolesById(int id)
         {
             if (holeHolder != null)
-            {
                 return holeHolder.ShowHole(id);
-            }
             else
-            {
                 return null;
-            }
         }
 
-        void SetHoleSizeAndType()
+        private void SetHoleSizeAndType()
         {
             SetCogVolume();
             hole = GetHolesById(Data.HoleId);
@@ -106,7 +101,7 @@ namespace Chain
 
         private TeethGenerator _teethGenerator;
 
-        void GenerateTeeth()
+        private void GenerateTeeth()
         {
             _teethGenerator = new TeethGenerator(Data, pool, transform);
             _teethGenerator.ReleasePreviousTeeth(teeth);
@@ -127,7 +122,7 @@ namespace Chain
             Data.ToothUnit = Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position);
         }
 
-        void StartPool()
+        private void StartPool()
         {
             if (Data == null) return;
             if (Data.WithoutTeeth) return;
@@ -146,7 +141,7 @@ namespace Chain
             }
         }
 
-        TeethPool CreatePool()
+        private TeethPool CreatePool()
         {
             return Instantiate(Data.TeethPoolPrefab, transform);
         }

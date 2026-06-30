@@ -16,8 +16,8 @@ namespace Chain
         {
             DestroyImmediate(poolObject.gameObject, true);
         }
-    
-        void StartPool()
+
+        private void StartPool()
         {
             if (poolObject.pool != null) return;
             poolObject = GetComponentInChildren<T>();

@@ -28,7 +28,7 @@ namespace BehaviourModule.Nodes.Controls
                 {
                     NodeState.FAILURE => NodeState.SUCCESS,
                     NodeState.SUCCESS => NodeState.FAILURE,
-                    _ => NodeState.RUNNING
+                    _                 => NodeState.RUNNING,
                 };
             }
 

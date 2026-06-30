@@ -23,9 +23,7 @@ public class GemEditor : PropertyDrawer
 
         // Ensure the flatForme list has the correct size
         if (flatFormeProp.arraySize != width * height)
-        {
             flatFormeProp.arraySize = width * height;
-        }
 
         // Draw the grid
         for (int j = height - 1; j >= 0; j--)
@@ -37,9 +35,7 @@ public class GemEditor : PropertyDrawer
                 SerializedProperty element = flatFormeProp.GetArrayElementAtIndex(index);
                 bool newValue = EditorGUI.Toggle(new Rect(position.x + i * 20, position.y + j * 20, 20, 20), element.boolValue);
                 if (newValue != element.boolValue)
-                {
                     element.boolValue = newValue;
-                }
             }
             EditorGUILayout.EndHorizontal();
         }

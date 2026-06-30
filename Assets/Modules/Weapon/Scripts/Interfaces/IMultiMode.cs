@@ -10,12 +10,12 @@ namespace WeaponModule
         /// <summary>
         /// Fetches the next mode
         /// </summary>
-        public Enum NextMode();
+        Enum NextMode();
 
         /// <summary>
         /// Sets the current mode to the given mode
         /// </summary>
-        public void SetMode(Enum mode);
+        void SetMode(Enum mode);
     }
 
     /// <inheritdoc cref="IMultiMode"/>
@@ -25,19 +25,19 @@ namespace WeaponModule
     public interface IMultiMode<T> : IMultiMode where T : Enum
     {
         /// <inheritdoc cref="IMultiMode.NextMode"/>
-        public new T NextMode();
+        new T NextMode();
 
         /// <inheritdoc/>
-        Enum IMultiMode.NextMode() => this.NextMode();
+        Enum IMultiMode.NextMode() => NextMode();
 
         /// <inheritdoc cref="IMultiMode.SetMode(Enum)"/>
-        public void SetMode(T mode);
+        void SetMode(T mode);
 
         /// <inheritdoc/>
         void IMultiMode.SetMode(Enum mode)
         {
             if (mode is T modeT)
-                this.SetMode(modeT);
+                SetMode(modeT);
         }
     }
 }

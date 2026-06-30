@@ -1,45 +1,48 @@
-using System;
-using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-  
-
+using System.Collections.Generic;
+using UnityEngine;
 using static EnumGeneral;
-    [System.Serializable]
-    public class GBN 
-    {
-        [SerializeField] public string Name;
-        [SerializeField] public TypeOfSocle typeSocle;
-        [SerializeField] public List<TypeQuantity<TypeWeapon>> typeWeapon = new();
-        [SerializeField] public List<TypeQuantity<TypeBoat>> typeBoat = new();
-        [SerializeField] public List<TypeQuantity<TypeNet>> typeNet = new();
 
+[System.Serializable]
+public class GBN
+{
+    [SerializeField]
+    public string Name;
 
-    [SerializeField]  public List<componentPowerGemObject> SocleListe = new();
+    [SerializeField]
+    public TypeOfSocle typeSocle;
+
+    [SerializeField]
+    public List<TypeQuantity<TypeWeapon>> typeWeapon = new();
+
+    [SerializeField]
+    public List<TypeQuantity<TypeBoat>> typeBoat = new();
+
+    [SerializeField]
+    public List<TypeQuantity<TypeNet>> typeNet = new();
+
+    [SerializeField]
+    public List<componentPowerGemObject> SocleListe = new();
+
     // This list will be serialized but not visible in the inspector
     [HideInInspector]
-    [SerializeField] public List<PowerGemObject> PowerGemObjectListe = new();
+    [SerializeField]
+    public List<PowerGemObject> PowerGemObjectListe = new();
 
     public void GetStat()
     {
         ResetLists();
-       StatCalculator();
-       GetSocleToScriptList();
+        StatCalculator();
+        GetSocleToScriptList();
     }
+
     private List<TypeQuantity<TEnum>> GetListForEnum<TEnum>()
     {
         if (typeof(TEnum) == typeof(TypeWeapon))
-        {
             return typeWeapon as List<TypeQuantity<TEnum>>;
-        }
         else if (typeof(TEnum) == typeof(TypeBoat))
-        {
             return typeBoat as List<TypeQuantity<TEnum>>;
-        }
         else if (typeof(TEnum) == typeof(TypeNet))
-        {
             return typeNet as List<TypeQuantity<TEnum>>;
-        }
         else
         {
             Debug.LogError("Unsupported type.");
@@ -57,13 +60,13 @@ using static EnumGeneral;
             return;
         }
 
-        foreach (var boostedStat in boostedStats)
+        foreach (TypeQuantity<TEnum> boostedStat in boostedStats)
         {
-            var baseStat = baseStats.Find(x => x.Type.Equals(boostedStat.Type));
+            TypeQuantity<TEnum> baseStat = baseStats.Find(x => x.Type.Equals(boostedStat.Type));
+
             if (baseStat != null)
-            {
-                boostedStat.Quantite = baseStat.Quantite + correspondingList.Find(x => x.Type.Equals(boostedStat.Type))?.Quantite ?? baseStat.Quantite;
-            }
+                boostedStat.Quantite = baseStat.Quantite + correspondingList.Find(x => x.Type.Equals(boostedStat.Type))?.Quantite
+                                       ?? baseStat.Quantite;
         }
     }
 
@@ -74,53 +77,42 @@ using static EnumGeneral;
     /// Initiate the list
     /// </summary>
     /// 
-
     private void InitializeLists()
-        {
-            foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
-            {
-                typeWeapon.Add(new TypeQuantity<TypeWeapon>(arme, 0));
-            }
+    {
+        foreach (TypeWeapon arme in System.Enum.GetValues(typeof(TypeWeapon)))
+            typeWeapon.Add(new TypeQuantity<TypeWeapon>(arme, 0));
 
-            foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
-            {
-                typeBoat.Add(new TypeQuantity<TypeBoat>(boat, 0));
-            }
+        foreach (TypeBoat boat in System.Enum.GetValues(typeof(TypeBoat)))
+            typeBoat.Add(new TypeQuantity<TypeBoat>(boat, 0));
 
-            foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
-            {
-                typeNet.Add(new TypeQuantity<TypeNet>(filet, 0));
-            }
-        }
+        foreach (TypeNet filet in System.Enum.GetValues(typeof(TypeNet)))
+            typeNet.Add(new TypeQuantity<TypeNet>(filet, 0));
+    }
+
     /// <summary>
     /// Reset the list
     /// </summary>
-        // Clears and reinitializes the lists
-        public void ResetLists()
-        {
-            typeWeapon.Clear();
-            typeBoat.Clear();
-            typeNet.Clear();
-            InitializeLists();
-        }
+    // Clears and reinitializes the lists
+    public void ResetLists()
+    {
+        typeWeapon.Clear();
+        typeBoat.Clear();
+        typeNet.Clear();
+        InitializeLists();
+    }
 
-        #endregion
+    #endregion
 
     /// <summary>
     /// only convert the SocleListe To PowerGemObjectListe for the test
     /// </summary>
-        public void GetSocleToScriptList()
-        {
-            PowerGemObjectListe.Clear();
-            foreach (componentPowerGemObject item in SocleListe)
-            {
-            
-                PowerGemObjectListe.Add(item.PowerGemObjectScript);
-            }
-        
-        }
+    public void GetSocleToScriptList()
+    {
+        PowerGemObjectListe.Clear();
 
-
+        foreach (componentPowerGemObject item in SocleListe)
+            PowerGemObjectListe.Add(item.PowerGemObjectScript);
+    }
 
     #region Stat calculator
 
@@ -128,49 +120,49 @@ using static EnumGeneral;
     ///  calculate the adding stat to the GBN
     /// </summary>
     public void StatCalculator()
+    {
+        foreach (componentPowerGemObject socle in SocleListe)
         {
-            foreach (componentPowerGemObject socle in SocleListe)
+            foreach (Gem gem in socle.PowerGemObjectScript.GemmeList)
             {
-                foreach (Gem gem in socle.PowerGemObjectScript.GemmeList)
+                switch (typeSocle)
                 {
-                   
-
-                    switch (typeSocle)
-                    {
-                        case TypeOfSocle.Weapon:
-                            UpdateStatsFromGemmeList<TypeWeapon>(gem, typeWeapon);
-                            break;
-                        case TypeOfSocle.Bateau:
-                            UpdateStatsFromGemmeList<TypeBoat>(gem, typeBoat);
-                            break;
-                        case TypeOfSocle.Net:
-                            UpdateStatsFromGemmeList<TypeNet>(gem, typeNet);
-                            break;
-                    }
+                    case TypeOfSocle.Weapon:
+                        UpdateStatsFromGemmeList<TypeWeapon>(gem, typeWeapon);
+                        break;
+                    case TypeOfSocle.Bateau:
+                        UpdateStatsFromGemmeList<TypeBoat>(gem, typeBoat);
+                        break;
+                    case TypeOfSocle.Net:
+                        UpdateStatsFromGemmeList<TypeNet>(gem, typeNet);
+                        break;
                 }
             }
         }
+    }
+
     /// <summary>
     /// add the stat form the gems to the good list of stat
     /// </summary>
     /// <typeparam name="TEnum"></typeparam>
     /// <param name="theGemmeScript"></param>
     /// <param name="list"></param>
-        private void UpdateStatsFromGemmeList<TEnum>(Gem theGemmeScript, List<TypeQuantity<TEnum>> list)
-        {
-            List<TypeQuantity<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
+    private void UpdateStatsFromGemmeList<TEnum>(Gem theGemmeScript, List<TypeQuantity<TEnum>> list)
+    {
+        List<TypeQuantity<TEnum>> gemmeList = theGemmeScript.GetListType<TEnum>();
 
-            foreach (TypeQuantity<TEnum> gemmeStat in gemmeList)
+        foreach (TypeQuantity<TEnum> gemmeStat in gemmeList)
+        {
+            foreach (TypeQuantity<TEnum> stat in list)
             {
-                foreach (TypeQuantity<TEnum> stat in list)
+                if (stat.Type.Equals(gemmeStat.Type))
                 {
-                    if (stat.Type.Equals(gemmeStat.Type))
-                    {
-                   // stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
+                    // stat.Quantite = Mathf.RoundToInt(stat.Quantite * (1 + (gemmeStat.Quantite / 100f)));
                     stat.Quantite += gemmeStat.Quantite;
-                    }
                 }
             }
         }
+    }
+
     #endregion
 }

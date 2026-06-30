@@ -14,8 +14,8 @@ namespace UtilsModule
 
             public ProbabilityForLevel(int level, float probability)
             {
-                this.Level = level;
-                this.Probability = probability;
+                Level = level;
+                Probability = probability;
             }
         }
 
@@ -40,7 +40,7 @@ namespace UtilsModule
             {
                 return new ProbabilityForLevel[]
                 {
-                    new(levels.ElementAt(0), 100)
+                    new(levels.ElementAt(0), 100),
                 };
             }
 

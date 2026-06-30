@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-
 namespace BehaviourModule.Nodes.Generic
 {
     /// <summary>
@@ -12,29 +9,29 @@ namespace BehaviourModule.Nodes.Generic
         /// The animation is currently playing
         /// </summary>
         public bool isActing { get; private set; }
-        
+
         /// <summary>
         /// The animation has played and ended
         /// </summary>
         public bool hasActed { get; private set; }
-        
+
         private readonly System.Action callback;
-        
+
         public AnimationNode(System.Action callback)
         {
             this.callback = callback;
         }
-        
+
         public void OnEnded()
         {
-            this.isActing = false;
-            this.hasActed = true;
+            isActing = false;
+            hasActed = true;
         }
 
         public void ResetAnim()
         {
-            this.isActing = false;
-            this.hasActed = false;
+            isActing = false;
+            hasActed = false;
         }
 
         #region Node
@@ -43,15 +40,15 @@ namespace BehaviourModule.Nodes.Generic
         protected override NodeState OnEvaluate()
         {
             // Completed the animation
-            if (this.hasActed)
+            if (hasActed)
                 return NodeState.SUCCESS;
-            
+
             // ReSharper disable once InvertIf
             // If the animation is not playing
-            if (!this.isActing)
+            if (!isActing)
             {
-                this.callback?.Invoke();
-                this.isActing = true;
+                callback?.Invoke();
+                isActing = true;
             }
 
             // Running the animation

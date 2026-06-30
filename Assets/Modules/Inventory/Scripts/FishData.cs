@@ -11,6 +11,6 @@ public class FishData : ItemData
         sprite = fish.Icon;
 
         this.quantity = quantity;
-        this.quantityMax = 5;
+        quantityMax = 5;
     }
 }

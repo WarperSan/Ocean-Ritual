@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static EnumGeneral;
@@ -15,7 +14,7 @@ public class GBNeditor : UnityEditor.Editor
     private SerializedProperty GBNProp;
     private SerializedProperty NameProp;
     //
-    void OnEnable()
+    private void OnEnable()
     {
        
         GBNProp = serializedObject.FindProperty("GBNScript");
@@ -51,9 +50,7 @@ public class GBNeditor : UnityEditor.Editor
 
         // Add a reset button
         if (GUILayout.Button("Reset Lists"))
-        {
             ResetLists();
-        }
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -66,9 +63,7 @@ public class GBNeditor : UnityEditor.Editor
         EditorGUILayout.LabelField("Socle List", EditorStyles.boldLabel);
 
         if (GUILayout.Button("Add GameObject"))
-        {
             listProperty.InsertArrayElementAtIndex(listProperty.arraySize);
-        }
 
         for (int i = 0; i < listProperty.arraySize; i++)
         {
@@ -78,9 +73,7 @@ public class GBNeditor : UnityEditor.Editor
             EditorGUILayout.PropertyField(element, GUIContent.none);
 
             if (GUILayout.Button("Remove"))
-            {
                 listProperty.DeleteArrayElementAtIndex(i);
-            }
 
             EditorGUILayout.EndHorizontal();
         }

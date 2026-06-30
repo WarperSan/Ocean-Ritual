@@ -3,28 +3,36 @@ using UnityEngine;
 
 public class StarsManager : MonoBehaviour
 {
-    [SerializeField] GameObject Bronze;
-    [SerializeField] GameObject Argent;
-    [SerializeField] GameObject Or;
-    [SerializeField] GameObject Empty;
+    [SerializeField]
+    private GameObject Bronze;
+
+    [SerializeField]
+    private GameObject Argent;
+
+    [SerializeField]
+    private GameObject Or;
+
+    [SerializeField]
+    private GameObject Empty;
 
     [SerializeField]
     private Transform[] starContainers;
 
-    [SerializeField] int totalStars = 16;
+    [SerializeField]
+    private int totalStars = 16;
 
-    public void ClearStars() => this.CreateStars(0);
+    public void ClearStars() => CreateStars(0);
 
-    public void CreateStars(GemData gemData) => this.CreateStars(gemData.LVL);
+    public void CreateStars(GemData gemData) => CreateStars(gemData.LVL);
 
     private void CreateStars(int lvl)
     {
         // On vide d'abord le conteneur pour �viter les doublons
-        foreach (Transform item in this.starContainers)
+        foreach (Transform item in starContainers)
             item.RemoveAll();
 
         // Calcul du nombre de chaque �toile
-        int numOr = lvl / 10;            // Chaque �toile Or repr�sente 10 niveaux
+        int numOr = lvl / 10; // Chaque �toile Or repr�sente 10 niveaux
         int remainingAfterOr = lvl % 10;
 
         int numArgent = remainingAfterOr / 5; // Chaque �toile Argent repr�sente 5 niveaux
@@ -37,34 +45,34 @@ public class StarsManager : MonoBehaviour
         // Cr�ation des �toiles Or
         for (int i = 0; i < numOr; i++)
         {
-            this.CreateStar(this.Or, count);
+            CreateStar(Or, count);
             count++;
         }
 
         // Cr�ation des �toiles Argent
         for (int i = 0; i < numArgent; i++)
         {
-            this.CreateStar(this.Argent, count);
+            CreateStar(Argent, count);
             count++;
         }
 
         // Cr�ation des �toiles Bronze
         for (int i = 0; i < numBronze; i++)
         {
-            this.CreateStar(this.Bronze, count);
+            CreateStar(Bronze, count);
             count++;
         }
 
         for (int i = numBronze + numArgent + numOr; i < totalStars; i++)
         {
-            this.CreateStar(this.Empty, count);
+            CreateStar(Empty, count);
             count++;
         }
     }
 
     private void CreateStar(GameObject prefab, int starIndex)
     {
-        Transform parent = this.starContainers[starIndex / 4];
+        Transform parent = starContainers[starIndex / 4];
         Instantiate(prefab, parent);
     }
 }

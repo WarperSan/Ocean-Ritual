@@ -21,6 +21,6 @@ namespace EntityModule
     {
         FRIEND,
         FOE,
-        ENVIRONMENT
+        ENVIRONMENT,
     }
 }
